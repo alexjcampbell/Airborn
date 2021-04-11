@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "oRdNdqS3029YOU0yWkloQkBisPAZq34lpEnhbI2Dx2AjjLDPZgR9/5p990aUFi9ecYBwGEqav75hZ0OofcahbQ==",
+  "success": true,
+  "projectFilePath": "/Users/alexcampbell/Repos/Airborn/Airborn.Web/Airborn.web.csproj",
+  "expectedPackageFiles": [
+    "/Users/alexcampbell/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
