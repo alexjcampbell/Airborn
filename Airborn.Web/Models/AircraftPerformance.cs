@@ -17,6 +17,13 @@ namespace Airborn.web.Models
             _profiles = profiles;
         }
 
+        public enum ScenarioMode {
+            Takeoff_GroundRoll,
+            Takeoff_50FtClearance,
+            Landing_GroundRoll,
+            Landing_50FtClearance
+        }
+
         private AircraftPerformanceProfileList _profiles;
 
         public AircraftPerformanceProfileList Profiles 
@@ -49,6 +56,7 @@ namespace Airborn.web.Models
             return aircraftPerformance;
         }
 
+
         public class AircraftPerformanceProfile
         {
             public int PressureAltitude {get; set;}
@@ -56,13 +64,29 @@ namespace Airborn.web.Models
             public AircraftPerformanceProfileResultList GroundRoll {get; set;}
 
             public AircraftPerformanceProfileResultList Clear50FtObstacle {get; set;}
+
         }
 
         public class AircraftPerformanceProfileList : List<AircraftPerformanceProfile>
         {
-          public AircraftPerformanceProfile FindByPressureAltitude(int pressureAltitude)
+            public AircraftPerformanceProfile FindByPressureAltitude(int pressureAltitude)
             {
                 return this.Find (p => p.PressureAltitude == pressureAltitude);
+            }
+
+
+            public int GetPerformanceData(ScenarioMode scenario, int pressureAltitude, int temperature)
+            {
+                switch(scenario)
+                {
+                    case ScenarioMode.Takeoff_50FtClearance:
+                        return FindByPressureAltitude(pressureAltitude).Clear50FtObstacle.FindByTemperature(temperature);
+                    case ScenarioMode.Takeoff_GroundRoll:
+                        return FindByPressureAltitude(pressureAltitude).GroundRoll.FindByTemperature(temperature);                     
+
+                }
+
+                throw new ArgumentException("No performance data found for pressure altitude" + pressureAltitude + " and temperature " + temperature  );
             }
         }
 
@@ -81,39 +105,38 @@ namespace Airborn.web.Models
             }
         }
 
-        public int CalculateTakeoffDistanceGroundRoll(Scenario scenario)
+        public int CalculateTakeoffDistanceGroundRoll(Scenario scenario, ScenarioMode scenarioMode)
         {
-
             int lowerPressureAltidude = GetLowerBoundForInterpolation(scenario.PressureAltitude, 1000);
             int upperPressureAltidude = GetUpperBoundForInterpolation(scenario.PressureAltitude, 1000);
             int lowerTemperature = GetLowerBoundForInterpolation(scenario.TemperatureCelcius, 10);
             int upperTemperature = GetUpperBoundForInterpolation(scenario.TemperatureCelcius, 10);
 
-            int distanceForLowerPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
-            int distanceForUpperPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
+            int distanceForLowerPressureAltitudeLowerTemp = Profiles.GetPerformanceData(scenarioMode, lowerPressureAltidude, lowerTemperature);
+            int distanceForUpperPressureAltitudeLowerTemp = Profiles.GetPerformanceData(scenarioMode, upperPressureAltidude, lowerTemperature);
             
             double distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
                 distanceForUpperPressureAltitudeLowerTemp,
                 scenario.PressureAltitude,
-                1000
+                1000 // pressure altitudes in the json come in intervals of 1000
             );
 
-            int distanceForLowerPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
-            int distanceForUpperPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
+            int distanceForLowerPressureAltitudeUpperTemp = Profiles.GetPerformanceData(scenarioMode, lowerPressureAltidude, upperTemperature);
+            int distanceForUpperPressureAltitudeUpperTemp = Profiles.GetPerformanceData(scenarioMode, upperPressureAltidude, upperTemperature);
 
             double distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
                 scenario.PressureAltitude,
-                1000
+                1000 // pressure altitudes in the json come in intervals of 1000
             );
 
             double distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
                 scenario.TemperatureCelcius,
-                10
+                10 // temperatures in the json come in intervals of 10
             );
 
             return (int)distanceInterpolated;
