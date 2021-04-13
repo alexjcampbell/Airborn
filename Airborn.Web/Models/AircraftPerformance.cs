@@ -81,12 +81,74 @@ namespace Airborn.web.Models
             }
         }
 
-        public static double CalculateInterpolationFactor (double value, double x1, double x2)
+        public int CalculateTakeoffDistanceGroundRoll(Scenario scenario)
+        {
+            int lowerPressureAltidude = GetLowerBoundForInterpolation(scenario.PressureAltitude, 1000);
+            int upperPressureAltidude = GetUpperBoundForInterpolation(scenario.PressureAltitude, 1000);
+            int lowerTemperature = GetLowerBoundForInterpolation(scenario.TemperatureCelcius, 10);
+            int upperTemperature = GetUpperBoundForInterpolation(scenario.TemperatureCelcius, 10);
+
+            int distanceForLowerPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
+            int distanceForUpperPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
+            double distanceLowerTempInterpolated = 
+                (distanceForUpperPressureAltitudeLowerTemp - distanceForLowerPressureAltitudeLowerTemp) 
+                * 
+                CalculateInterpolationFactor(scenario.PressureAltitude, lowerPressureAltidude, upperPressureAltidude)
+                +
+                distanceForLowerPressureAltitudeLowerTemp
+                ;
+
+            int distanceForLowerPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
+            int distanceForUpperPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
+
+            double distanceUpperTempInterpolated = 
+                (distanceForUpperPressureAltitudeUpperTemp - distanceForLowerPressureAltitudeUpperTemp) 
+                * 
+                CalculateInterpolationFactor(scenario.PressureAltitude, lowerPressureAltidude, upperPressureAltidude)
+                +
+                distanceForUpperPressureAltitudeUpperTemp
+                ;
+
+            double distanceInterpolated =
+                (distanceLowerTempInterpolated - distanceUpperTempInterpolated)
+                *
+                CalculateInterpolationFactor(scenario.TemperatureCelcius, lowerTemperature, upperTemperature)
+                +
+                distanceLowerTempInterpolated
+                ;
+
+            return (int)distanceInterpolated;
+
+        }
+
+        public static double CalculateInterpolationFactor (int value, int x1, int x2)
         {
             if (value < x1) { throw new ArgumentOutOfRangeException(); }
             if (value > x2) { throw new ArgumentOutOfRangeException(); }
 
-            return (value - x1) / (x2 - x1);
+            double interpolationFactor = ((double)(value - x1)) / ((double)(x2 - x1));
+
+            return interpolationFactor;
+        }
+
+        public static int GetLowerBoundForInterpolation(int value, int desiredInterval)
+        {
+            int lowerBound = value - (value % desiredInterval);
+
+            return lowerBound;
+        }
+
+        public static int GetUpperBoundForInterpolation(int value, int desiredInterval)
+        {
+            int lowerBound = value - (value % desiredInterval);
+            int upperBound = lowerBound + desiredInterval;
+
+            return upperBound;
+        }
+
+        public static (int, int) GetUpperAndLowBoundsForInterpolation(int value, int desiredInterval)
+        {
+            return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
         }
     }
 }

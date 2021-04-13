@@ -29,7 +29,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolate()
+        public void Test_CalculateInterpolationFactor()
         {
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson();
@@ -51,6 +51,46 @@ namespace Airborn.Tests
 
             Assert.AreEqual(1691,ap.Profiles.FindByPressureAltitude(1000).Clear50FtObstacle.FindByTemperature(10));
             Assert.AreEqual(1813,ap.Profiles.FindByPressureAltitude(1000).Clear50FtObstacle.FindByTemperature(20));
+
+        }
+
+        [TestMethod]
+        public void Test_GetUpperAndLowerBoundForInterpolation()
+        {
+            // test it for pressure altitude intervals (1000s)
+            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3500, 1000));
+            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3000, 1000));
+            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3999, 1000));
+
+            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(500, 1000));
+            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(0, 1000));
+            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(999, 1000));
+
+
+            // test it for temperature intervals (10s)
+            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(35, 10));
+            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(30, 10));
+            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(39, 10));
+
+            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(0, 10));
+            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(5, 10));
+            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(9, 10));
+        }
+
+        [TestMethod]
+        public void Test_FindTakeoffDistance()
+        {
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson();
+
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario);
+
+            Assert.AreEqual(10,takeoffGroundRoll);
 
         }
 

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Airborn.web.Models;
-using Airborn.Models;
 
 namespace Airborn.Controllers
 {
@@ -24,7 +23,20 @@ namespace Airborn.Controllers
             return View();
         }
 
-        public IActionResult Calculator()
+        public IActionResult Takeoff()
+        {
+            return View();
+        }
+
+        // POST: Home/Takeoff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Takeoff(ScenarioPageModel model)
+        {
+            return View(model);
+        }
+
+       public IActionResult Landing()
         {
             return View();
         }
@@ -32,7 +44,7 @@ namespace Airborn.Controllers
         // POST: Home/Calculator
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Calculator(ScenarioPageModel model)
+        public async Task<IActionResult> Landing(ScenarioPageModel model)
         {
             return View(model);
         }

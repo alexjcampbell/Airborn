@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Airborn
+namespace Airborn.Web
 {
     public class Startup
     {
@@ -51,7 +51,6 @@ namespace Airborn
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                    
             });
         }
     }
