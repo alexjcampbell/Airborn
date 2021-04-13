@@ -36,7 +36,7 @@ namespace Airborn.web.Models
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore
             };
 
-            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../SR22.json");
+            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../SR22_G2_Takeoff.json");
 
             StreamReader sr = new StreamReader(filepath);
 
