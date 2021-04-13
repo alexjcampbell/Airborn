@@ -90,7 +90,7 @@ namespace Airborn.Tests
 
             int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario);
 
-            Assert.AreEqual(10,takeoffGroundRoll);
+            Assert.AreEqual(1193,takeoffGroundRoll);
 
         }
 
