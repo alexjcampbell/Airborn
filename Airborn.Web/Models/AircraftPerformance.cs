@@ -83,6 +83,7 @@ namespace Airborn.web.Models
 
         public int CalculateTakeoffDistanceGroundRoll(Scenario scenario)
         {
+
             int lowerPressureAltidude = GetLowerBoundForInterpolation(scenario.PressureAltitude, 1000);
             int upperPressureAltidude = GetUpperBoundForInterpolation(scenario.PressureAltitude, 1000);
             int lowerTemperature = GetLowerBoundForInterpolation(scenario.TemperatureCelcius, 10);
@@ -90,32 +91,30 @@ namespace Airborn.web.Models
 
             int distanceForLowerPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
             int distanceForUpperPressureAltitudeLowerTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(lowerTemperature);
-            double distanceLowerTempInterpolated = 
-                (distanceForUpperPressureAltitudeLowerTemp - distanceForLowerPressureAltitudeLowerTemp) 
-                * 
-                CalculateInterpolationFactor(scenario.PressureAltitude, lowerPressureAltidude, upperPressureAltidude)
-                +
-                distanceForLowerPressureAltitudeLowerTemp
-                ;
+            
+            double distanceLowerTempInterpolated = Interpolate(
+                distanceForLowerPressureAltitudeLowerTemp,
+                distanceForUpperPressureAltitudeLowerTemp,
+                scenario.PressureAltitude,
+                1000
+            );
 
             int distanceForLowerPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(lowerPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
             int distanceForUpperPressureAltitudeUpperTemp = Profiles.FindByPressureAltitude(upperPressureAltidude).GroundRoll.FindByTemperature(upperTemperature);
 
-            double distanceUpperTempInterpolated = 
-                (distanceForUpperPressureAltitudeUpperTemp - distanceForLowerPressureAltitudeUpperTemp) 
-                * 
-                CalculateInterpolationFactor(scenario.PressureAltitude, lowerPressureAltidude, upperPressureAltidude)
-                +
-                distanceForLowerPressureAltitudeUpperTemp
-                ;
+            double distanceUpperTempInterpolated = Interpolate(
+                distanceForLowerPressureAltitudeUpperTemp,
+                distanceForUpperPressureAltitudeUpperTemp,
+                scenario.PressureAltitude,
+                1000
+            );
 
-            double distanceInterpolated =
-                (distanceUpperTempInterpolated - distanceLowerTempInterpolated)
-                *
-                CalculateInterpolationFactor(scenario.TemperatureCelcius, lowerTemperature, upperTemperature)
-                +
-                distanceLowerTempInterpolated
-                ;
+            double distanceInterpolated = Interpolate(
+                (int)distanceLowerTempInterpolated,
+                (int)distanceUpperTempInterpolated,
+                scenario.TemperatureCelcius,
+                10
+            );
 
             return (int)distanceInterpolated;
 
@@ -149,6 +148,23 @@ namespace Airborn.web.Models
         public static (int, int) GetUpperAndLowBoundsForInterpolation(int value, int desiredInterval)
         {
             return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
+        }
+
+        public static double Interpolate(int lowerValue, int upperValue, int valueForInterpolation, int desiredInterval)
+        {
+            int lowerInterpolation = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
+            int upperInterpolation = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
+
+            double interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerInterpolation, upperInterpolation);
+
+            double interpolatedValue = 
+                (upperValue - lowerValue)
+                *
+                interpolationFactor
+                + lowerValue;
+
+            return interpolatedValue;
+
         }
     }
 }

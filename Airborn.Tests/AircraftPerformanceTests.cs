@@ -78,6 +78,13 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
+        public void Test_Interpolate()
+        {
+            Assert.AreEqual(1175, AircraftPerformance.Interpolate(1150, 1200, 15, 10));
+            Assert.AreEqual(1420, AircraftPerformance.Interpolate(1400, 1500, 1200, 1000));
+        }
+
+        [TestMethod]
         public void Test_FindTakeoffDistance()
         {
 
