@@ -106,11 +106,11 @@ namespace Airborn.web.Models
                 * 
                 CalculateInterpolationFactor(scenario.PressureAltitude, lowerPressureAltidude, upperPressureAltidude)
                 +
-                distanceForUpperPressureAltitudeUpperTemp
+                distanceForLowerPressureAltitudeUpperTemp
                 ;
 
             double distanceInterpolated =
-                (distanceLowerTempInterpolated - distanceUpperTempInterpolated)
+                (distanceUpperTempInterpolated - distanceLowerTempInterpolated)
                 *
                 CalculateInterpolationFactor(scenario.TemperatureCelcius, lowerTemperature, upperTemperature)
                 +

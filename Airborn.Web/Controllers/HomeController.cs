@@ -25,6 +25,16 @@ namespace Airborn.Controllers
 
         public IActionResult Takeoff()
         {
+
+           AircraftPerformance ap = AircraftPerformance.CreateFromJson();
+
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario);
+
             return View();
         }
 
@@ -33,6 +43,7 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Takeoff(ScenarioPageModel model)
         {
+            
             return View(model);
         }
 
