@@ -1,6 +1,6 @@
 using System;
 
-namespace Airborn.Models
+namespace Airborn.web.Models
 {
     public class ErrorViewModel
     {

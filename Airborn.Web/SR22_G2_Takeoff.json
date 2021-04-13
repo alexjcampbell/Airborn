@@ -1,0 +1,530 @@
+[
+      {
+        "PressureAltitude": 0,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 917
+          },
+          {
+            "Temperature": 10,
+            "Distance": 990
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1067
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1146
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1229
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 1432
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1539
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1650
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1764
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1883
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 1000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1011
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1092
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1176
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1264
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1355
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 1574
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1691
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1813
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1939
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2069
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 2000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1116
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1206
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1299
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1395
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1496
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 1732
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1861
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1995
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2133
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2276
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 3000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1234
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1332
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1435
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1542
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1653
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 1907
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2049
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2196
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2349
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2507
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 4000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1365
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1474
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1588
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1706
+          },
+          {
+            "Temperature": 40,
+            "Distance": 1829
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 2102
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2259
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2422
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2590
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2764
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 5000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1512
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1633
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1758
+          },
+          {
+            "Temperature": 30,
+            "Distance": 1889
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2025
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 2320
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2493
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2673
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2858
+          },
+          {
+            "Temperature": 40,
+            "Distance": 3051
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 6000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1676
+          },
+          {
+            "Temperature": 10,
+            "Distance": 1810
+          },
+          {
+            "Temperature": 20,
+            "Distance": 1950
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2095
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2245
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 2564
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2755
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2953
+          },
+          {
+            "Temperature": 30,
+            "Distance": 3159
+          },
+          {
+            "Temperature": 40,
+            "Distance": 3371
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 7000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 1861
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2009
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2164
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2325
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2492
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 2837
+          },
+          {
+            "Temperature": 10,
+            "Distance": 3048
+          },
+          {
+            "Temperature": 20,
+            "Distance": 3267
+          },
+          {
+            "Temperature": 30,
+            "Distance": 3494
+          },
+          {
+            "Temperature": 40,
+            "Distance": 3729
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 8000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 2068
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2233
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2405
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2584
+          },
+          {
+            "Temperature": 40,
+            "Distance": 2770
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 3142
+          },
+          {
+            "Temperature": 10,
+            "Distance": 3376
+          },
+          {
+            "Temperature": 20,
+            "Distance": 3619
+          },
+          {
+            "Temperature": 30,
+            "Distance": 3871
+          },
+          {
+            "Temperature": 40,
+            "Distance": 4131
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 9000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 2302
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2485
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2677
+          },
+          {
+            "Temperature": 30,
+            "Distance": 2875
+          },
+          {
+            "Temperature": 40,
+            "Distance": 3082
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 3485
+          },
+          {
+            "Temperature": 10,
+            "Distance": 3744
+          },
+          {
+            "Temperature": 20,
+            "Distance": 4014
+          },
+          {
+            "Temperature": 30,
+            "Distance": 4293
+          },
+          {
+            "Temperature": 40,
+            "Distance": 4581
+          }
+        ]
+      },
+      {
+        "PressureAltitude": 10000,
+  
+        "GroundRoll": [
+          {
+            "Temperature": 0,
+            "Distance": 2564
+          },
+          {
+            "Temperature": 10,
+            "Distance": 2769
+          },
+          {
+            "Temperature": 20,
+            "Distance": 2982
+          },
+          {
+            "Temperature": 30,
+            "Distance": 3204
+          },
+          {
+            "Temperature": 40,
+            "Distance": 3434
+          }
+        ],
+        "Clear50FtObstacle": [
+          {
+            "Temperature": 0,
+            "Distance": 3870
+          },
+          {
+            "Temperature": 10,
+            "Distance": 4158
+          },
+          {
+            "Temperature": 20,
+            "Distance": 4457
+          },
+          {
+            "Temperature": 30,
+            "Distance": 42476793
+          },
+          {
+            "Temperature": 40,
+            "Distance": 5088
+          }
+        ]
+      }
+]

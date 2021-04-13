@@ -15,6 +15,13 @@ namespace Airborn.web.Models
             _wind = wind;
         }
 
+        public Scenario(int runwayMagneticHeading, int magneticVariation, int windDirectionMagnetic, int windStrength)
+        {
+            _runway = new Runway(Direction.FromMagnetic(runwayMagneticHeading, magneticVariation));
+            _wind = new Wind(new Direction(windDirectionMagnetic, magneticVariation), windStrength);
+
+        }
+
         private Runway _runway;
         public Runway Runway {
             get
@@ -37,10 +44,28 @@ namespace Airborn.web.Models
 
          public int TemperatureCelcius
          {
-            get;
-            set;
+            get
+            {
+                return _temperatureCelcius;
+            }
+            set{
+                _temperatureCelcius = value;
+            }
          }
          
+         private int _pressureAltitude;
+
+         public int PressureAltitude
+         {
+            get
+            {
+                return _pressureAltitude;
+            }
+            set
+            {
+                _pressureAltitude = value;
+            }
+         }
 
          public double HeadwindComponent
          {
