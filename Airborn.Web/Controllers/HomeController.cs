@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Airborn.web.Models;
 using Airborn.Models;
 
 namespace Airborn.Controllers
@@ -21,6 +22,19 @@ namespace Airborn.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Calculator()
+        {
+            return View();
+        }
+
+        // POST: Home/Calculator
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Calculator(ScenarioPageModel model)
+        {
+            return View(model);
         }
 
         public IActionResult Privacy()

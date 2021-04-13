@@ -33,6 +33,15 @@ namespace Airborn.web.Models
             }
          }
 
+         private int _temperatureCelcius;
+
+         public int TemperatureCelcius
+         {
+            get;
+            set;
+         }
+         
+
          public double HeadwindComponent
          {
              get
