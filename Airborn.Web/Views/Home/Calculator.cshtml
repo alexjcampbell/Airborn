@@ -1,0 +1,131 @@
+﻿@using Airborn.web.Models
+@model ScenarioPageModel
+
+@{
+    ViewData["Title"] = "Takeoff and Landing Calculator";
+}
+
+<h3>Takeoff and Landing Calculator</h3>
+<br />
+<form asp-action="Calculator" method="post" clas="form-inline">
+
+    <h4>Takeoff Details</h3>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="TakeoffRunwayHeading" class="col-sm-3 col-form-label">Runway Heading</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffRunwayHeading" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="TakeoffMagneticVariation" class="col-sm-3 col-form-label">Magnetic Variation</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffMagneticVariation" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="TakeoffWindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction (Magnetic)</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffWindDirectionMagnetic" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="TakeoffWindStrength" class="col-sm-3 col-form-label">Wind Strength</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffWindStrength" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="TakeoffTemperatureCelcius" class="col-sm-3 col-form-label">Temperature Celcius</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffTemperatureCelcius" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="TakeoffQNH" class="col-sm-3 col-form-label">QNH</label>
+        <div class="col-sm-2">
+            <input asp-for="TakeoffQNH" class="form-control" maxlength="10" />
+        </div>
+    </div>
+
+    <br />
+
+    <h4>Landing Details</h3>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="LandingRunwayHeading" class="col-sm-3 col-form-label">Runway Heading</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingRunwayHeading" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="LandingMagneticVariation" class="col-sm-3 col-form-label">Magnetic Variation</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingMagneticVariation" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="LandingWindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction (Magnetic)</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingWindDirectionMagnetic" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="LandingWindStrength" class="col-sm-3 col-form-label">Wind Strength</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingWindStrength" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="LandingTemperatureCelcius" class="col-sm-3 col-form-label">Temperature Celcius</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingTemperatureCelcius" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="LandingQNH" class="col-sm-3 col-form-label">QNH</label>
+        <div class="col-sm-2">
+            <input asp-for="LandingQNH" class="form-control" maxlength="10" />
+        </div>
+    </div>
+
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+    <br />
+
+    <h4>Takeoff Details</h3>
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            Crosswind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.TakeoffScenario.CrosswindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+        <div class="col-sm-3">
+            Headwind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.TakeoffScenario.HeadwindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+    </div>
+
+    <br />
+
+   <h4>Landing Details</h3>
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            Crosswind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.LandingScenario.CrosswindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+        <div class="col-sm-3">
+            Headwind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.LandingScenario.HeadwindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+    </div>    
+</form>
