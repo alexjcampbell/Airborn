@@ -95,7 +95,7 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario);
+            int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario, AircraftPerformance.ScenarioMode.Takeoff_GroundRoll);
 
             Assert.AreEqual(1193,takeoffGroundRoll);
 
