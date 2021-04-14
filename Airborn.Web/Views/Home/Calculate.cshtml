@@ -132,6 +132,27 @@
 
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
+            Ground Roll Distance: % of runway used
+        </div>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            ft
+        </div>
+        <div class="col-sm-3">
+            Distance to Clear 50' Obstacle: % of runway used
+        </div>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            ft
+        </div>
+    </div>
+
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
             Pressure Altitude
         </div>
         <div class="col-sm-2">
