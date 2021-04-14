@@ -27,7 +27,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 200, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int WindStrength
+        public int? WindStrength
         {
             get;set;
         }
@@ -152,12 +152,42 @@ namespace Airborn.web.Models
             
         }
 
+        public double? PercentageRunwayUsed_GroundRoll
+        {
+            get
+            {
+
+                switch (ScenarioType) {
+                    case Type.Takeoff:
+                        return AircraftPerformance?.Takeoff_GroundRoll / RunwayLength;
+                    case Type.Landing:
+                        return AircraftPerformance?.Landing_GroundRoll / RunwayLength;                        
+                }
+
+                return null;
+            }
+        }
+        public double? PercentageRunwayUsed_DistanceToClear50Ft
+        {
+            get
+            {
+
+                switch (ScenarioType) {
+                    case Type.Takeoff:
+                        return AircraftPerformance?.Takeoff_50FtClearance / RunwayLength;
+                    case Type.Landing:
+                        return AircraftPerformance?.Landing_50FtClearance / RunwayLength;                        
+                }
+
+                return null;
+            }
+        }
         public void Initialise()
         {
             
             
             Runway runway = new Runway(Direction.FromMagnetic(RunwayHeading.Value, MagneticVariation.Value));
-            Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic.Value, MagneticVariation.Value), WindStrength);
+            Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic.Value, MagneticVariation.Value), WindStrength.Value);
             
             Scenario scenario = new Scenario(runway, wind);
             scenario.QNH = QNH.Value;
