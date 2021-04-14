@@ -11,7 +11,12 @@ namespace Airborn.Tests
         public void TestJsonRead()
         {
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson();
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
             // test that the Json de-serializer has read at least one profile
             Assert.IsTrue(ap.Profiles.Count > 0);
@@ -32,7 +37,12 @@ namespace Airborn.Tests
         public void Test_CalculateInterpolationFactor()
         {
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson();
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
             Assert.AreEqual(0.5, AircraftPerformance.CalculateInterpolationFactor(15,10,20));
             Assert.AreEqual(0, AircraftPerformance.CalculateInterpolationFactor(10,10,20));
@@ -43,14 +53,18 @@ namespace Airborn.Tests
         [TestMethod]
         public void TestFindDistanceForPressureAltitudeAndTemperatureFromJson()
         {
+            Scenario scenario = new Scenario(300, -20, 250, 20);
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson();
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
 
-            Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(1000).GroundRoll.FindByTemperature(10));
-            Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(1000).GroundRoll.FindByTemperature(20));
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            Assert.AreEqual(1691,ap.Profiles.FindByPressureAltitude(1000).Clear50FtObstacle.FindByTemperature(10));
-            Assert.AreEqual(1813,ap.Profiles.FindByPressureAltitude(1000).Clear50FtObstacle.FindByTemperature(20));
+            Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
+            Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
+
+            Assert.AreEqual(1691,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
+            Assert.AreEqual(1813,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
 
         }
 
@@ -87,15 +101,14 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_FindTakeoffDistance()
         {
-
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson();
-
             Scenario scenario = new Scenario(300, -20, 250, 20);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            int takeoffGroundRoll = ap.CalculateTakeoffDistanceGroundRoll(scenario, AircraftPerformance.ScenarioMode.Takeoff_GroundRoll);
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+
+            int takeoffGroundRoll = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
 
             Assert.AreEqual(1193,takeoffGroundRoll);
 
