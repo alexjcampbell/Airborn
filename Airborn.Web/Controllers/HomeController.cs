@@ -23,40 +23,23 @@ namespace Airborn.Controllers
             return View();
         }
 
-        public IActionResult Takeoff()
+        public IActionResult Calculate()
         {
-
-            Scenario scenario = new Scenario(300, -20, 300, 12);
-
-            scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
-
-           AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
-
-            double? takeoffGroundRoll = ap.Takeoff_GroundRoll;
-
             return View();
         }
 
-        // POST: Home/Takeoff
+        // POST: Home/Calculate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Takeoff(ScenarioPageModel model)
+        public async Task<IActionResult> Calculate(ScenarioPageModel model)
         {
+            if (!ModelState.IsValid)    
+            {
+                return View();
+            }
             
-            return View(model);
-        }
+            model.Initialise();
 
-       public IActionResult Landing()
-        {
-            return View();
-        }
-
-        // POST: Home/Calculator
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Landing(ScenarioPageModel model)
-        {
             return View(model);
         }
 

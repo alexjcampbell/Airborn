@@ -1,0 +1,108 @@
+﻿@using Airborn.web.Models
+@model ScenarioPageModel
+
+@{
+    ViewData["Title"] = "Takeoff and Landing Calculator";
+}
+
+<h3>Takeoff and Landing Calculator</h3>
+<br />
+<form asp-action="Calculate" method="post" clas="form-inline">
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <h4>Details</h3>
+     <div class="form-group row g-3 align-items-center">
+        <label asp-for="ScenarioType" class="col-sm-3 col-form-label">Takeoff or Landing</label>
+        <div class="col-sm-12">
+            <select asp-for="ScenarioType" class="form-control" >
+                <option value="Takeoff">Takeoff</option>
+                <option value="Landing">Landing</option>
+            </select>
+        </div>
+    </div>
+ 
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="RunwayHeading" class="col-sm-3 col-form-label">Runway Heading</label>
+        <div class="col-sm-2">
+            <input asp-for="RunwayHeading" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="MagneticVariation" class="col-sm-3 col-form-label">Magnetic Variation</label>
+        <div class="col-sm-2">
+            <input asp-for="MagneticVariation" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="WindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction (Magnetic)</label>
+        <div class="col-sm-2">
+            <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="WindStrength" class="col-sm-3 col-form-label">Wind Strength</label>
+        <div class="col-sm-2">
+            <input asp-for="WindStrength" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">
+        <label asp-for="TemperatureCelcius" class="col-sm-3 col-form-label">Temperature Celcius</label>
+        <div class="col-sm-2">
+            <input asp-for="TemperatureCelcius" class="form-control" maxlength="10" />
+        </div>
+        <label asp-for="QNH" class="col-sm-3 col-form-label">QNH</label>
+        <div class="col-sm-2">
+            <input asp-for="QNH" class="form-control" maxlength="10" />
+        </div>
+    </div>
+
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+    <br />
+
+    <h4>Details</h3>
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            Crosswind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.CrosswindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+        <div class="col-sm-3">
+            Headwind Component:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.HeadwindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            kts
+        </div>
+    </div>
+
+
+    <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-3">
+            Ground Roll Distance:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.Distance_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            ft
+        </div>
+        <div class="col-sm-3">
+            Distance to Clear 50' Obstacle:
+        </div>
+        <div class="col-sm-1">
+            @Html.TextBoxFor(s => s.Distance_Clear50Ft, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            ft
+        </div>
+    </div>
+
+</form>
