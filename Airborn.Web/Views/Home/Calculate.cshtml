@@ -14,7 +14,7 @@
     <h5>Tell Us About Your Flight</h5>
     <br/>
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario</label>
+        <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario:</label>
         <div class="col-sm-2">
             <select asp-for="ScenarioType" class="form-control" >
                 <option value="Takeoff">Takeoff</option>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-1">
         </div>        
-        <label asp-for="AircraftType" class="col-sm-2 col-form-label">Aircraft Type</label>
+        <label asp-for="AircraftType" class="col-sm-2 col-form-label">Aircraft Type:</label>
         <div class="col-sm-2">
             <select asp-for="AircraftType" class="form-control" >
                 <option value="SR22_G2">Cirrus SR22  G2</option>
@@ -32,7 +32,7 @@
     </div>
  
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="RunwayHeading" class="col-sm-2 col-form-label">Runway Heading</label>
+        <label asp-for="RunwayHeading" class="col-sm-2 col-form-label">Runway Heading:</label>
         <div class="col-sm-2">
             <input asp-for="RunwayHeading" class="form-control" maxlength="10" C
             data-val-required="Runway Heading is required"/>
@@ -40,7 +40,7 @@
         <div class="col-sm-1">
             °M
         </div>             
-        <label asp-for="FieldElevation" class="col-sm-2 col-form-label">Field Elevation</label>
+        <label asp-for="FieldElevation" class="col-sm-2 col-form-label">Field Elevation:</label>
         <div class="col-sm-2">
             <input asp-for="FieldElevation" class="form-control" maxlength="10" />
         </div>
@@ -49,27 +49,27 @@
         </div>
     </div>
     <div class="form-group row g-3 align-items-center">       
-       <label asp-for="RunwayLength" class="col-sm-2 col-form-label">Runway Length</label>
+       <label asp-for="RunwayLength" class="col-sm-2 col-form-label">Runway Length:</label>
         <div class="col-sm-2">
             <input asp-for="RunwayLength" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
             ft
         </div>        
-        <label asp-for="MagneticVariation" class="col-sm-2 col-form-label">Magnetic Variation</label>
+        <label asp-for="MagneticVariation" class="col-sm-2 col-form-label">Magnetic Variation:</label>
         <div class="col-sm-2">
             <input asp-for="MagneticVariation" class="form-control" maxlength="10" />
         </div>
     </div>    
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label">Wind Direction</label>
+        <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label">Wind Direction:</label>
         <div class="col-sm-2">
             <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
             °M
         </div>                  
-        <label asp-for="WindStrength" class="col-sm-2 col-form-label">Wind Strength</label>
+        <label asp-for="WindStrength" class="col-sm-2 col-form-label">Wind Strength:</label>
         <div class="col-sm-2">
             <input asp-for="WindStrength" class="form-control" maxlength="10" />
         </div>
@@ -78,14 +78,14 @@
         </div>                
     </div>
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="TemperatureCelcius" class="col-sm-2 col-form-label">Temperature</label>
+        <label asp-for="TemperatureCelcius" class="col-sm-2 col-form-label">Temperature:</label>
         <div class="col-sm-2">
             <input asp-for="TemperatureCelcius" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
             °C
         </div>             
-        <label asp-for="QNH" class="col-sm-2 col-form-label">QNH</label>
+        <label asp-for="QNH" class="col-sm-2 col-form-label">QNH:</label>
         <div class="col-sm-2">
             <input asp-for="QNH" class="form-control" maxlength="10" value="1013" />
         </div>
@@ -102,7 +102,7 @@
 
     <br />
 
-    <h5>Our Calculations</h5>
+    <h5>Our @Model.ScenarioType Calculations</h5>
     <br/>
 
     <div class="form-group row g-3 align-items-center">
