@@ -25,7 +25,20 @@ namespace Airborn.Controllers
 
         public IActionResult Calculate()
         {
-            return View();
+
+            ScenarioPageModel model = new ScenarioPageModel();
+
+            if(Request.Cookies["FieldElevation"]?.Length > 0)
+            {
+                model.FieldElevation = int.Parse(Request.Cookies["FieldElevation"]);
+            }
+
+            if(Request.Cookies["MagneticVariation"]?.Length > 0)
+            {
+                model.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
+            }
+
+            return View(model);
         }
 
         // POST: Home/Calculate
@@ -39,6 +52,9 @@ namespace Airborn.Controllers
             }
             
             model.Initialise();
+
+            HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
+            HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
 
             return View(model);
         }
