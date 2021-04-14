@@ -89,6 +89,10 @@ namespace Airborn.web.Models
             get;set;
         }
 
+        public string AircraftType{
+            get;set;
+        }
+
         public double? DensityAltitude{
             get {
                 return AircraftPerformance?.Scenario?.DensityAltitude;
@@ -135,7 +139,7 @@ namespace Airborn.web.Models
         public double? CrosswindComponent
         {
             get {
-                return AircraftPerformance.Scenario.CrosswindComponent;
+                return AircraftPerformance?.Scenario?.CrosswindComponent;
             }
             
         }
