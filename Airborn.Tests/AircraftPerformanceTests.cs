@@ -108,7 +108,7 @@ namespace Airborn.Tests
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+            int? result = ap.Takeoff_GroundRoll;
 
             Assert.AreEqual(1193,result);
 
@@ -124,7 +124,7 @@ namespace Airborn.Tests
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance);
+            int? result = ap.Takeoff_50FtClearance;
 
             Assert.AreEqual(1840,result);
 
@@ -140,7 +140,7 @@ namespace Airborn.Tests
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll);
+            int? result = ap.Landing_GroundRoll;
 
             Assert.AreEqual(1205,result);
 
@@ -156,7 +156,7 @@ namespace Airborn.Tests
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance);
+            int? result = ap.Landing_50FtClearance;
 
             Assert.AreEqual(2435,result);
 
