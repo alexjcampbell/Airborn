@@ -22,6 +22,7 @@ namespace Airborn.web.Models
 
         }
 
+
         private Runway _runway;
         public Runway Runway {
             get
@@ -104,5 +105,13 @@ namespace Airborn.web.Models
             double radians = (Math.PI / 180) * (double)degrees;
             return radians;
         }
+
+    }
+
+    public enum ScenarioMode {
+        Takeoff_GroundRoll,
+        Takeoff_50FtClearance,
+        Landing_GroundRoll,
+        Landing_50FtClearance
     }
 }
