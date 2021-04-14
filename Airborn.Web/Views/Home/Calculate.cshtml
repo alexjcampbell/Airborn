@@ -5,13 +5,11 @@
     ViewData["Title"] = "Takeoff and Landing Calculator";
 }
 
-<h3>Takeoff and Landing Calculator</h3>
-<br />
 <form asp-action="Calculate" method="post" clas="form-inline">
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <h4>Tell Us About Your Flight</h3>
+    <h5>Tell Us About Your Flight (Cirrus SR22 G2)</h5>
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-3 col-form-label">Takeoff or Landing</label>
         <div class="col-sm-2">
@@ -79,7 +77,7 @@
 
     <br />
 
-    <h4>Our Calculations</h3>
+    <h5>Our Calculations</h5>
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
             Crosswind Component:
