@@ -18,6 +18,14 @@
                 <option value="Landing">Landing</option>
             </select>
         </div>
+        <div class="col-sm-1">
+        </div>        
+        <label asp-for="AircraftType" class="col-sm-3 col-form-label">Aircraft Type</label>
+        <div class="col-sm-2">
+            <select asp-for="AircraftType" class="form-control" >
+                <option value="SR22_G2">Cirrus SR22  G2</option>
+            </select>
+        </div>        
     </div>
  
     <div class="form-group row g-3 align-items-center">
@@ -65,7 +73,7 @@
         </div>        
         <label asp-for="QNH" class="col-sm-3 col-form-label">QNH</label>
         <div class="col-sm-2">
-            <input asp-for="QNH" class="form-control" maxlength="10" />
+            <input asp-for="QNH" class="form-control" maxlength="10" value="1013" />
         </div>
     </div>
 

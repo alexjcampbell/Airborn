@@ -10,8 +10,6 @@ namespace Airborn.web.Models
             _scenario = scenario;
         }
 
-
-
         public override double MakeTakeoffAdjustments(double takeoffDistance)
         {
             
