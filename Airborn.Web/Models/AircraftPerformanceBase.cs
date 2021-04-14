@@ -45,28 +45,28 @@ namespace Airborn.web.Models
         public double? Takeoff_GroundRoll
         { 
             get {
-                return GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+                return MakeTakeoffAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll));
             } 
          }
             
         public double? Takeoff_50FtClearance
         { 
             get {
-                return GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance);
+                return MakeTakeoffAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance));
             } 
          }
 
         public double? Landing_GroundRoll
         { 
             get {
-                return GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll);
+                return MakeLandingAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll));
             } 
          }
 
         public double? Landing_50FtClearance
         { 
             get {
-                return GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance);
+                return MakeLandingAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance));
             } 
          }
 
@@ -190,8 +190,8 @@ namespace Airborn.web.Models
 
         }
 
-        protected abstract double MakeTakeoffAdjustments(double takeoffDistance);
-        protected abstract double MakeLandingAdjustments(double landingDistance);
+        public abstract double MakeTakeoffAdjustments(double takeoffDistance);
+        public abstract double MakeLandingAdjustments(double landingDistance);
 
         public static double CalculateInterpolationFactor (int value, int x1, int x2)
         {

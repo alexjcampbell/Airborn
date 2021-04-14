@@ -8,7 +8,7 @@ namespace Airborn.web.Models
         
         private readonly int _magneticVariation;
 
-        public Direction (int directionTrue, int magneticVariation)
+        private Direction (int directionTrue, int magneticVariation)
         {
             this._directionTrue = directionTrue;
             this._magneticVariation = magneticVariation;

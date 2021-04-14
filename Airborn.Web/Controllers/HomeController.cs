@@ -26,14 +26,14 @@ namespace Airborn.Controllers
         public IActionResult Takeoff()
         {
 
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            Scenario scenario = new Scenario(300, -20, 300, 12);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            double takeoffGroundRoll = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+            double? takeoffGroundRoll = ap.Takeoff_GroundRoll;
 
             return View();
         }

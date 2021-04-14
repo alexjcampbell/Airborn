@@ -12,17 +12,49 @@ namespace Airborn.web.Models
 
 
 
-        protected override double MakeTakeoffAdjustments(double takeoffDistance)
+        public override double MakeTakeoffAdjustments(double takeoffDistance)
         {
-            // subtract 10% for each 12 knots of headwind
+            
+            if (Scenario.HeadwindComponent > 0)
+            {
+                // subtract 10% for each 12 knots of headwind
+                takeoffDistance = takeoffDistance * (1 - ((Scenario.HeadwindComponent / 12) * 0.1));
+            }
+            else if(Scenario.HeadwindComponent < 0)
+            {
+                // add 10% for each 2 knots of tailwind up to 10 knots
+                double adjustment = (Scenario.HeadwindComponent / 2) * 0.1;
 
-            // add 10% for each 2 knots of tailwind up to 10 knots
+                if( adjustment > 0.5) { adjustment = 0.5; }
 
-            return 0;
+                takeoffDistance = takeoffDistance * (1 - adjustment);
+
+            }
+
+            
+
+            return takeoffDistance;
         }
-        protected override double MakeLandingAdjustments(double landingDistance)
+
+        public override double MakeLandingAdjustments(double landingDistance)
         {
-            return 0;
+            if (Scenario.HeadwindComponent > 0)
+            {
+                // subtract 10% for each 13 knots of headwind
+                landingDistance = landingDistance * (1 - ((Scenario.HeadwindComponent / 13) * 0.1));
+            }
+            else if(Scenario.HeadwindComponent < 0)
+            {
+                // add 10% for each 2 knots of tailwind up to 10 knots
+                double adjustment = (Scenario.HeadwindComponent / 2) * 0.1;
+
+                if( adjustment > 0.5) { adjustment = 0.5; }
+
+                landingDistance = landingDistance * (1 - adjustment);
+
+            }
+
+            return landingDistance;
         }
 
     }
