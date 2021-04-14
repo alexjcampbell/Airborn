@@ -140,10 +140,15 @@ namespace Airborn.web.Models
                         return FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, pressureAltitude).Clear50FtObstacle.FindByTemperature(temperatureCelcius);
                     case ScenarioMode.Takeoff_GroundRoll:
                         return FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, pressureAltitude).GroundRoll.FindByTemperature(temperatureCelcius);                     
+                    case ScenarioMode.Landing_50FtClearance:
+                        return FindByPressureAltitude(ScenarioMode.Landing_50FtClearance, pressureAltitude).Clear50FtObstacle.FindByTemperature(temperatureCelcius);
+                    case ScenarioMode.Landing_GroundRoll:
+                        return FindByPressureAltitude(ScenarioMode.Landing_GroundRoll, pressureAltitude).GroundRoll.FindByTemperature(temperatureCelcius);                     
+
 
                 }
 
-                throw new ArgumentException("No performance data found for pressure altitude" + pressureAltitude + " and temperature " + temperatureCelcius  );
+                throw new ArgumentException("No performance data found for pressure altitude " + pressureAltitude + " and temperature " + temperatureCelcius);
             }
         }
 

@@ -99,7 +99,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_FindTakeoffDistance()
+        public void Test_Takeoff_GroundRollDistance()
         {
             Scenario scenario = new Scenario(300, -20, 250, 20);
 
@@ -108,11 +108,59 @@ namespace Airborn.Tests
 
             AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
 
-            int takeoffGroundRoll = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
 
-            Assert.AreEqual(1193,takeoffGroundRoll);
+            Assert.AreEqual(1193,result);
 
-        }
+        }    
+
+        [TestMethod]
+        public void Test_Takeoff_50FtClearanceDistance()
+        {
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+
+            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance);
+
+            Assert.AreEqual(1840,result);
+
+        }      
+        
+       [TestMethod]
+        public void Test_Landing_GroundRollDistance()
+        {
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+
+            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll);
+
+            Assert.AreEqual(1205,result);
+
+        }       
+
+       [TestMethod]
+        public void Test_Landing_50FtClearanceDistance()
+        {
+            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+
+            int result = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance);
+
+            Assert.AreEqual(2435,result);
+
+        }      
 
     }
 }
