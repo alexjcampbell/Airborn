@@ -10,6 +10,7 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <h5>Tell Us About Your Flight (Cirrus SR22 G2)</h5>
+    <br/>
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-3 col-form-label">Takeoff or Landing</label>
         <div class="col-sm-2">
@@ -87,6 +88,7 @@
     <br />
 
     <h5>Our Calculations</h5>
+    <br/>
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
             Crosswind Component:
@@ -132,7 +134,7 @@
 
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
-            Ground Roll Distance: % of runway used
+            Ground Roll % Runway Used
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
@@ -141,7 +143,7 @@
             ft
         </div>
         <div class="col-sm-3">
-            Distance to Clear 50' Obstacle: % of runway used
+            Distance to Clear 50' % Runway Used
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control" })
