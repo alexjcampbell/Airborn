@@ -1,13 +1,33 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Airborn.web.Models{
+namespace Airborn.web.Models
+{
+
+    public enum Type
+    {
+        Takeoff,
+        Landing       
+    }
+
     public class ScenarioPageModel
     {
+
+        public AircraftPerformanceBase AircraftPerformance
+        {
+            get;
+            set;
+        }
+
+        [Required]
+        public Type ScenarioType {
+            get;set;
+        }
+
         [Required]
         [Range(0, 200, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int TakeoffWindStrength
+        public int WindStrength
         {
             get;set;
         }
@@ -15,7 +35,7 @@ namespace Airborn.web.Models{
         [Required]
         [Range(0, 359, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int TakeoffWindDirectionMagnetic
+        public int WindDirectionMagnetic
         {
             get;set;
         }
@@ -23,16 +43,16 @@ namespace Airborn.web.Models{
         [Required]
         [Range(0, 359, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int TakeoffRunwayHeading
+        public int RunwayHeading
         {
             get;set;
         }
 
 
         [Required]
-        [Range(0, 359, 
+        [Range(-50, 50, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int TakeoffMagneticVariation
+        public int MagneticVariation
         {
             get;set;
         }
@@ -40,7 +60,7 @@ namespace Airborn.web.Models{
         [Required]
         [Range(0, 100, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int TakeoffTemperatureCelcius
+        public int TemperatureCelcius
         {
             get;set;
         }
@@ -48,86 +68,77 @@ namespace Airborn.web.Models{
         [Range(900, 1100, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         [Required]
-        public int TakeoffQNH
+        public int QNH
         {
             get;set;
         }
 
-        [Required]
-        [Range(0, 200, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int LandingWindStrength
-        {
-            get;set;
-        }
-
-        [Required]
-        [Range(0, 359, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int LandingWindDirectionMagnetic
-        {
-            get;set;
-        }
-
-        [Required]
-        [Range(0, 359, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int LandingRunwayHeading
-        {
-            get;set;
-        }
-
-        [Required]
-        [Range(-75, 75, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int LandingMagneticVariation
-        {
-            get;set;
-        }
-
-        [Required]
-        [Range(0, 100, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int LandingTemperatureCelcius
-        {
-            get;set;
-        }
-
-        [Required]
-        [Range(900, 1100, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int LandingQNH
-        {
-            get;set;
-        }
-
-        public Scenario TakeoffScenario
+        public double? Distance_GroundRoll
         {
             get
             {
-            
-                Runway runway = new Runway(Direction.FromMagnetic(TakeoffRunwayHeading, TakeoffMagneticVariation));
-                Wind wind = new Wind(Direction.FromMagnetic(TakeoffWindDirectionMagnetic, TakeoffMagneticVariation), TakeoffWindStrength);
-                
-                Scenario scenario = new Scenario(runway, wind);
-
-                return scenario;
+                if (AircraftPerformance != null) {
+                    switch (ScenarioType) {
+                        case Type.Takeoff:
+                            return AircraftPerformance.Takeoff_GroundRoll;
+                        case Type.Landing:
+                            return AircraftPerformance.Landing_GroundRoll;                        
+                    }
+                }
+                return null;
             }
         }
 
-
-        public Scenario LandingScenario
+        public double? Distance_Clear50Ft
         {
             get
             {
+                if (AircraftPerformance != null) {
+
+                    switch (ScenarioType) {
+                        case Type.Takeoff:
+                            return AircraftPerformance.Takeoff_50FtClearance;
+                        case Type.Landing:
+                            return AircraftPerformance.Landing_50FtClearance;                        
+                    }
+                 }
+                return null;
+            }
+        }
+
+        public double? CrosswindComponent
+        {
+            get {
+                if(AircraftPerformance != null) {
+                    return AircraftPerformance.Scenario.CrosswindComponent;
+                }
+                return null;
+            }
             
-                Runway runway = new Runway(Direction.FromMagnetic(LandingRunwayHeading, LandingMagneticVariation));
-                Wind wind = new Wind(Direction.FromMagnetic(LandingWindDirectionMagnetic,LandingMagneticVariation), LandingWindStrength);
+        }
+
+        public double? HeadwindComponent
+        {
+            get {
+                if(AircraftPerformance != null) {
+                    return AircraftPerformance.Scenario.HeadwindComponent;
+                }
+
+                return null;
+            }
+            
+        }
+
+        public void Initialise()
+        {
+            
+                Runway runway = new Runway(Direction.FromMagnetic(RunwayHeading, MagneticVariation));
+                Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic, MagneticVariation), WindStrength);
                 
                 Scenario scenario = new Scenario(runway, wind);
 
-                return scenario;
-            }
+                AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario);
+
         }
 
 
