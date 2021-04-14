@@ -5,6 +5,8 @@
     ViewData["Title"] = "Takeoff and Landing Calculator";
 }
 
+<br />
+
 <form asp-action="Calculate" method="post" clas="form-inline">
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -36,10 +38,14 @@
             data-val-required="Runway Heading is required"/>
         </div>
         <div class="col-sm-1">
+            °M
         </div>        
         <label asp-for="FieldElevation" class="col-sm-3 col-form-label">Field Elevation</label>
         <div class="col-sm-2">
             <input asp-for="FieldElevation" class="form-control" maxlength="10" />
+        </div>
+        <div class="col-sm-1">
+            ft
         </div>
     </div>
     <div class="form-group row g-3 align-items-center">       
@@ -48,6 +54,7 @@
             <input asp-for="RunwayLength" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
+            ft
         </div>        
         <label asp-for="MagneticVariation" class="col-sm-3 col-form-label">Magnetic Variation</label>
         <div class="col-sm-2">
@@ -55,28 +62,36 @@
         </div>
     </div>    
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="WindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction (Magnetic)</label>
+        <label asp-for="WindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction</label>
         <div class="col-sm-2">
             <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
+            °M
         </div>        
         <label asp-for="WindStrength" class="col-sm-3 col-form-label">Wind Strength</label>
         <div class="col-sm-2">
             <input asp-for="WindStrength" class="form-control" maxlength="10" />
         </div>
+        <div class="col-sm-1">
+            kts
+        </div>                
     </div>
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="TemperatureCelcius" class="col-sm-3 col-form-label">Temperature Celcius</label>
+        <label asp-for="TemperatureCelcius" class="col-sm-3 col-form-label">Temperature</label>
         <div class="col-sm-2">
             <input asp-for="TemperatureCelcius" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
+            °C
         </div>        
         <label asp-for="QNH" class="col-sm-3 col-form-label">QNH</label>
         <div class="col-sm-2">
             <input asp-for="QNH" class="form-control" maxlength="10" value="1013" />
         </div>
+        <div class="col-sm-1">
+            hPa
+        </div>           
     </div>
 
     <div class="form-group row g-3 align-items-center">
@@ -113,7 +128,7 @@
 
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
-            Ground Roll % Runway Used
+            Ground Roll <br/>% Runway Used
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
@@ -122,7 +137,7 @@
             ft
         </div>
         <div class="col-sm-3">
-            Distance to Clear 50' % Runway Used
+            Distance to Clear 50'</br> % Runway Used
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control" })
