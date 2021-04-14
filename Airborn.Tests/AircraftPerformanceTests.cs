@@ -13,8 +13,9 @@ namespace Airborn.Tests
 
             Scenario scenario = new Scenario(300, -20, 250, 20);
 
-            scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.TemperatureCelcius = 12;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -40,7 +41,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 20);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -56,7 +58,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 20);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -104,7 +107,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -120,7 +124,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -136,7 +141,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -152,7 +158,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -169,7 +176,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 300, 12);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -186,7 +194,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 300, -2);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -204,7 +213,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 300, 13);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
@@ -221,7 +231,8 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(300, -20, 300, -2);
 
             scenario.TemperatureCelcius = 15;
-            scenario.PressureAltitude = 1500;
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
 
             AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 

@@ -54,19 +54,65 @@ namespace Airborn.web.Models
             }
          }
          
-         private int _pressureAltitude;
+        private int _fieldElevation;
 
-         public int PressureAltitude
-         {
+        public int FieldElevation
+        {
             get
             {
-                return _pressureAltitude;
+                return _fieldElevation;
             }
             set
             {
-                _pressureAltitude = value;
+                _fieldElevation = value;
             }
-         }
+        }
+
+        private int _qnh;
+
+        public int QNH{
+            get {
+                return _qnh;
+            }
+            set {
+                _qnh = value;
+            }
+        }
+
+        public int PressureAltitude
+        {
+            get
+            {
+                return ((1013 - QNH) * 30) + FieldElevation;
+            }
+        }
+
+        public double DensityAltitude
+        {
+            get
+            {
+                return ((TemperatureCelcius - ISATemperature) * 120) + PressureAltitude;
+            }
+        }
+
+        public double ISATemperature
+        {
+            get
+            {
+                return 15 - (2 * ((double)PressureAltitude / 1000));
+            }
+        }
+
+        private int _runwayLength;
+
+        public int RunwayLength {
+            get {
+                return _runwayLength;
+            }
+            set {
+                _runwayLength = value;
+            }
+        }
 
          public double HeadwindComponent
          {

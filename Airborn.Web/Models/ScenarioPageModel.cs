@@ -48,7 +48,23 @@ namespace Airborn.web.Models
             get;set;
         }
 
+        [Required]
+        [Range(-2000, 20000, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
+        public int FieldElevation
+        {
+            get;set;
+        }
 
+        [Required]
+        [Range(0, 20000, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
+        public int RunwayLength
+        {
+            get;set;
+        }
+
+    
         [Required]
         [Range(-50, 50, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
@@ -136,6 +152,10 @@ namespace Airborn.web.Models
                 Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic, MagneticVariation), WindStrength);
                 
                 Scenario scenario = new Scenario(runway, wind);
+                scenario.QNH = QNH;
+                scenario.FieldElevation = FieldElevation;
+                scenario.RunwayLength = RunwayLength;
+                scenario.TemperatureCelcius = TemperatureCelcius;
 
                 AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario);
 

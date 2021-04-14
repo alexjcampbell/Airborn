@@ -11,7 +11,7 @@
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <h4>Details</h3>
+    <h4>Tell Us About Your Flight</h3>
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-3 col-form-label">Takeoff or Landing</label>
         <div class="col-sm-3">
@@ -28,20 +28,30 @@
             <input asp-for="RunwayHeading" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            ft
+        </div>        
+        <label asp-for="FieldElevation" class="col-sm-3 col-form-label">Field Elevation</label>
+        <div class="col-sm-2">
+            <input asp-for="FieldElevation" class="form-control" maxlength="10" />
+        </div>
+    </div>
+    <div class="form-group row g-3 align-items-center">       
+       <label asp-for="RunwayLength" class="col-sm-3 col-form-label">Runway Length</label>
+        <div class="col-sm-2">
+            <input asp-for="RunwayLength" class="form-control" maxlength="10" />
+        </div>
+        <div class="col-sm-1">
         </div>        
         <label asp-for="MagneticVariation" class="col-sm-3 col-form-label">Magnetic Variation</label>
         <div class="col-sm-2">
             <input asp-for="MagneticVariation" class="form-control" maxlength="10" />
         </div>
-    </div>
+    </div>    
     <div class="form-group row g-3 align-items-center">
         <label asp-for="WindDirectionMagnetic" class="col-sm-3 col-form-label">Wind Direction (Magnetic)</label>
         <div class="col-sm-2">
             <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            ft
         </div>        
         <label asp-for="WindStrength" class="col-sm-3 col-form-label">Wind Strength</label>
         <div class="col-sm-2">
@@ -54,7 +64,6 @@
             <input asp-for="TemperatureCelcius" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            ft
         </div>        
         <label asp-for="QNH" class="col-sm-3 col-form-label">QNH</label>
         <div class="col-sm-2">
@@ -70,7 +79,7 @@
 
     <br />
 
-    <h4>Details</h3>
+    <h4>Our Calculations</h3>
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
             Crosswind Component:

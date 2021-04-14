@@ -20,6 +20,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(0, scenario.Runway.RunwayHeading.DirectionTrue);
             Assert.AreEqual(220, scenario.Wind.Direction.DirectionTrue);
+
         }
 
         [TestMethod]
@@ -113,6 +114,22 @@ namespace Airborn.Tests
             Scenario scenario = new Scenario(runway, wind);          
             Assert.AreEqual(-6.4278760968653925,scenario.CrosswindComponent);
             Assert.AreEqual(7.660444431189781,scenario.HeadwindComponent);
+        }
+
+        [TestMethod]
+        public void Test_PressureAltitude()
+        {
+
+            int magneticVariation = -20;
+            Wind wind = new Wind(Direction.FromMagnetic(0, magneticVariation), 10);
+            Runway runway = new Runway(Direction.FromMagnetic(40, magneticVariation));  
+            Scenario scenario = new Scenario(runway, wind);          
+
+            scenario.TemperatureCelcius = 11;
+            scenario.FieldElevation = 1500;
+            scenario.QNH = 1013;
+
+            Assert.AreEqual(1500, scenario.PressureAltitude);
         }
     }
 }

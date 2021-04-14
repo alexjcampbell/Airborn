@@ -154,6 +154,7 @@ namespace Airborn.web.Models
 
         public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode)
         {
+
             int lowerPressureAltidude = GetLowerBoundForInterpolation(Scenario.PressureAltitude, 1000);
             int upperPressureAltidude = GetUpperBoundForInterpolation(Scenario.PressureAltitude, 1000);
             int lowerTemperature = GetLowerBoundForInterpolation(Scenario.TemperatureCelcius, 10);
@@ -185,6 +186,9 @@ namespace Airborn.web.Models
                 Scenario.TemperatureCelcius,
                 10 // temperatures in the json come in intervals of 10
             );
+
+            System.Diagnostics.Debug.Write(
+                $"Distance interpolated: {distanceInterpolated} for pressure altitude {Scenario.PressureAltitude} and temperature {Scenario.TemperatureCelcius} " );
 
             return distanceInterpolated;
 
