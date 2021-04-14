@@ -101,7 +101,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_Takeoff_GroundRollDistance()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
@@ -117,7 +117,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_Takeoff_50FtClearanceDistance()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
@@ -133,7 +133,7 @@ namespace Airborn.Tests
        [TestMethod]
         public void Test_Landing_GroundRollDistance()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
@@ -149,7 +149,7 @@ namespace Airborn.Tests
        [TestMethod]
         public void Test_Landing_50FtClearanceDistance()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            Scenario scenario = new Scenario(300, -20, 250, 0);
 
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
@@ -161,6 +161,75 @@ namespace Airborn.Tests
             Assert.AreEqual(2435,result);
 
         }      
+
+       [TestMethod]
+        public void Test_TakeoffAdjustmentsForHeadwind()
+        {
+            // 12 knots straight down the runway
+            Scenario scenario = new Scenario(300, -20, 300, 12);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+
+            double? result = ap.Takeoff_GroundRoll;
+
+            Assert.AreEqual(1073.7,result);
+
+        }           
+
+       [TestMethod]
+        public void Test_TakeoffAdjustmentsForTailwind()
+        {
+            // 12 knots straight down the runway
+            Scenario scenario = new Scenario(300, -20, 300, -2);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+
+            double? result = ap.Takeoff_GroundRoll;
+
+            Assert.AreEqual(1312.3000000000002,result);
+
+        }              
+
+
+       [TestMethod]
+        public void Test_LandingAdjustmentsForHeadwind()
+        {
+            // 12 knots straight down the runway
+            Scenario scenario = new Scenario(300, -20, 300, 13);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+
+            double? result = ap.Landing_GroundRoll;
+
+            Assert.AreEqual(1084.5,result);
+
+        }           
+
+       [TestMethod]
+        public void Test_LandingAdjustmentsForTailwind()
+        {
+            // 12 knots straight down the runway
+            Scenario scenario = new Scenario(300, -20, 300, -2);
+
+            scenario.TemperatureCelcius = 15;
+            scenario.PressureAltitude = 1500;
+
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+
+            double? result = ap.Landing_GroundRoll;
+
+            Assert.AreEqual(1325.5,result);
+
+        }              
 
     }
 }

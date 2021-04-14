@@ -106,8 +106,8 @@ namespace Airborn.web.Models{
             get
             {
             
-                Runway runway = new Runway(new Direction(TakeoffRunwayHeading, TakeoffMagneticVariation));
-                Wind wind = new Wind(new Direction(TakeoffWindDirectionMagnetic, TakeoffMagneticVariation), TakeoffWindStrength);
+                Runway runway = new Runway(Direction.FromMagnetic(TakeoffRunwayHeading, TakeoffMagneticVariation));
+                Wind wind = new Wind(Direction.FromMagnetic(TakeoffWindDirectionMagnetic, TakeoffMagneticVariation), TakeoffWindStrength);
                 
                 Scenario scenario = new Scenario(runway, wind);
 
@@ -121,8 +121,8 @@ namespace Airborn.web.Models{
             get
             {
             
-                Runway runway = new Runway(new Direction(LandingRunwayHeading, LandingMagneticVariation));
-                Wind wind = new Wind(new Direction(LandingWindDirectionMagnetic,LandingMagneticVariation), LandingWindStrength);
+                Runway runway = new Runway(Direction.FromMagnetic(LandingRunwayHeading, LandingMagneticVariation));
+                Wind wind = new Wind(Direction.FromMagnetic(LandingWindDirectionMagnetic,LandingMagneticVariation), LandingWindStrength);
                 
                 Scenario scenario = new Scenario(runway, wind);
 
