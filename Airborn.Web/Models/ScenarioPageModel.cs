@@ -105,14 +105,13 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (AircraftPerformance != null) {
-                    switch (ScenarioType) {
-                        case Type.Takeoff:
-                            return AircraftPerformance.Takeoff_GroundRoll;
-                        case Type.Landing:
-                            return AircraftPerformance.Landing_GroundRoll;                        
-                    }
+                switch (ScenarioType) {
+                    case Type.Takeoff:
+                        return AircraftPerformance?.Takeoff_GroundRoll;
+                    case Type.Landing:
+                        return AircraftPerformance?.Landing_GroundRoll;                        
                 }
+
                 return null;
             }
         }
@@ -121,15 +120,14 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (AircraftPerformance != null) {
 
-                    switch (ScenarioType) {
-                        case Type.Takeoff:
-                            return AircraftPerformance.Takeoff_50FtClearance;
-                        case Type.Landing:
-                            return AircraftPerformance.Landing_50FtClearance;                        
-                    }
-                 }
+                switch (ScenarioType) {
+                    case Type.Takeoff:
+                        return AircraftPerformance?.Takeoff_50FtClearance;
+                    case Type.Landing:
+                        return AircraftPerformance?.Landing_50FtClearance;                        
+                }
+
                 return null;
             }
         }
@@ -137,10 +135,7 @@ namespace Airborn.web.Models
         public double? CrosswindComponent
         {
             get {
-                if(AircraftPerformance != null) {
-                    return AircraftPerformance.Scenario.CrosswindComponent;
-                }
-                return null;
+                return AircraftPerformance.Scenario.CrosswindComponent;
             }
             
         }
@@ -148,11 +143,7 @@ namespace Airborn.web.Models
         public double? HeadwindComponent
         {
             get {
-                if(AircraftPerformance != null) {
-                    return AircraftPerformance.Scenario.HeadwindComponent;
-                }
-
-                return null;
+                return AircraftPerformance?.Scenario?.HeadwindComponent;
             }
             
         }
