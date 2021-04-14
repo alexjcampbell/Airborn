@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
@@ -134,6 +135,13 @@ namespace Airborn.web.Models
 
             public double GetPerformanceData(ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
             {
+                // check to make sure that we actually have data for this Pressure Altitude and Temperature
+                int maxPressureAltitudeAvailable = this.Max(p => p.PressureAltitude);
+                if(pressureAltitude > maxPressureAltitudeAvailable)
+                {
+                    throw new ArgumentOutOfRangeException("pressureAltitude", pressureAltitude.ToString());
+                }
+
                 switch(scenarioMode)
                 {
                     case ScenarioMode.Takeoff_50FtClearance:
