@@ -35,7 +35,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 359, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int WindDirectionMagnetic
+        public int? WindDirectionMagnetic
         {
             get;set;
         }
@@ -43,7 +43,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 359, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int RunwayHeading
+        public int? RunwayHeading
         {
             get;set;
         }
@@ -51,7 +51,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(-2000, 20000, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int FieldElevation
+        public int? FieldElevation
         {
             get;set;
         }
@@ -59,7 +59,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 20000, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int RunwayLength
+        public int? RunwayLength
         {
             get;set;
         }
@@ -68,7 +68,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(-50, 50, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
-        public int MagneticVariation
+        public int? MagneticVariation
         {
             get;set;
         }
@@ -76,7 +76,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 100, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int TemperatureCelcius
+        public int? TemperatureCelcius
         {
             get;set;
         }
@@ -84,7 +84,7 @@ namespace Airborn.web.Models
         [Range(900, 1100, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         [Required]
-        public int QNH
+        public int? QNH
         {
             get;set;
         }
@@ -155,16 +155,18 @@ namespace Airborn.web.Models
         public void Initialise()
         {
             
-                Runway runway = new Runway(Direction.FromMagnetic(RunwayHeading, MagneticVariation));
-                Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic, MagneticVariation), WindStrength);
-                
-                Scenario scenario = new Scenario(runway, wind);
-                scenario.QNH = QNH;
-                scenario.FieldElevation = FieldElevation;
-                scenario.RunwayLength = RunwayLength;
-                scenario.TemperatureCelcius = TemperatureCelcius;
+            
+            Runway runway = new Runway(Direction.FromMagnetic(RunwayHeading.Value, MagneticVariation.Value));
+            Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic.Value, MagneticVariation.Value), WindStrength);
+            
+            Scenario scenario = new Scenario(runway, wind);
+            scenario.QNH = QNH.Value;
+            scenario.FieldElevation = FieldElevation.Value;
+            scenario.RunwayLength = RunwayLength.Value;
+            scenario.TemperatureCelcius = TemperatureCelcius.Value;
 
-                AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario);
+                
 
         }
 
