@@ -31,9 +31,9 @@ namespace Airborn.Controllers
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-           AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+           AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            int takeoffGroundRoll = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+            double takeoffGroundRoll = ap.GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
 
             return View();
         }
