@@ -89,6 +89,18 @@ namespace Airborn.web.Models
             get;set;
         }
 
+        public double? DensityAltitude{
+            get {
+                return AircraftPerformance?.Scenario?.DensityAltitude;
+            }
+        }
+
+        public double? PressureAltitude{
+            get {
+                return AircraftPerformance?.Scenario?.PressureAltitude;
+            }
+        }
+
         public double? Distance_GroundRoll
         {
             get
