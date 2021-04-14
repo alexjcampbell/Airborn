@@ -16,7 +16,7 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
             // test that the Json de-serializer has read at least one profile
             Assert.IsTrue(ap.Profiles.Count > 0);
@@ -42,11 +42,11 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            Assert.AreEqual(0.5, AircraftPerformance.CalculateInterpolationFactor(15,10,20));
-            Assert.AreEqual(0, AircraftPerformance.CalculateInterpolationFactor(10,10,20));
-            Assert.AreEqual(1, AircraftPerformance.CalculateInterpolationFactor(20,10,20));
+            Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15,10,20));
+            Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10,10,20));
+            Assert.AreEqual(1, AircraftPerformanceBase.CalculateInterpolationFactor(20,10,20));
 
         }
 
@@ -58,7 +58,7 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
             Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
             Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
@@ -72,30 +72,30 @@ namespace Airborn.Tests
         public void Test_GetUpperAndLowerBoundForInterpolation()
         {
             // test it for pressure altitude intervals (1000s)
-            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3500, 1000));
-            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3000, 1000));
-            Assert.AreEqual((3000, 4000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(3999, 1000));
+            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3500, 1000));
+            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3000, 1000));
+            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3999, 1000));
 
-            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(500, 1000));
-            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(0, 1000));
-            Assert.AreEqual((0, 1000), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(999, 1000));
+            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(500, 1000));
+            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 1000));
+            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(999, 1000));
 
 
             // test it for temperature intervals (10s)
-            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(35, 10));
-            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(30, 10));
-            Assert.AreEqual((30, 40), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(39, 10));
+            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(35, 10));
+            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(30, 10));
+            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(39, 10));
 
-            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(0, 10));
-            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(5, 10));
-            Assert.AreEqual((0, 10), AircraftPerformance.GetUpperAndLowBoundsForInterpolation(9, 10));
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 10));
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(5, 10));
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(9, 10));
         }
 
         [TestMethod]
         public void Test_Interpolate()
         {
-            Assert.AreEqual(1175, AircraftPerformance.Interpolate(1150, 1200, 15, 10));
-            Assert.AreEqual(1420, AircraftPerformance.Interpolate(1400, 1500, 1200, 1000));
+            Assert.AreEqual(1175, AircraftPerformanceBase.Interpolate(1150, 1200, 15, 10));
+            Assert.AreEqual(1420, AircraftPerformanceBase.Interpolate(1400, 1500, 1200, 1000));
         }
 
         [TestMethod]
@@ -106,9 +106,9 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            int? result = ap.Takeoff_GroundRoll;
+            double? result = ap.Takeoff_GroundRoll;
 
             Assert.AreEqual(1193,result);
 
@@ -122,9 +122,9 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            int? result = ap.Takeoff_50FtClearance;
+            double? result = ap.Takeoff_50FtClearance;
 
             Assert.AreEqual(1840,result);
 
@@ -138,9 +138,9 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            int? result = ap.Landing_GroundRoll;
+            double? result = ap.Landing_GroundRoll;
 
             Assert.AreEqual(1205,result);
 
@@ -154,9 +154,9 @@ namespace Airborn.Tests
             scenario.TemperatureCelcius = 15;
             scenario.PressureAltitude = 1500;
 
-            AircraftPerformance ap = AircraftPerformance.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
 
-            int? result = ap.Landing_50FtClearance;
+            double? result = ap.Landing_50FtClearance;
 
             Assert.AreEqual(2435,result);
 
