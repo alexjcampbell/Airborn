@@ -5,72 +5,97 @@ namespace Airborn.web.Models{
     public class ScenarioPageModel
     {
         [Required]
+        [Range(0, 200, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int TakeoffWindStrength
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 359, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         public int TakeoffWindDirectionMagnetic
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 359, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         public int TakeoffRunwayHeading
         {
             get;set;
         }
 
+
         [Required]
+        [Range(0, 359, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         public int TakeoffMagneticVariation
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 100, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int TakeoffTemperatureCelcius
         {
             get;set;
         }
 
+        [Range(900, 1100, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         [Required]
         public int TakeoffQNH
         {
             get;set;
         }
 
-              [Required]
+        [Required]
+        [Range(0, 200, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int LandingWindStrength
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 359, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int LandingWindDirectionMagnetic
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 359, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int LandingRunwayHeading
         {
             get;set;
         }
 
         [Required]
+        [Range(-75, 75, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int LandingMagneticVariation
         {
             get;set;
         }
 
         [Required]
+        [Range(0, 100, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int LandingTemperatureCelcius
         {
             get;set;
         }
 
         [Required]
+        [Range(900, 1100, 
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
         public int LandingQNH
         {
             get;set;
