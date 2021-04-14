@@ -53,7 +53,7 @@ namespace Airborn.web.Models
         public int? Takeoff_50FtClearance
         { 
             get {
-                return GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll);
+                return GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance);
             } 
          }
 
