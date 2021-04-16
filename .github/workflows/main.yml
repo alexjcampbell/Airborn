@@ -14,8 +14,9 @@ jobs:
     - name: Build and deploy the Docker image
       env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_USERNAME: ${{ secrets.HEROKU_USERNAME }}
         APP_NAME: ${{ 'airbornco' }}
       run: |
-        echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin
+        echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_USERNAME --password-stdin
         heroku container:push web -a $APP_NAME
         heroku container:release web -a $APP_NAME
