@@ -10,6 +10,18 @@ namespace Airborn.web.Models
         Landing       
     }
 
+    public enum TemperatureType
+    {
+        C,
+        F       
+    }
+
+    public enum AltimeterSettingType
+    {
+        HG,
+        MB       
+    }
+
     public class ScenarioPageModel
     {
 
@@ -56,7 +68,6 @@ namespace Airborn.web.Models
             get;set;
         }
 
-        [Required]
         [Range(0, 20000, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         public int? RunwayLength
@@ -64,8 +75,6 @@ namespace Airborn.web.Models
             get;set;
         }
 
-    
-        [Required]
         [Range(-50, 50, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         public int? MagneticVariation
@@ -74,17 +83,27 @@ namespace Airborn.web.Models
         }
 
         [Required]
-        [Range(0, 40, 
+        [Range(-50, 100, 
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]                
-        public int? TemperatureCelcius
+        public decimal? Temperature
+        {
+            get;set;
+        }
+   
+        [Required]
+        public decimal? AltimeterSetting
         {
             get;set;
         }
 
-        [Range(900, 1100, 
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]        
         [Required]
-        public int? QNH
+        public TemperatureType? TemperatureType
+        {
+            get;set;
+        }
+
+        [Required]
+        public AltimeterSettingType? AltimeterSettingType
         {
             get;set;
         }
@@ -182,18 +201,46 @@ namespace Airborn.web.Models
                 return null;
             }
         }
-        public void Initialise(string path)
+        public void LoadAircraftPerformance(string path)
         {
             
-            
-            Runway runway = new Runway(Direction.FromMagnetic(RunwayHeading.Value, MagneticVariation.Value));
-            Wind wind = new Wind(Direction.FromMagnetic(WindDirectionMagnetic.Value, MagneticVariation.Value), WindStrength.Value);
+            Runway runway = new Runway(
+                Direction.FromMagnetic(
+                    RunwayHeading.Value, 
+                    
+                    // assume magnetic variation is zero if not supplied
+                    MagneticVariation.GetValueOrDefault()) 
+                );
+
+            Wind wind = new Wind(Direction.FromMagnetic(
+                WindDirectionMagnetic.Value, 
+                MagneticVariation.Value), 
+                WindStrength.Value
+                );
             
             Scenario scenario = new Scenario(runway, wind);
-            scenario.QNH = QNH.Value;
+            
             scenario.FieldElevation = FieldElevation.Value;
-            scenario.RunwayLength = RunwayLength.Value;
-            scenario.TemperatureCelcius = TemperatureCelcius.Value;
+
+            // runway length is not mandatory as it is only used for the 
+            // '% of runway used' calculation
+            scenario.RunwayLength = RunwayLength.GetValueOrDefault();
+
+            if(TemperatureType == Models.TemperatureType.F){
+                scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(Temperature);
+            }
+            else{
+                scenario.TemperatureCelcius = (int)Temperature.Value;
+            }
+
+           if(AltimeterSettingType == Models.AltimeterSettingType.HG){
+
+                scenario.QNH = Scenario.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
+            }
+            else{
+                scenario.QNH = (int)AltimeterSetting.Value;
+            }            
+            
 
             AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario, path);
                 

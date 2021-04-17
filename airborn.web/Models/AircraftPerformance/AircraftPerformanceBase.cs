@@ -43,31 +43,39 @@ namespace Airborn.web.Models
             }
         }
 
+        private double _takeoff_GroundRoll;
+
         public double? Takeoff_GroundRoll
         { 
             get {
-                return MakeTakeoffAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll));
+                return _takeoff_GroundRoll;
             } 
          }
             
+        private double _takeoff_50FtClearance;
+
         public double? Takeoff_50FtClearance
         { 
             get {
-                return MakeTakeoffAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance));
+                return _takeoff_50FtClearance;
             } 
          }
+
+         private double _landing_Groundroll;
 
         public double? Landing_GroundRoll
         { 
             get {
-                return MakeLandingAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll));
+                return _landing_Groundroll;
             } 
          }
+
+        private double _landing_50FtClearance;
 
         public double? Landing_50FtClearance
         { 
             get {
-                return MakeLandingAdjustments(GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance));
+                return _landing_50FtClearance;
             } 
          }
 
@@ -90,75 +98,33 @@ namespace Airborn.web.Models
 
             AircraftPerformanceBase aircraftPerformance = new AircraftPerformance_SR22_G2(profiles, scenario);
 
+            aircraftPerformance.Initialise();
+
             return aircraftPerformance;
         }
 
 
-        public class AircraftPerformanceProfile
+        public void Initialise()
         {
-            public int PressureAltitude {get; set;}
+            _takeoff_GroundRoll = MakeTakeoffAdjustments(
+                GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll)
+                );
+                
+            _takeoff_50FtClearance = MakeTakeoffAdjustments(
+                GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance)
+                );
+            
+            _landing_Groundroll = MakeLandingAdjustments(
+                GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll)
+                );
 
-            // this will be either Takeoff or Landing in the json
-            public string Type { get; set; }
-
-            public AircraftPerformanceProfileResultList GroundRoll {get; set;}
-
-            public AircraftPerformanceProfileResultList Clear50FtObstacle {get; set;}
+            _landing_50FtClearance = MakeLandingAdjustments(
+                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance)
+                );
 
         }
 
-        public class AircraftPerformanceProfileList : List<AircraftPerformanceProfile>
-        {
-            public AircraftPerformanceProfile FindByPressureAltitude(ScenarioMode scenarioMode, int pressureAltitude)
-            {
-                string type = "";
-
-                switch (scenarioMode) {
-                    case ScenarioMode.Takeoff_50FtClearance:
-                    case ScenarioMode.Takeoff_GroundRoll:
-                        type = "Takeoff";
-                        break;
-                    case ScenarioMode.Landing_50FtClearance:
-                    case ScenarioMode.Landing_GroundRoll:
-                        type = "Landing";
-                        break;                        
-                }
-
-                return this.Find (
-                    p => 
-                    p.PressureAltitude == pressureAltitude
-                    &
-                    p.Type == type
-                    );
-            }
-
-
-            public double GetPerformanceData(ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
-            {
-                // check to make sure that we actually have data for this Pressure Altitude and Temperature
-                int maxPressureAltitudeAvailable = this.Max(p => p.PressureAltitude);
-                if(pressureAltitude > maxPressureAltitudeAvailable)
-                {
-                    throw new ArgumentOutOfRangeException("pressureAltitude", pressureAltitude.ToString());
-                }
-
-                switch(scenarioMode)
-                {
-                    case ScenarioMode.Takeoff_50FtClearance:
-                        return FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, pressureAltitude).Clear50FtObstacle.FindByTemperature(temperatureCelcius);
-                    case ScenarioMode.Takeoff_GroundRoll:
-                        return FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, pressureAltitude).GroundRoll.FindByTemperature(temperatureCelcius);                     
-                    case ScenarioMode.Landing_50FtClearance:
-                        return FindByPressureAltitude(ScenarioMode.Landing_50FtClearance, pressureAltitude).Clear50FtObstacle.FindByTemperature(temperatureCelcius);
-                    case ScenarioMode.Landing_GroundRoll:
-                        return FindByPressureAltitude(ScenarioMode.Landing_GroundRoll, pressureAltitude).GroundRoll.FindByTemperature(temperatureCelcius);                     
-
-
-                }
-
-                throw new ArgumentException("No performance data found for pressure altitude: " + pressureAltitude + " and temperature: " + temperatureCelcius);
-            }
-        }
+  
 
         public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode)
         {
@@ -168,8 +134,8 @@ namespace Airborn.web.Models
             int lowerTemperature = GetLowerBoundForInterpolation(Scenario.TemperatureCelcius, 10);
             int upperTemperature = GetUpperBoundForInterpolation(Scenario.TemperatureCelcius, 10);
 
-            double distanceForLowerPressureAltitudeLowerTemp = Profiles.GetPerformanceData(scenarioMode, lowerPressureAltidude, lowerTemperature);
-            double distanceForUpperPressureAltitudeLowerTemp = Profiles.GetPerformanceData(scenarioMode, upperPressureAltidude, lowerTemperature);
+            double distanceForLowerPressureAltitudeLowerTemp = Profiles.GetPerformanceData(Scenario, scenarioMode, lowerPressureAltidude, lowerTemperature);
+            double distanceForUpperPressureAltitudeLowerTemp = Profiles.GetPerformanceData(Scenario, scenarioMode, upperPressureAltidude, lowerTemperature);
             
             double distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
@@ -178,8 +144,8 @@ namespace Airborn.web.Models
                 1000 // pressure altitudes in the json come in intervals of 1000
             );
 
-            double distanceForLowerPressureAltitudeUpperTemp = Profiles.GetPerformanceData(scenarioMode, lowerPressureAltidude, upperTemperature);
-            double distanceForUpperPressureAltitudeUpperTemp = Profiles.GetPerformanceData(scenarioMode, upperPressureAltidude, upperTemperature);
+            double distanceForLowerPressureAltitudeUpperTemp = Profiles.GetPerformanceData(Scenario,scenarioMode, lowerPressureAltidude, upperTemperature);
+            double distanceForUpperPressureAltitudeUpperTemp = Profiles.GetPerformanceData(Scenario,scenarioMode, upperPressureAltidude, upperTemperature);
 
             double distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
@@ -252,20 +218,6 @@ namespace Airborn.web.Models
 
         }
 
-
-        public class AircraftPerformanceProfileResult{
-            public int Temperature {get;set;}
-            public int Distance {get;set;}
-        }
-
-        public class AircraftPerformanceProfileResultList : List<AircraftPerformanceProfileResult>
-        {
-            public int FindByTemperature(int temperature)
-            {
-                AircraftPerformanceProfileResult result = this.Find (t => t.Temperature == temperature);
-
-                return result.Distance;
-            }
-        }        
+  
     }
 }

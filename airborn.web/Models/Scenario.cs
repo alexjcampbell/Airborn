@@ -152,6 +152,19 @@ namespace Airborn.web.Models
             return radians;
         }
 
+        public static int ConvertFahrenheitToCelcius(decimal? fahrenheitTemperature)
+        {
+            return (int) ((fahrenheitTemperature - 32) * 5/9);
+        }
+
+        public static int ConvertInchesOfMercuryToMillibars(decimal? inchesOfMercury)
+        {
+            // once we've converted inches of mercury to hectopascals we can safely treat this
+            // as an int (29.92 inches of mercury will end up being 1013 at which point the 
+            // decimals don't matter)
+            return (int)(inchesOfMercury * 33.8639M);
+        }
+
     }
 
     public enum ScenarioMode {

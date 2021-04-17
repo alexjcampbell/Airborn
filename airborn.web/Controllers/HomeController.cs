@@ -50,12 +50,36 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Calculate(ScenarioPageModel model)
         {
+
             if (!ModelState.IsValid)    
             {
                 return View();
             }
-            
-            model.Initialise(System.IO.Path.Combine(_env.WebRootPath, "../SR22_G2.json"));
+
+            try {
+                model.LoadAircraftPerformance(System.IO.Path.Combine(_env.WebRootPath, "../SR22_G2.json"));
+            }
+            catch (PressureAltitudePerformanceProfileNotFoundException e)
+            {
+                ModelState.AddModelError(
+                    "FieldElevation",
+                    e.Message
+                );
+
+                    return View();
+            }
+
+            catch (TemperaturePerformanceProfileNotFoundException)
+            {
+                ModelState.AddModelError(
+                    "TemperatureCelcius",
+                    String.Format(
+                        $"No performance data found for Temperature {model.Temperature} {model.TemperatureType}"
+                    ))
+                    ;
+
+                    return View();
+            }
 
             HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
