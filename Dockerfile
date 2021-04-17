@@ -1,4 +1,3 @@
-
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 5000
@@ -12,7 +11,7 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["airborn.web.csproj", "airborn.web/"]
+COPY ["airborn.web/airborn.web.csproj", "airborn.web/"]
 RUN dotnet restore "airborn.web/airborn.web.csproj"
 COPY . .
 WORKDIR "/src/airborn.web"
