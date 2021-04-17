@@ -13,7 +13,7 @@ USER appuser
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["airborn.web.csproj", "airborn.web/"]
-RUN dotnet restore "airborn.web.csproj"
+RUN dotnet restore "airborn.web/airborn.web.csproj"
 COPY . .
 WORKDIR "/src/airborn.web"
 RUN dotnet build "airborn.web.csproj" -c Release -o /app/build
