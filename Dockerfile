@@ -12,7 +12,6 @@ USER appuser
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["airborn.web/airborn.web.csproj", "airborn.web/"]
-COPY ["airborn.web/SR22_G2.json", "airborn.web/"]
 RUN dotnet restore "airborn.web/airborn.web.csproj"
 COPY . .
 WORKDIR "/src/airborn.web"
@@ -24,5 +23,6 @@ RUN dotnet publish "airborn.web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ["airborn.web/SR22_G2.json", "/app/publish"]
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet airborn.web.dll
 
