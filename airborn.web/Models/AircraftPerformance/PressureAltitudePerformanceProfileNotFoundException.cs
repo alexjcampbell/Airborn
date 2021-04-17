@@ -9,7 +9,5 @@ namespace Airborn.web.Models
             {
                 PressureAltitude = pressureAltitude;
             }
-
-            
         }
 }
