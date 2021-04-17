@@ -60,7 +60,7 @@ namespace Airborn.web.Models
                                                 
                 }
 
-                throw new ArgumentException("No performance data found for pressure altitude: " + pressureAltitude + " and temperature: " + temperatureCelcius);
+                throw new ArgumentException($"No performance data found for pressure altitude: {pressureAltitude} and temperature: {temperatureCelcius}");
             }
         }
 }
