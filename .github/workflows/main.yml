@@ -17,7 +17,7 @@ jobs:
         HEROKU_USERNAME: ${{ secrets.HEROKU_USERNAME }}
         APP_NAME: ${{ 'airbornco' }}
       run: |
-        echo "$HEROKU_API_KEY" | docker login --username='$HEROKU_USERNAME' --password-stdin registry.heroku.com
+        echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_USERNAME --password-stdin registry.heroku.com
         heroku container:login
         heroku container:push web -a $APP_NAME
         heroku container:release web -a $APP_NAME
