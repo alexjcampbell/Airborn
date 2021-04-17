@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 #ENTRYPOINT [ "dotnet", "airborn.web.dll" ]
   
-ENTRYPOINT ["dotnet", "airborn.web.dll"]
+ENTRYPOINT ["dotnet", "Airborn.Web.dll"]
