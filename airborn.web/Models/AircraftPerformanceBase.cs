@@ -71,7 +71,7 @@ namespace Airborn.web.Models
             } 
          }
 
-        public static AircraftPerformanceBase CreateFromJson(Scenario scenario)
+        public static AircraftPerformanceBase CreateFromJson(Scenario scenario, string path)
         {
             
 
@@ -80,7 +80,7 @@ namespace Airborn.web.Models
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore
             };
 
-            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "/SR22_G2.json");
+            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
             StreamReader sr = new StreamReader(filepath);
 

@@ -182,7 +182,7 @@ namespace Airborn.web.Models
                 return null;
             }
         }
-        public void Initialise()
+        public void Initialise(string path)
         {
             
             
@@ -195,7 +195,7 @@ namespace Airborn.web.Models
             scenario.RunwayLength = RunwayLength.Value;
             scenario.TemperatureCelcius = TemperatureCelcius.Value;
 
-            AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario, path);
                 
 
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Airborn.web.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Airborn.Controllers
 {
@@ -13,9 +14,12 @@ namespace Airborn.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private IWebHostEnvironment _env;
+
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
         {
             _logger = logger;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -51,7 +55,7 @@ namespace Airborn.Controllers
                 return View();
             }
             
-            model.Initialise();
+            model.Initialise(System.IO.Path.Combine(_env.WebRootPath, "SR22_G2.json"));
 
             HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());

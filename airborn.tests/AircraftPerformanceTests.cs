@@ -17,7 +17,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             // test that the Json de-serializer has read at least one profile
             Assert.IsTrue(ap.Profiles.Count > 0);
@@ -44,7 +44,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15,10,20));
             Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10,10,20));
@@ -61,7 +61,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
             Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
@@ -110,7 +110,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -127,7 +127,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Takeoff_50FtClearance;
 
@@ -144,7 +144,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Landing_GroundRoll;
 
@@ -161,7 +161,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Landing_50FtClearance;
 
@@ -179,7 +179,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -197,7 +197,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -216,7 +216,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Landing_GroundRoll;
 
@@ -234,7 +234,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario);
+            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
 
             double? result = ap.Landing_GroundRoll;
 
