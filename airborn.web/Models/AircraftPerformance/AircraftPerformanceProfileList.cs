@@ -39,50 +39,25 @@ namespace Airborn.web.Models
                     throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
                 }
 
-                AircraftPerformanceProfile resultList = null;
+                AircraftPerformanceProfile profile = 
+                    FindByPressureAltitude(scenarioMode, pressureAltitude);
+
+                if(profile == null)
+                {
+                    throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
+                }
 
                 switch(scenarioMode)
                 {
                     case ScenarioMode.Takeoff_50FtClearance:
-                        resultList = FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, pressureAltitude);
+                    case ScenarioMode.Landing_50FtClearance:
 
-                        if(resultList == null)
-                        {
-                            throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
-                        }
-
-                        return resultList.Clear50FtObstacle.FindByTemperature(temperatureCelcius);
+                        return profile.Clear50FtObstacle.FindByTemperature(temperatureCelcius);
 
                     case ScenarioMode.Takeoff_GroundRoll:
-                        resultList = FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, pressureAltitude);
-
-                        if(resultList == null)
-                        {
-                            throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
-                        }
-
-                        return resultList.GroundRoll.FindByTemperature(temperatureCelcius);                     
-
-                    case ScenarioMode.Landing_50FtClearance:
-                        resultList = FindByPressureAltitude(ScenarioMode.Landing_50FtClearance, pressureAltitude);
-
-                        if(resultList == null)
-                        {
-                            throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
-                        }
-
-                        return resultList.Clear50FtObstacle.FindByTemperature(temperatureCelcius);
-
                     case ScenarioMode.Landing_GroundRoll:
-
-                        if(resultList == null)
-                        {
-                            throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
-                        }
-
-                        resultList =  FindByPressureAltitude(ScenarioMode.Landing_GroundRoll, pressureAltitude);
-
-                        return resultList.GroundRoll.FindByTemperature(temperatureCelcius);                     
+                        return profile.GroundRoll.FindByTemperature(temperatureCelcius);
+                                                
                 }
 
                 throw new ArgumentException("No performance data found for pressure altitude: " + pressureAltitude + " and temperature: " + temperatureCelcius);
