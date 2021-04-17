@@ -80,7 +80,7 @@ namespace Airborn.web.Models
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore
             };
 
-            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../SR22_G2.json");
+            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../wwwroot/SR22_G2.json");
 
             StreamReader sr = new StreamReader(filepath);
 
