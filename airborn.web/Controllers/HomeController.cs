@@ -55,7 +55,7 @@ namespace Airborn.Controllers
                 return View();
             }
             
-            model.Initialise(System.IO.Path.Combine(_env.WebRootPath, "SR22_G2.json"));
+            model.Initialise(System.IO.Path.Combine(_env.WebRootPath, "../SR22_G2.json"));
 
             HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
