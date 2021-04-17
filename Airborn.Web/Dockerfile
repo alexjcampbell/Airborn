@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=publish /src/publish .
 
 # heroku uses the following
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Airborn.Web.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet publish/Airborn.Web.dll
