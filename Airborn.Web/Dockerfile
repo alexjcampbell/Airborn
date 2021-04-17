@@ -11,5 +11,5 @@ FROM mcr.microsoft.com/dotnet/aspnet
 WORKDIR /app
 COPY --from=build-env /app/out .
 #ENTRYPOINT [ "dotnet", "airborn.web.dll" ]
-
+  
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet airborn.web.dll
