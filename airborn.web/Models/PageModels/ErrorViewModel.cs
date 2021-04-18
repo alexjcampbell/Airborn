@@ -2,7 +2,7 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class ErrorViewModel
+    public class ErrorPageModel
     {
         public string RequestId { get; set; }
 
