@@ -84,6 +84,19 @@ namespace Airborn.Controllers
             HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
 
+            // todo: move this out of the controller and into a ScenarioPageModel
+
+      
+            if(model.AirportIdentifier?.Length > 0) {
+                using (var db = new AirportDbContext())
+                {
+                model.Runways = db.Runways.Where<Runway>
+                    (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
+                    ).ToList<Runway>();
+                } 
+            }
+
+
             return View(model);
         }
 

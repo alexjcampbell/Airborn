@@ -11,6 +11,7 @@
 
 <form asp-action="Calculate" method="post" clas="form-inline">
 
+
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <h5>Tell Us About Your Flight</h5>
@@ -27,6 +28,10 @@
         <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label">Runway: *</label>
         <div class="col-sm-2">
             <select asp-for="RunwayIdentifier" class="form-control" >
+                @foreach (Runway runway in Model?.Runways) 
+                    {<option value="@runway.RunwayIdentifier_Primary">@runway.RunwayIdentifier_Primary</option>
+                    <option value="@runway.RunwayIdentifier_Secondary">@runway.RunwayIdentifier_Secondary</option>}
+                
             </select>
         </div>       
 

@@ -33,6 +33,18 @@ namespace Airborn.web.Models
             set;
         }
 
+        private List<Runway> _runways = new List<Runway>();
+
+        public List<Runway> Runways
+        {
+            get {
+                return _runways;
+            }
+            set {
+                _runways = value;
+            }
+        }
+
         [Required]
         public Type ScenarioType {
             get;set;
