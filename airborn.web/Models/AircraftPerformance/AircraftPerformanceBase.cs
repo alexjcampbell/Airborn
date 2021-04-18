@@ -98,7 +98,7 @@ namespace Airborn.web.Models
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore
             };
 
-            string filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+            string filepath = path;
 
             StreamReader sr = new StreamReader(filepath);
 

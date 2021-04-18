@@ -58,7 +58,7 @@ namespace Airborn.Controllers
 
             try
             {
-                model.LoadAircraftPerformance(System.IO.Path.Combine(_env.WebRootPath, "../SR22_G2.json"));
+                model.LoadAircraftPerformance(System.IO.Path.Combine(_env.WebRootPath));
             }
             catch (PressureAltitudePerformanceProfileNotFoundException e)
             {

@@ -24,6 +24,18 @@ namespace Airborn.web.Models
         MB
     }
 
+    public enum RunwaySurface
+    {
+        Paved,
+        DryGrass
+    }
+
+    public enum AircraftType
+    {
+        SR22_G2,
+        C172_SP
+    }
+
     public class ScenarioPageModel
     {
 
@@ -53,6 +65,16 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        public int? AircraftWeight
+        {
+            get; set;
+        }
+
+        public RunwaySurface RunwaySurface
+        {
+            get; set;
+        }
+
         [Required]
         [Range(0, 200,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
@@ -75,6 +97,11 @@ namespace Airborn.web.Models
         }
 
         public string RunwayIdentifier
+        {
+            get; set;
+        }
+
+        public AircraftType AircraftType
         {
             get; set;
         }
@@ -131,11 +158,6 @@ namespace Airborn.web.Models
 
         [Required]
         public AltimeterSettingType? AltimeterSettingType
-        {
-            get; set;
-        }
-
-        public string AircraftType
         {
             get; set;
         }
@@ -301,7 +323,7 @@ namespace Airborn.web.Models
                 return null;
             }
         }
-        public void LoadAircraftPerformance(string path)
+        public void LoadAircraftPerformance(string rootPath)
         {
 
             Runway runway = Runway.FromMagnetic(
@@ -344,9 +366,18 @@ namespace Airborn.web.Models
                 scenario.QNH = (int)AltimeterSetting.Value;
             }
 
-
-            AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, path);
-
+            if (AircraftType == AircraftType.C172_SP)
+            {
+                AircraftPerformance = new AircraftPerformance_C172_SP(scenario, "../C172_SP.json");
+            }
+            else if (AircraftType == AircraftType.SR22_G2)
+            {
+                AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, "../SR22_G2.json");
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(AircraftType.ToString());
+            }
 
         }
 

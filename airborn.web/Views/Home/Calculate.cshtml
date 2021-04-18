@@ -18,6 +18,35 @@
     <br/>
 
      <div class="form-group row g-3 align-items-center">
+        <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario: *</label>
+        <div class="col-sm-2">
+            <select asp-for="ScenarioType" class="form-control" >
+                <option value="Takeoff">Takeoff</option>
+                <option value="Landing">Landing</option>
+            </select>
+        </div>
+        <div class="col-sm-1">
+        </div>        
+        <label asp-for="AircraftType" class="col-sm-2 col-form-label">Aircraft Type: *</label>
+        <div class="col-sm-2">
+            <select asp-for="AircraftType" class="form-control" >
+                <option value="SR22_G2">Cirrus SR22 G2</option>
+                <option value="C172_SP">Cessna 172SP</option>
+            </select>
+        </div>        
+    </div>
+
+     <div class="form-group row g-3 align-items-center">
+        <label asp-for="AircraftWeight" class="col-sm-2 col-form-label">Aircraft Weight: *</label>
+        <div class="col-sm-2">
+            <input asp-for="AircraftWeight" class="form-control" maxlength="10" />
+        </div>
+        <div class="col-sm-1">
+            lbs
+        </div>         
+    </div>
+
+     <div class="form-group row g-3 align-items-center">
         <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label">Airport: </label>
         <div class="col-sm-2">
             <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"/>
@@ -102,24 +131,6 @@
             </script>
         }         
     </div>    
-
-     <div class="form-group row g-3 align-items-center">
-        <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario: *</label>
-        <div class="col-sm-2">
-            <select asp-for="ScenarioType" class="form-control" >
-                <option value="Takeoff">Takeoff</option>
-                <option value="Landing">Landing</option>
-            </select>
-        </div>
-        <div class="col-sm-1">
-        </div>        
-        <label asp-for="AircraftType" class="col-sm-2 col-form-label">Aircraft Type: *</label>
-        <div class="col-sm-2">
-            <select asp-for="AircraftType" class="form-control" >
-                <option value="SR22_G2">Cirrus SR22  G2</option>
-            </select>
-        </div>        
-    </div>
  
     <div class="form-group row g-3 align-items-center">
         <label asp-for="RunwayHeading" class="col-sm-2 col-form-label">Runway Heading: *</label>
@@ -146,13 +157,14 @@
         <div class="col-sm-1">
             ft
         </div>        
-        <label asp-for="MagneticVariation" class="col-sm-2 col-form-label">Magnetic Variation:</label>
+        <label asp-for="RunwaySurface" class="col-sm-2 col-form-label">Runway Surface: *</label>
         <div class="col-sm-2">
-            <input asp-for="MagneticVariation" class="form-control" maxlength="10" />
-        </div>
-        <div class="col-sm-1">
-            °
-        </div>          
+            <select asp-for="RunwaySurface" class="form-control" >
+                <option value="Paved">Paved</option>
+                <option value="DryGrass">Dry Grass</option>                
+            </select>
+        </div>    
+         
     </div>    
     <div class="form-group row g-3 align-items-center">
         <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label">Wind Direction: *</label>
