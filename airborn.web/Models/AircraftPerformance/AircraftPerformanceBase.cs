@@ -43,6 +43,10 @@ namespace Airborn.web.Models
             {
                 return _profiles;
             }
+            set
+            {
+                _profiles = value;
+            }
         }
 
         private double _takeoff_GroundRoll;
@@ -100,7 +104,7 @@ namespace Airborn.web.Models
 
             var json = sr.ReadToEnd();
 
-            _profiles = JsonConvert.DeserializeObject<AircraftPerformanceProfileList>(json); ;
+            JsonConvert.PopulateObject(json, this); ;
 
             InitialiseTakeoffAndLandingCalculations();
         }
