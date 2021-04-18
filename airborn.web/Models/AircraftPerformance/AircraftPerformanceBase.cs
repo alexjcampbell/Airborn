@@ -13,10 +13,10 @@ namespace Airborn.web.Models
         {
         }
 
-        protected AircraftPerformanceBase(AircraftPerformanceProfileList profiles, Scenario scenario)
+        public AircraftPerformanceBase(Scenario scenario, string path)
         {
-            _profiles = profiles;
             _scenario = scenario;
+            LoadJson(path);
         }
 
 
@@ -79,7 +79,7 @@ namespace Airborn.web.Models
             } 
          }
 
-        public static AircraftPerformanceBase CreateFromJson(Scenario scenario, string path)
+        public void LoadJson(string path)
         {
             
 
@@ -94,17 +94,13 @@ namespace Airborn.web.Models
 
             var json = sr.ReadToEnd();
 
-            AircraftPerformanceProfileList profiles = JsonConvert.DeserializeObject<AircraftPerformanceProfileList>(json);
+            _profiles = JsonConvert.DeserializeObject<AircraftPerformanceProfileList>(json);;
 
-            AircraftPerformanceBase aircraftPerformance = new AircraftPerformance_SR22_G2(profiles, scenario);
-
-            aircraftPerformance.Initialise();
-
-            return aircraftPerformance;
+            InitialiseTakeoffAndLandingCalculations();
         }
 
 
-        public void Initialise()
+        public void InitialiseTakeoffAndLandingCalculations()
         {
             _takeoff_GroundRoll = MakeTakeoffAdjustments(
                 GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll)
@@ -124,41 +120,58 @@ namespace Airborn.web.Models
 
         }
 
-  
-
         public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode)
         {
+            /*  The performance data in the JSON is provided by the manufacturer in 
+                pressure altitude intervals of 1000 ft and temperature intervals of
+                10 degrees celcius. This function looks bit complicated but all it 
+                is doing is interpolating between the two
 
+                i.e. if the scenario's temperature is 12 degrees and pressure altitude
+                is 1500 ft, it will find the performance data for 10 and 20 degrees C
+                and pressure altitude of 1000 and 2000 ft, and interpolate between them
+            */
+
+            // get the upper and lower bounds for pressure altitude and temperature
+            // ie using the example below this will return 1000 ft and 2000 ft
+            // and 10 and 20 degreses
             int lowerPressureAltidude = GetLowerBoundForInterpolation(Scenario.PressureAltitude, 1000);
             int upperPressureAltidude = GetUpperBoundForInterpolation(Scenario.PressureAltitude, 1000);
             int lowerTemperature = GetLowerBoundForInterpolation(Scenario.TemperatureCelcius, 10);
             int upperTemperature = GetUpperBoundForInterpolation(Scenario.TemperatureCelcius, 10);
 
-            double distanceForLowerPressureAltitudeLowerTemp = Profiles.GetPerformanceData(Scenario, scenarioMode, lowerPressureAltidude, lowerTemperature);
-            double distanceForUpperPressureAltitudeLowerTemp = Profiles.GetPerformanceData(Scenario, scenarioMode, upperPressureAltidude, lowerTemperature);
+            // then get the performance data for the lower temperature and the lower and higher
+            // pressure altitude
+            double distanceForLowerPressureAltitudeLowerTemp = Profiles.GetPerformanceDataValueForConditions(Scenario, scenarioMode, lowerPressureAltidude, lowerTemperature);
+            double distanceForUpperPressureAltitudeLowerTemp = Profiles.GetPerformanceDataValueForConditions(Scenario, scenarioMode, upperPressureAltidude, lowerTemperature);
             
+            // interpolate between the lower and higher pressure altitude for the lower temperature
             double distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
                 distanceForUpperPressureAltitudeLowerTemp,
                 Scenario.PressureAltitude,
-                1000 // pressure altitudes in the json come in intervals of 1000
+                1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
-            double distanceForLowerPressureAltitudeUpperTemp = Profiles.GetPerformanceData(Scenario,scenarioMode, lowerPressureAltidude, upperTemperature);
-            double distanceForUpperPressureAltitudeUpperTemp = Profiles.GetPerformanceData(Scenario,scenarioMode, upperPressureAltidude, upperTemperature);
+            // then get the performance data for the higher temperature and the lower and higher
+            // pressure altitude
+            double distanceForLowerPressureAltitudeUpperTemp = Profiles.GetPerformanceDataValueForConditions(Scenario,scenarioMode, lowerPressureAltidude, upperTemperature);
+            double distanceForUpperPressureAltitudeUpperTemp = Profiles.GetPerformanceDataValueForConditions(Scenario,scenarioMode, upperPressureAltidude, upperTemperature);
 
+            // interpolate between the lower and higher pressure altitude for the higher temperature
             double distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
                 Scenario.PressureAltitude,
-                1000 // pressure altitudes in the json come in intervals of 1000
+                1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
+            // interpolate between the lower and higher temperature
             double distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
                 Scenario.TemperatureCelcius,
-                10 // temperatures in the json come in intervals of 10
+                10 // temperatures in the json comes in intervals of 10
             );
 
             System.Diagnostics.Debug.Write(
@@ -168,6 +181,8 @@ namespace Airborn.web.Models
 
         }
 
+        // the implementing class must implement the POH rules for adjusting
+        // the performance data for wind, slope, surface etc
         public abstract double MakeTakeoffAdjustments(double takeoffDistance);
         public abstract double MakeLandingAdjustments(double landingDistance);
 

@@ -4,10 +4,9 @@ namespace Airborn.web.Models
 {
     public class AircraftPerformance_SR22_G2 : AircraftPerformanceBase
     {
-       public AircraftPerformance_SR22_G2(AircraftPerformanceProfileList profiles, Scenario scenario)
+
+        public AircraftPerformance_SR22_G2(Scenario scenario, string path) : base(scenario,path)
         {
-            _profiles = profiles;
-            _scenario = scenario;
         }
 
         public override double MakeTakeoffAdjustments(double takeoffDistance)

@@ -30,7 +30,7 @@ namespace Airborn.web.Models
             }
 
 
-            public double GetPerformanceData(Scenario scenario, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
+            public double GetPerformanceDataValueForConditions(Scenario scenario, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
             {
                 // check to make sure that we actually have data for this Pressure Altitude and Temperature
                 int maxPressureAltitudeAvailable = this.Max(p => p.PressureAltitude);

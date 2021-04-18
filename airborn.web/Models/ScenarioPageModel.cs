@@ -204,17 +204,16 @@ namespace Airborn.web.Models
         public void LoadAircraftPerformance(string path)
         {
             
-            Runway runway = new Runway(
-                Direction.FromMagnetic(
+            Runway runway = Runway.FromMagnetic(
                     RunwayHeading.Value, 
                     
                     // assume magnetic variation is zero if not supplied
-                    MagneticVariation.GetValueOrDefault()) 
+                    MagneticVariation.GetValueOrDefault()
                 );
 
-            Wind wind = new Wind(Direction.FromMagnetic(
+            Wind wind = Wind.FromMagnetic(
                 WindDirectionMagnetic.Value, 
-                MagneticVariation.Value), 
+                MagneticVariation.Value, 
                 WindStrength.Value
                 );
             
@@ -242,7 +241,7 @@ namespace Airborn.web.Models
             }            
             
 
-            AircraftPerformance = AircraftPerformanceBase.CreateFromJson(scenario, path);
+            AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, path);
                 
 
         }

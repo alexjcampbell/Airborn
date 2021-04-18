@@ -15,14 +15,6 @@ namespace Airborn.web.Models
             _wind = wind;
         }
 
-        public Scenario(int runwayMagneticHeading, int magneticVariation, int windDirectionMagnetic, int windStrength)
-        {
-            _runway = new Runway(Direction.FromMagnetic(runwayMagneticHeading, magneticVariation));
-            _wind = new Wind(Direction.FromMagnetic(windDirectionMagnetic, magneticVariation), windStrength);
-
-        }
-
-
         private Runway _runway;
         public Runway Runway {
             get

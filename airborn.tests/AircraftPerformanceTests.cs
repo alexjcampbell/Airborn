@@ -7,17 +7,23 @@ namespace Airborn.Tests
     public class AircraftPerformanceTests
     {
 
+        private const string _testJsonPath = "../../SR22_G2.json";
+
         [TestMethod]
         public void TestJsonRead()
         {
 
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+            // crosswind from the left
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(250, -20, 20)
+                );
 
             scenario.TemperatureCelcius = 12;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario,_testJsonPath);
 
             // test that the Json de-serializer has read at least one profile
             Assert.IsTrue(ap.Profiles.Count > 0);
@@ -38,13 +44,16 @@ namespace Airborn.Tests
         public void Test_CalculateInterpolationFactor()
         {
 
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+          Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(250, -20, 20)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15,10,20));
             Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10,10,20));
@@ -55,13 +64,17 @@ namespace Airborn.Tests
         [TestMethod]
         public void TestFindDistanceForPressureAltitudeAndTemperatureFromJson()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 20);
+
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(250, -20, 20)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
             Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
@@ -102,15 +115,18 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_Takeoff_GroundRollDistance()
+        public void Test_Takeoff_GroundRollDistance_NoWind()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 0);
+          Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(340, -20, 0)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -119,15 +135,18 @@ namespace Airborn.Tests
         }    
 
         [TestMethod]
-        public void Test_Takeoff_50FtClearanceDistance()
+        public void Test_Takeoff_50FtClearanceDistance_NoWind()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 0);
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(340, -20, 0)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Takeoff_50FtClearance;
 
@@ -136,15 +155,18 @@ namespace Airborn.Tests
         }      
         
        [TestMethod]
-        public void Test_Landing_GroundRollDistance()
+        public void Test_Landing_GroundRollDistance_NoWind()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 0);
+          Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(340, -20, 0)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Landing_GroundRoll;
 
@@ -153,15 +175,18 @@ namespace Airborn.Tests
         }       
 
        [TestMethod]
-        public void Test_Landing_50FtClearanceDistance()
+        public void Test_Landing_50FtClearanceDistance_NoWind()
         {
-            Scenario scenario = new Scenario(300, -20, 250, 0);
+          Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(340, -20, 0)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Landing_50FtClearance;
 
@@ -173,13 +198,16 @@ namespace Airborn.Tests
         public void Test_TakeoffAdjustmentsForHeadwind()
         {
             // 12 knots straight down the runway
-            Scenario scenario = new Scenario(300, -20, 300, 12);
+          Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(300, -20, 12)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -190,14 +218,18 @@ namespace Airborn.Tests
        [TestMethod]
         public void Test_TakeoffAdjustmentsForTailwind()
         {
-            // 12 knots straight down the runway
-            Scenario scenario = new Scenario(300, -20, 300, -2);
+            // 2 knots direct tailwind
+
+           Scenario scenario = new Scenario(
+                Runway.FromMagnetic(270, -20),
+                Wind.FromMagnetic(90, -20, 2)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Takeoff_GroundRoll;
 
@@ -210,13 +242,16 @@ namespace Airborn.Tests
         public void Test_LandingAdjustmentsForHeadwind()
         {
             // 12 knots straight down the runway
-            Scenario scenario = new Scenario(300, -20, 300, 13);
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(300, -20),
+                Wind.FromMagnetic(300, -20, 13)
+            );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Landing_GroundRoll;
 
@@ -227,14 +262,17 @@ namespace Airborn.Tests
        [TestMethod]
         public void Test_LandingAdjustmentsForTailwind()
         {
-            // 12 knots straight down the runway
-            Scenario scenario = new Scenario(300, -20, 300, -2);
+            // 2 knots direct tailwind
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(270, -20),
+                Wind.FromMagnetic(90, -20, 2)
+                );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = AircraftPerformanceBase.CreateFromJson(scenario, "../../SR22_G2.json");
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             double? result = ap.Landing_GroundRoll;
 

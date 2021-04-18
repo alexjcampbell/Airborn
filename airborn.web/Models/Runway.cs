@@ -18,5 +18,10 @@ namespace Airborn.web.Models
         public Distance LandingAvailableLength {get;}
 
         public Direction RunwayHeading {get;set;}
+
+        public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
+        {
+            return new Runway(Direction.FromMagnetic(magneticHeading,magneticVariation));
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Airborn.web.Models
         {
 
             public TemperaturePerformanceProfileNotFoundException(int temperature) : 
-                base(String.Format($"No performance profile found for temperature: {temperature} C"))
+                base(String.Format($"No performance profile found for temperature: {temperature} °C"))
             {
                 TemperatureCelcius = temperature;
             }
