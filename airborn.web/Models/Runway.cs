@@ -8,7 +8,7 @@ namespace Airborn.web.Models
         {
         }
 
-        public Runway (Direction runwayHeading)
+        private Runway (Direction runwayHeading)
         {
             RunwayHeading = runwayHeading;
         }
