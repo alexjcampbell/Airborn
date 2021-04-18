@@ -184,9 +184,37 @@ namespace Airborn.web.Models
             get {
                 return AircraftPerformance?.Scenario?.CrosswindComponent;
             }
-            
         }
 
+        public string? CrosswindComponentText
+        {
+            get {
+                if(AircraftPerformance?.Scenario?.CrosswindComponent > 0)
+                {
+                    return "Right";
+                }
+                else if(AircraftPerformance?.Scenario?.CrosswindComponent < 0)
+                {
+                    return "Left";
+                }                
+                return "";
+            }
+        }
+
+        public string? HeadwindComponentText
+        {
+            get {
+                if(AircraftPerformance?.Scenario?.HeadwindComponent > 0)
+                {
+                    return "Headwind";
+                }
+                else if(AircraftPerformance?.Scenario?.HeadwindComponent < 0)
+                {
+                    return "Tailwind";
+                }                
+                return "";
+            }
+        }
         public double? HeadwindComponent
         {
             get {

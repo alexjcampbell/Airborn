@@ -40,6 +40,7 @@
                 $(document).ready(function () {
                     $('#AirportIdentifier').autocomplete({
                         source: '/Home/AutocompleteAirportIdentifier',
+                        minLength: 2,
                         select: function (event, ui) {
 
                         $.ajax({  
@@ -82,11 +83,11 @@
                                     
                                     if($("#RunwayIdentifier option:selected").val() == response.runwayIdentifier_Primary.valueOf() )
                                     {
-                                        $("#RunwayHeading").val(response.runwayIdentifier_Primary.valueOf() * 10);
+                                        $("#RunwayHeading").val(response.runwayIdentifier_Primary.valueOf().substring(0,2) * 10);
                                     }
                                     else
                                     {
-                                        $("#RunwayHeading").val(response.runwayIdentifier_Secondary.valueOf() * 10);
+                                        $("#RunwayHeading").val(response.runwayIdentifier_Secondary.valueOf().substring(0,2) * 10);
                                     }
 
                                 },
@@ -247,22 +248,22 @@
 
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-2">
-            Crosswind Component:
+            @Model.CrosswindComponentText Crosswind:
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.CrosswindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
         </div>
         <div class="col-sm-1">
-            kts
+            kts 
         </div>           
         <div class="col-sm-2">
-            Headwind Component:
+            @Model.HeadwindComponentText :
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.HeadwindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
         </div>
         <div class="col-sm-1">
-            kts
+            kts 
         </div>
     </div>
 
