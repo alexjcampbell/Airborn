@@ -141,7 +141,7 @@ namespace Airborn.Controllers
             using (var db = new AirportDbContext())
             {
             var runways = (from runway in db.Runways
-                where runway.Airport_Ident.StartsWith(airportIdentifier.ToUpper())
+                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
                 select new
                 {
                     label = runway.RunwayIdentifier_Primary,
@@ -153,7 +153,7 @@ namespace Airborn.Controllers
             // but the data source we're using stores two runways in one row, so we have to 
             // 're normalise' it somehow
             var runways2 = (from runway in db.Runways
-                where runway.Airport_Ident.StartsWith(airportIdentifier.ToUpper())
+                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
                 select new
                 {
                     label = runway.RunwayIdentifier_Secondary,
@@ -174,7 +174,7 @@ namespace Airborn.Controllers
             using (var db = new AirportDbContext())
             {
             Airport airport = db.Airports.Single<Airport>(
-                a => a.Ident.StartsWith(airportIdentifier.ToUpper())
+                a => a.Ident.Equals(airportIdentifier.ToUpper())
                 );
 
             return Json(airport);
@@ -189,7 +189,7 @@ namespace Airborn.Controllers
             {
             Runway runway = db.Runways.Single<Runway>(
                 a => (
-                        (a.Airport_Ident.StartsWith(airportIdentifier.ToUpper()))
+                        (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
                         && 
                         (
                             a.RunwayIdentifier_Primary == runwayId 
