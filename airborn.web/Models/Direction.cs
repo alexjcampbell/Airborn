@@ -5,15 +5,15 @@ namespace Airborn.web.Models
     public struct Direction : IEquatable<Direction>, IComparable<Direction>
     {
         private readonly int _directionTrue;
-        
+
         private readonly int _magneticVariation;
 
-        private Direction (int directionTrue, int magneticVariation)
+        private Direction(int directionTrue, int magneticVariation)
         {
             this._directionTrue = directionTrue;
             this._magneticVariation = magneticVariation;
         }
- 
+
 
         public int DirectionTrue
         {
@@ -80,12 +80,12 @@ namespace Airborn.web.Models
 
         private static int ConvertMagneticToTrue(int directionMagnetic, int magneticVariation)
         {
-        
+
             // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
             int directionTrue = (directionMagnetic - magneticVariation) % 360;
 
-            if(directionTrue < 0) 
-            { 
+            if (directionTrue < 0)
+            {
                 return directionTrue + 360;
             }
             else
@@ -97,12 +97,12 @@ namespace Airborn.web.Models
 
         private static int ConvertTrueToMagnetic(int directionTrue, int magneticVariation)
         {
-        
+
             // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
             int directionMagnetic = (directionTrue + magneticVariation) % 360;
 
-            if(directionMagnetic < 0) 
-            { 
+            if (directionMagnetic < 0)
+            {
                 return directionMagnetic + 360;
             }
             else

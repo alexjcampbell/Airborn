@@ -2,23 +2,26 @@ using System;
 
 namespace Airborn.web.Models
 {
-          public class AircraftPerformanceProfileNotFoundException : Exception
+    public class AircraftPerformanceProfileNotFoundException : Exception
+    {
+        private AircraftPerformanceProfileNotFoundException()
         {
-            private AircraftPerformanceProfileNotFoundException () {
 
-            }
-
-            public int TemperatureCelcius{
-                get;set;
-            }
-
-            public int PressureAltitude{
-                get;set;
-            }
-
-            public AircraftPerformanceProfileNotFoundException(string message) : base(message)
-            {
-
-            } 
         }
+
+        public int TemperatureCelcius
+        {
+            get; set;
+        }
+
+        public int PressureAltitude
+        {
+            get; set;
+        }
+
+        public AircraftPerformanceProfileNotFoundException(string message) : base(message)
+        {
+
+        }
+    }
 }

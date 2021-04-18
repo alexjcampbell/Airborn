@@ -3,20 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Airborn.web.Models
 {
-    
-    public class Runway 
+
+    public class Runway
     {
         private Runway()
         {
         }
 
-        private Runway (Direction runwayHeading)
+        private Runway(Direction runwayHeading)
         {
             RunwayHeading = runwayHeading;
         }
-        public string Id 
+        public string Id
         {
-            get;set;
+            get; set;
         }
 
         public string Airport_Ident
@@ -25,32 +25,35 @@ namespace Airborn.web.Models
         }
 
         [Column("Le_Ident")]
-        public string RunwayIdentifier_Primary {
+        public string RunwayIdentifier_Primary
+        {
             get; set;
         }
 
         [Column("He_Ident")]
-        public string RunwayIdentifier_Secondary {
+        public string RunwayIdentifier_Secondary
+        {
             get; set;
         }
 
         [Column("Length_Ft")]
-        public string RunwayLength {
+        public string RunwayLength
+        {
             get; set;
         }
 
         [NotMapped]
-        public Distance TakeoffAvailableLength {get;}
+        public Distance TakeoffAvailableLength { get; }
 
         [NotMapped]
-        public Distance LandingAvailableLength {get;}
+        public Distance LandingAvailableLength { get; }
 
         [NotMapped]
-        public Direction RunwayHeading {get;set;}
+        public Direction RunwayHeading { get; set; }
 
         public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
         {
-            return new Runway(Direction.FromMagnetic(magneticHeading,magneticVariation));
+            return new Runway(Direction.FromMagnetic(magneticHeading, magneticVariation));
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Airborn.web.Models
         }
 
         private Runway _runway;
-        public Runway Runway {
+        public Runway Runway
+        {
             get
             {
                 return _runway;
@@ -31,21 +32,22 @@ namespace Airborn.web.Models
             {
                 return _wind;
             }
-         }
+        }
 
-         private int _temperatureCelcius;
+        private int _temperatureCelcius;
 
-         public int TemperatureCelcius
-         {
+        public int TemperatureCelcius
+        {
             get
             {
                 return _temperatureCelcius;
             }
-            set{
+            set
+            {
                 _temperatureCelcius = value;
             }
-         }
-         
+        }
+
         private int _fieldElevation;
 
         public int FieldElevation
@@ -62,11 +64,14 @@ namespace Airborn.web.Models
 
         private int _qnh;
 
-        public int QNH{
-            get {
+        public int QNH
+        {
+            get
+            {
                 return _qnh;
             }
-            set {
+            set
+            {
                 _qnh = value;
             }
         }
@@ -97,30 +102,33 @@ namespace Airborn.web.Models
 
         private int _runwayLength;
 
-        public int RunwayLength {
-            get {
+        public int RunwayLength
+        {
+            get
+            {
                 return _runwayLength;
             }
-            set {
+            set
+            {
                 _runwayLength = value;
             }
         }
 
-         public double HeadwindComponent
-         {
-             get
-             {
+        public double HeadwindComponent
+        {
+            get
+            {
                 return Wind.StrengthKts * Math.Cos(ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic));
-             }
-         }
+            }
+        }
 
-         public double CrosswindComponent
-         {
-             get
-             {
+        public double CrosswindComponent
+        {
+            get
+            {
                 return Wind.StrengthKts * Math.Sin(ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic));
-             }
-         }
+            }
+        }
 
         public int WindRunwayAngularDifferenceMagnetic
         {
@@ -132,11 +140,11 @@ namespace Airborn.web.Models
             }
         }
 
-        private static double AngularDifference( int angle1, int angle2 )
+        private static double AngularDifference(int angle1, int angle2)
         {
-            double difference = ( angle2 - angle1 + 180 ) % 360 - 180;
+            double difference = (angle2 - angle1 + 180) % 360 - 180;
             return difference < -180 ? difference + 360 : difference;
-        }       
+        }
 
         private static double ConvertDegreesToRadians(int degrees)
         {
@@ -146,7 +154,7 @@ namespace Airborn.web.Models
 
         public static int ConvertFahrenheitToCelcius(decimal? fahrenheitTemperature)
         {
-            return (int) ((fahrenheitTemperature - 32) * 5/9);
+            return (int)((fahrenheitTemperature - 32) * 5 / 9);
         }
 
         public static int ConvertInchesOfMercuryToMillibars(decimal? inchesOfMercury)
@@ -159,7 +167,8 @@ namespace Airborn.web.Models
 
     }
 
-    public enum ScenarioMode {
+    public enum ScenarioMode
+    {
         Takeoff_GroundRoll,
         Takeoff_50FtClearance,
         Landing_GroundRoll,

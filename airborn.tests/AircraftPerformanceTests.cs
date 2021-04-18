@@ -17,7 +17,7 @@ namespace Airborn.Tests
 
             // crosswind from the left
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300,_defaultMagneticVariation),
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
                 Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
                 );
 
@@ -25,7 +25,7 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario,_testJsonPath);
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
             // test that the Json de-serializer has read at least one profile
             Assert.IsTrue(ap.Profiles.Count > 0);
@@ -46,10 +46,10 @@ namespace Airborn.Tests
         public void Test_CalculateInterpolationFactor()
         {
 
-          Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
-            );
+            Scenario scenario = new Scenario(
+                  Runway.FromMagnetic(300, _defaultMagneticVariation),
+                  Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
+              );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -57,9 +57,9 @@ namespace Airborn.Tests
 
             AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
-            Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15,10,20));
-            Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10,10,20));
-            Assert.AreEqual(1, AircraftPerformanceBase.CalculateInterpolationFactor(20,10,20));
+            Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15, 10, 20));
+            Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10, 10, 20));
+            Assert.AreEqual(1, AircraftPerformanceBase.CalculateInterpolationFactor(20, 10, 20));
 
         }
 
@@ -78,11 +78,11 @@ namespace Airborn.Tests
 
             AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
 
-            Assert.AreEqual(1092,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
-            Assert.AreEqual(1176,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
+            Assert.AreEqual(1092, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
+            Assert.AreEqual(1176, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
 
-            Assert.AreEqual(1691,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
-            Assert.AreEqual(1813,ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
+            Assert.AreEqual(1691, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
+            Assert.AreEqual(1813, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
 
         }
 
@@ -119,10 +119,10 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_Takeoff_GroundRollDistance_NoWind()
         {
-          Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-            );
+            Scenario scenario = new Scenario(
+                  Runway.FromMagnetic(300, _defaultMagneticVariation),
+                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
+              );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -132,9 +132,9 @@ namespace Airborn.Tests
 
             double? result = ap.Takeoff_GroundRoll;
 
-            Assert.AreEqual(1193,result);
+            Assert.AreEqual(1193, result);
 
-        }    
+        }
 
         [TestMethod]
         public void Test_Takeoff_50FtClearanceDistance_NoWind()
@@ -152,17 +152,17 @@ namespace Airborn.Tests
 
             double? result = ap.Takeoff_50FtClearance;
 
-            Assert.AreEqual(1840,result);
+            Assert.AreEqual(1840, result);
 
-        }      
-        
-       [TestMethod]
+        }
+
+        [TestMethod]
         public void Test_Landing_GroundRollDistance_NoWind()
         {
-          Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-            );
+            Scenario scenario = new Scenario(
+                  Runway.FromMagnetic(300, _defaultMagneticVariation),
+                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
+              );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -172,17 +172,17 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_GroundRoll;
 
-            Assert.AreEqual(1205,result);
+            Assert.AreEqual(1205, result);
 
-        }       
+        }
 
-       [TestMethod]
+        [TestMethod]
         public void Test_Landing_50FtClearanceDistance_NoWind()
         {
-          Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-            );
+            Scenario scenario = new Scenario(
+                  Runway.FromMagnetic(300, _defaultMagneticVariation),
+                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
+              );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -192,18 +192,18 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_50FtClearance;
 
-            Assert.AreEqual(2435,result);
+            Assert.AreEqual(2435, result);
 
-        }      
+        }
 
-       [TestMethod]
+        [TestMethod]
         public void Test_TakeoffAdjustmentsForHeadwind()
         {
             // 12 knots straight down the runway
-          Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(300, _defaultMagneticVariation, 12)
-            );
+            Scenario scenario = new Scenario(
+                  Runway.FromMagnetic(300, _defaultMagneticVariation),
+                  Wind.FromMagnetic(300, _defaultMagneticVariation, 12)
+              );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -213,19 +213,19 @@ namespace Airborn.Tests
 
             double? result = ap.Takeoff_GroundRoll;
 
-            Assert.AreEqual(1073.7,result);
+            Assert.AreEqual(1073.7, result);
 
-        }           
+        }
 
-       [TestMethod]
+        [TestMethod]
         public void Test_TakeoffAdjustmentsForTailwind()
         {
             // 2 knots direct tailwind
 
-           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, _defaultMagneticVariation),
-                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
-            );
+            Scenario scenario = new Scenario(
+                 Runway.FromMagnetic(270, _defaultMagneticVariation),
+                 Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
+             );
 
             scenario.TemperatureCelcius = 15;
             scenario.QNH = 1013;
@@ -235,12 +235,12 @@ namespace Airborn.Tests
 
             double? result = ap.Takeoff_GroundRoll;
 
-            Assert.AreEqual(1312.3000000000002,result);
+            Assert.AreEqual(1312.3000000000002, result);
 
-        }              
+        }
 
 
-       [TestMethod]
+        [TestMethod]
         public void Test_LandingAdjustmentsForHeadwind()
         {
             // 12 knots straight down the runway
@@ -257,11 +257,11 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_GroundRoll;
 
-            Assert.AreEqual(1084.5,result);
+            Assert.AreEqual(1084.5, result);
 
-        }           
+        }
 
-       [TestMethod]
+        [TestMethod]
         public void Test_LandingAdjustmentsForTailwind()
         {
             // 2 knots direct tailwind
@@ -278,12 +278,12 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_GroundRoll;
 
-            Assert.AreEqual(1325.5,result);
+            Assert.AreEqual(1325.5, result);
 
-        }          
+        }
 
 
-       [TestMethod]
+        [TestMethod]
         public void Test_InchesOfMercuryToMillibars()
         {
             // 2 knots direct tailwind
@@ -300,11 +300,11 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_GroundRoll;
 
-            Assert.AreEqual(1325.5,result);
+            Assert.AreEqual(1325.5, result);
 
-        }              
+        }
 
-       [TestMethod]
+        [TestMethod]
         public void Test_FahrenheightToCentigrade()
         {
             // 2 knots direct tailwind
@@ -321,9 +321,9 @@ namespace Airborn.Tests
 
             double? result = ap.Landing_GroundRoll;
 
-            Assert.AreEqual(1325.5,result);
+            Assert.AreEqual(1325.5, result);
 
-        }      
+        }
 
     }
 }

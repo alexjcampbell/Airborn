@@ -6,18 +6,19 @@ namespace Airborn.web.Models
     [Table("airports")]
     public class Airport
     {
-        public string Id 
+        public string Id
         {
-            get;set;
+            get; set;
         }
 
-        public string Ident 
+        public string Ident
         {
-            get;set;
+            get; set;
         }
 
         [Column("Elevation_Ft")]
-        public string FieldElevation {
+        public string FieldElevation
+        {
             get; set;
         }
 

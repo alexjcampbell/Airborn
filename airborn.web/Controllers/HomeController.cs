@@ -32,12 +32,12 @@ namespace Airborn.Controllers
 
             ScenarioPageModel model = new ScenarioPageModel();
 
-            if(Request.Cookies["FieldElevation"]?.Length > 0)
+            if (Request.Cookies["FieldElevation"]?.Length > 0)
             {
                 model.FieldElevation = int.Parse(Request.Cookies["FieldElevation"]);
             }
 
-            if(Request.Cookies["MagneticVariation"]?.Length > 0)
+            if (Request.Cookies["MagneticVariation"]?.Length > 0)
             {
                 model.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
             }
@@ -51,12 +51,13 @@ namespace Airborn.Controllers
         public async Task<IActionResult> Calculate(ScenarioPageModel model)
         {
 
-            if (!ModelState.IsValid)    
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            try {
+            try
+            {
                 model.LoadAircraftPerformance(System.IO.Path.Combine(_env.WebRootPath, "../SR22_G2.json"));
             }
             catch (PressureAltitudePerformanceProfileNotFoundException e)
@@ -66,7 +67,7 @@ namespace Airborn.Controllers
                     e.Message
                 );
 
-                    return View();
+                return View();
             }
 
             catch (TemperaturePerformanceProfileNotFoundException)
@@ -78,7 +79,7 @@ namespace Airborn.Controllers
                     ))
                     ;
 
-                    return View();
+                return View();
             }
 
             HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
@@ -86,14 +87,15 @@ namespace Airborn.Controllers
 
             // todo: move this out of the controller and into a ScenarioPageModel
 
-      
-            if(model.AirportIdentifier?.Length > 0) {
+
+            if (model.AirportIdentifier?.Length > 0)
+            {
                 using (var db = new AirportDbContext())
                 {
-                model.Runways = db.Runways.Where<Runway>
-                    (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
-                    ).ToList<Runway>();
-                } 
+                    model.Runways = db.Runways.Where<Runway>
+                        (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
+                        ).ToList<Runway>();
+                }
             }
 
 
@@ -108,7 +110,7 @@ namespace Airborn.Controllers
         public IActionResult About()
         {
             return View();
-        }        
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -122,15 +124,15 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-            var airportIdentifiers = (from airport in db.Airports
-                where airport.Ident.StartsWith(term.ToUpper())
-                select new
-                {
-                    label = airport.Ident,
-                    val = airport.Id
-                }).ToList();
+                var airportIdentifiers = (from airport in db.Airports
+                                          where airport.Ident.StartsWith(term.ToUpper())
+                                          select new
+                                          {
+                                              label = airport.Ident,
+                                              val = airport.Id
+                                          }).ToList();
 
-            return Json(airportIdentifiers);
+                return Json(airportIdentifiers);
             }
         }
 
@@ -140,70 +142,70 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-            var runways = (from runway in db.Runways
-                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
-                select new
-                {
-                    label = runway.RunwayIdentifier_Primary,
-                    val = runway.RunwayIdentifier_Primary
-                }
-                ).ToList();
+                var runways = (from runway in db.Runways
+                               where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
+                               select new
+                               {
+                                   label = runway.RunwayIdentifier_Primary,
+                                   val = runway.RunwayIdentifier_Primary
+                               }
+                    ).ToList();
 
-            // this is not the best approach from a performance or code cleanness perspective
-            // but the data source we're using stores two runways in one row, so we have to 
-            // 're normalise' it somehow
-            var runways2 = (from runway in db.Runways
-                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
-                select new
-                {
-                    label = runway.RunwayIdentifier_Secondary,
-                    val = runway.RunwayIdentifier_Secondary
-                }
-                ).ToList();     
+                // this is not the best approach from a performance or code cleanness perspective
+                // but the data source we're using stores two runways in one row, so we have to 
+                // 're normalise' it somehow
+                var runways2 = (from runway in db.Runways
+                                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
+                                select new
+                                {
+                                    label = runway.RunwayIdentifier_Secondary,
+                                    val = runway.RunwayIdentifier_Secondary
+                                }
+                    ).ToList();
 
-            runways.AddRange(runways2);          
+                runways.AddRange(runways2);
 
-            return Json(runways);
-            }
-        }        
-
-       public JsonResult GetAirportInformation(string airportIdentifier)
-        {
-            // todo: move this out of the controller and into a ScenarioPageModel
-
-            using (var db = new AirportDbContext())
-            {
-            Airport airport = db.Airports.Single<Airport>(
-                a => a.Ident.Equals(airportIdentifier.ToUpper())
-                );
-
-            return Json(airport);
+                return Json(runways);
             }
         }
 
-      public JsonResult GetRunwayDetail(string airportIdentifier, string runwayId)
+        public JsonResult GetAirportInformation(string airportIdentifier)
         {
             // todo: move this out of the controller and into a ScenarioPageModel
 
             using (var db = new AirportDbContext())
             {
-            Runway runway = db.Runways.Single<Runway>(
-                a => (
-                        (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
-                        && 
-                        (
-                            a.RunwayIdentifier_Primary == runwayId 
-                            ||
-                            a.RunwayIdentifier_Secondary == runwayId 
-                        
+                Airport airport = db.Airports.Single<Airport>(
+                    a => a.Ident.Equals(airportIdentifier.ToUpper())
+                    );
+
+                return Json(airport);
+            }
+        }
+
+        public JsonResult GetRunwayDetail(string airportIdentifier, string runwayId)
+        {
+            // todo: move this out of the controller and into a ScenarioPageModel
+
+            using (var db = new AirportDbContext())
+            {
+                Runway runway = db.Runways.Single<Runway>(
+                    a => (
+                            (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
+                            &&
+                            (
+                                a.RunwayIdentifier_Primary == runwayId
+                                ||
+                                a.RunwayIdentifier_Secondary == runwayId
+
+                            )
                         )
                     )
-                )
-                ;
+                    ;
 
-            return Json(runway);
+                return Json(runway);
             }
-        }             
+        }
 
     }
 }
