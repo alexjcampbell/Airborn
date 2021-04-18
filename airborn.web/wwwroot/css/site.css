@@ -14,14 +14,14 @@ a {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #1a4578;
+  border-color: #112d4e;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #1a4578;
+  border-color: #112d4e;
 }
 
 /* Sticky footer styles

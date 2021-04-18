@@ -86,7 +86,7 @@
             <input asp-for="Temperature" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            <select width="2" asp-for="TemperatureType" class="form-control" >
+            <select width="3" asp-for="TemperatureType" class="form-control" >
                 <option value="C">°C</option>
                 <option value="F">°F</option>
             </select>            
@@ -96,7 +96,7 @@
             <input asp-for="AltimeterSetting" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            <select width="2" asp-for="AltimeterSettingType" class="form-control" >
+            <select width="3" asp-for="AltimeterSettingType" class="form-control" >
                 <option value="MB">mb</option>
                 <option value="HG">inHg</option>
             </select>
@@ -105,7 +105,7 @@
 
     <div class="form-group row g-3 align-items-center">
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Calculate Performance</button>
         </div>
     </div>
 
