@@ -366,13 +366,15 @@ namespace Airborn.web.Models
                 scenario.QNH = (int)AltimeterSetting.Value;
             }
 
+
+
             if (AircraftType == AircraftType.C172_SP)
             {
-                AircraftPerformance = new AircraftPerformance_C172_SP(scenario, "../C172_SP.json");
+                AircraftPerformance = new AircraftPerformance_C172_SP(scenario, System.IO.Path.Combine(rootPath, "../C172_SP.json"));
             }
             else if (AircraftType == AircraftType.SR22_G2)
             {
-                AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, "../SR22_G2.json");
+                AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, System.IO.Path.Combine(rootPath, "../SR22_G2.json"));
             }
             else
             {

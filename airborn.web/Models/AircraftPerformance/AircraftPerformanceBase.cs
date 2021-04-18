@@ -98,9 +98,7 @@ namespace Airborn.web.Models
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore
             };
 
-            string filepath = path;
-
-            StreamReader sr = new StreamReader(filepath);
+            StreamReader sr = new StreamReader(path);
 
             var json = sr.ReadToEnd();
 

@@ -58,7 +58,7 @@ namespace Airborn.Controllers
 
             try
             {
-                model.LoadAircraftPerformance(System.IO.Path.Combine(_env.WebRootPath));
+                model.LoadAircraftPerformance(_env.WebRootPath);
             }
             catch (PressureAltitudePerformanceProfileNotFoundException e)
             {
