@@ -48,7 +48,7 @@ namespace Airborn.Controllers
         // POST: Home/Calculate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Calculate(ScenarioPageModel model)
+        public IActionResult Calculate(ScenarioPageModel model)
         {
 
             if (!ModelState.IsValid)
