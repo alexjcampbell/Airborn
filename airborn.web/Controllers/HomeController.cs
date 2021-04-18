@@ -50,10 +50,21 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Calculate(ScenarioPageModel model)
         {
+            // make sure we have the runways loaded in the model so the dropdown on the page can get them
+            if (model.AirportIdentifier?.Length > 0)
+            {
+                using (var db = new AirportDbContext())
+                {
+                    model.Runways = db.Runways.Where<Runway>
+                        (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
+                        ).ToList<Runway>();
+                }
+            }
+
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
 
             try
@@ -67,7 +78,7 @@ namespace Airborn.Controllers
                     e.Message
                 );
 
-                return View();
+                return View(model);
             }
 
             catch (TemperaturePerformanceProfileNotFoundException)
@@ -86,17 +97,6 @@ namespace Airborn.Controllers
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
 
             // todo: move this out of the controller and into a ScenarioPageModel
-
-
-            if (model.AirportIdentifier?.Length > 0)
-            {
-                using (var db = new AirportDbContext())
-                {
-                    model.Runways = db.Runways.Where<Runway>
-                        (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
-                        ).ToList<Runway>();
-                }
-            }
 
 
             return View(model);

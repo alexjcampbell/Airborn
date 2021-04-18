@@ -13,10 +13,7 @@
 
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-    <h5>Tell Us About Your Flight</h5>
-    <br/>
-
+    
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-2 col-form-label col-form-label-sm">Scenario: *</label>
         <div class="col-sm-2">
@@ -198,14 +195,14 @@
     </div>
 
     <div class="form-group row g-3 align-items-center">
-        <div class="col-sm-3">
-            <button type="submit" class="btn btn-primary">Calculate Performance</button>
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary btn-sm">Calculate Performance</button>
         </div>
     </div>
 
     <br />
 
-    <h5>Our Calculations</h5>
+    <h6>Our Calculations</h6>
     <br/>
 
     <div class="form-group row g-3 align-items-center">
