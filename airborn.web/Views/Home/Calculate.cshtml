@@ -64,7 +64,7 @@
                 $(document).ready(function () {
                     $('#AirportIdentifier').autocomplete({
                         source: '/Home/AutocompleteAirportIdentifier',
-                        minLength: 2,
+                        minLength: 3,
                         select: function (event, ui) {
 
                         $.ajax({  
@@ -151,8 +151,7 @@
         <label asp-for="RunwaySurface" class="col-sm-2 col-form-label col-form-label-sm">Runway Surface: *</label>
         <div class="col-sm-2">
             <select asp-for="RunwaySurface" class="form-control form-control-sm" >
-                <option value="Paved">Paved</option>
-                <option value="DryGrass">Dry Grass</option>                
+                <option value="Paved">Paved</option>          
             </select>
         </div>    
          

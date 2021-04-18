@@ -120,10 +120,17 @@ namespace Airborn.Controllers
 
         public JsonResult AutocompleteAirportIdentifier(string term)
         {
+
+
+
             // todo: move this out of the controller and into a ScenarioPageModel
+
+
 
             using (var db = new AirportDbContext())
             {
+                DateTime start = DateTime.Now;
+
                 var airportIdentifiers = (from airport in db.Airports
                                           where airport.Ident.StartsWith(term.ToUpper())
                                           select new
@@ -132,8 +139,16 @@ namespace Airborn.Controllers
                                               val = airport.Id
                                           }).ToList();
 
+                DateTime end = DateTime.Now;
+
+                Trace.Write(end - start);
+
                 return Json(airportIdentifiers);
             }
+
+
+
+
         }
 
         public JsonResult PopulateRunways(string airportIdentifier)
