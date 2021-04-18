@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Airborn.web.Models
 {
@@ -51,6 +53,16 @@ namespace Airborn.web.Models
         {
             get;set;
         }
+
+        public string AirportIdentifier
+        {
+            get;set;
+        }
+
+        public string RunwayIdentifier
+        {
+            get;set;
+        }        
 
         [Required]
         [Range(0, 359, 
@@ -243,8 +255,9 @@ namespace Airborn.web.Models
 
             AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, path);
                 
-
+            
         }
+        
 
 
     }

@@ -7,12 +7,96 @@
 
 <br />
 
+
+
 <form asp-action="Calculate" method="post" clas="form-inline">
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <h5>Tell Us About Your Flight</h5>
     <br/>
+
+     <div class="form-group row g-3 align-items-center">
+        <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label">Airport: *</label>
+        <div class="col-sm-2">
+            <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"/>
+        </div>
+
+        <div class="col-sm-1">
+        </div>        
+        <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label">Runway: *</label>
+        <div class="col-sm-2">
+            <select asp-for="RunwayIdentifier" class="form-control" >
+            </select>
+        </div>       
+
+        @section Scripts{
+            <script>
+                $(document).ready(function () {
+                    $('#AirportIdentifier').autocomplete({
+                        source: '/Home/AutocompleteAirportIdentifier',
+                        select: function (event, ui) {
+
+                        $.ajax({  
+                            type: "POST",  
+                            url: "/Home/PopulateRunways?airportIdentifier=" + ui.item.label,  
+                            data: "{}",  
+                            success: function (data) {  
+                                var s = '<option value="-1">Select...</option>';  
+                                for (var i = 0; i < data.length; i++) {  
+                                    s += '<option value="' + data[i].label + '">' + data[i].label + '</option>';  
+                                }  
+                                $("#RunwayIdentifier").html(s);  
+
+                            $.ajax({  
+                                type: "POST",  
+                                url: "/Home/GetAirportInformation?airportIdentifier=" + ui.item.label,  
+                                data: "{}",  
+                                success: function (data) {  
+                                    $("#FieldElevation").val(data.fieldElevation);  
+                                }  
+                            });   
+
+
+                            }  
+                        });                             
+
+                            //If you want to do something on the select event, you may do it here
+                            //$("#tags").html(ui.item.label);
+                        }
+                    });
+
+                    $('#RunwayIdentifier').on('change', function() {               
+                        if ($("#RunwayIdentifier").val() != -1) {                                
+                            $.ajax({
+                                url: '/Home/GetRunwayDetail?airportIdentifier=' + $('#AirportIdentifier').val() + "&runwayId=" + $(this).val(),
+                                type: 'POST',
+                                success: function (response){                      
+ 
+                                    $("#RunwayLength").val(response.runwayLength.valueOf());
+                                    
+                                    if($("#RunwayIdentifier option:selected").val() == response.runwayIdentifier_Primary.valueOf() )
+                                    {
+                                        $("#RunwayHeading").val(response.runwayIdentifier_Primary.valueOf() * 10);
+                                    }
+                                    else
+                                    {
+                                        $("#RunwayHeading").val(response.runwayIdentifier_Secondary.valueOf() * 10);
+                                    }
+
+                                },
+                                error: function (xhr) {
+                                    alert("Something went wrong, please try again");
+                                }
+                            });
+                        }
+
+                    });
+                });
+            </script>
+        }         
+    </div>    
+
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario: *</label>
         <div class="col-sm-2">
