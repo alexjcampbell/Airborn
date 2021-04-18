@@ -23,7 +23,8 @@ RUN dotnet publish "airborn.web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ["airborn.web/SR22_G2.json", "/app/publish/wwwroot"]
+COPY ["SR22_G2.json", "/app/publish/wwwroot"]
+COPY ["C172_SP.json", "/app/publish/wwwroot"]
 COPY ["airborn.web/airborn.db", "/app"]
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet airborn.web.dll
 
