@@ -9,14 +9,16 @@ namespace Airborn.Tests
 
         private const string _testJsonPath = "../../SR22_G2.json";
 
+        private int _defaultMagneticVariation = -20;
+
         [TestMethod]
         public void TestJsonRead()
         {
 
             // crosswind from the left
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(250, -20, 20)
+                Runway.FromMagnetic(300,_defaultMagneticVariation),
+                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
                 );
 
             scenario.TemperatureCelcius = 12;
@@ -45,8 +47,8 @@ namespace Airborn.Tests
         {
 
           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(250, -20, 20)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -66,8 +68,8 @@ namespace Airborn.Tests
         {
 
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(250, -20, 20)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -118,8 +120,8 @@ namespace Airborn.Tests
         public void Test_Takeoff_GroundRollDistance_NoWind()
         {
           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(340, -20, 0)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -138,8 +140,8 @@ namespace Airborn.Tests
         public void Test_Takeoff_50FtClearanceDistance_NoWind()
         {
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(340, -20, 0)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -158,8 +160,8 @@ namespace Airborn.Tests
         public void Test_Landing_GroundRollDistance_NoWind()
         {
           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(340, -20, 0)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -178,8 +180,8 @@ namespace Airborn.Tests
         public void Test_Landing_50FtClearanceDistance_NoWind()
         {
           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(340, -20, 0)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -199,8 +201,8 @@ namespace Airborn.Tests
         {
             // 12 knots straight down the runway
           Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(300, -20, 12)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(300, _defaultMagneticVariation, 12)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -221,8 +223,8 @@ namespace Airborn.Tests
             // 2 knots direct tailwind
 
            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, -20),
-                Wind.FromMagnetic(90, -20, 2)
+                Runway.FromMagnetic(270, _defaultMagneticVariation),
+                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -243,8 +245,8 @@ namespace Airborn.Tests
         {
             // 12 knots straight down the runway
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, -20),
-                Wind.FromMagnetic(300, -20, 13)
+                Runway.FromMagnetic(300, _defaultMagneticVariation),
+                Wind.FromMagnetic(300, _defaultMagneticVariation, 13)
             );
 
             scenario.TemperatureCelcius = 15;
@@ -264,8 +266,8 @@ namespace Airborn.Tests
         {
             // 2 knots direct tailwind
             Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, -20),
-                Wind.FromMagnetic(90, -20, 2)
+                Runway.FromMagnetic(270, _defaultMagneticVariation),
+                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
                 );
 
             scenario.TemperatureCelcius = 15;
@@ -278,7 +280,50 @@ namespace Airborn.Tests
 
             Assert.AreEqual(1325.5,result);
 
+        }          
+
+
+       [TestMethod]
+        public void Test_InchesOfMercuryToMillibars()
+        {
+            // 2 knots direct tailwind
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(270, _defaultMagneticVariation),
+                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
+                );
+
+            scenario.TemperatureCelcius = 15;
+            scenario.QNH = (int)Scenario.ConvertInchesOfMercuryToMillibars(29.92M);
+            scenario.FieldElevation = 1500;
+
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+
+            double? result = ap.Landing_GroundRoll;
+
+            Assert.AreEqual(1325.5,result);
+
         }              
+
+       [TestMethod]
+        public void Test_FahrenheightToCentigrade()
+        {
+            // 2 knots direct tailwind
+            Scenario scenario = new Scenario(
+                Runway.FromMagnetic(270, _defaultMagneticVariation),
+                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
+                );
+
+            scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(59M);
+            scenario.QNH = 1013;
+            scenario.FieldElevation = 1500;
+
+            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+
+            double? result = ap.Landing_GroundRoll;
+
+            Assert.AreEqual(1325.5,result);
+
+        }      
 
     }
 }
