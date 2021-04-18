@@ -186,7 +186,22 @@ namespace Airborn.web.Models
             }
         }
 
-        public string? CrosswindComponentText
+        public double? CrosswindComponentAbs
+        {
+            get {
+                
+                var crosswindComponent = AircraftPerformance?.Scenario?.CrosswindComponent;
+
+                if(crosswindComponent < 0)
+                {
+                    crosswindComponent = crosswindComponent * -1;
+                }
+
+                return crosswindComponent;
+            }
+        }        
+
+        public string CrosswindComponentText
         {
             get {
                 if(AircraftPerformance?.Scenario?.CrosswindComponent > 0)
@@ -201,7 +216,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string? HeadwindComponentText
+        public string HeadwindComponentText
         {
             get {
                 if(AircraftPerformance?.Scenario?.HeadwindComponent > 0)
@@ -212,7 +227,7 @@ namespace Airborn.web.Models
                 {
                     return "Tailwind";
                 }                
-                return "";
+                return "Headwind";
             }
         }
         public double? HeadwindComponent
@@ -222,6 +237,21 @@ namespace Airborn.web.Models
             }
             
         }
+
+       public double? HeadwindComponentAbs
+        {
+            get {
+                
+                var headwindComponent = AircraftPerformance?.Scenario?.HeadwindComponent;
+
+                if(headwindComponent < 0)
+                {
+                    headwindComponent = headwindComponent * -1;
+                }
+
+                return headwindComponent;
+            }
+        }      
 
         public double? PercentageRunwayUsed_GroundRoll
         {

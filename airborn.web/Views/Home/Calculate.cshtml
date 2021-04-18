@@ -176,7 +176,7 @@
             <input asp-for="Temperature" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            <select width="3" asp-for="TemperatureType" class="form-control" >
+            <select style="width:auto;" asp-for="TemperatureType" class="form-control" >
                 <option value="C">°C</option>
                 <option value="F">°F</option>
             </select>            
@@ -186,9 +186,9 @@
             <input asp-for="AltimeterSetting" class="form-control" maxlength="10" />
         </div>
         <div class="col-sm-1">
-            <select width="3" asp-for="AltimeterSettingType" class="form-control" >
+            <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control" >
                 <option value="MB">mb</option>
-                <option value="HG">inHg</option>
+                <option value="HG">Hg</option>
             </select>
         </div>           
     </div>
@@ -214,6 +214,21 @@
         <div class="col-sm-1">
             ft
         </div>           
+
+        <div class="col-sm-2">
+            % Runway Used:
+        </div>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
+        </div>
+        <div class="col-sm-1">
+            %
+        </div>
+
+    </div>
+
+    <div class="form-group row g-3 align-items-center">
+
         <div class="col-sm-2">
             50' Obstacle:
         </div>
@@ -222,27 +237,15 @@
         </div>
         <div class="col-sm-1">
             ft
-        </div>
-    </div>
-
-    <div class="form-group row g-3 align-items-center">
+        </div>        
         <div class="col-sm-2">
-            Ground Roll<br/>% Runway Used:
-        </div>
-        <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
-        </div>
-        <div class="col-sm-1">
-            ft
-        </div>            
-        <div class="col-sm-2">
-            50' Obsctacle<br />% Runway Used:
+            % Runway Used:
         </div>
         <div class="col-sm-2">
             @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control" })
         </div>
         <div class="col-sm-1">
-            ft
+            %
         </div>
     </div>
 
@@ -251,16 +254,16 @@
             @Model.CrosswindComponentText Crosswind:
         </div>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.CrosswindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.CrosswindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
         </div>
         <div class="col-sm-1">
             kts 
         </div>           
         <div class="col-sm-2">
-            @Model.HeadwindComponentText :
+            @Model.HeadwindComponentText:
         </div>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.HeadwindComponent, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.HeadwindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
         </div>
         <div class="col-sm-1">
             kts 
