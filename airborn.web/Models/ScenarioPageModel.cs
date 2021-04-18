@@ -295,7 +295,7 @@ namespace Airborn.web.Models
 
             Wind wind = Wind.FromMagnetic(
                 WindDirectionMagnetic.Value, 
-                MagneticVariation.Value, 
+                MagneticVariation.GetValueOrDefault(), 
                 WindStrength.Value
                 );
             
