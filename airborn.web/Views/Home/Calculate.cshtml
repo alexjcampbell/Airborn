@@ -18,14 +18,14 @@
     <br/>
 
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label">Airport: *</label>
+        <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label">Airport: </label>
         <div class="col-sm-2">
             <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"/>
         </div>
 
         <div class="col-sm-1">
         </div>        
-        <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label">Runway: *</label>
+        <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label">Runway: </label>
         <div class="col-sm-2">
             <select asp-for="RunwayIdentifier" class="form-control" >
                 @foreach (Runway runway in Model?.Runways) 
