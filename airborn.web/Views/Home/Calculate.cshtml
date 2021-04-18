@@ -18,18 +18,18 @@
     <br/>
 
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="ScenarioType" class="col-sm-2 col-form-label">Scenario: *</label>
+        <label asp-for="ScenarioType" class="col-sm-2 col-form-label col-form-label-sm">Scenario: *</label>
         <div class="col-sm-2">
-            <select asp-for="ScenarioType" class="form-control" >
+            <select asp-for="ScenarioType" class="form-control form-control-sm" >
                 <option value="Takeoff">Takeoff</option>
                 <option value="Landing">Landing</option>
             </select>
         </div>
         <div class="col-sm-1">
         </div>        
-        <label asp-for="AircraftType" class="col-sm-2 col-form-label">Aircraft Type: *</label>
+        <label asp-for="AircraftType" class="col-sm-2 col-form-label col-form-label-sm">Aircraft Type: *</label>
         <div class="col-sm-2">
-            <select asp-for="AircraftType" class="form-control" >
+            <select asp-for="AircraftType" class="form-control form-control-sm" >
                 <option value="SR22_G2">Cirrus SR22 G2</option>
                 <option value="C172_SP">Cessna 172SP</option>
             </select>
@@ -37,26 +37,24 @@
     </div>
 
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="AircraftWeight" class="col-sm-2 col-form-label">Aircraft Weight: *</label>
+        <label asp-for="AircraftWeight" class="col-sm-2 col-form-label col-form-label-sm">Aircraft Weight: *</label>
         <div class="col-sm-2">
-            <input asp-for="AircraftWeight" class="form-control" maxlength="10" />
+            <input asp-for="AircraftWeight" class="form-control form-control-sm" maxlength="10" />
         </div>
-        <div class="col-sm-1">
-            lbs
-        </div>         
+        <label class="col-sm-1 col-form-label col-form-label-sm">lbs</label>      
     </div>
 
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label">Airport: </label>
+        <label asp-for="AirportIdentifier" class="col-sm-2 col-form-label col-form-label-sm">Airport: </label>
         <div class="col-sm-2">
-            <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"/>
+            <input asp-for="AirportIdentifier" class="form-control form-control-sm" autocomplete="off" id="AirportIdentifier"/>
         </div>
 
         <div class="col-sm-1">
         </div>        
-        <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label">Runway: </label>
+        <label asp-for="RunwayIdentifier" class="col-sm-2 col-form-label col-form-label-sm">Runway: </label>
         <div class="col-sm-2">
-            <select asp-for="RunwayIdentifier" class="form-control" >
+            <select asp-for="RunwayIdentifier" class="form-control form-control-sm" >
                 @foreach (Runway runway in Model?.Runways) 
                     {<option value="@runway.RunwayIdentifier_Primary">@runway.RunwayIdentifier_Primary</option>
                     <option value="@runway.RunwayIdentifier_Secondary">@runway.RunwayIdentifier_Secondary</option>}
@@ -132,34 +130,30 @@
         }         
     </div>    
  
-    <div class="form-group row g-3 align-items-center">
-        <label asp-for="RunwayHeading" class="col-sm-2 col-form-label">Runway Heading: *</label>
+    <div class="form-group row g-3 align-items-center">    
+        <label asp-for="FieldElevation" class="col-sm-2 col-form-label col-form-label-sm">Field Elevation: *</label>
         <div class="col-sm-2">
-            <input asp-for="RunwayHeading" class="form-control" maxlength="10" C
+            <input asp-for="FieldElevation" class="form-control form-control-sm" maxlength="10" />
+        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>      
+
+        <label asp-for="RunwayHeading" class="col-sm-2 col-form-label col-form-label-sm">Runway Heading: *</label>
+        <div class="col-sm-2">
+            <input asp-for="RunwayHeading" class="form-control form-control-sm" maxlength="10" C
             data-val-required="Runway Heading is required"/>
         </div>
-        <div class="col-sm-1">
-            °M
-        </div>             
-        <label asp-for="FieldElevation" class="col-sm-2 col-form-label">Field Elevation: *</label>
-        <div class="col-sm-2">
-            <input asp-for="FieldElevation" class="form-control" maxlength="10" />
-        </div>
-        <div class="col-sm-1">
-            ft
-        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">°M</label>              
     </div>
+
     <div class="form-group row g-3 align-items-center">       
-       <label asp-for="RunwayLength" class="col-sm-2 col-form-label">Runway Length:</label>
+       <label asp-for="RunwayLength" class="col-sm-2 col-form-label col-form-label-sm">Runway Length:</label>
         <div class="col-sm-2">
-            <input asp-for="RunwayLength" class="form-control" maxlength="10" />
+            <input asp-for="RunwayLength" class="form-control form-control-sm" maxlength="10" />
         </div>
-        <div class="col-sm-1">
-            ft
-        </div>        
-        <label asp-for="RunwaySurface" class="col-sm-2 col-form-label">Runway Surface: *</label>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>      
+        <label asp-for="RunwaySurface" class="col-sm-2 col-form-label col-form-label-sm">Runway Surface: *</label>
         <div class="col-sm-2">
-            <select asp-for="RunwaySurface" class="form-control" >
+            <select asp-for="RunwaySurface" class="form-control form-control-sm" >
                 <option value="Paved">Paved</option>
                 <option value="DryGrass">Dry Grass</option>                
             </select>
@@ -167,38 +161,36 @@
          
     </div>    
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label">Wind Direction: *</label>
+        <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label col-form-label-sm">Wind Direction: *</label>
         <div class="col-sm-2">
-            <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="10" />
+            <input asp-for="WindDirectionMagnetic" class="form-control form-control-sm" maxlength="3" />
         </div>
-        <div class="col-sm-1">
-            °M
-        </div>                  
-        <label asp-for="WindStrength" class="col-sm-2 col-form-label">Wind Strength: *</label>
+        <label class="col-sm-1 col-form-label col-form-label-sm">°M</label>              
+    
+        <label asp-for="WindStrength" class="col-sm-2 col-form-label col-form-label-sm">Wind Strength: *</label>
         <div class="col-sm-2">
-            <input asp-for="WindStrength" class="form-control" maxlength="10" />
+            <input asp-for="WindStrength" class="form-control form-control-sm" maxlength="3" />
         </div>
-        <div class="col-sm-1">
-            kts
-        </div>                
+        <label class="col-sm-1 col-form-label col-form-label-sm">kts</label>              
+            
     </div>
     <div class="form-group row g-3 align-items-center">
-        <label asp-for="Temperature" class="col-sm-2 col-form-label">Temperature: *</label>
+        <label asp-for="Temperature" class="col-sm-2 col-form-label col-form-label-sm">Temperature: *</label>
         <div class="col-sm-2">
-            <input asp-for="Temperature" class="form-control" maxlength="10" />
+            <input asp-for="Temperature" class="form-control form-control-sm" maxlength="2" />
         </div>
         <div class="col-sm-1">
-            <select style="width:auto;" asp-for="TemperatureType" class="form-control" >
+            <select style="width:auto;" asp-for="TemperatureType" class="form-control form-control-sm" >
                 <option value="C">°C</option>
                 <option value="F">°F</option>
             </select>            
         </div>             
-        <label asp-for="AltimeterSetting" class="col-sm-2 col-form-label">Altimeter Setting: *</label>
+        <label asp-for="AltimeterSetting" class="col-sm-2 col-form-label col-form-label-sm">Altimeter Setting: *</label>
         <div class="col-sm-2">
-            <input asp-for="AltimeterSetting" class="form-control" maxlength="10" />
+            <input asp-for="AltimeterSetting" class="form-control form-control-sm" maxlength="5" />
         </div>
         <div class="col-sm-1">
-            <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control" >
+            <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control form-control-sm" >
                 <option value="MB">mb</option>
                 <option value="HG">Hg</option>
             </select>
@@ -217,91 +209,67 @@
     <br/>
 
     <div class="form-group row g-3 align-items-center">
+        <label class="col-sm-2 col-form-label col-form-label-sm">Ground Roll:</label>
         <div class="col-sm-2">
-            Ground Roll:
+            @Html.TextBoxFor(s => s.Distance_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
+          
+        <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.Distance_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
-        <div class="col-sm-1">
-            ft
-        </div>           
+        <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
 
-        <div class="col-sm-2">
-            % Runway Used:
-        </div>
-        <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control" })
-        </div>
-        <div class="col-sm-1">
-            %
-        </div>
 
     </div>
 
     <div class="form-group row g-3 align-items-center">
 
+        <label class="col-sm-2 col-form-label col-form-label-sm">50' Obstacle:</label>
+            
         <div class="col-sm-2">
-            50' Obstacle:
+            @Html.TextBoxFor(s => s.Distance_Clear50Ft, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
+    
+        <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.Distance_Clear50Ft, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
-        <div class="col-sm-1">
-            ft
-        </div>        
-        <div class="col-sm-2">
-            % Runway Used:
-        </div>
-        <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control" })
-        </div>
-        <div class="col-sm-1">
-            %
-        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
+
     </div>
 
     <div class="form-group row g-3 align-items-center">
+
+        <label class="col-sm-2 col-form-label col-form-label-sm">@Model.CrosswindComponentText Crosswind:</label>
+
         <div class="col-sm-2">
-            @Model.CrosswindComponentText Crosswind:
+            @Html.TextBoxFor(s => s.CrosswindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">kts</label>              
+      
+        <label class="col-sm-2 col-form-label col-form-label-sm">@Model.HeadwindComponentText:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.CrosswindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.HeadwindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
-        <div class="col-sm-1">
-            kts 
-        </div>           
-        <div class="col-sm-2">
-            @Model.HeadwindComponentText:
-        </div>
-        <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.HeadwindComponentAbs, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
-        </div>
-        <div class="col-sm-1">
-            kts 
-        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">kts</label>      
     </div>
 
 
     <div class="form-group row g-3 align-items-center">
+        <label class="col-sm-2 col-form-label col-form-label-sm">Pressure Altitude:</label>
         <div class="col-sm-2">
-            Pressure Altitude:
+            @Html.TextBoxFor(s => s.PressureAltitude, "{0:0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>            
+            
+        <label class="col-sm-2 col-form-label col-form-label-sm">Density Altitude:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PressureAltitude, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
+            @Html.TextBoxFor(s => s.DensityAltitude, "{0:0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
-        <div class="col-sm-1">
-            ft
-        </div>            
-        <div class="col-sm-2">
-            Density Altitude:
-        </div>
-        <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.DensityAltitude, "{0:0.00}", new { @readonly="readonly", @class="form-control" })
-        </div>
-        <div class="col-sm-1">
-            ft
-        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>            
     </div>
 
 </form>
