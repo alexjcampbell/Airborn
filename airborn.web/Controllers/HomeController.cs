@@ -132,12 +132,12 @@ namespace Airborn.Controllers
                 DateTime start = DateTime.Now;
 
                 var airportIdentifiers = (from airport in db.Airports
-                                          where airport.Ident.StartsWith(term.ToUpper())
+                                          where airport.Ident.Contains(term.ToUpper())
                                           select new
                                           {
                                               label = airport.Ident,
                                               val = airport.Id
-                                          }).ToList();
+                                          }).Take(20).ToList();
 
                 DateTime end = DateTime.Now;
 
