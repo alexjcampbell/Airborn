@@ -13,7 +13,9 @@
 
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    
+
+    <h6> Tell us about your flight</h6>
+
      <div class="form-group row g-3 align-items-center">
         <label asp-for="ScenarioType" class="col-sm-2 col-form-label col-form-label-sm">Scenario: *</label>
         <div class="col-sm-2">
@@ -156,6 +158,9 @@
         </div>    
          
     </div>    
+
+<h6> Tell us about the weather</h6>
+
     <div class="form-group row g-3 align-items-center">
         <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label col-form-label-sm">Wind Direction: *</label>
         <div class="col-sm-2">
@@ -201,7 +206,7 @@
 
     <br />
 
-    <h6>Our Calculations</h6>
+    <h6>What you need to know</h6>
     <br/>
 
     <div class="form-group row g-3 align-items-center">
