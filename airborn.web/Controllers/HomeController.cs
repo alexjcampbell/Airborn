@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Airborn.web.Models;
 using Microsoft.AspNetCore.Hosting;
+using Airborn.web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.Controllers
 {
@@ -125,23 +126,23 @@ namespace Airborn.Controllers
 
             // todo: move this out of the controller and into a ScenarioPageModel
 
-
+            term = term.ToUpper();
 
             using (var db = new AirportDbContext())
             {
                 DateTime start = DateTime.Now;
 
                 var airportIdentifiers = (from airport in db.Airports
-                                          where airport.Ident.StartsWith(term.ToUpper())
+                                          where EF.Functions.Like(airport.Ident, term + "%")
                                           select new
                                           {
                                               label = airport.Ident,
                                               val = airport.Id
-                                          }).Take(20).ToList();
+                                          }).AsNoTracking().Take(20).ToList();
 
                 DateTime end = DateTime.Now;
 
-                Trace.Write(end - start);
+                Trace.WriteLine($"Query time taken: {(end - start).TotalSeconds}");
 
                 return Json(airportIdentifiers);
             }
