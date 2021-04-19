@@ -11,6 +11,6 @@ namespace Airborn.web.Models
         public DbSet<Runway> Runways { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=airborn.db");
+            => options.UseSqlite(@"Data Source=airborn.db;");
     }
 }
