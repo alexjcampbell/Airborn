@@ -33,9 +33,28 @@ namespace Airborn.Controllers
 
             ScenarioPageModel model = new ScenarioPageModel();
 
-            if (Request.Cookies["FieldElevation"]?.Length > 0)
+            if (Request.Cookies["TemperatureType"]?.Length > 0)
             {
-                model.FieldElevation = int.Parse(Request.Cookies["FieldElevation"]);
+                if (Request.Cookies["TemperatureType"] == "C")
+                {
+                    model.TemperatureType = TemperatureType.C;
+                }
+                else if (Request.Cookies["TemperatureType"] == "F")
+                {
+                    model.TemperatureType = TemperatureType.F;
+                }
+            }
+
+            if (Request.Cookies["AltimeterSettingType"]?.Length > 0)
+            {
+                if (Request.Cookies["AltimeterSettingType"] == "MB")
+                {
+                    model.AltimeterSettingType = AltimeterSettingType.MB;
+                }
+                else if (Request.Cookies["AltimeterSettingType"] == "HG")
+                {
+                    model.AltimeterSettingType = AltimeterSettingType.HG;
+                }
             }
 
             if (Request.Cookies["MagneticVariation"]?.Length > 0)
@@ -94,11 +113,9 @@ namespace Airborn.Controllers
                 return View();
             }
 
-            HttpContext.Response.Cookies.Append("FieldElevation", model.FieldElevation.ToString());
+            HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());
+            HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());
             HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
-
-            // todo: move this out of the controller and into a ScenarioPageModel
-
 
             return View(model);
         }
