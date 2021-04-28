@@ -196,6 +196,11 @@ namespace Airborn.web.Models
 
         public static double CalculateInterpolationFactor(int value, int x1, int x2)
         {
+            if (value < 0)
+            {
+                throw new PressureAltitudePerformanceProfileNotFoundException(value);
+            }
+
             if (value < x1) { throw new ArgumentOutOfRangeException(); }
             if (value > x2) { throw new ArgumentOutOfRangeException(); }
 

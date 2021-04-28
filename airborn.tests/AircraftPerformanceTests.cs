@@ -107,12 +107,17 @@ namespace Airborn.Tests
             Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 10));
             Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(5, 10));
             Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(9, 10));
+
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 10));
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(5, 10));
+            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(9, 10));
         }
 
         [TestMethod]
         public void Test_Interpolate()
         {
             Assert.AreEqual(1175, AircraftPerformanceBase.Interpolate(1150, 1200, 15, 10));
+            Assert.AreEqual(1100, AircraftPerformanceBase.Interpolate(1100, 1200, 10, 10));
             Assert.AreEqual(1420, AircraftPerformanceBase.Interpolate(1400, 1500, 1200, 1000));
         }
 
