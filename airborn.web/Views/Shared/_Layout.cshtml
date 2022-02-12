@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,34 +11,37 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLYV6EZ8FE"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-    gtag('config', 'G-VLYV6EZ8FE');
+        gtag('config', 'G-VLYV6EZ8FE');
     </script>
 
 </head>
+
 <body>
 
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Calculate">
-                    <img src="~/logo_200x80.png" alt="Airborn.co logo"/>
-                    
+                    <img src="~/logo_200x80.png" alt="Airborn.co logo" />
+
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Calculate">Plan Flight</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Calculate">Plan
+                                Flight</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="About"
+                                asp-action="About">About</a>
                         </li>
                     </ul>
                 </div>
@@ -52,7 +56,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Airborn.co - this site is for entertainment purposes only and all use is subject to the <a asp-area="" asp-controller="Home" asp-action="Terms">Terms & Conditions</a>
+            &copy; 2021 - Airborn.co - this site is for entertainment purposes only and all use is subject to the <a
+                asp-area="" asp-controller="Home" asp-action="Terms">Terms & Conditions</a>
         </div>
     </footer>
 
@@ -64,4 +69,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
