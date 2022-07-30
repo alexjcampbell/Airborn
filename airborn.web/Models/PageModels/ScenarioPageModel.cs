@@ -33,6 +33,7 @@ namespace Airborn.web.Models
     public enum AircraftType
     {
         SR22_G2,
+        SR22T_G5,
         C172_SP
     }
 
@@ -375,6 +376,10 @@ namespace Airborn.web.Models
             else if (AircraftType == AircraftType.SR22_G2)
             {
                 AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, System.IO.Path.Combine(rootPath, "../SR22_G2.json"));
+            }
+            else if (AircraftType == AircraftType.SR22T_G5)
+            {
+                AircraftPerformance = new AircraftPerformance_SR22T_G5(scenario, System.IO.Path.Combine(rootPath, "../SR22T_G5.json"));
             }
             else
             {
