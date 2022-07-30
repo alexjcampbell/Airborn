@@ -1,5 +1,5 @@
 {
-    "ID": "SR22_G2_3400lbs",
+    "ID": "C172_SP_2550",
     "Profiles":[
       {
         "Type": "Takeoff",
@@ -8,45 +8,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 917
+            "Distance": 860
           },
           {
             "Temperature": 10,
-            "Distance": 990
+            "Distance": 925
           },
           {
             "Temperature": 20,
-            "Distance": 1067
+            "Distance": 995
           },
           {
             "Temperature": 30,
-            "Distance": 1146
+            "Distance": 1070
           },
           {
             "Temperature": 40,
-            "Distance": 1229
+            "Distance": 1150
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 1432
+            "Distance": 1465
           },
           {
             "Temperature": 10,
-            "Distance": 1539
+            "Distance": 1575
           },
           {
             "Temperature": 20,
-            "Distance": 1650
+            "Distance": 1690
           },
           {
             "Temperature": 30,
-            "Distance": 1764
+            "Distance": 1810
           },
           {
             "Temperature": 40,
-            "Distance": 1883
+            "Distance": 1945
           }
         ]
       },
@@ -57,45 +57,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1011
+            "Distance": 940
           },
           {
             "Temperature": 10,
-            "Distance": 1092
+            "Distance": 1010
           },
           {
             "Temperature": 20,
-            "Distance": 1176
+            "Distance": 1090
           },
           {
             "Temperature": 30,
-            "Distance": 1264
+            "Distance": 1170
           },
           {
             "Temperature": 40,
-            "Distance": 1355
+            "Distance": 1260
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 1574
+            "Distance": 1600
           },
           {
             "Temperature": 10,
-            "Distance": 1691
+            "Distance": 1720
           },
           {
             "Temperature": 20,
-            "Distance": 1813
+            "Distance": 1850
           },
           {
             "Temperature": 30,
-            "Distance": 1939
+            "Distance": 2035
           },
           {
             "Temperature": 40,
-            "Distance": 2069
+            "Distance": 2190
           }
         ]
       },
@@ -106,45 +106,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1116
+            "Distance": 1025
           },
           {
             "Temperature": 10,
-            "Distance": 1206
+            "Distance": 1110
           },
           {
             "Temperature": 20,
-            "Distance": 1299
+            "Distance": 1195
           },
           {
             "Temperature": 30,
-            "Distance": 1395
+            "Distance": 1285
           },
           {
             "Temperature": 40,
-            "Distance": 1496
+            "Distance": 1380
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 1732
+            "Distance": 1755
           },
           {
             "Temperature": 10,
-            "Distance": 1861
+            "Distance": 1890
           },
           {
             "Temperature": 20,
-            "Distance": 1995
+            "Distance": 2035
           },
           {
             "Temperature": 30,
-            "Distance": 2133
+            "Distance": 2190
           },
           {
             "Temperature": 40,
-            "Distance": 2276
+            "Distance": 2355
           }
         ]
       },
@@ -155,45 +155,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1234
+            "Distance": 1125
           },
           {
             "Temperature": 10,
-            "Distance": 1332
+            "Distance": 1215
           },
           {
             "Temperature": 20,
-            "Distance": 1435
+            "Distance": 1310
           },
           {
             "Temperature": 30,
-            "Distance": 1542
+            "Distance": 1410
           },
           {
             "Temperature": 40,
-            "Distance": 1653
+            "Distance": 1515
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 1907
+            "Distance": 1925
           },
           {
             "Temperature": 10,
-            "Distance": 2049
+            "Distance": 2080
           },
           {
             "Temperature": 20,
-            "Distance": 2196
+            "Distance": 2240
           },
           {
             "Temperature": 30,
-            "Distance": 2349
+            "Distance": 2420
           },
           {
             "Temperature": 40,
-            "Distance": 2507
+            "Distance": 2605
           }
         ]
       },
@@ -204,45 +204,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1365
+            "Distance": 1235
           },
           {
             "Temperature": 10,
-            "Distance": 1474
+            "Distance": 1335
           },
           {
             "Temperature": 20,
-            "Distance": 1588
+            "Distance": 1440
           },
           {
             "Temperature": 30,
-            "Distance": 1706
+            "Distance": 1550
           },
           {
             "Temperature": 40,
-            "Distance": 1829
+            "Distance": 1660
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2102
+            "Distance": 2120
           },
           {
             "Temperature": 10,
-            "Distance": 2259
+            "Distance": 2295
           },
           {
             "Temperature": 20,
-            "Distance": 2422
+            "Distance": 2480
           },
           {
             "Temperature": 30,
-            "Distance": 2590
+            "Distance": 2685
           },
           {
             "Temperature": 40,
-            "Distance": 2764
+            "Distance": 2880
           }
         ]
       },
@@ -253,45 +253,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1512
+            "Distance": 1355
           },
           {
             "Temperature": 10,
-            "Distance": 1633
+            "Distance": 1465
           },
           {
             "Temperature": 20,
-            "Distance": 1758
+            "Distance": 1585
           },
           {
             "Temperature": 30,
-            "Distance": 1889
+            "Distance": 1705
           },
           {
             "Temperature": 40,
-            "Distance": 2025
+            "Distance": 1825
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2320
+            "Distance": 2345
           },
           {
             "Temperature": 10,
-            "Distance": 2493
+            "Distance": 2545
           },
           {
             "Temperature": 20,
-            "Distance": 2673
+            "Distance": 2755
           },
           {
             "Temperature": 30,
-            "Distance": 2858
+            "Distance": 2975
           },
           {
             "Temperature": 40,
-            "Distance": 3051
+            "Distance": 3205
           }
         ]
       },
@@ -302,45 +302,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1676
+            "Distance": 1495
           },
           {
             "Temperature": 10,
-            "Distance": 1810
+            "Distance": 1615
           },
           {
             "Temperature": 20,
-            "Distance": 1950
+            "Distance": 1745
           },
           {
             "Temperature": 30,
-            "Distance": 2095
+            "Distance": 1875
           },
           {
             "Temperature": 40,
-            "Distance": 2245
+            "Distance": 3320
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2564
+            "Distance": 2605
           },
           {
             "Temperature": 10,
-            "Distance": 2755
+            "Distance": 2830
           },
           {
             "Temperature": 20,
-            "Distance": 2953
+            "Distance": 3075
           },
           {
             "Temperature": 30,
-            "Distance": 3159
+            "Distance": 3320
           },
           {
             "Temperature": 40,
-            "Distance": 3371
+            "Distance": 3585
           }
         ]
       },
@@ -352,45 +352,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1861
+            "Distance": 1645
           },
           {
             "Temperature": 10,
-            "Distance": 2009
+            "Distance": 1785
           },
           {
             "Temperature": 20,
-            "Distance": 2164
+            "Distance": 1920
           },
           {
             "Temperature": 30,
-            "Distance": 2325
+            "Distance": 2065
           },
           {
             "Temperature": 40,
-            "Distance": 2492
+            "Distance": 2215
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2837
+            "Distance": 2910
           },
           {
             "Temperature": 10,
-            "Distance": 3048
+            "Distance": 3170
           },
           {
             "Temperature": 20,
-            "Distance": 3267
+            "Distance": 3440
           },
           {
             "Temperature": 30,
-            "Distance": 3494
+            "Distance": 3730
           },
           {
             "Temperature": 40,
-            "Distance": 3729
+            "Distance": 4045
           }
         ]
       },
@@ -401,150 +401,48 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 2068
+            "Distance": 1820
           },
           {
             "Temperature": 10,
-            "Distance": 2233
+            "Distance": 1970
           },
           {
             "Temperature": 20,
-            "Distance": 2405
+            "Distance": 2120
           },
           {
             "Temperature": 30,
-            "Distance": 2584
+            "Distance": 2280
           },
           {
             "Temperature": 40,
-            "Distance": 2770
+            "Distance": 2450
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 3142
+            "Distance": 3265
           },
           {
             "Temperature": 10,
-            "Distance": 3376
+            "Distance": 3575
           },
           {
             "Temperature": 20,
-            "Distance": 3619
+            "Distance": 3880
           },
           {
             "Temperature": 30,
-            "Distance": 3871
+            "Distance": 4225
           },
           {
             "Temperature": 40,
-            "Distance": 4131
+            "Distance": 4615
           }
         ]
       },
-      {
-        "Type": "Takeoff",
-        "PressureAltitude": 9000,
-  
-        "GroundRoll": [
-          {
-            "Temperature": 0,
-            "Distance": 2302
-          },
-          {
-            "Temperature": 10,
-            "Distance": 2485
-          },
-          {
-            "Temperature": 20,
-            "Distance": 2677
-          },
-          {
-            "Temperature": 30,
-            "Distance": 2875
-          },
-          {
-            "Temperature": 40,
-            "Distance": 3082
-          }
-        ],
-        "Clear50FtObstacle": [
-          {
-            "Temperature": 0,
-            "Distance": 3485
-          },
-          {
-            "Temperature": 10,
-            "Distance": 3744
-          },
-          {
-            "Temperature": 20,
-            "Distance": 4014
-          },
-          {
-            "Temperature": 30,
-            "Distance": 4293
-          },
-          {
-            "Temperature": 40,
-            "Distance": 4581
-          }
-        ]
-      },
-      {
-        "Type": "Takeoff",
-        "PressureAltitude": 10000,
-  
-        "GroundRoll": [
-          {
-            "Temperature": 0,
-            "Distance": 2564
-          },
-          {
-            "Temperature": 10,
-            "Distance": 2769
-          },
-          {
-            "Temperature": 20,
-            "Distance": 2982
-          },
-          {
-            "Temperature": 30,
-            "Distance": 3204
-          },
-          {
-            "Temperature": 40,
-            "Distance": 3434
-          }
-        ],
-        "Clear50FtObstacle": [
-          {
-            "Temperature": 0,
-            "Distance": 3870
-          },
-          {
-            "Temperature": 10,
-            "Distance": 4158
-          },
-          {
-            "Temperature": 20,
-            "Distance": 4457
-          },
-          {
-            "Temperature": 30,
-            "Distance": 4767
-          },
-          {
-            "Temperature": 40,
-            "Distance": 5088
-          }
-        ]
-      },
-
-
-
-
 
       {
         "Type": "Landing",
@@ -553,45 +451,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1082
+            "Distance": 545
           },
           {
             "Temperature": 10,
-            "Distance": 1121
+            "Distance": 565
           },
           {
             "Temperature": 20,
-            "Distance": 1161
+            "Distance": 585
           },
           {
             "Temperature": 30,
-            "Distance": 1200
+            "Distance": 605
           },
           {
             "Temperature": 40,
-            "Distance": 1240
+            "Distance": 625
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2262
+            "Distance": 1290
           },
           {
             "Temperature": 10,
-            "Distance": 2316
+            "Distance": 1320
           },
           {
             "Temperature": 20,
-            "Distance": 2372
+            "Distance": 1350
           },
           {
             "Temperature": 30,
-            "Distance": 2428
+            "Distance": 1380
           },
           {
             "Temperature": 40,
-            "Distance": 2485
+            "Distance": 1415
           }
         ]
       },
@@ -602,45 +500,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1122
+            "Distance": 565
           },
           {
             "Temperature": 10,
-            "Distance": 1163
+            "Distance": 585
           },
           {
             "Temperature": 20,
-            "Distance": 1204
+            "Distance": 605
           },
           {
             "Temperature": 30,
-            "Distance": 1245
+            "Distance": 625
           },
           {
             "Temperature": 40,
-            "Distance": 1286
+            "Distance": 650
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2317
+            "Distance": 1320
           },
           {
             "Temperature": 10,
-            "Distance": 2374
+            "Distance": 1350
           },
           {
             "Temperature": 20,
-            "Distance": 2433
+            "Distance": 1385
           },
           {
             "Temperature": 30,
-            "Distance": 2492
+            "Distance": 1420
           },
           {
             "Temperature": 40,
-            "Distance": 2551
+            "Distance": 1450
           }
         ]
       },
@@ -651,45 +549,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1163
+            "Distance": 585
           },
           {
             "Temperature": 10,
-            "Distance": 1206
+            "Distance": 610
           },
           {
             "Temperature": 20,
-            "Distance": 1248
+            "Distance": 630
           },
           {
             "Temperature": 30,
-            "Distance": 1291
+            "Distance": 650
           },
           {
             "Temperature": 40,
-            "Distance": 1334
+            "Distance": 670
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2375
+            "Distance": 1355
           },
           {
             "Temperature": 10,
-            "Distance": 2436
+            "Distance": 1385
           },
           {
             "Temperature": 20,
-            "Distance": 2497
+            "Distance": 1420
           },
           {
             "Temperature": 30,
-            "Distance": 2559
+            "Distance": 1455
           },
           {
             "Temperature": 40,
-            "Distance": 2621
+            "Distance": 1490
           }
         ]
       },
@@ -700,45 +598,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1207
+            "Distance": 610
           },
           {
             "Temperature": 10,
-            "Distance": 1251
+            "Distance": 630
           },
           {
             "Temperature": 20,
-            "Distance": 1295
+            "Distance": 655
           },
           {
             "Temperature": 30,
-            "Distance": 1339
+            "Distance": 675
           },
           {
             "Temperature": 40,
-            "Distance": 1384
+            "Distance": 695
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2437
+            "Distance": 1385
           },
           {
             "Temperature": 10,
-            "Distance": 2501
+            "Distance": 1425
           },
           {
             "Temperature": 20,
-            "Distance": 2565
+            "Distance": 1460
           },
           {
             "Temperature": 30,
-            "Distance": 2630
+            "Distance": 1495
           },
           {
             "Temperature": 40,
-            "Distance": 2696
+            "Distance": 1530
           }
         ]
       },
@@ -749,45 +647,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1252
+            "Distance": 630
           },
           {
             "Temperature": 10,
-            "Distance": 1298
+            "Distance": 655
           },
           {
             "Temperature": 20,
-            "Distance": 1344
+            "Distance": 675
           },
           {
             "Temperature": 30,
-            "Distance": 1390
+            "Distance": 700
           },
           {
             "Temperature": 40,
-            "Distance": 1436
+            "Distance": 725
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2503
+            "Distance": 1425
           },
           {
             "Temperature": 10,
-            "Distance": 2569
+            "Distance": 1460
           },
           {
             "Temperature": 20,
-            "Distance": 2637
+            "Distance": 1495
           },
           {
             "Temperature": 30,
-            "Distance": 2705
+            "Distance": 1535
           },
           {
             "Temperature": 40,
-            "Distance": 2774
+            "Distance": 1570
           }
         ]
       },    
@@ -798,45 +696,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1300
+            "Distance": 655
           },
           {
             "Temperature": 10,
-            "Distance": 1348
+            "Distance": 680
           },
           {
             "Temperature": 20,
-            "Distance": 1395
+            "Distance": 705
           },
           {
             "Temperature": 30,
-            "Distance": 1443
+            "Distance": 725
           },
           {
             "Temperature": 40,
-            "Distance": 1490
+            "Distance": 750
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2572
+            "Distance": 1460
           },
           {
             "Temperature": 10,
-            "Distance": 2642
+            "Distance": 1500
           },
           {
             "Temperature": 20,
-            "Distance": 2713
+            "Distance": 1535
           },
           {
             "Temperature": 30,
-            "Distance": 2785
+            "Distance": 1575
           },
           {
             "Temperature": 40,
-            "Distance": 2857
+            "Distance": 1615
           }
         ]
       },    
@@ -847,45 +745,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1350
+            "Distance": 680
           },
           {
             "Temperature": 10,
-            "Distance": 1399
+            "Distance": 705
           },
           {
             "Temperature": 20,
-            "Distance": 1499
+            "Distance": 730
           },
           {
             "Temperature": 30,
-            "Distance": 1498
+            "Distance": 755
           },
           {
             "Temperature": 40,
-            "Distance": 1547
+            "Distance": 780
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2645
+            "Distance": 1500
           },
           {
             "Temperature": 10,
-            "Distance": 2719
+            "Distance": 1540
           },
           {
             "Temperature": 20,
-            "Distance": 2794
+            "Distance": 1580
           },
           {
             "Temperature": 30,
-            "Distance": 2869
+            "Distance": 1620
           },
           {
             "Temperature": 40,
-            "Distance": 2945
+            "Distance": 1660
           }
         ]
       },
@@ -896,45 +794,45 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1402
+            "Distance": 705
           },
           {
             "Temperature": 10,
-            "Distance": 1453
+            "Distance": 730
           },
           {
             "Temperature": 20,
-            "Distance": 1504
+            "Distance": 760
           },
           {
             "Temperature": 30,
-            "Distance": 1556
+            "Distance": 785
           },
           {
             "Temperature": 40,
-            "Distance": 1607
+            "Distance": 810
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2723
+            "Distance": 1545
           },
           {
             "Temperature": 10,
-            "Distance": 2800
+            "Distance": 1585
           },
           {
             "Temperature": 20,
-            "Distance": 2879
+            "Distance": 1625
           },
           {
             "Temperature": 30,
-            "Distance": 2958
+            "Distance": 1665
           },
           {
             "Temperature": 40,
-            "Distance": 3038
+            "Distance": 1705
           }
         ]
       },           
@@ -945,105 +843,29 @@
         "GroundRoll": [
           {
             "Temperature": 0,
-            "Distance": 1456
+            "Distance": 735
           },
           {
             "Temperature": 10,
-            "Distance": 1509
+            "Distance": 760
           },
           {
             "Temperature": 20,
-            "Distance": 1563
+            "Distance": 790
           },
           {
             "Temperature": 30,
-            "Distance": 1616
+            "Distance": 815
           },
           {
             "Temperature": 40,
-            "Distance": 1669
+            "Distance": 840
           }
         ],
         "Clear50FtObstacle": [
           {
             "Temperature": 0,
-            "Distance": 2805
-          },
-          {
-            "Temperature": 10,
-            "Distance": 2887
-          },
-          {
-            "Temperature": 20,
-            "Distance": 2969
-          },
-          {
-            "Temperature": 30,
-            "Distance": 3052
-          },
-          {
-            "Temperature": 40,
-            "Distance": 3136
-          }
-        ]
-      },            
-      {  
-        "Type": "Landing",
-        "PressureAltitude": 9000,
-  
-        "GroundRoll": [
-          {
-            "Temperature": 0,
-            "Distance": 1513
-          },
-          {
-            "Temperature": 10,
-            "Distance": 1569
-          },
-          {
-            "Temperature": 20,
-            "Distance": 1624
-          },
-          {
-            "Temperature": 30,
-            "Distance": 1679
-          },
-          {
-            "Temperature": 40,
-            "Distance": 1735
-          }
-        ],
-        "Clear50FtObstacle": [
-          {
-            "Temperature": 0,
-            "Distance": 2892
-          },
-          {
-            "Temperature": 10,
-            "Distance": 2978
-          },
-          {
-            "Temperature": 20,
-            "Distance": 3064
-          },
-          {
-            "Temperature": 30,
-            "Distance": 3152
-          },
-          {
-            "Temperature": 40,
-            "Distance": 3240
-          }
-        ]
-      },       
-      {  
-        "Type": "Landing",
-        "PressureAltitude": 10000,
-  
-        "GroundRoll": [
-          {
-            "Temperature": 0,
-            "Distance": 1573
+            "Distance": 1585
           },
           {
             "Temperature": 10,
@@ -1051,39 +873,17 @@
           },
           {
             "Temperature": 20,
-            "Distance": 1688
+            "Distance": 1670
           },
           {
             "Temperature": 30,
-            "Distance": 1746
+            "Distance": 1715
           },
           {
             "Temperature": 40,
-            "Distance": 1803
-          }
-        ],
-        "Clear50FtObstacle": [
-          {
-            "Temperature": 0,
-            "Distance": 2984
-          },
-          {
-            "Temperature": 10,
-            "Distance": 3074
-          },
-          {
-            "Temperature": 20,
-            "Distance": 3165
-          },
-          {
-            "Temperature": 30,
-            "Distance": 3257
-          },
-          {
-            "Temperature": 40,
-            "Distance": 3350
+            "Distance": 1755
           }
         ]
-      }                              
+      }                          
     ]
 }

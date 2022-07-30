@@ -84,6 +84,18 @@ namespace Airborn.web.Models
             }
         }
 
+        private double _aircraftWeight;
+
+        public double AircraftWeight
+        {
+            get {
+                return _aircraftWeight;
+            }
+            set {
+                _aircraftWeight = value;
+            }
+        }
+
         public double DensityAltitude
         {
             get
