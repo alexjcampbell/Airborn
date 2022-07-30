@@ -383,7 +383,7 @@ namespace Airborn.web.Models
             }
             else
             {
-                throw new ArgumentOutOfRangeException(AircraftType.ToString());
+                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
             }
 
         }
