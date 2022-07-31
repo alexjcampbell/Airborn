@@ -16,18 +16,17 @@ namespace Airborn.web.Models
 
             if (aircraftType == AircraftType.C172_SP)
             {
-
-                fullPath = Path.Combine(path, "../C172_SP_2550.json");
+                fullPath = Path.Combine(path, "../Data/C172_SP_2550.json");
                 aircraft = new C172_SP(scenario, fullPath);
             }
             else if (aircraftType == AircraftType.SR22_G2)
             {
-                fullPath = Path.Combine(path, "../SR22_G2_3400.json");
+                fullPath = Path.Combine(path, "../Data/SR22_G2_3400.json");
                 aircraft = new SR22_G2(scenario, fullPath);
             }
             else if (aircraftType == AircraftType.SR22T_G5)
             {
-                fullPath = Path.Combine(path, "../SR22T_G5_3600.json");
+                fullPath = Path.Combine(path, "../Data/SR22T_G5_3600.json");
                 aircraft = new SR22T_G5(scenario, fullPath);
             }
             else
@@ -35,7 +34,7 @@ namespace Airborn.web.Models
                 throw new ArgumentOutOfRangeException("AircraftType", aircraftType.ToString());
             }
 
-            calculation.JsonFile = new JsonFile(path);
+            calculation.JsonFile = new JsonFile(fullPath);
 
             calculation.Takeoff_GroundRoll =
                 aircraft.MakeTakeoffAdjustments
