@@ -110,7 +110,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(40, _defaultMagneticVariation);
             Scenario scenario = new Scenario(runway, wind);
             Assert.AreEqual(-6.4278760968653925, scenario.CrosswindComponent);
-            Assert.AreEqual(7.660444431189781, scenario.HeadwindComponent);
+            Assert.AreEqual(7.66044443118978, scenario.HeadwindComponent);
         }
 
         [TestMethod]

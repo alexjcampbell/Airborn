@@ -540,11 +540,8 @@
             "Distance": 5088
           }
         ]
-      },
-
-
-
-
+      }],
+      "LandingProfiles":[
 
       {
         "Type": "Landing",
