@@ -1,6 +1,6 @@
 {
     "ID": "SR22T_G5_3600",
-    "Profiles":[
+    "TakeoffProfiles":[
       {
         "Type": "Takeoff",
         "PressureAltitude": 0,
@@ -628,12 +628,9 @@
             "Distance": 4911
           }
         ]
-      },
-
-
-
-
-
+      }
+      ],
+      "LandingProfiles":[
       {
         "Type": "Landing",
         "PressureAltitude": 0,

@@ -1,6 +1,6 @@
 {
     "ID": "C172_SP_2200",
-    "Profiles":[
+    "TakeoffProfiles":[
       {
         "Type": "Takeoff",
         "PressureAltitude": 0,
@@ -442,8 +442,9 @@
             "Distance": 2950
           }
         ]
-      },
-
+      }
+      ],
+      "LandingProfiles":[
       {
         "Type": "Landing",
         "PressureAltitude": 0,

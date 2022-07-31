@@ -6,41 +6,24 @@ using System.Linq;
 namespace Airborn.web.Models
 {
 
-    public enum Type
-    {
-        Takeoff,
-        Landing
-    }
-
-    public enum TemperatureType
-    {
-        C,
-        F
-    }
-
-    public enum AltimeterSettingType
-    {
-        HG,
-        MB
-    }
-
-    public enum RunwaySurface
-    {
-        Paved,
-        DryGrass
-    }
-
-    public enum AircraftType
-    {
-        SR22_G2,
-        SR22T_G5,
-        C172_SP
-    }
+    
 
     public class ScenarioPageModel
     {
 
-        public AircraftPerformanceBase AircraftPerformance
+        public Aircraft Aircraft
+        {
+            get;
+            set;
+        }
+
+        public Scenario Scenario
+        {
+            get;
+            set;
+        }        
+
+        public PerformanceCalculation Calculation
         {
             get;
             set;
@@ -58,12 +41,6 @@ namespace Airborn.web.Models
             {
                 _runways = value;
             }
-        }
-
-        [Required]
-        public Type ScenarioType
-        {
-            get; set;
         }
 
         public int? AircraftWeight
@@ -167,7 +144,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return AircraftPerformance?.Scenario?.DensityAltitude;
+                return Scenario?.DensityAltitude;
             }
         }
 
@@ -175,48 +152,16 @@ namespace Airborn.web.Models
         {
             get
             {
-                return AircraftPerformance?.Scenario?.PressureAltitude;
+                return Scenario?.PressureAltitude;
             }
         }
 
-        public double? Distance_GroundRoll
-        {
-            get
-            {
-                switch (ScenarioType)
-                {
-                    case Type.Takeoff:
-                        return AircraftPerformance?.Takeoff_GroundRoll;
-                    case Type.Landing:
-                        return AircraftPerformance?.Landing_GroundRoll;
-                }
-
-                return null;
-            }
-        }
-
-        public double? Distance_Clear50Ft
-        {
-            get
-            {
-
-                switch (ScenarioType)
-                {
-                    case Type.Takeoff:
-                        return AircraftPerformance?.Takeoff_50FtClearance;
-                    case Type.Landing:
-                        return AircraftPerformance?.Landing_50FtClearance;
-                }
-
-                return null;
-            }
-        }
 
         public double? CrosswindComponent
         {
             get
             {
-                return AircraftPerformance?.Scenario?.CrosswindComponent;
+                return Scenario?.CrosswindComponent;
             }
         }
 
@@ -225,7 +170,7 @@ namespace Airborn.web.Models
             get
             {
 
-                var crosswindComponent = AircraftPerformance?.Scenario?.CrosswindComponent;
+                var crosswindComponent = Scenario?.CrosswindComponent;
 
                 if (crosswindComponent < 0)
                 {
@@ -240,11 +185,11 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (AircraftPerformance?.Scenario?.CrosswindComponent > 0)
+                if (Scenario?.CrosswindComponent > 0)
                 {
                     return "Right";
                 }
-                else if (AircraftPerformance?.Scenario?.CrosswindComponent < 0)
+                else if (Scenario?.CrosswindComponent < 0)
                 {
                     return "Left";
                 }
@@ -256,11 +201,11 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (AircraftPerformance?.Scenario?.HeadwindComponent > 0)
+                if (Scenario?.HeadwindComponent > 0)
                 {
                     return "Headwind";
                 }
-                else if (AircraftPerformance?.Scenario?.HeadwindComponent < 0)
+                else if (Scenario?.HeadwindComponent < 0)
                 {
                     return "Tailwind";
                 }
@@ -271,7 +216,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return AircraftPerformance?.Scenario?.HeadwindComponent;
+                return Scenario?.HeadwindComponent;
             }
 
         }
@@ -281,7 +226,10 @@ namespace Airborn.web.Models
             get
             {
 
-                var headwindComponent = AircraftPerformance?.Scenario?.HeadwindComponent;
+                // if it's a tailwind we'll describe it as such, and the page caller needs an absolute value
+                // of the wind component we calculated to show the tailwind amount
+
+                var headwindComponent = Scenario?.HeadwindComponent;
 
                 if (headwindComponent < 0)
                 {
@@ -292,38 +240,71 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? PercentageRunwayUsed_GroundRoll
+        public double? Takeoff_GroundRoll
         {
             get
             {
-
-                switch (ScenarioType)
-                {
-                    case Type.Takeoff:
-                        return AircraftPerformance?.Takeoff_GroundRoll / RunwayLength;
-                    case Type.Landing:
-                        return AircraftPerformance?.Landing_GroundRoll / RunwayLength;
-                }
-
-                return null;
+                return Calculation?.Takeoff_GroundRoll;
             }
         }
-        public double? PercentageRunwayUsed_DistanceToClear50Ft
+
+        public double? Takeoff_50FtClearance
         {
             get
             {
-
-                switch (ScenarioType)
-                {
-                    case Type.Takeoff:
-                        return AircraftPerformance?.Takeoff_50FtClearance / RunwayLength;
-                    case Type.Landing:
-                        return AircraftPerformance?.Landing_50FtClearance / RunwayLength;
-                }
-
-                return null;
+                return Calculation?.Takeoff_50FtClearance;
             }
         }
+
+        public double? Landing_GroundRoll
+        {
+            get
+            {
+                return Calculation?.Landing_GroundRoll;
+            }
+        }
+
+        public double? Landing_50FtClearance
+        {
+            get
+            {
+                return Calculation?.Landing_50FtClearance;
+            }
+        }
+
+        public double? Takeoff_PercentageRunwayUsed_GroundRoll
+        {
+            get
+            {
+                return Takeoff_GroundRoll / RunwayLength;
+            
+            }
+        }
+
+        public double? Landing_PercentageRunwayUsed_GroundRoll
+        {
+            get
+            {
+                 return Landing_GroundRoll / RunwayLength;
+            }
+        }
+
+        public double? Takeoff_PercentageRunwayUsed_DistanceToClear50Ft
+        {
+            get
+            {
+                return Takeoff_50FtClearance / RunwayLength;
+            }
+        }
+
+        public double? Landing_PercentageRunwayUsed_DistanceToClear50Ft
+        {
+            get
+            {
+                return Landing_50FtClearance / RunwayLength;
+            }
+        }        
+
         public void LoadAircraftPerformance(string rootPath)
         {
 
@@ -340,51 +321,34 @@ namespace Airborn.web.Models
                 WindStrength.Value
                 );
 
-            Scenario scenario = new Scenario(runway, wind);
+            Scenario = new Scenario(runway, wind);
 
-            scenario.FieldElevation = FieldElevation.Value;
+            Scenario.FieldElevation = FieldElevation.Value;
 
             // runway length is not mandatory as it is only used for the 
             // '% of runway used' calculation
-            scenario.RunwayLength = RunwayLength.GetValueOrDefault();
+            Scenario.RunwayLength = RunwayLength.GetValueOrDefault();
 
             if (TemperatureType == Models.TemperatureType.F)
             {
-                scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(Temperature);
+                Scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(Temperature);
             }
             else
             {
-                scenario.TemperatureCelcius = (int)Temperature.Value;
+                Scenario.TemperatureCelcius = (int)Temperature.Value;
             }
 
             if (AltimeterSettingType == Models.AltimeterSettingType.HG)
             {
 
-                scenario.QNH = Scenario.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
+                Scenario.QNH = Scenario.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
             }
             else
             {
-                scenario.QNH = (int)AltimeterSetting.Value;
+                Scenario.QNH = (int)AltimeterSetting.Value;
             }
 
-
-
-            if (AircraftType == AircraftType.C172_SP)
-            {
-                AircraftPerformance = new AircraftPerformance_C172_SP(scenario, System.IO.Path.Combine(rootPath, "../C172_SP.json"));
-            }
-            else if (AircraftType == AircraftType.SR22_G2)
-            {
-                AircraftPerformance = new AircraftPerformance_SR22_G2(scenario, System.IO.Path.Combine(rootPath, "../SR22_G2.json"));
-            }
-            else if (AircraftType == AircraftType.SR22T_G5)
-            {
-                AircraftPerformance = new AircraftPerformance_SR22T_G5(scenario, System.IO.Path.Combine(rootPath, "../SR22T_G5.json"));
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
-            }
+            Calculation = PerformanceCalculator.Calculate(Scenario, AircraftType, rootPath);
 
         }
 

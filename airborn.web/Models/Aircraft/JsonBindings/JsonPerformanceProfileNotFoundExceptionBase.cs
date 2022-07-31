@@ -2,9 +2,9 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class AircraftPerformanceProfileNotFoundExceptionBase : Exception
+    public class JsonPerformanceProfileNotFoundExceptionBase : Exception
     {
-        private AircraftPerformanceProfileNotFoundExceptionBase()
+        private JsonPerformanceProfileNotFoundExceptionBase()
         {
 
         }
@@ -19,7 +19,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        public AircraftPerformanceProfileNotFoundExceptionBase(string message) : base(message)
+        public JsonPerformanceProfileNotFoundExceptionBase(string message) : base(message)
         {
 
         }

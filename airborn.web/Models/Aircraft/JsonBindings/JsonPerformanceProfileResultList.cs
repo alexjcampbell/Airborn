@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Airborn.web.Models
 {
-    public class AircraftPerformanceProfileResultList : List<AircraftPerformanceProfileResult>
+    public class JsonPerformanceProfileResultList : List<JsonPerformanceProfileResult>
     {
         public int FindByTemperature(int temperature)
         {
-            AircraftPerformanceProfileResult result = this.Find(t => t.Temperature == temperature);
+            JsonPerformanceProfileResult result = this.Find(t => t.Temperature == temperature);
 
             if (result == null)
             {

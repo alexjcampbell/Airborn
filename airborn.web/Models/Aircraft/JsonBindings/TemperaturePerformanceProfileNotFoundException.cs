@@ -2,7 +2,7 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class TemperaturePerformanceProfileNotFoundException : AircraftPerformanceProfileNotFoundExceptionBase
+    public class TemperaturePerformanceProfileNotFoundException : JsonPerformanceProfileNotFoundExceptionBase
     {
 
         public TemperaturePerformanceProfileNotFoundException(int temperature) :

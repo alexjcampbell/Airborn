@@ -7,7 +7,7 @@ namespace Airborn.Tests
     public class AircraftPerformanceTests
     {
 
-        private const string _testJsonPath = "../../SR22_G2.json";
+        private const string _testJsonPath = "../../SR22_G2_3400.json";
 
         private int _defaultMagneticVariation = -20;
 
@@ -25,21 +25,21 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
             // test that the Json de-serializer has read at least one profile
-            Assert.IsTrue(ap.Profiles.Count > 0);
+            Assert.IsTrue(calculation.JsonFile.TakeoffProfiles.Count > 0);
 
             // test that the Json de-serializer has read the performance data 
             // for at least one profile
-            Assert.IsTrue(ap.Profiles[0].GroundRoll.Count > 0);
+            Assert.IsTrue(calculation.JsonFile.TakeoffProfiles[0].GroundRoll.Count > 0);
 
             // test that the pressureAltitude and ground roll distance match our
             // sample file
-            Assert.AreEqual(0, ap.Profiles[0].PressureAltitude = 0);
-            Assert.AreEqual(917, ap.Profiles[0].GroundRoll[0].Distance);
-            Assert.AreEqual(1000, ap.Profiles[1].PressureAltitude = 1000);
-            Assert.AreEqual(1011, ap.Profiles[1].GroundRoll[0].Distance);
+            Assert.AreEqual(0, calculation.JsonFile.TakeoffProfiles[0].PressureAltitude = 0);
+            Assert.AreEqual(917, calculation.JsonFile.TakeoffProfiles[0].GroundRoll[0].Distance);
+            Assert.AreEqual(1000, calculation.JsonFile.TakeoffProfiles[1].PressureAltitude = 1000);
+            Assert.AreEqual(1011, calculation.JsonFile.TakeoffProfiles[1].GroundRoll[0].Distance);
         }
 
         [TestMethod]
@@ -55,11 +55,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
-
-            Assert.AreEqual(0.5, AircraftPerformanceBase.CalculateInterpolationFactor(15, 10, 20));
-            Assert.AreEqual(0, AircraftPerformanceBase.CalculateInterpolationFactor(10, 10, 20));
-            Assert.AreEqual(1, AircraftPerformanceBase.CalculateInterpolationFactor(20, 10, 20));
+            Assert.AreEqual(0.5, PerformanceCalculator.CalculateInterpolationFactor(15, 10, 20));
+            Assert.AreEqual(0, PerformanceCalculator.CalculateInterpolationFactor(10, 10, 20));
+            Assert.AreEqual(1, PerformanceCalculator.CalculateInterpolationFactor(20, 10, 20));
 
         }
 
@@ -76,13 +74,13 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            Assert.AreEqual(1092, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
-            Assert.AreEqual(1176, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
+            Assert.AreEqual(1092, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
+            Assert.AreEqual(1176, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
 
-            Assert.AreEqual(1691, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
-            Assert.AreEqual(1813, ap.Profiles.FindByPressureAltitude(ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
+            Assert.AreEqual(1691, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
+            Assert.AreEqual(1813, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
 
         }
 
@@ -90,35 +88,35 @@ namespace Airborn.Tests
         public void Test_GetUpperAndLowerBoundForInterpolation()
         {
             // test it for pressure altitude intervals (1000s)
-            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3500, 1000));
-            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3000, 1000));
-            Assert.AreEqual((3000, 4000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(3999, 1000));
+            Assert.AreEqual((3000, 4000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(3500, 1000));
+            Assert.AreEqual((3000, 4000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(3000, 1000));
+            Assert.AreEqual((3000, 4000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(3999, 1000));
 
-            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(500, 1000));
-            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 1000));
-            Assert.AreEqual((0, 1000), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(999, 1000));
+            Assert.AreEqual((0, 1000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(500, 1000));
+            Assert.AreEqual((0, 1000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(0, 1000));
+            Assert.AreEqual((0, 1000), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(999, 1000));
 
 
             // test it for temperature intervals (10s)
-            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(35, 10));
-            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(30, 10));
-            Assert.AreEqual((30, 40), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(39, 10));
+            Assert.AreEqual((30, 40), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(35, 10));
+            Assert.AreEqual((30, 40), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(30, 10));
+            Assert.AreEqual((30, 40), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(39, 10));
 
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 10));
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(5, 10));
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(9, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(0, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(5, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(9, 10));
 
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(0, 10));
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(5, 10));
-            Assert.AreEqual((0, 10), AircraftPerformanceBase.GetUpperAndLowBoundsForInterpolation(9, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(0, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(5, 10));
+            Assert.AreEqual((0, 10), PerformanceCalculator.GetUpperAndLowBoundsForInterpolation(9, 10));
         }
 
         [TestMethod]
         public void Test_Interpolate()
         {
-            Assert.AreEqual(1175, AircraftPerformanceBase.Interpolate(1150, 1200, 15, 10));
-            Assert.AreEqual(1100, AircraftPerformanceBase.Interpolate(1100, 1200, 10, 10));
-            Assert.AreEqual(1420, AircraftPerformanceBase.Interpolate(1400, 1500, 1200, 1000));
+            Assert.AreEqual(1175, PerformanceCalculator.Interpolate(1150, 1200, 15, 10));
+            Assert.AreEqual(1100, PerformanceCalculator.Interpolate(1100, 1200, 10, 10));
+            Assert.AreEqual(1420, PerformanceCalculator.Interpolate(1400, 1500, 1200, 1000));
         }
 
         [TestMethod]
@@ -133,9 +131,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Takeoff_GroundRoll;
+            double? result = calculation.Takeoff_GroundRoll;
 
             Assert.AreEqual(1193, result);
 
@@ -153,9 +151,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Takeoff_50FtClearance;
+            double? result = calculation.Takeoff_50FtClearance;
 
             Assert.AreEqual(1840, result);
 
@@ -173,9 +171,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_GroundRoll;
+            double? result = calculation.Landing_GroundRoll;
 
             Assert.AreEqual(1205, result);
 
@@ -193,9 +191,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_50FtClearance;
+            double? result = calculation.Landing_50FtClearance;
 
             Assert.AreEqual(2435, result);
 
@@ -214,9 +212,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Takeoff_GroundRoll;
+            double? result = calculation.Takeoff_GroundRoll;
 
             Assert.AreEqual(1073.7, result);
 
@@ -236,9 +234,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Takeoff_GroundRoll;
+            double? result = calculation.Takeoff_GroundRoll;
 
             Assert.AreEqual(1312.3000000000002, result);
 
@@ -258,9 +256,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_GroundRoll;
+            double? result = calculation.Landing_GroundRoll;
 
             Assert.AreEqual(1084.5, result);
 
@@ -279,9 +277,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_GroundRoll;
+            double? result = calculation.Landing_GroundRoll;
 
             Assert.AreEqual(1325.5, result);
 
@@ -301,9 +299,9 @@ namespace Airborn.Tests
             scenario.QNH = (int)Scenario.ConvertInchesOfMercuryToMillibars(29.92M);
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_GroundRoll;
+            double? result = calculation.Landing_GroundRoll;
 
             Assert.AreEqual(1325.5, result);
 
@@ -322,9 +320,9 @@ namespace Airborn.Tests
             scenario.QNH = 1013;
             scenario.FieldElevation = 1500;
 
-            AircraftPerformanceBase ap = new AircraftPerformance_SR22_G2(scenario, _testJsonPath);
+            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
-            double? result = ap.Landing_GroundRoll;
+            double? result = calculation.Landing_GroundRoll;
 
             Assert.AreEqual(1325.5, result);
 

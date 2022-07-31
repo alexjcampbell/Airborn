@@ -4,7 +4,7 @@ namespace Airborn.web.Models
 {
 
 
-    public class AircraftPerformanceProfileResult
+    public class JsonPerformanceProfileResult
     {
         public int Temperature { get; set; }
         public int Distance { get; set; }

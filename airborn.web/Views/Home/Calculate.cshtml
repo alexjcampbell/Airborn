@@ -7,25 +7,13 @@
 
 <br />
 
-
-
 <form asp-action="Calculate" method="post" clas="form-inline">
-
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <h6> Tell us about your flight</h6>
+    <h6>Tell us about your flight</h6>
 
      <div class="form-group row g-3 align-items-center">
-        <label asp-for="ScenarioType" class="col-sm-2 col-form-label col-form-label-sm">Scenario: *</label>
-        <div class="col-sm-2">
-            <select asp-for="ScenarioType" class="form-control form-control-sm" >
-                <option value="Takeoff">Takeoff</option>
-                <option value="Landing">Landing</option>
-            </select>
-        </div>
-        <div class="col-sm-1">
-        </div>        
         <label asp-for="AircraftType" class="col-sm-2 col-form-label col-form-label-sm">Aircraft Type: *</label>
         <div class="col-sm-2">
             <select asp-for="AircraftType" class="form-control form-control-sm" >
@@ -160,7 +148,7 @@
          
     </div>    
 <br />
-<h6> Tell us about the weather</h6>
+<h6>The weather</h6>
 
     <div class="form-group row g-3 align-items-center">
         <label asp-for="WindDirectionMagnetic" class="col-sm-2 col-form-label col-form-label-sm">Wind Direction: *</label>
@@ -207,19 +195,19 @@
 
     <br />
 
-    <h6>What you need to know</h6>
+    <h6>Takeoff information</h6>
     <br/>
 
     <div class="form-group row g-3 align-items-center">
         <label class="col-sm-2 col-form-label col-form-label-sm">Ground Roll:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.Distance_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
+            @Html.TextBoxFor(s => s.Takeoff_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
           
         <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
+            @Html.TextBoxFor(s => s.Takeoff_PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
 
@@ -231,17 +219,55 @@
         <label class="col-sm-2 col-form-label col-form-label-sm">50' Obstacle:</label>
             
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.Distance_Clear50Ft, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
+            @Html.TextBoxFor(s => s.Takeoff_50FtClearance, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
     
         <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
         <div class="col-sm-2">
-            @Html.TextBoxFor(s => s.PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
+            @Html.TextBoxFor(s => s.Takeoff_PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
 
     </div>
+
+    <h6>Landing information</h6>
+    <br/>
+
+    <div class="form-group row g-3 align-items-center">
+        <label class="col-sm-2 col-form-label col-form-label-sm">Ground Roll:</label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.Landing_GroundRoll, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
+        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
+          
+        <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.Landing_PercentageRunwayUsed_GroundRoll, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
+        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
+
+
+    </div>
+
+    <div class="form-group row g-3 align-items-center">
+
+        <label class="col-sm-2 col-form-label col-form-label-sm">50' Obstacle:</label>
+            
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.Landing_50FtClearance, "{0:0.00}", new { @readonly="readonly", @class="form-control form-control-sm" })
+        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">ft</label>              
+    
+        <label class="col-sm-2 col-form-label col-form-label-sm">Runway Used:</label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(s => s.Landing_PercentageRunwayUsed_DistanceToClear50Ft, "{0:p0}", new { @readonly="readonly", @class="form-control form-control-sm" })
+        </div>
+        <label class="col-sm-1 col-form-label col-form-label-sm">%</label>              
+
+    </div>
+
+    <h6>Additional information</h6>
 
     <div class="form-group row g-3 align-items-center">
 

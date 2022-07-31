@@ -1,6 +1,6 @@
 {
     "ID": "SR22_G2_2900",
-    "Profiles":[
+    "TakeoffProfiles":[
       {
         "Type": "Takeoff",
         "PressureAltitude": 0,
