@@ -9,8 +9,18 @@
 
 <form asp-action="Calculate" method="post" clas="form-inline">
 
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+     <div class="form-group row g-3 align-items-center">
+        <div class="col-sm-12">
+            <br />
+            <h4><b>Airborn</b> is a free takeoff and landing distance calculator</h4>
+            <br />
+            Calculate how much runway would be required to take off or land, based on the given aircraft type, runway, and weather.
+            <br />
+        </div>
+    </div>
 
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <br />
     <h5>Your flight</h5>
     <br />
      <div class="form-group row g-3 align-items-center">

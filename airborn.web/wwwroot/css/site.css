@@ -24,6 +24,10 @@ a {
   border-color: #112d4e;
 }
 
+.nav-link.active {
+  font-weight: bold;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
