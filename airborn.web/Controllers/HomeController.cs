@@ -110,7 +110,7 @@ namespace Airborn.Controllers
                     ))
                     ;
 
-                return View();
+                return View(model);
             }
 
             HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());

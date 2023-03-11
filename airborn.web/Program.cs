@@ -20,7 +20,7 @@ namespace Airborn.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+
 
                     // Add the following line:
                     webBuilder.UseSentry(o =>
@@ -32,6 +32,10 @@ namespace Airborn.Web
                         // We recommend adjusting this value in production.
                         o.TracesSampleRate = 1.0;
                     });
+
+                    webBuilder.UseStartup<Startup>();
+
+
 
                 });
 
