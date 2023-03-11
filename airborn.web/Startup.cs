@@ -50,6 +50,18 @@ namespace Airborn.Web
 
             app.UseRouting();
 
+            // Enable automatic tracing integration.
+            // If running with .NET 5 or below, make sure to put this middleware
+            // right after `UseRouting()`.
+            app.UseSentryTracing();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
