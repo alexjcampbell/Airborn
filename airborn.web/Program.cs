@@ -21,16 +21,19 @@ namespace Airborn.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
+                    // Add the following line:
+                    webBuilder.UseSentry(o =>
+                    {
+                        o.Dsn = "https://1594b4e8f3b44db18f389f618b7683ca@o4504821941796864.ingest.sentry.io/4504821943894016";
+                        // When configuring for the first time, to see what the SDK is doing:
+                        o.Debug = true;
+                        // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+                        // We recommend adjusting this value in production.
+                        o.TracesSampleRate = 1.0;
+                    });
+
                 });
-        // Add the following line:
-        webBuilder.UseSentry(o =>
-            {
-                o.Dsn = "https://1594b4e8f3b44db18f389f618b7683ca@o4504821941796864.ingest.sentry.io/4504821943894016";
-                // When configuring for the first time, to see what the SDK is doing:
-                o.Debug = true;
-                // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-                // We recommend adjusting this value in production.
-                o.TracesSampleRate = 1.0;
-            });
+
     }
 }
