@@ -248,6 +248,29 @@ namespace Airborn.web.Models
             }
         }
 
+
+        public string Takeoff_Groundroll_Formatted
+        {
+            get
+            {
+                if (Calculation != null)
+                {
+
+                    return
+                        Calculation?.Takeoff_GroundRoll.ToString()
+                        +
+                        " ft ("
+                        +
+                        Takeoff_PercentageRunwayUsed_GroundRoll?.ToString("P0")
+                        + " of available)"
+                        ;
+                }
+                
+                return "";
+            }
+        }
+
+
         public double? Takeoff_50FtClearance
         {
             get
@@ -256,11 +279,52 @@ namespace Airborn.web.Models
             }
         }
 
+        public string Takeoff_50FtClearance_Formatted
+        {
+            get
+            {
+                if (Calculation != null)
+                {
+                    return
+                        Calculation?.Takeoff_50FtClearance.ToString()
+                        +
+                        " ft ("
+                        +
+                        Takeoff_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
+                        + " of available)"
+                        ;
+                }
+
+                return "";
+            }
+        }        
+
         public double? Landing_GroundRoll
         {
             get
             {
                 return Calculation?.Landing_GroundRoll;
+            }
+        }
+
+        public string Landing_Groundroll_Formatted
+        {
+            get
+            {
+                if (Calculation != null)
+                {
+                    return
+                        Calculation?.Landing_GroundRoll.ToString()
+                        +
+                        " ft ("
+                        +
+                        Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
+                        + " of available)"
+                        ;
+                }
+                
+                return "";
+
             }
         }
 
@@ -271,6 +335,27 @@ namespace Airborn.web.Models
                 return Calculation?.Landing_50FtClearance;
             }
         }
+
+        public string Landing_50FtClearance_Formatted
+        {
+            get
+            {
+                if (Calculation != null)
+                {
+                    return
+                        Calculation?.Landing_50FtClearance.ToString()
+                        +
+                        " ft ("
+                        +
+                        Landing_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
+                        + " of available)"
+                        ;
+                }
+                return "";
+            }
+        }
+
+
 
         public double? Takeoff_PercentageRunwayUsed_GroundRoll
         {
