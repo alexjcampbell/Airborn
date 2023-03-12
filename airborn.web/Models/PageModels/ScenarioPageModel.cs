@@ -43,6 +43,8 @@ namespace Airborn.web.Models
             }
         }
 
+        [Required]
+        [Display(Name = "Aircraft Weight")]
         public int? AircraftWeight
         {
             get; set;
@@ -56,6 +58,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 200,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "Wind Strength")]
         public int? WindStrength
         {
             get; set;
@@ -64,6 +67,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 359,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "Wind Direction")]
         public int? WindDirectionMagnetic
         {
             get; set;
@@ -87,6 +91,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(0, 359,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "Runway Heading")]
         public int? RunwayHeading
         {
             get; set;
@@ -95,6 +100,7 @@ namespace Airborn.web.Models
         [Required]
         [Range(-2000, 20000,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "Field Elevation")]
         public int? FieldElevation
         {
             get; set;
@@ -102,6 +108,7 @@ namespace Airborn.web.Models
 
         [Range(0, 20000,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Display(Name = "Runway Length")]
         public int? RunwayLength
         {
             get; set;
@@ -123,6 +130,7 @@ namespace Airborn.web.Models
         }
 
         [Required]
+        [Display(Name = "Altimeter Setting")]
         public decimal? AltimeterSetting
         {
             get; set;
@@ -257,7 +265,7 @@ namespace Airborn.web.Models
                 {
 
                     return
-                        Calculation?.Takeoff_GroundRoll.ToString()
+                        Calculation?.Takeoff_GroundRoll.ToString("#,##")
                         +
                         " ft ("
                         +
@@ -286,7 +294,7 @@ namespace Airborn.web.Models
                 if (Calculation != null)
                 {
                     return
-                        Calculation?.Takeoff_50FtClearance.ToString()
+                        Calculation?.Takeoff_50FtClearance.ToString("#,##")
                         +
                         " ft ("
                         +
@@ -314,7 +322,7 @@ namespace Airborn.web.Models
                 if (Calculation != null)
                 {
                     return
-                        Calculation?.Landing_GroundRoll.ToString()
+                        Calculation?.Landing_GroundRoll.ToString("#,##")
                         +
                         " ft ("
                         +
@@ -343,7 +351,7 @@ namespace Airborn.web.Models
                 if (Calculation != null)
                 {
                     return
-                        Calculation?.Landing_50FtClearance.ToString()
+                        Calculation?.Landing_50FtClearance.ToString("#,##")
                         +
                         " ft ("
                         +
