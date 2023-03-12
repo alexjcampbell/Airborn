@@ -36,7 +36,7 @@
             <div class="form-floating">
                 <input asp-for="AircraftWeight" class="form-control" maxlength="10"
                     placeholder="Aircraft weight" data-val-required="Aircraft weight is required"/>
-                <label for="AircraftWeight">Aicraft weight (lbs)</label>
+                <label for="AircraftWeight">Aircraft weight (lbs)</label>
             </div>
         </div>
         <div class="col-sm-3">
@@ -58,13 +58,13 @@
         <div class="col-sm-3">
             <div class="form-floating">  
             <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3" />
-            <label asp-for="WindDirectionMagnetic">Wind Direction °M</label>
+            <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
             </div>
         </div>  
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="WindStrength" class="form-control" maxlength="3" />
-                <label asp-for="WindStrength">Wind Strength (kts)</label>
+                <label asp-for="WindStrength">Wind strength (kts)</label>
             </div>
         </div>
         <div class="col-sm-2">
@@ -85,7 +85,7 @@
         <div class="col-sm-2">
             <div class="form-floating">           
                 <input asp-for="AltimeterSetting" class="form-control" maxlength="5" />
-                <label asp-for="AltimeterSetting">Altimeter Setting</label>
+                <label asp-for="AltimeterSetting">Altimeter setting</label>
             </div>
         </div>
         <div class="col-sm-1">
@@ -188,14 +188,14 @@
             <div class="form-floating">
                 <input asp-for="RunwayHeading" class="form-control" maxlength="10"
                     data-val-required="Runway Heading is required"/>
-                <label asp-for="RunwayHeading">Runway Heading °M</label>
+                <label asp-for="RunwayHeading">Runway heading °M</label>
             </div>        
         </div>
 
         <div class="col-sm-3">
             <div class="form-floating">    
                 <input asp-for="RunwayLength" class="form-control" maxlength="10" />
-                <label asp-for="RunwayLength">Runway Length (ft)</label>
+                <label asp-for="RunwayLength">Runway length (ft)</label>
             </div>
         </div>
 
@@ -210,7 +210,7 @@
                 <select asp-for="RunwaySurface" class="form-control" >
                     <option value="Paved">Paved</option>          
                 </select>
-                <label asp-for="RunwaySurface">Runway Surface</label>
+                <label asp-for="RunwaySurface">Runway surface</label>
             </div>    
         </div>   
 
@@ -218,7 +218,7 @@
             <div class="form-floating">
                 <input asp-for="FieldElevation" class="form-control" maxlength="10" 
                     data-val-required="Field Elevation is required" />
-                <label asp-for="FieldElevation">Field Elevation (ft)</label>
+                <label asp-for="FieldElevation">Field elevation (ft)</label>
             </div>
         </div>           
     </div>
@@ -299,7 +299,7 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 @Html.TextBoxFor(s => s.DensityAltitude, "{0:0}", new { @readonly="readonly", @class="form-control" })
-                <label>Density altitude:</label>
+                <label>Density altitude</label>
             </div>
         </div>
     </div>
