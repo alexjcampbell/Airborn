@@ -11,7 +11,7 @@
 
     <br />
     <h4><b>Airborn</b> is a free takeoff and landing distance calculator</h4>
-    Tell us your about your flight, and we'll tell you how much runway you'll need to takeoff and land.
+    Tell us your about your flight, and we'll tell you how much runway "the book" says you need to takeoff and land.
     <br />
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -235,9 +235,18 @@
     <br />
 
     
-    <h5>
-        Takeoff
-    </h5>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <h5>
+                Takeoff
+            </h5>
+        </div>
+        <div class="col-sm-6">
+            <h5>
+                Landing
+            </h5>
+        </div>        
+    </div>
 
     <div class="form-group row">
         <div class="col-sm-3">
@@ -252,13 +261,6 @@
                 <label>Distance to clear 50' obstacle</label>
             </div>
         </div>
-
-    </div>
-
-    <br />
-    <h5>Landing</h5>
-
-    <div class="form-group row">
         <div class="col-sm-3">
             <div class="form-floating">  
                 @Html.TextBoxFor(s => s.Landing_Groundroll_Formatted, new { @readonly="readonly", @class="form-control" })
