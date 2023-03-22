@@ -74,7 +74,7 @@ namespace Airborn.web.Models
             get {
                 if (CrosswindComponentAbs > 0)
                 {
-                    return CrosswindComponentAbs?.ToString(",##0.0") + " kts";
+                    return CrosswindComponentAbs?.ToString(",##0") + " kts";
                 }
                 return "0 kts";
             }
@@ -128,7 +128,7 @@ namespace Airborn.web.Models
             get {
                 if (HeadwindComponentAbs > 0)
                 {
-                    return HeadwindComponentAbs?.ToString(",##0.0") + " kts";
+                    return HeadwindComponentAbs?.ToString(",##0") + " kts";
                 }
                 return "0 kts";
             }
@@ -156,7 +156,7 @@ namespace Airborn.web.Models
                         " ft ("
                         +
                         Takeoff_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + " of available)"
+                        + ")"
                         ;
                 }
 
@@ -185,7 +185,7 @@ namespace Airborn.web.Models
                         " ft ("
                         +
                         Takeoff_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + " of available)"
+                        + ")"
                         ;
                 }
 
@@ -213,7 +213,7 @@ namespace Airborn.web.Models
                         " ft ("
                         +
                         Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + " of available)"
+                        + ")"
                         ;
                 }
 
@@ -242,7 +242,7 @@ namespace Airborn.web.Models
                         " ft ("
                         +
                         Landing_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + " of available)"
+                        + ")"
                         ;
                 }
                 return "";
