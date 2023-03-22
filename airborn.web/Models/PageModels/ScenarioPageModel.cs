@@ -5,42 +5,31 @@ using System.Linq;
 
 namespace Airborn.web.Models
 {
-
-    
-
     public class ScenarioPageModel
     {
 
-        public Aircraft Aircraft
+        public ScenarioPageModel()
         {
-            get;
-            set;
+            Runways = new List<Runway>();
+            Results = new List<PerformanceCalculationResultForRunwayPageModel>();
         }
 
-        public Scenario Scenario
+        private PerformanceCalculator PerformanceCalculator
         {
             get;
             set;
         }        
 
-        public PerformanceCalculation Calculation
+        public List<PerformanceCalculationResultForRunwayPageModel> Results
         {
             get;
             set;
         }
 
-        private List<Runway> _runways = new List<Runway>();
 
-        public List<Runway> Runways
-        {
-            get
-            {
-                return _runways;
-            }
-            set
-            {
-                _runways = value;
-            }
+        public List<Runway> Runways{
+            get;
+            set;
         }
 
         [Required]
@@ -89,27 +78,10 @@ namespace Airborn.web.Models
         }
 
         [Required]
-        [Range(0, 359,
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        [Display(Name = "Runway Heading")]
-        public int? RunwayHeading
-        {
-            get; set;
-        }
-
-        [Required]
         [Range(-2000, 20000,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Field Elevation")]
         public int? FieldElevation
-        {
-            get; set;
-        }
-
-        [Range(0, 20000,
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        [Display(Name = "Runway Length")]
-        public int? RunwayLength
         {
             get; set;
         }
@@ -152,7 +124,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Scenario?.DensityAltitude;
+                return PerformanceCalculator?.DensityAltitude;
             }
         }
 
@@ -160,253 +132,15 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Scenario?.PressureAltitude;
+                return PerformanceCalculator?.PressureAltitude;
             }
         }
 
 
-        public double? CrosswindComponent
-        {
-            get
-            {
-                return Scenario?.CrosswindComponent;
-            }
-        }
-
-        public double? CrosswindComponentAbs
-        {
-            get
-            {
-
-                var crosswindComponent = Scenario?.CrosswindComponent;
-
-                if (crosswindComponent < 0)
-                {
-                    crosswindComponent = crosswindComponent * -1;
-                }
-
-                return crosswindComponent;
-            }
-        }
-
-        public string CrosswindComponentText
-        {
-            get
-            {
-                if (Scenario?.CrosswindComponent > 0)
-                {
-                    return "Right";
-                }
-                else if (Scenario?.CrosswindComponent < 0)
-                {
-                    return "Left";
-                }
-                return "";
-            }
-        }
-
-        public string HeadwindComponentText
-        {
-            get
-            {
-                if (Scenario?.HeadwindComponent > 0)
-                {
-                    return "Headwind";
-                }
-                else if (Scenario?.HeadwindComponent < 0)
-                {
-                    return "Tailwind";
-                }
-                return "Headwind";
-            }
-        }
-        public double? HeadwindComponent
-        {
-            get
-            {
-                return Scenario?.HeadwindComponent;
-            }
-
-        }
-
-        public double? HeadwindComponentAbs
-        {
-            get
-            {
-
-                // if it's a tailwind we'll describe it as such, and the page caller needs an absolute value
-                // of the wind component we calculated to show the tailwind amount
-
-                var headwindComponent = Scenario?.HeadwindComponent;
-
-                if (headwindComponent < 0)
-                {
-                    headwindComponent = headwindComponent * -1;
-                }
-
-                return headwindComponent;
-            }
-        }
-
-        public double? Takeoff_GroundRoll
-        {
-            get
-            {
-                return Calculation?.Takeoff_GroundRoll;
-            }
-        }
-
-
-        public string Takeoff_Groundroll_Formatted
-        {
-            get
-            {
-                if (Calculation != null)
-                {
-
-                    return
-                        Calculation?.Takeoff_GroundRoll.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Takeoff_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + " of available)"
-                        ;
-                }
-                
-                return "";
-            }
-        }
-
-
-        public double? Takeoff_50FtClearance
-        {
-            get
-            {
-                return Calculation?.Takeoff_50FtClearance;
-            }
-        }
-
-        public string Takeoff_50FtClearance_Formatted
-        {
-            get
-            {
-                if (Calculation != null)
-                {
-                    return
-                        Calculation?.Takeoff_50FtClearance.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Takeoff_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + " of available)"
-                        ;
-                }
-
-                return "";
-            }
-        }        
-
-        public double? Landing_GroundRoll
-        {
-            get
-            {
-                return Calculation?.Landing_GroundRoll;
-            }
-        }
-
-        public string Landing_Groundroll_Formatted
-        {
-            get
-            {
-                if (Calculation != null)
-                {
-                    return
-                        Calculation?.Landing_GroundRoll.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + " of available)"
-                        ;
-                }
-                
-                return "";
-
-            }
-        }
-
-        public double? Landing_50FtClearance
-        {
-            get
-            {
-                return Calculation?.Landing_50FtClearance;
-            }
-        }
-
-        public string Landing_50FtClearance_Formatted
-        {
-            get
-            {
-                if (Calculation != null)
-                {
-                    return
-                        Calculation?.Landing_50FtClearance.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Landing_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + " of available)"
-                        ;
-                }
-                return "";
-            }
-        }
-
-
-
-        public double? Takeoff_PercentageRunwayUsed_GroundRoll
-        {
-            get
-            {
-                return Takeoff_GroundRoll / RunwayLength;
-            
-            }
-        }
-
-        public double? Landing_PercentageRunwayUsed_GroundRoll
-        {
-            get
-            {
-                 return Landing_GroundRoll / RunwayLength;
-            }
-        }
-
-        public double? Takeoff_PercentageRunwayUsed_DistanceToClear50Ft
-        {
-            get
-            {
-                return Takeoff_50FtClearance / RunwayLength;
-            }
-        }
-
-        public double? Landing_PercentageRunwayUsed_DistanceToClear50Ft
-        {
-            get
-            {
-                return Landing_50FtClearance / RunwayLength;
-            }
-        }        
 
         public void LoadAircraftPerformance(string rootPath)
         {
 
-            Runway runway = Runway.FromMagnetic(
-                    RunwayHeading.Value,
-
-                    // assume magnetic variation is zero if not supplied
-                    MagneticVariation.GetValueOrDefault()
-                );
 
             Wind wind = Wind.FromMagnetic(
                 WindDirectionMagnetic.Value,
@@ -414,38 +148,61 @@ namespace Airborn.web.Models
                 WindStrength.Value
                 );
 
-            Scenario = new Scenario(runway, wind);
+            PerformanceCalculator = new PerformanceCalculator(
+                AircraftType,
+                GetAirport(AirportIdentifier),
+                wind,
+                rootPath
+                )
+                ;
 
-            Scenario.FieldElevation = FieldElevation.Value;
+            PerformanceCalculator.Airport.FieldElevation = FieldElevation.Value;
 
-            // runway length is not mandatory as it is only used for the 
-            // '% of runway used' calculation
-            Scenario.RunwayLength = RunwayLength.GetValueOrDefault();
 
             if (TemperatureType == Models.TemperatureType.F)
             {
-                Scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(Temperature);
+                PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature);
             }
             else
             {
-                Scenario.TemperatureCelcius = (int)Temperature.Value;
+                PerformanceCalculator.TemperatureCelcius = (int)Temperature.Value;
             }
 
             if (AltimeterSettingType == Models.AltimeterSettingType.HG)
             {
 
-                Scenario.QNH = Scenario.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
+                PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
             }
             else
             {
-                Scenario.QNH = (int)AltimeterSetting.Value;
+                PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
             }
 
-            Calculation = PerformanceCalculator.Calculate(Scenario, AircraftType, rootPath);
+            PerformanceCalculator.Calculate(rootPath);
+
+            foreach(PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
+            {
+                PerformanceCalculationResultForRunwayPageModel pageModelResult = 
+                    new PerformanceCalculationResultForRunwayPageModel(result, result.Runway);
+
+                Results.Add(pageModelResult);
+            }
 
         }
 
 
+        public Airport GetAirport(string airportIdentifier)
+        {
+
+            using (var db = new AirportDbContext())
+            {
+                Airport airport = db.Airports.Single<Airport>(
+                    a => a.Ident.Equals(airportIdentifier.ToUpper())
+                    );
+
+                return airport;
+            }
+        }
 
     }
 }

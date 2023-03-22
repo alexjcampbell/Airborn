@@ -8,7 +8,7 @@ namespace Airborn.web.Models
 
         private readonly int _magneticVariation;
 
-        private Direction(int directionTrue, int magneticVariation)
+        public Direction(int directionTrue, int magneticVariation)
         {
             this._directionTrue = directionTrue;
             this._magneticVariation = magneticVariation;
@@ -27,7 +27,6 @@ namespace Airborn.web.Models
         {
             get
             {
-                // modulo by 360 to make sure that we never exceed 360 degrees
                 return ConvertTrueToMagnetic(_directionTrue, _magneticVariation);
             }
         }

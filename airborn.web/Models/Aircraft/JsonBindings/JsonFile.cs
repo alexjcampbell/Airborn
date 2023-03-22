@@ -65,7 +65,7 @@ namespace Airborn.web.Models
 
         }
 
-        public double GetPerformanceDataValueForConditions(JsonPerformanceProfileList profiles, Scenario scenario, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
+        public double GetPerformanceDataValueForConditions(JsonPerformanceProfileList profiles, PerformanceCalculator calculator, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
         {
             System.Diagnostics.Debug.Write("\nprofiles null " + profiles is null);
             System.Diagnostics.Debug.Write("\nprofiles length is " + profiles.Count.ToString());
@@ -74,7 +74,7 @@ namespace Airborn.web.Models
             int maxPressureAltitudeAvailable = profiles.Max(p => p.PressureAltitude);
             if (pressureAltitude > maxPressureAltitudeAvailable)
             {
-                throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
+                throw new PressureAltitudePerformanceProfileNotFoundException(calculator.PressureAltitude);
             }
 
             JsonPerformanceProfile profile =
@@ -82,7 +82,7 @@ namespace Airborn.web.Models
 
             if (profile == null)
             {
-                throw new PressureAltitudePerformanceProfileNotFoundException(scenario.PressureAltitude);
+                throw new PressureAltitudePerformanceProfileNotFoundException(calculator.PressureAltitude);
             }
 
             switch (scenarioMode)

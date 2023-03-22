@@ -17,7 +17,7 @@ namespace Airborn.web.Models
         }
 
         [Column("Elevation_Ft")]
-        public string FieldElevation
+        public int FieldElevation
         {
             get; set;
         }

@@ -26,14 +26,6 @@ namespace Airborn.web.Models
             }
         }
 
-        public int? StrengthGustsKts
-        {
-            get
-            {
-                return _strengthGustsKts;
-            }
-        }
-
         private Wind(Direction direction, int strengthKts)
         {
             _direction = direction;
@@ -52,9 +44,5 @@ namespace Airborn.web.Models
             return new Wind(Direction.FromMagnetic(magneticHeading, magneticVariation), strengthKts);
         }
 
-        public static Wind FromMagnetic(int magneticHeading, int magneticVariation, int strengthKts, int strengthGustsKts)
-        {
-            return new Wind(Direction.FromMagnetic(magneticHeading, magneticVariation), strengthKts, strengthGustsKts);
-        }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Airborn.web.Models;
+using System.Collections.Generic;
 
 namespace Airborn.Tests
 {
@@ -7,80 +8,60 @@ namespace Airborn.Tests
     public class AircraftPerformanceTests
     {
 
-        private const string _testJsonPath = "../../SR22_G2_3400.json";
+        private const string _testJsonPath = "../../Debug/net6.0/SR22_G2_3400.json";
 
         private int _defaultMagneticVariation = -20;
+
+        private PerformanceCalculator GetCalculator(int windDirectionMagnetic, int windStrength)
+        {
+
+            PerformanceCalculator calculator = new PerformanceCalculator(
+                AircraftType.SR22_G2,
+                new Airport(),
+                Wind.FromMagnetic(windDirectionMagnetic, _defaultMagneticVariation, windStrength),
+                _testJsonPath
+                );
+
+            calculator.TemperatureCelcius = 12;
+            calculator.QNH = 1013;
+            calculator.Airport.FieldElevation = 1500;
+            calculator.Airport.Ident = "KCRQ";
+
+            return calculator;
+
+        }
+
 
         [TestMethod]
         public void TestJsonRead()
         {
+            PerformanceCalculator calculator = GetCalculator(250, 20);
 
-            // crosswind from the left
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
-                );
+            calculator.Calculate(_testJsonPath);
 
-            scenario.TemperatureCelcius = 12;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
 
             // test that the Json de-serializer has read at least one profile
-            Assert.IsTrue(calculation.JsonFile.TakeoffProfiles.Count > 0);
+            Assert.IsTrue(calculator.Results[0].JsonFile.TakeoffProfiles.Count > 0);
 
             // test that the Json de-serializer has read the performance data 
             // for at least one profile
-            Assert.IsTrue(calculation.JsonFile.TakeoffProfiles[0].GroundRoll.Count > 0);
+            Assert.IsTrue(calculator.Results[0].JsonFile.TakeoffProfiles[0].GroundRoll.Count > 0);
 
             // test that the pressureAltitude and ground roll distance match our
             // sample file
-            Assert.AreEqual(0, calculation.JsonFile.TakeoffProfiles[0].PressureAltitude = 0);
-            Assert.AreEqual(917, calculation.JsonFile.TakeoffProfiles[0].GroundRoll[0].Distance);
-            Assert.AreEqual(1000, calculation.JsonFile.TakeoffProfiles[1].PressureAltitude = 1000);
-            Assert.AreEqual(1011, calculation.JsonFile.TakeoffProfiles[1].GroundRoll[0].Distance);
+            Assert.AreEqual(0, calculator.Results[0].JsonFile.TakeoffProfiles[0].PressureAltitude = 0);
+            Assert.AreEqual(917, calculator.Results[0].JsonFile.TakeoffProfiles[0].GroundRoll[0].Distance);
+            Assert.AreEqual(1000, calculator.Results[0].JsonFile.TakeoffProfiles[1].PressureAltitude = 1000);
+            Assert.AreEqual(1011, calculator.Results[0].JsonFile.TakeoffProfiles[1].GroundRoll[0].Distance);
         }
 
         [TestMethod]
         public void Test_CalculateInterpolationFactor()
         {
 
-            Scenario scenario = new Scenario(
-                  Runway.FromMagnetic(300, _defaultMagneticVariation),
-                  Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
-              );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
             Assert.AreEqual(0.5, PerformanceCalculator.CalculateInterpolationFactor(15, 10, 20));
             Assert.AreEqual(0, PerformanceCalculator.CalculateInterpolationFactor(10, 10, 20));
             Assert.AreEqual(1, PerformanceCalculator.CalculateInterpolationFactor(20, 10, 20));
-
-        }
-
-        [TestMethod]
-        public void TestFindDistanceForPressureAltitudeAndTemperatureFromJson()
-        {
-
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(250, _defaultMagneticVariation, 20)
-            );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            Assert.AreEqual(1092, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(10));
-            Assert.AreEqual(1176, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_GroundRoll, 1000).GroundRoll.FindByTemperature(20));
-
-            Assert.AreEqual(1691, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(10));
-            Assert.AreEqual(1813, calculation.JsonFile.FindByPressureAltitude(calculation.JsonFile.TakeoffProfiles, ScenarioMode.Takeoff_50FtClearance, 1000).Clear50FtObstacle.FindByTemperature(20));
 
         }
 
@@ -119,214 +100,7 @@ namespace Airborn.Tests
             Assert.AreEqual(1420, PerformanceCalculator.Interpolate(1400, 1500, 1200, 1000));
         }
 
-        [TestMethod]
-        public void Test_Takeoff_GroundRollDistance_NoWind()
-        {
-            Scenario scenario = new Scenario(
-                  Runway.FromMagnetic(300, _defaultMagneticVariation),
-                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-              );
 
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Takeoff_GroundRoll;
-
-            Assert.AreEqual(1193, result);
-
-        }
-
-        [TestMethod]
-        public void Test_Takeoff_50FtClearanceDistance_NoWind()
-        {
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-            );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Takeoff_50FtClearance;
-
-            Assert.AreEqual(1840, result);
-
-        }
-
-        [TestMethod]
-        public void Test_Landing_GroundRollDistance_NoWind()
-        {
-            Scenario scenario = new Scenario(
-                  Runway.FromMagnetic(300, _defaultMagneticVariation),
-                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-              );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_GroundRoll;
-
-            Assert.AreEqual(1205, result);
-
-        }
-
-        [TestMethod]
-        public void Test_Landing_50FtClearanceDistance_NoWind()
-        {
-            Scenario scenario = new Scenario(
-                  Runway.FromMagnetic(300, _defaultMagneticVariation),
-                  Wind.FromMagnetic(340, _defaultMagneticVariation, 0)
-              );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_50FtClearance;
-
-            Assert.AreEqual(2435, result);
-
-        }
-
-        [TestMethod]
-        public void Test_TakeoffAdjustmentsForHeadwind()
-        {
-            // 12 knots straight down the runway
-            Scenario scenario = new Scenario(
-                  Runway.FromMagnetic(300, _defaultMagneticVariation),
-                  Wind.FromMagnetic(300, _defaultMagneticVariation, 12)
-              );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Takeoff_GroundRoll;
-
-            Assert.AreEqual(1073.7, result);
-
-        }
-
-        [TestMethod]
-        public void Test_TakeoffAdjustmentsForTailwind()
-        {
-            // 2 knots direct tailwind
-
-            Scenario scenario = new Scenario(
-                 Runway.FromMagnetic(270, _defaultMagneticVariation),
-                 Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
-             );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Takeoff_GroundRoll;
-
-            Assert.AreEqual(1312.3000000000002, result);
-
-        }
-
-
-        [TestMethod]
-        public void Test_LandingAdjustmentsForHeadwind()
-        {
-            // 12 knots straight down the runway
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(300, _defaultMagneticVariation),
-                Wind.FromMagnetic(300, _defaultMagneticVariation, 13)
-            );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_GroundRoll;
-
-            Assert.AreEqual(1084.5, result);
-
-        }
-
-        [TestMethod]
-        public void Test_LandingAdjustmentsForTailwind()
-        {
-            // 2 knots direct tailwind
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, _defaultMagneticVariation),
-                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
-                );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_GroundRoll;
-
-            Assert.AreEqual(1325.5, result);
-
-        }
-
-
-        [TestMethod]
-        public void Test_InchesOfMercuryToMillibars()
-        {
-            // 2 knots direct tailwind
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, _defaultMagneticVariation),
-                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
-                );
-
-            scenario.TemperatureCelcius = 15;
-            scenario.QNH = (int)Scenario.ConvertInchesOfMercuryToMillibars(29.92M);
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_GroundRoll;
-
-            Assert.AreEqual(1325.5, result);
-
-        }
-
-        [TestMethod]
-        public void Test_FahrenheightToCentigrade()
-        {
-            // 2 knots direct tailwind
-            Scenario scenario = new Scenario(
-                Runway.FromMagnetic(270, _defaultMagneticVariation),
-                Wind.FromMagnetic(90, _defaultMagneticVariation, 2)
-                );
-
-            scenario.TemperatureCelcius = Scenario.ConvertFahrenheitToCelcius(59M);
-            scenario.QNH = 1013;
-            scenario.FieldElevation = 1500;
-
-            PerformanceCalculation calculation = PerformanceCalculator.Calculate(scenario, AircraftType.SR22_G2, _testJsonPath);
-
-            double? result = calculation.Landing_GroundRoll;
-
-            Assert.AreEqual(1325.5, result);
-
-        }
 
     }
 }

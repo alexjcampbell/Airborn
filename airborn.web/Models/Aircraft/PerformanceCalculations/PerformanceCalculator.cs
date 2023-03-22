@@ -1,68 +1,265 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Text.RegularExpressions;
+
 
 namespace Airborn.web.Models
 {
 
-    
-    public static class PerformanceCalculator {
-        public static PerformanceCalculation Calculate(Scenario scenario, AircraftType aircraftType, string path)
-        {
-            PerformanceCalculation calculation = new PerformanceCalculation();
+    public class PerformanceCalculator
+    {
 
-            string fullPath;
+        private PerformanceCalculator()
+        {
+        }
+
+
+        public PerformanceCalculator(
+            AircraftType aircraftType,
+            Airport airport,
+            Wind wind,
+            string path)
+        {
+            AircraftType = aircraftType;
+            Airport = airport;
+            _wind = wind;
+            JsonPath = path;
+
+        }
+
+        public string JsonPath
+        {
+            get;
+            set;
+        }
+
+        public Airport Airport
+        {
+            get;
+        }
+
+        public AircraftType AircraftType
+        {
+            get;
+        }
+
+        private List<Runway> _runways = new List<Runway>();
+
+        public List<Runway> Runways
+        {
+            get
+            {
+                return _runways;
+            }
+
+        }
+
+        private List<PerformanceCalculationResultForRunway> _results = new List<PerformanceCalculationResultForRunway>();
+
+        public List<PerformanceCalculationResultForRunway> Results
+        {
+            get
+            {
+                return _results;
+            }
+        }
+
+        private Wind _wind;
+
+        public Wind Wind
+        {
+            get
+            {
+                return _wind;
+            }
+        }
+
+        private int _temperatureCelcius;
+
+        public int TemperatureCelcius
+        {
+            get
+            {
+                return _temperatureCelcius;
+            }
+            set
+            {
+                _temperatureCelcius = value;
+            }
+        }
+
+
+        private int _qnh;
+
+        public int QNH
+        {
+            get
+            {
+                return _qnh;
+            }
+            set
+            {
+                _qnh = value;
+            }
+        }
+
+        public int PressureAltitude
+        {
+            get
+            {
+                return ((1013 - QNH) * 30) + Airport.FieldElevation;
+            }
+        }
+
+        private double _aircraftWeight;
+
+        public double AircraftWeight
+        {
+            get
+            {
+                return _aircraftWeight;
+            }
+            set
+            {
+                _aircraftWeight = value;
+            }
+        }
+
+        public double DensityAltitude
+        {
+            get
+            {
+                return ((TemperatureCelcius - ISATemperature) * 120) + PressureAltitude;
+            }
+        }
+
+        public double ISATemperature
+        {
+            get
+            {
+                return 15 - (2 * ((double)PressureAltitude / 1000));
+            }
+        }
+
+
+        public void Calculate(string fullPath)
+        {
+
 
             Aircraft aircraft;
 
-            if (aircraftType == AircraftType.C172_SP)
+            if (AircraftType == AircraftType.C172_SP)
             {
-                fullPath = Path.Combine(path, "../Data/C172_SP_2550.json");
-                aircraft = new C172_SP(scenario, fullPath);
+                aircraft = new C172_SP();
             }
-            else if (aircraftType == AircraftType.SR22_G2)
+            else if (AircraftType == AircraftType.SR22_G2)
             {
-                fullPath = Path.Combine(path, "../Data/SR22_G2_3400.json");
-                aircraft = new SR22_G2(scenario, fullPath);
+                aircraft = new SR22_G2();
             }
-            else if (aircraftType == AircraftType.SR22T_G5)
+            else if (AircraftType == AircraftType.SR22T_G5)
             {
-                fullPath = Path.Combine(path, "../Data/SR22T_G5_3600.json");
-                aircraft = new SR22T_G5(scenario, fullPath);
+                aircraft = new SR22T_G5();
             }
             else
             {
-                throw new ArgumentOutOfRangeException("AircraftType", aircraftType.ToString());
+                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
             }
 
-            calculation.JsonFile = new JsonFile(fullPath);
+            fullPath = Path.Combine(JsonPath, aircraft.JsonFileName());
 
-            calculation.Takeoff_GroundRoll =
-                aircraft.MakeTakeoffAdjustments
-                (
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, scenario, calculation.JsonFile, calculation.JsonFile.TakeoffProfiles)
-                );
+            JsonFile jsonFile = new JsonFile(fullPath);
 
-            calculation.Takeoff_50FtClearance =
-                aircraft.MakeTakeoffAdjustments
-                (
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, scenario, calculation.JsonFile, calculation.JsonFile.TakeoffProfiles)
-                );
+            List<PerformanceCalculationResultForRunway> results = new List<PerformanceCalculationResultForRunway>();
 
-            calculation.Landing_GroundRoll =
-                aircraft.MakeLandingAdjustments
-                (
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, scenario, calculation.JsonFile, calculation.JsonFile.LandingProfiles)
-                );
+            using (var db = new AirportDbContext())
+            {
 
-            calculation.Landing_50FtClearance =
-                aircraft.MakeLandingAdjustments(
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, scenario, calculation.JsonFile, calculation.JsonFile.LandingProfiles)
-                );
 
-            return calculation;
+                foreach(Runway runway in 
+
+                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
+                {
+                    Runway primaryRunway = runway;
+
+                    primaryRunway.RunwayIdentifier = runway.RunwayIdentifier_Primary;
+
+                    // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
+
+                    string runwayName = Regex.Replace(runway.RunwayIdentifier_Primary, @"\D+", "");
+
+
+                    primaryRunway.RunwayHeading = 
+                        new Direction(
+                            int.Parse(runwayName) * 10,
+                            0
+                            );
+                       
+                    Runways.Add(primaryRunway);
+                }
+            }
+            using (var db = new AirportDbContext())
+            {
+                foreach (Runway runway in
+                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
+                {
+                    Runway secondaryRunway = runway;
+
+                    secondaryRunway.RunwayIdentifier = runway.RunwayIdentifier_Secondary;
+
+                    // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
+                    secondaryRunway.RunwayHeading =
+                        new Direction(
+                            int.Parse(runway.RunwayIdentifier_Secondary.Substring(0, 2)) * 10,
+                            0
+                            );
+
+                    Runways.Add(secondaryRunway);
+                }
+            }
+        
+
+            foreach (Runway runway in Runways){
+                PerformanceCalculationResultForRunway result =
+                    new PerformanceCalculationResultForRunway(runway, Wind);
+
+                result.JsonFile = jsonFile;
+
+                result.Takeoff_GroundRoll =
+                    aircraft.MakeTakeoffAdjustments
+                    (
+                        result,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFile, jsonFile.TakeoffProfiles)
+                    );
+
+                result.Takeoff_50FtClearance =
+                    aircraft.MakeTakeoffAdjustments
+                    (
+                        result,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFile, jsonFile.TakeoffProfiles)
+                    );
+
+                result.Landing_GroundRoll =
+                    aircraft.MakeLandingAdjustments
+                    (
+                        result,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFile, jsonFile.LandingProfiles)
+                    );
+
+                result.Landing_50FtClearance =
+                    aircraft.MakeLandingAdjustments(
+                        result,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFile, jsonFile.LandingProfiles)
+                    );
+
+                Results.Add(result);
+            }
+
         }
 
-        public static double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, Scenario scenario, JsonFile jsonFile, JsonPerformanceProfileList profiles)
+        public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile, JsonPerformanceProfileList profiles)
         {
             /*  The performance data in the JSON is provided by the manufacturer in 
                 pressure altitude intervals of 1000 ft and temperature intervals of
@@ -77,34 +274,34 @@ namespace Airborn.web.Models
             // get the upper and lower bounds for pressure altitude and temperature
             // ie using the example below this will return 1000 ft and 2000 ft
             // and 10 and 20 degreses
-            int lowerPressureAltidude = GetLowerBoundForInterpolation(scenario.PressureAltitude, 1000);
-            int upperPressureAltidude = GetUpperBoundForInterpolation(scenario.PressureAltitude, 1000);
-            int lowerTemperature = GetLowerBoundForInterpolation(scenario.TemperatureCelcius, 10);
-            int upperTemperature = GetUpperBoundForInterpolation(scenario.TemperatureCelcius, 10);
+            int lowerPressureAltidude = GetLowerBoundForInterpolation(PressureAltitude, 1000);
+            int upperPressureAltidude = GetUpperBoundForInterpolation(PressureAltitude, 1000);
+            int lowerTemperature = GetLowerBoundForInterpolation(TemperatureCelcius, 10);
+            int upperTemperature = GetUpperBoundForInterpolation(TemperatureCelcius, 10);
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, scenario, scenarioMode, lowerPressureAltidude, lowerTemperature);
-            double distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, scenario, scenarioMode, upperPressureAltidude, lowerTemperature);
+            double distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
+            double distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, upperPressureAltidude, lowerTemperature);
 
             // interpolate between the lower and higher pressure altitude for the lower temperature
             double distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
                 distanceForUpperPressureAltitudeLowerTemp,
-                scenario.PressureAltitude,
+                PressureAltitude,
                 1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
             // then get the performance data for the higher temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, scenario, scenarioMode, lowerPressureAltidude, upperTemperature);
-            double distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, scenario, scenarioMode, upperPressureAltidude, upperTemperature);
+            double distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, lowerPressureAltidude, upperTemperature);
+            double distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, upperPressureAltidude, upperTemperature);
 
             // interpolate between the lower and higher pressure altitude for the higher temperature
             double distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
-                scenario.PressureAltitude,
+                PressureAltitude,
                 1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
@@ -112,12 +309,12 @@ namespace Airborn.web.Models
             double distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
-                scenario.TemperatureCelcius,
+                TemperatureCelcius,
                 10 // temperatures in the json comes in intervals of 10
             );
 
             System.Diagnostics.Debug.Write(
-                $"Distance interpolated: {distanceInterpolated} for pressure altitude {scenario.PressureAltitude} and temperature {scenario.TemperatureCelcius} ");
+                $"Distance interpolated: {distanceInterpolated} for pressure altitude {PressureAltitude} and temperature {TemperatureCelcius} ");
 
             return distanceInterpolated;
 

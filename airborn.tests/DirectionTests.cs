@@ -18,6 +18,7 @@ namespace Airborn.Tests
             // a heading of 360 is the same as 0, but this should return 0
             direction = Direction.FromTrue(350, 10);
             Assert.AreEqual(0, direction.DirectionMagnetic);
+            
         }
 
         [TestMethod]
@@ -31,6 +32,16 @@ namespace Airborn.Tests
 
             direction = Direction.FromMagnetic(340, 10);
             Assert.AreEqual(330, direction.DirectionTrue);
+
+            direction = Direction.FromMagnetic(0, 10);
+            Assert.AreEqual(350, direction.DirectionTrue);
+
+            direction = Direction.FromMagnetic(360, 10);
+            Assert.AreEqual(350, direction.DirectionTrue);
+
+            direction = Direction.FromMagnetic(360, -10);
+            Assert.AreEqual(10, direction.DirectionTrue);            
         }
+
     }
 }

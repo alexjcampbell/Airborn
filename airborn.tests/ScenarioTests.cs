@@ -9,18 +9,37 @@ namespace Airborn.Tests
 
         private int _defaultMagneticVariation = -20;
 
+        private PerformanceCalculator GetCalculator(int windDirectionMagnetic, int windStrength)
+        {
+
+            PerformanceCalculator calculator = new PerformanceCalculator(
+                AircraftType.SR22_G2,
+                new Airport(),
+                Wind.FromMagnetic(windDirectionMagnetic, _defaultMagneticVariation, windStrength),
+                ""
+                );
+
+            calculator.TemperatureCelcius = 12;
+            calculator.QNH = 1013;
+            calculator.Airport.FieldElevation = 1500;
+
+            return calculator;
+
+        }
+
         [TestMethod]
         public void TestTrueVsMagnetic()
         {
 
+            Airport airport = new Airport();
             Runway runway = Runway.FromMagnetic(340, _defaultMagneticVariation);
             Wind wind = Wind.FromMagnetic(200, _defaultMagneticVariation, 10);
 
-            Scenario scenario = new Scenario(runway, wind);
+            PerformanceCalculator scenario = GetCalculator(200, 10);
 
             // we said 340 magnetic for the runway, so with -20 mag var
             // the true direction for runway heading should be 0
-            Assert.AreEqual(0, scenario.Runway.RunwayHeading.DirectionTrue);
+            Assert.AreEqual(0, runway.RunwayHeading.DirectionTrue);
 
             // we said 200 magnetic for the wind, so with -20 mag var
             // the true direction for wind should be 220
@@ -33,19 +52,15 @@ namespace Airborn.Tests
         {
             Wind wind = Wind.FromMagnetic(310, _defaultMagneticVariation, 10);
             Runway runway = Runway.FromMagnetic(010, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(-60, scenario.WindRunwayAngularDifferenceMagnetic);
+
+            Assert.AreEqual(-60, CalculationUtilities.AngularDifference(10, 310));
 
         }
 
         [TestMethod]
         public void TestAngularDifference_WindRightOfRunway()
         {
-            Wind wind = Wind.FromMagnetic(010, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(350, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(20, scenario.WindRunwayAngularDifferenceMagnetic);
-
+            Assert.AreEqual(20, CalculationUtilities.AngularDifference(350, 10));
         }
 
 
@@ -53,31 +68,21 @@ namespace Airborn.Tests
         public void TestAngularDifference_WindStraightDownRunway()
         {
 
-            Wind wind = Wind.FromMagnetic(10, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(10, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(0, scenario.WindRunwayAngularDifferenceMagnetic);
+            Assert.AreEqual(0, CalculationUtilities.AngularDifference(10, 10));
 
         }
 
         [TestMethod]
         public void TestAngularDifference_WindStraightDownOppositeRunway()
         {
-
-            Wind wind = Wind.FromMagnetic(10, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(190, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(-180, scenario.WindRunwayAngularDifferenceMagnetic);
+    
+            Assert.AreEqual(-180, CalculationUtilities.AngularDifference(10, 190));
         }
 
         [TestMethod]
         public void TestAngularDifference_WindGreaterThan180()
         {
-
-            Wind wind = Wind.FromMagnetic(160, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(10, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(150, scenario.WindRunwayAngularDifferenceMagnetic);
+            Assert.AreEqual(-150, CalculationUtilities.AngularDifference(160, 10));
         }
 
         [TestMethod]
@@ -86,20 +91,28 @@ namespace Airborn.Tests
 
             Wind wind = Wind.FromMagnetic(160, _defaultMagneticVariation, 10);
             Runway runway = Runway.FromMagnetic(160, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(0, scenario.CrosswindComponent);
-            Assert.AreEqual(10, scenario.HeadwindComponent);
+
+            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+                runway, wind
+            );
+
+            Assert.AreEqual(0, result.CrosswindComponent);
+            Assert.AreEqual(10, result.HeadwindComponent);
         }
 
         [TestMethod]
         public void Test_CrosswindComponent_DirectCrosswind()
         {
 
-            Wind wind = Wind.FromMagnetic(0, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(90, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(-10, scenario.CrosswindComponent);
-            Assert.AreEqual(0, (int)scenario.HeadwindComponent);
+            Wind wind = Wind.FromMagnetic(90, _defaultMagneticVariation, 10);
+            Runway runway = Runway.FromMagnetic(180, _defaultMagneticVariation);
+
+            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+                runway, wind
+            );            
+
+            Assert.AreEqual(-10, result.CrosswindComponent);
+            Assert.AreEqual(0, result.HeadwindComponent);
         }
 
         [TestMethod]
@@ -108,23 +121,26 @@ namespace Airborn.Tests
 
             Wind wind = Wind.FromMagnetic(0, _defaultMagneticVariation, 10);
             Runway runway = Runway.FromMagnetic(40, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
-            Assert.AreEqual(-6.4278760968653925, scenario.CrosswindComponent);
-            Assert.AreEqual(7.66044443118978, scenario.HeadwindComponent);
+
+
+            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+                runway, wind
+            );
+
+            Assert.AreEqual(-6, result.CrosswindComponent);
+            Assert.AreEqual(8, result.HeadwindComponent);
         }
 
         [TestMethod]
         public void Test_PressureAltitude()
         {
-            Wind wind = Wind.FromMagnetic(0, _defaultMagneticVariation, 10);
-            Runway runway = Runway.FromMagnetic(40, _defaultMagneticVariation);
-            Scenario scenario = new Scenario(runway, wind);
+            PerformanceCalculator calculator = GetCalculator(0, 10);
 
-            scenario.TemperatureCelcius = 11;
-            scenario.FieldElevation = 1500;
-            scenario.QNH = 1013;
+            calculator.TemperatureCelcius = 11;
+            calculator.Airport.FieldElevation = 1500;
+            calculator.QNH = 1013;
 
-            Assert.AreEqual(1500, scenario.PressureAltitude);
+            Assert.AreEqual(1500, calculator.PressureAltitude);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Airborn.web.Models
         {
         }
 
-        private Runway(Direction runwayHeading)
+        public Runway(Direction runwayHeading)
         {
             RunwayHeading = runwayHeading;
         }
@@ -23,6 +23,12 @@ namespace Airborn.web.Models
         {
             get; set;
         }
+
+        [NotMapped]
+        public string RunwayIdentifier
+        {
+            get; set;
+        }        
 
         [Column("Le_Ident")]
         public string RunwayIdentifier_Primary
@@ -43,6 +49,25 @@ namespace Airborn.web.Models
         }
 
         [NotMapped]
+        public double RunwayLengthConverted
+        {
+            get{
+                return Convert.ToDouble(RunwayLength);
+            }
+        }
+
+        [NotMapped]
+        public string RunwayLengthFriendly
+        {
+            get
+            {
+                return RunwayLengthConverted.ToString("#,##0") + "ft";
+            }
+        }
+
+
+        // todo use or remove this
+        [NotMapped]
         public Distance TakeoffAvailableLength { get; }
 
         [NotMapped]
@@ -50,6 +75,14 @@ namespace Airborn.web.Models
 
         [NotMapped]
         public Direction RunwayHeading { get; set; }
+
+        public string RunwayHeadingMagneticConverted
+        {
+            get 
+            {
+                return RunwayHeading.DirectionMagnetic.ToString() + " degrees M";
+            }
+        }
 
         public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
         {
