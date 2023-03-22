@@ -61,7 +61,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return RunwayLengthConverted.ToString("#,##0") + "ft";
+                return RunwayLengthConverted.ToString("#,##0") + " ft";
             }
         }
 
