@@ -23,7 +23,8 @@ namespace Airborn.web.Models
             get;
         }
 
-        public Wind Wind{
+        public Wind Wind
+        {
             get;
         }
 
@@ -31,11 +32,12 @@ namespace Airborn.web.Models
 
         public double Takeoff_GroundRoll
         {
-            get {
+            get
+            {
                 return _takeoff_GroundRoll;
             }
-           set 
-           {
+            set
+            {
                 _takeoff_GroundRoll = value;
             }
         }
@@ -112,7 +114,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                
+
                 int difference = (int)CalculationUtilities.AngularDifference(Runway.RunwayHeading.DirectionMagnetic, Wind.Direction.DirectionMagnetic);
 
                 return difference;

@@ -18,7 +18,7 @@ namespace Airborn.web.Models
         {
             get;
             set;
-        }        
+        }
 
         public List<PerformanceCalculationResultForRunwayPageModel> Results
         {
@@ -27,7 +27,8 @@ namespace Airborn.web.Models
         }
 
 
-        public List<Runway> Runways{
+        public List<Runway> Runways
+        {
             get;
             set;
         }
@@ -180,9 +181,9 @@ namespace Airborn.web.Models
 
             PerformanceCalculator.Calculate(rootPath);
 
-            foreach(PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
+            foreach (PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
             {
-                PerformanceCalculationResultForRunwayPageModel pageModelResult = 
+                PerformanceCalculationResultForRunwayPageModel pageModelResult =
                     new PerformanceCalculationResultForRunwayPageModel(result, result.Runway);
 
                 Results.Add(pageModelResult);

@@ -178,7 +178,7 @@ namespace Airborn.web.Models
             {
 
 
-                foreach(Runway runway in 
+                foreach (Runway runway in
 
                     db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
                 {
@@ -191,12 +191,12 @@ namespace Airborn.web.Models
                     string runwayName = Regex.Replace(runway.RunwayIdentifier_Primary, @"\D+", "");
 
 
-                    primaryRunway.RunwayHeading = 
+                    primaryRunway.RunwayHeading =
                         new Direction(
                             int.Parse(runwayName) * 10,
                             0
                             );
-                       
+
                     Runways.Add(primaryRunway);
                 }
             }
@@ -219,9 +219,10 @@ namespace Airborn.web.Models
                     Runways.Add(secondaryRunway);
                 }
             }
-        
 
-            foreach (Runway runway in Runways){
+
+            foreach (Runway runway in Runways)
+            {
                 PerformanceCalculationResultForRunway result =
                     new PerformanceCalculationResultForRunway(runway, Wind);
 

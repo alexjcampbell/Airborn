@@ -24,9 +24,10 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
+                placeholder="Airport Identifier"
                     data-val-required="Airport identifier is required"
                     />
-                <label asp-for="AirportIdentifier">Airport</label>
+                <label for="AirportIdentifier">Airport</label>
             </div>
         </div>
 
@@ -67,8 +68,8 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="FieldElevation" class="form-control" maxlength="10" 
-                    data-val-required="Field Elevation is required" />
-                <label asp-for="FieldElevation">Field elevation (ft)</label>
+                    placeholder="Field elevation" data-val-required="Field Elevation is required" />
+                <label for="FieldElevation">Field elevation (ft)</label>
             </div>
         </div>       
 
@@ -100,19 +101,19 @@
     <div class="form-group row">
         <div class="col-sm-3">
             <div class="form-floating">  
-            <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3" />
+            <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3" placeholder="Wind direction °M" />
             <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
             </div>
         </div>  
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="WindStrength" class="form-control" maxlength="3" />
+                <input asp-for="WindStrength" class="form-control" placeholder="Wind strength (kts)" maxlength="3" />
                 <label asp-for="WindStrength">Wind strength (kts)</label>
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-floating">   
-                <input asp-for="Temperature" class="form-control" maxlength="2" />
+                <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="2" />
                 <label asp-for="Temperature">Temperature</label>
             </div>
         </div>
@@ -127,7 +128,7 @@
 
         <div class="col-sm-2">
             <div class="form-floating">           
-                <input asp-for="AltimeterSetting" class="form-control" maxlength="5" />
+                <input asp-for="AltimeterSetting" class="form-control" maxlength="5" placeholder="Altimeter setting" />
                 <label asp-for="AltimeterSetting">Altimeter setting</label>
             </div>
         </div>

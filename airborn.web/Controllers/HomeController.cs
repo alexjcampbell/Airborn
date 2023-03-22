@@ -34,7 +34,7 @@ namespace Airborn.Controllers
         {
 
             ScenarioPageModel model = new ScenarioPageModel();
-        
+
 
             if (Request.Cookies["TemperatureType"]?.Length > 0)
             {

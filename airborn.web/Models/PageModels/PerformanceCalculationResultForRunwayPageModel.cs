@@ -8,7 +8,7 @@ namespace Airborn.web.Models
     public class PerformanceCalculationResultForRunwayPageModel
     {
         private PerformanceCalculationResultForRunwayPageModel()
-        {   
+        {
         }
 
         public PerformanceCalculationResultForRunwayPageModel(PerformanceCalculationResultForRunway result, Runway runway)
@@ -23,7 +23,8 @@ namespace Airborn.web.Models
             set;
         }
 
-        public Runway Runway{
+        public Runway Runway
+        {
             get;
             set;
         }
@@ -71,7 +72,8 @@ namespace Airborn.web.Models
 
         public string CrosswindComponentOutput
         {
-            get {
+            get
+            {
                 if (CrosswindComponentAbs > 0)
                 {
                     return CrosswindComponentAbs?.ToString(",##0") + " kts";
@@ -125,7 +127,8 @@ namespace Airborn.web.Models
 
         public string HeadwindComponentOutput
         {
-            get {
+            get
+            {
                 if (HeadwindComponentAbs > 0)
                 {
                     return HeadwindComponentAbs?.ToString(",##0") + " kts";
@@ -207,14 +210,17 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    return
-                        Result?.Landing_GroundRoll.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + ")"
-                        ;
+                    if (Runway.RunwayLength.Length > 0)
+                    {
+                        return
+                            Result?.Landing_GroundRoll.ToString("#,##")
+                            +
+                            " ft ("
+                            +
+                            Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
+                            + ")"
+                            ;
+                    }
                 }
 
                 return "";
@@ -256,7 +262,6 @@ namespace Airborn.web.Models
             get
             {
                 return Takeoff_GroundRoll / Runway.RunwayLengthConverted;
-
             }
         }
 

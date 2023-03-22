@@ -49,10 +49,14 @@ namespace Airborn.web.Models
         }
 
         [NotMapped]
-        public double RunwayLengthConverted
+        public double? RunwayLengthConverted
         {
             get{
-                return Convert.ToDouble(RunwayLength);
+                if(RunwayLength.Length > 0){
+                    return Convert.ToDouble(RunwayLength);
+                }
+                return null;
+
             }
         }
 
@@ -61,7 +65,12 @@ namespace Airborn.web.Models
         {
             get
             {
-                return RunwayLengthConverted.ToString("#,##0") + " ft";
+                if (RunwayLength.Length > 0)
+                {
+                    return RunwayLengthConverted?.ToString("#,##0") + " ft";
+                }
+
+                return "Unknown";
             }
         }
 
@@ -80,7 +89,7 @@ namespace Airborn.web.Models
         {
             get 
             {
-                return RunwayHeading.DirectionMagnetic.ToString() + " degrees M";
+                return RunwayHeading.DirectionMagnetic.ToString() + " °M";
             }
         }
 
