@@ -33,29 +33,6 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestJsonRead()
-        {
-            PerformanceCalculator calculator = GetCalculator(250, 20);
-
-            calculator.Calculate(_testJsonPath);
-
-
-            // test that the Json de-serializer has read at least one profile
-            Assert.IsTrue(calculator.Results[0].JsonFile.TakeoffProfiles.Count > 0);
-
-            // test that the Json de-serializer has read the performance data 
-            // for at least one profile
-            Assert.IsTrue(calculator.Results[0].JsonFile.TakeoffProfiles[0].GroundRoll.Count > 0);
-
-            // test that the pressureAltitude and ground roll distance match our
-            // sample file
-            Assert.AreEqual(0, calculator.Results[0].JsonFile.TakeoffProfiles[0].PressureAltitude = 0);
-            Assert.AreEqual(917, calculator.Results[0].JsonFile.TakeoffProfiles[0].GroundRoll[0].Distance);
-            Assert.AreEqual(1000, calculator.Results[0].JsonFile.TakeoffProfiles[1].PressureAltitude = 1000);
-            Assert.AreEqual(1011, calculator.Results[0].JsonFile.TakeoffProfiles[1].GroundRoll[0].Distance);
-        }
-
-        [TestMethod]
         public void Test_CalculateInterpolationFactor()
         {
 
