@@ -188,19 +188,7 @@ namespace Airborn.Controllers
                                }
                     ).ToList();
 
-                // this is not the best approach from a performance or code cleanness perspective
-                // but the data source we're using stores two runways in one row, so we have to 
-                // 're normalise' it somehow
-                var runways2 = (from runway in db.Runways
-                                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
-                                select new
-                                {
-                                    label = runway.RunwayIdentifier_Secondary,
-                                    val = runway.RunwayIdentifier_Secondary
-                                }
-                    ).ToList();
-
-                runways.AddRange(runways2);
+                runways.AddRange(runways);
 
                 return Json(runways);
             }
@@ -232,8 +220,6 @@ namespace Airborn.Controllers
                             &&
                             (
                                 a.RunwayIdentifier_Primary == runwayId
-                                ||
-                                a.RunwayIdentifier_Secondary == runwayId
 
                             )
                         )

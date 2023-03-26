@@ -200,25 +200,6 @@ namespace Airborn.web.Models
                     Runways.Add(primaryRunway);
                 }
             }
-            using (var db = new AirportDbContext())
-            {
-                foreach (Runway runway in
-                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
-                {
-                    Runway secondaryRunway = runway;
-
-                    secondaryRunway.RunwayIdentifier = runway.RunwayIdentifier_Secondary;
-
-                    // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
-                    secondaryRunway.RunwayHeading =
-                        new Direction(
-                            int.Parse(runway.RunwayIdentifier_Secondary.Substring(0, 2)) * 10,
-                            0
-                            );
-
-                    Runways.Add(secondaryRunway);
-                }
-            }
 
 
             foreach (Runway runway in Runways)

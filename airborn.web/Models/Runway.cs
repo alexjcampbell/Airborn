@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Airborn.web.Models
 {
 
+    [Table("runways")]
     public class Runway
     {
         private Runway()
@@ -30,17 +31,12 @@ namespace Airborn.web.Models
             get; set;
         }        
 
-        [Column("Le_Ident")]
+        [Column("Ident")]
         public string RunwayIdentifier_Primary
         {
             get; set;
         }
 
-        [Column("He_Ident")]
-        public string RunwayIdentifier_Secondary
-        {
-            get; set;
-        }
 
         [Column("Length_Ft")]
         public string RunwayLength
