@@ -149,24 +149,7 @@ namespace Airborn.web.Models
         {
 
 
-            Aircraft aircraft;
-
-            if (AircraftType == AircraftType.C172_SP)
-            {
-                aircraft = new C172_SP();
-            }
-            else if (AircraftType == AircraftType.SR22_G2)
-            {
-                aircraft = new SR22_G2();
-            }
-            else if (AircraftType == AircraftType.SR22T_G5)
-            {
-                aircraft = new SR22T_G5();
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
-            }
+            Aircraft aircraft = GetAircraft();
 
             fullPath = Path.Combine(JsonPath, aircraft.JsonFileName());
 
@@ -208,6 +191,29 @@ namespace Airborn.web.Models
                 Results.Add(result);
             }
 
+        }
+
+        private Aircraft GetAircraft()
+        {
+            Aircraft aircraft;
+            if (AircraftType == AircraftType.C172_SP)
+            {
+                aircraft = new C172_SP();
+            }
+            else if (AircraftType == AircraftType.SR22_G2)
+            {
+                aircraft = new SR22_G2();
+            }
+            else if (AircraftType == AircraftType.SR22T_G5)
+            {
+                aircraft = new SR22T_G5();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
+            }
+
+            return aircraft;
         }
 
         private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFile, Runway runway)
