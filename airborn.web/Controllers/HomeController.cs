@@ -79,7 +79,7 @@ namespace Airborn.Controllers
             {
                 using (var db = new AirportDbContext())
                 {
-                    model.Runways = db.Runways.Where<Runway>
+                    model.Runways = db.Runways_Flat.Where<Runway>
                         (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
                         ).ToList<Runway>();
                 }
@@ -179,7 +179,7 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-                var runways = (from runway in db.Runways
+                var runways = (from runway in db.Runways_Flat
                                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
                                select new
                                {
@@ -214,7 +214,7 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-                Runway runway = db.Runways.Single<Runway>(
+                Runway runway = db.Runways_Flat.Single<Runway>(
                     a => (
                             (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
                             &&

@@ -179,8 +179,7 @@ namespace Airborn.web.Models
 
 
                 foreach (Runway runway in
-
-                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
+                    db.Runways_Flat.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
                 {
                     Runway primaryRunway = runway;
 
@@ -204,41 +203,47 @@ namespace Airborn.web.Models
 
             foreach (Runway runway in Runways)
             {
-                PerformanceCalculationResultForRunway result =
-                    new PerformanceCalculationResultForRunway(runway, Wind);
-
-                result.JsonFile = jsonFile;
-
-                result.Takeoff_GroundRoll =
-                    aircraft.MakeTakeoffAdjustments
-                    (
-                        result,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFile, jsonFile.TakeoffProfiles)
-                    );
-
-                result.Takeoff_50FtClearance =
-                    aircraft.MakeTakeoffAdjustments
-                    (
-                        result,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFile, jsonFile.TakeoffProfiles)
-                    );
-
-                result.Landing_GroundRoll =
-                    aircraft.MakeLandingAdjustments
-                    (
-                        result,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFile, jsonFile.LandingProfiles)
-                    );
-
-                result.Landing_50FtClearance =
-                    aircraft.MakeLandingAdjustments(
-                        result,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFile, jsonFile.LandingProfiles)
-                    );
+                PerformanceCalculationResultForRunway result = CalculatePerformanceForRunway(aircraft, jsonFile, runway);
 
                 Results.Add(result);
             }
 
+        }
+
+        private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFile, Runway runway)
+        {
+            PerformanceCalculationResultForRunway result =
+                new PerformanceCalculationResultForRunway(runway, Wind);
+
+            result.JsonFile = jsonFile;
+
+            result.Takeoff_GroundRoll =
+                aircraft.MakeTakeoffAdjustments
+                (
+                    result,
+                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFile, jsonFile.TakeoffProfiles)
+                );
+
+            result.Takeoff_50FtClearance =
+                aircraft.MakeTakeoffAdjustments
+                (
+                    result,
+                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFile, jsonFile.TakeoffProfiles)
+                );
+
+            result.Landing_GroundRoll =
+                aircraft.MakeLandingAdjustments
+                (
+                    result,
+                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFile, jsonFile.LandingProfiles)
+                );
+
+            result.Landing_50FtClearance =
+                aircraft.MakeLandingAdjustments(
+                    result,
+                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFile, jsonFile.LandingProfiles)
+                );
+            return result;
         }
 
         public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile, JsonPerformanceProfileList profiles)

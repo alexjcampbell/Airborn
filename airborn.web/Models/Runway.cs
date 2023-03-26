@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Airborn.web.Models
 {
 
-    [Table("runways")]
+    [Table("runways_flat")]
     public class Runway
     {
         private Runway()

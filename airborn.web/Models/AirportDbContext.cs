@@ -8,7 +8,7 @@ namespace Airborn.web.Models
     {
         public DbSet<Airport> Airports { get; set; }
 
-        public DbSet<Runway> Runways { get; set; }
+        public DbSet<Runway> Runways_Flat { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message));
