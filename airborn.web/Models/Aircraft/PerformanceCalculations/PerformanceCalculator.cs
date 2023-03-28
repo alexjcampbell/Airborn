@@ -190,8 +190,9 @@ namespace Airborn.web.Models
 
         }
 
-
-
+        /// <summary>
+        /// Calculates the performance for a given runway
+        /// </summary>
         private PerformanceCalculationResult CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight, Runway runway)
         {
             PerformanceCalculationResult result =
