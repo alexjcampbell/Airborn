@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Airborn.web.Models
 {
-    public class ScenarioPageModel
+    public class CalculatePageModel
     {
 
-        public ScenarioPageModel()
+        public CalculatePageModel()
         {
             Runways = new List<Runway>();
-            Results = new List<PerformanceCalculationResultForRunwayPageModel>();
+            Results = new List<PerformanceCalculationResultPageModel>();
         }
 
         private PerformanceCalculator PerformanceCalculator
@@ -20,7 +20,7 @@ namespace Airborn.web.Models
             set;
         }
 
-        public List<PerformanceCalculationResultForRunwayPageModel> Results
+        public List<PerformanceCalculationResultPageModel> Results
         {
             get;
             set;
@@ -184,8 +184,8 @@ namespace Airborn.web.Models
 
             foreach (PerformanceCalculationResult result in PerformanceCalculator.Results)
             {
-                PerformanceCalculationResultForRunwayPageModel pageModelResult =
-                    new PerformanceCalculationResultForRunwayPageModel(result, result.Runway);
+                PerformanceCalculationResultPageModel pageModelResult =
+                    new PerformanceCalculationResultPageModel(result, result.Runway);
 
                 Results.Add(pageModelResult);
             }

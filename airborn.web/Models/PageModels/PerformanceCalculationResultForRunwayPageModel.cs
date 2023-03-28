@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Airborn.web.Models
 {
-    public class PerformanceCalculationResultForRunwayPageModel
+    public class PerformanceCalculationResultPageModel
     {
-        private PerformanceCalculationResultForRunwayPageModel()
+        private PerformanceCalculationResultPageModel()
         {
         }
 
-        public PerformanceCalculationResultForRunwayPageModel(PerformanceCalculationResult result, Runway runway)
+        public PerformanceCalculationResultPageModel(PerformanceCalculationResult result, Runway runway)
         {
             Result = result;
             Runway = runway;

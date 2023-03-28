@@ -25,7 +25,7 @@ namespace Airborn.Controllers
 
         public IActionResult Index()
         {
-            ScenarioPageModel model = new ScenarioPageModel();
+            CalculatePageModel model = new CalculatePageModel();
 
             return View(model);
         }
@@ -33,7 +33,7 @@ namespace Airborn.Controllers
         public IActionResult Calculate()
         {
 
-            ScenarioPageModel model = new ScenarioPageModel();
+            CalculatePageModel model = new CalculatePageModel();
 
 
             if (Request.Cookies["TemperatureType"]?.Length > 0)
@@ -71,7 +71,7 @@ namespace Airborn.Controllers
         // POST: Home/Calculate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Calculate(ScenarioPageModel model)
+        public IActionResult Calculate(CalculatePageModel model)
         {
 
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
