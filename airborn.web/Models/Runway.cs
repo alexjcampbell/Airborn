@@ -38,6 +38,24 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("Width_Ft")]
+        public string RunwayWidth
+        {
+            get; set;
+        }
+
+        [Column("Surface")]
+        public string SurfaceText
+        {
+            get; set;
+        }
+
+        [Column("Displayed_Threshold_Ft")]
+        public string DisplayedThresholdFt
+        {
+            get; set;
+        }    
+
         [NotMapped]
         public double? RunwayLengthConverted
         {
