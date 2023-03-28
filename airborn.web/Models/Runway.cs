@@ -56,6 +56,11 @@ namespace Airborn.web.Models
             get; set;
         }    
 
+        public string Heading_DegT
+        {
+            get; set;
+        }
+
         [NotMapped]
         public double? RunwayLengthConverted
         {
