@@ -50,8 +50,8 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Column("Displayed_Threshold_Ft")]
-        public string DisplayedThresholdFt
+        [Column("Displaced_Threshold_Ft")]
+        public string DisplacedThresholdFt
         {
             get; set;
         }    
