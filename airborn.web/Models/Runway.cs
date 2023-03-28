@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.web.Models
 {
-
-    [Table("runways_flat")]
+    [Table("Runways")]
     public class Runway
     {
         private Runway()
@@ -15,7 +15,8 @@ namespace Airborn.web.Models
         {
             RunwayHeading = runwayHeading;
         }
-        public string Id
+
+        public int Runway_Id
         {
             get; set;
         }
@@ -24,15 +25,8 @@ namespace Airborn.web.Models
         {
             get; set;
         }
-
-        [NotMapped]
-        public string RunwayIdentifier
-        {
-            get; set;
-        }        
-
-        [Column("Ident")]
-        public string RunwayIdentifier_Primary
+        
+        public string Runway_Name
         {
             get; set;
         }

@@ -57,9 +57,9 @@ namespace Airborn.web.Models
 
         }
 
-        private List<PerformanceCalculationResultForRunway> _results = new List<PerformanceCalculationResultForRunway>();
+        private List<PerformanceCalculationResult> _results = new List<PerformanceCalculationResult>();
 
-        public List<PerformanceCalculationResultForRunway> Results
+        public List<PerformanceCalculationResult> Results
         {
             get
             {
@@ -145,33 +145,30 @@ namespace Airborn.web.Models
         }
 
 
-        public void Calculate(string fullPath)
+        public void Calculate()
         {
 
 
-            Aircraft aircraft = GetAircraft();
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
-            fullPath = Path.Combine(JsonPath, aircraft.JsonFileName());
+            string fullPathLowerWeight = Path.Combine(JsonPath, aircraft.JsonFileName_LowerWeight());
+            string fullPathHigherWeight = Path.Combine(JsonPath, aircraft.JsonFileName_HigherWeight());
 
-            JsonFile jsonFile = new JsonFile(fullPath);
+            JsonFile jsonFileLowerWeight = new JsonFile(fullPathLowerWeight);
+            JsonFile jsonFileHigherWeight = new JsonFile(fullPathHigherWeight);
 
-            List<PerformanceCalculationResultForRunway> results = new List<PerformanceCalculationResultForRunway>();
+            List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
 
             using (var db = new AirportDbContext())
             {
 
-
                 foreach (Runway runway in
-                    db.Runways_Flat.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
+                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
                 {
                     Runway primaryRunway = runway;
 
-                    primaryRunway.RunwayIdentifier = runway.RunwayIdentifier_Primary;
-
                     // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
-
-                    string runwayName = Regex.Replace(runway.RunwayIdentifier_Primary, @"\D+", "");
-
+                    string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
 
                     primaryRunway.RunwayHeading =
                         new Direction(
@@ -186,83 +183,99 @@ namespace Airborn.web.Models
 
             foreach (Runway runway in Runways)
             {
-                PerformanceCalculationResultForRunway result = CalculatePerformanceForRunway(aircraft, jsonFile, runway);
+                PerformanceCalculationResult result = CalculatePerformanceForRunway(aircraft, jsonFileLowerWeight, jsonFileHigherWeight, runway);
 
                 Results.Add(result);
             }
 
         }
 
-        private Aircraft GetAircraft()
+
+
+        private PerformanceCalculationResult CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight, Runway runway)
         {
-            Aircraft aircraft;
-            if (AircraftType == AircraftType.C172_SP)
-            {
-                aircraft = new C172_SP();
-            }
-            else if (AircraftType == AircraftType.SR22_G2)
-            {
-                aircraft = new SR22_G2();
-            }
-            else if (AircraftType == AircraftType.SR22T_G5)
-            {
-                aircraft = new SR22T_G5();
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("AircraftType", AircraftType.ToString());
-            }
+            PerformanceCalculationResult result =
+                new PerformanceCalculationResult(runway, Wind);
 
-            return aircraft;
-        }
+            result.JsonFileLowerWeight = jsonFileLowerWeight;
+            result.JsonFileHigherWeight = jsonFileHigherWeight;
 
-        private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFile, Runway runway)
-        {
-            PerformanceCalculationResultForRunway result =
-                new PerformanceCalculationResultForRunway(runway, Wind);
-
-            result.JsonFile = jsonFile;
+            double weightInterpolationFactor =
+                aircraft.GetWeightInterpolationFactor(Convert.ToInt32(AircraftWeight));
 
             result.Takeoff_GroundRoll =
                 aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFile, jsonFile.TakeoffProfiles)
-                );
+                    InterpolateDistance(
+                        weightInterpolationFactor,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight),
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight)
+                ));
 
-            result.Takeoff_50FtClearance =
-                aircraft.MakeTakeoffAdjustments
+            result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFile, jsonFile.TakeoffProfiles)
-                );
+                    InterpolateDistance(
+                        weightInterpolationFactor,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileLowerWeight),
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileHigherWeight)
+                ));
 
-            result.Landing_GroundRoll =
-                aircraft.MakeLandingAdjustments
+            result.Landing_GroundRoll = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFile, jsonFile.LandingProfiles)
-                );
+                    InterpolateDistance(
+                        weightInterpolationFactor,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileLowerWeight),
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileHigherWeight)
+                ));
 
-            result.Landing_50FtClearance =
-                aircraft.MakeLandingAdjustments(
+            result.Landing_50FtClearance = aircraft.MakeLandingAdjustments
+                (
                     result,
-                    GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFile, jsonFile.LandingProfiles)
-                );
+                    InterpolateDistance(
+                        weightInterpolationFactor,
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileLowerWeight),
+                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileHigherWeight)
+                ));
+            
             return result;
         }
 
-        public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile, JsonPerformanceProfileList profiles)
+        private static double InterpolateDistance(double weightInterpolationFactor, double distance_LowerWeight, double distance_HigherWeight)
+        {
+            return distance_LowerWeight +
+                (weightInterpolationFactor * (distance_HigherWeight - distance_LowerWeight));
+        }
+
+        public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
         {
             /*  The performance data in the JSON is provided by the manufacturer in 
                 pressure altitude intervals of 1000 ft and temperature intervals of
                 10 degrees celcius. This function looks bit complicated but all it 
-                is doing is interpolating between the two
+                is getting the two relevant performance numbers and interpolating between
+                them
 
                 i.e. if the scenario's temperature is 12 degrees and pressure altitude
                 is 1500 ft, it will find the performance data for 10 and 20 degrees C
                 and pressure altitude of 1000 and 2000 ft, and interpolate between them
             */
+
+            JsonPerformanceProfileList profileList;
+
+            if (scenarioMode == ScenarioMode.Takeoff_GroundRoll || scenarioMode == ScenarioMode.Takeoff_50FtClearance)
+            {
+                profileList = jsonFile.TakeoffProfiles;
+            }
+            else if (scenarioMode == ScenarioMode.Landing_GroundRoll || scenarioMode == ScenarioMode.Landing_50FtClearance)
+            {
+                profileList = jsonFile.LandingProfiles;
+            }
+            else
+            {
+                throw new Exception("Invalid scenario mode");
+            }
 
             // get the upper and lower bounds for pressure altitude and temperature
             // ie using the example below this will return 1000 ft and 2000 ft
@@ -274,8 +287,8 @@ namespace Airborn.web.Models
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
-            double distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, upperPressureAltidude, lowerTemperature);
+            double distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
+            double distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, lowerTemperature);
 
             // interpolate between the lower and higher pressure altitude for the lower temperature
             double distanceLowerTempInterpolated = Interpolate(
@@ -287,8 +300,8 @@ namespace Airborn.web.Models
 
             // then get the performance data for the higher temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, lowerPressureAltidude, upperTemperature);
-            double distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profiles, this, scenarioMode, upperPressureAltidude, upperTemperature);
+            double distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, upperTemperature);
+            double distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, upperTemperature);
 
             // interpolate between the lower and higher pressure altitude for the higher temperature
             double distanceUpperTempInterpolated = Interpolate(
@@ -314,18 +327,22 @@ namespace Airborn.web.Models
 
         }
 
-
-        public static double CalculateInterpolationFactor(int value, int x1, int x2)
+        /// <summary>
+        /// This function gives you an interpolation factor between two values:
+        /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
+        /// it will return 0.5
+        /// </summary>
+        public static double CalculateInterpolationFactor(int value, int lowerBound, int upperBound)
         {
             if (value < 0)
             {
                 throw new PressureAltitudePerformanceProfileNotFoundException(value);
             }
 
-            if (value < x1) { throw new ArgumentOutOfRangeException(); }
-            if (value > x2) { throw new ArgumentOutOfRangeException(); }
+            if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
+            if (value > upperBound) { throw new ArgumentOutOfRangeException(); }
 
-            double interpolationFactor = (double)(value - x1) / (double)(x2 - x1);
+            double interpolationFactor = (double)(value - lowerBound) / (double)(upperBound - lowerBound);
 
             return interpolationFactor;
         }

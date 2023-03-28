@@ -92,7 +92,7 @@ namespace Airborn.Tests
             Wind wind = Wind.FromMagnetic(160, _defaultMagneticVariation, 10);
             Runway runway = Runway.FromMagnetic(160, _defaultMagneticVariation);
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            PerformanceCalculationResult result = new PerformanceCalculationResult(
                 runway, wind
             );
 
@@ -107,7 +107,7 @@ namespace Airborn.Tests
             Wind wind = Wind.FromMagnetic(90, _defaultMagneticVariation, 10);
             Runway runway = Runway.FromMagnetic(180, _defaultMagneticVariation);
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            PerformanceCalculationResult result = new PerformanceCalculationResult(
                 runway, wind
             );            
 
@@ -123,7 +123,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(40, _defaultMagneticVariation);
 
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            PerformanceCalculationResult result = new PerformanceCalculationResult(
                 runway, wind
             );
 

@@ -9,7 +9,7 @@ namespace Airborn.web.Models
         {
         }
 
-        public override double MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, double takeoffDistance)
+        public override double MakeTakeoffAdjustments(PerformanceCalculationResult result, double takeoffDistance)
         {
 
             if (result.HeadwindComponent > 0)
@@ -31,7 +31,7 @@ namespace Airborn.web.Models
             return takeoffDistance;
         }
 
-        public override double MakeLandingAdjustments(PerformanceCalculationResultForRunway result, double landingDistance)
+        public override double MakeLandingAdjustments(PerformanceCalculationResult result, double landingDistance)
         {
             if (result.HeadwindComponent > 0)
             {
@@ -50,9 +50,25 @@ namespace Airborn.web.Models
             return landingDistance;
         }
 
-        public override string JsonFileName()
+        public override string JsonFileName_LowerWeight()
+        {
+            return "../Data/C172_SP_2200.json";
+        }
+
+
+        public override string JsonFileName_HigherWeight()
         {
             return "../Data/C172_SP_2550.json";
+        }
+
+        public override int GetLowerWeight()
+        {
+            return 2200;
+        }
+
+        public override int GetHigherWeight()
+        {
+            return 2550;
         }
     }
 }

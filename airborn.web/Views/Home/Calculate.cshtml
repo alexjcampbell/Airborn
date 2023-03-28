@@ -11,7 +11,7 @@
 
     <br />
     <h4><b>Airborn is your free takeoff and landing calculator</b>. 
-    <br />Tell us your about your flight, and we'll tell you how much runway the POH says you'll need.</h4>
+    <br />Tell us your about your flight, and we'll tell you how much runway the Pilot's Operating Handbook says you'll need.</h4>
 
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -157,7 +157,7 @@
     {
         <div>
             <div class="form-group row">
-                <h5>Runway @result.Runway.RunwayIdentifier</h5>
+                <h5>Runway @result.Runway.Runway_Name</h5>
             </div>    
 
             <div class="form-group row">

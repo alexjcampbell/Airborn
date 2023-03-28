@@ -9,9 +9,24 @@ namespace Airborn.web.Models
         {
         }
 
-        public override string JsonFileName()
+       public override string JsonFileName_LowerWeight()
+        {
+            return "../Data/SR22T_G5_2900.json";
+        }
+
+        public override string JsonFileName_HigherWeight()
         {
             return "../Data/SR22T_G5_3600.json";
         }
+
+        public override int GetLowerWeight()
+        {
+            return 2900;
+        }
+
+        public override int GetHigherWeight()
+        {
+            return 3600;
+        }        
     }
 }

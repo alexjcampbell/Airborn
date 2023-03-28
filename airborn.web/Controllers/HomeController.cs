@@ -79,7 +79,7 @@ namespace Airborn.Controllers
             {
                 using (var db = new AirportDbContext())
                 {
-                    model.Runways = db.Runways_Flat.Where<Runway>
+                    model.Runways = db.Runways.Where<Runway>
                         (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
                         ).ToList<Runway>();
                 }
@@ -113,6 +113,29 @@ namespace Airborn.Controllers
                         $"No performance data found for Temperature {model.Temperature} {model.TemperatureType}"
                     ))
                     ;
+
+                return View(model);
+            }
+
+            catch (AircraftWeightOutOfRangeException e)
+            {
+                ModelState.AddModelError(
+                    "AircraftWeight",
+                    String.Format(
+                        $"No performance data found for Weight {model.AircraftWeight}, weight must be between {e.MinWeight} and {e.MaxWeight}"
+                    ))
+                    ;
+
+                return View(model);
+            }
+
+
+            catch (Exception e)
+            {
+                ModelState.AddModelError(
+                    "AircraftType",
+                    e.Message
+                );
 
                 return View(model);
             }
@@ -179,12 +202,12 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-                var runways = (from runway in db.Runways_Flat
+                var runways = (from runway in db.Runways
                                where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
                                select new
                                {
-                                   label = runway.RunwayIdentifier_Primary,
-                                   val = runway.RunwayIdentifier_Primary
+                                   label = runway.Runway_Name,
+                                   val = runway.Runway_Name
                                }
                     ).ToList();
 
@@ -214,12 +237,12 @@ namespace Airborn.Controllers
 
             using (var db = new AirportDbContext())
             {
-                Runway runway = db.Runways_Flat.Single<Runway>(
+                Runway runway = db.Runways.Single<Runway>(
                     a => (
                             (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
                             &&
                             (
-                                a.RunwayIdentifier_Primary == runwayId
+                                a.Runway_Name == runwayId
 
                             )
                         )

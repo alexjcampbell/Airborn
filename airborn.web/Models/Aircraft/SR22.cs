@@ -9,7 +9,8 @@ namespace Airborn.web.Models
         {
         }
 
-        public override double MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, double takeoffDistance)
+
+        public override double MakeTakeoffAdjustments(PerformanceCalculationResult result, double takeoffDistance)
         {
 
             if (result.HeadwindComponent > 0)
@@ -33,7 +34,7 @@ namespace Airborn.web.Models
             return takeoffDistance;
         }
 
-        public override double MakeLandingAdjustments(PerformanceCalculationResultForRunway result, double landingDistance)
+        public override double MakeLandingAdjustments(PerformanceCalculationResult result, double landingDistance)
         {
             if (result.HeadwindComponent > 0)
             {

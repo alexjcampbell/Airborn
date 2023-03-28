@@ -540,12 +540,8 @@
             "Distance": 3441
           }
         ]
-      },
-
-
-
-
-
+      }],
+      "LandingProfiles":[
       {
         "Type": "Landing",
         "PressureAltitude": 0,

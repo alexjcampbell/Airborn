@@ -2,16 +2,16 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class PerformanceCalculationResultForRunway
+    public class PerformanceCalculationResult
     {
 
-        private PerformanceCalculationResultForRunway()
+        private PerformanceCalculationResult()
         {
 
         }
 
 
-        public PerformanceCalculationResultForRunway(Runway runway, Wind wind)
+        public PerformanceCalculationResult(Runway runway, Wind wind)
         {
             Runway = runway;
             Wind = wind;
@@ -121,11 +121,17 @@ namespace Airborn.web.Models
             }
         }
 
-        public JsonFile JsonFile
+        public JsonFile JsonFileLowerWeight
         {
             get;
             set;
         }
+
+        public JsonFile JsonFileHigherWeight
+        {
+            get;
+            set;
+        }        
 
     }
 }

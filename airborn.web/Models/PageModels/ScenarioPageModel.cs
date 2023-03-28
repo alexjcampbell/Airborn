@@ -159,6 +159,7 @@ namespace Airborn.web.Models
 
             PerformanceCalculator.Airport.FieldElevation = FieldElevation.Value;
 
+            PerformanceCalculator.AircraftWeight = AircraftWeight.Value;
 
             if (TemperatureType == Models.TemperatureType.F)
             {
@@ -179,9 +180,9 @@ namespace Airborn.web.Models
                 PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
             }
 
-            PerformanceCalculator.Calculate(rootPath);
+            PerformanceCalculator.Calculate();
 
-            foreach (PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
+            foreach (PerformanceCalculationResult result in PerformanceCalculator.Results)
             {
                 PerformanceCalculationResultForRunwayPageModel pageModelResult =
                     new PerformanceCalculationResultForRunwayPageModel(result, result.Runway);
