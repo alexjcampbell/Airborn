@@ -26,8 +26,8 @@ namespace Airborn.web.Models
         SR22T_G5,
         C172_SP
     }
-
     public enum ScenarioMode
+
     {
         Takeoff_GroundRoll,
         Takeoff_50FtClearance,

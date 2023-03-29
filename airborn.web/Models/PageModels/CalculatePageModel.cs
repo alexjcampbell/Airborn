@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.web.Models
 {
@@ -204,6 +207,46 @@ namespace Airborn.web.Models
 
                 return airport;
             }
+        }
+
+        public void GetRunwaysForAirport()
+        {
+            using (var db = new AirportDbContext())
+            {
+                this.Runways = db.Runways.Where<Runway>
+                    (r => r.Airport_Ident.StartsWith(this.AirportIdentifier.ToUpper())
+                    ).ToList<Runway>();
+            }
+        }        
+
+        public static List<KeyValuePair<string, string>> SearchForAirportsByIdentifier(string term)
+        {
+            using (var db = new AirportDbContext())
+            {
+                DateTime start = DateTime.Now;
+
+                var airportIdentifiers = (from airport in db.Airports
+                                          where EF.Functions.Like(airport.Ident, term + "%")
+                                          select new
+                                          {
+                                              label = airport.Ident,
+                                              val = airport.Id
+                                          }).AsNoTracking().Take(20);
+
+                DateTime end = DateTime.Now;
+
+                List<KeyValuePair<string, string>> airportIdentifiersList = new List<KeyValuePair<string, string>>();
+
+                foreach(var airport in airportIdentifiers)
+                {
+                    airportIdentifiersList.Add(new KeyValuePair<string, string>(airport.val.ToString(), airport.label));
+                }
+
+                // Remnants of past performance debugging:
+                // Trace.WriteLine($"Query time taken: {(end - start).TotalSeconds}");
+
+                return airportIdentifiersList;
+            }        
         }
 
     }

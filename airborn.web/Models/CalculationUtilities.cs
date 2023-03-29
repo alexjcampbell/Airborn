@@ -33,11 +33,4 @@ namespace Airborn.web.Models
 
     }
 
-    public enum ScenarioMode
-    {
-        Takeoff_GroundRoll,
-        Takeoff_50FtClearance,
-        Landing_GroundRoll,
-        Landing_50FtClearance
-    }
 }

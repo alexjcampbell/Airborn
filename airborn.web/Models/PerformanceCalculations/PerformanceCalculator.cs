@@ -208,49 +208,56 @@ namespace Airborn.web.Models
                 aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    InterpolateDistance(
+                    InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight),
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight)
+                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight),
+                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight)
                 ));
 
             result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    InterpolateDistance(
+                    InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileLowerWeight),
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileHigherWeight)
+                        GetDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileLowerWeight),
+                        GetDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileHigherWeight)
                 ));
 
             result.Landing_GroundRoll = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    InterpolateDistance(
+                    InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileLowerWeight),
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileHigherWeight)
+                        GetDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileLowerWeight),
+                        GetDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileHigherWeight)
                 ));
 
             result.Landing_50FtClearance = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    InterpolateDistance(
+                    InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileLowerWeight),
-                        GetInterpolatedDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileHigherWeight)
+                        GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileLowerWeight),
+                        GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileHigherWeight)
                 ));
             
             return result;
         }
 
-        private static double InterpolateDistance(double weightInterpolationFactor, double distance_LowerWeight, double distance_HigherWeight)
+        /// <summary>
+        /// Interpolates between two distances based on the weight interpolation factor
+        /// i.e. if the weight interpolation factor is 0.5, it will return the average of the two distances
+        /// </summary>
+        private static double InterpolateDistanceByWeight(double weightInterpolationFactor, double distance_LowerWeight, double distance_HigherWeight)
         {
             return distance_LowerWeight +
                 (weightInterpolationFactor * (distance_HigherWeight - distance_LowerWeight));
         }
 
-        public double GetInterpolatedDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
+        /// <summary>
+        /// Gets the raw distance from the JSON file for a given scenario mode
+        /// </summary>
+        public double GetDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
         {
             /*  The performance data in the JSON is provided by the manufacturer in 
                 pressure altitude intervals of 1000 ft and temperature intervals of

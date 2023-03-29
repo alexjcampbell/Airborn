@@ -77,12 +77,7 @@ namespace Airborn.Controllers
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
             {
-                using (var db = new AirportDbContext())
-                {
-                    model.Runways = db.Runways.Where<Runway>
-                        (r => r.Airport_Ident.StartsWith(model.AirportIdentifier.ToUpper())
-                        ).ToList<Runway>();
-                }
+                model.GetRunwaysForAirport();
             }
 
 
@@ -128,8 +123,6 @@ namespace Airborn.Controllers
 
                 return View(model);
             }
-
-
             catch (Exception e)
             {
                 ModelState.AddModelError(
@@ -146,6 +139,8 @@ namespace Airborn.Controllers
 
             return View(model);
         }
+
+
 
         public IActionResult Terms()
         {
@@ -166,12 +161,14 @@ namespace Airborn.Controllers
         public JsonResult AutocompleteAirportIdentifier(string term)
         {
 
-
-
-            // todo: move this out of the controller and into a ScenarioPageModel
-
             term = term.ToUpper();
 
+            return Json(CalculatePageModel.SearchForAirportsByIdentifier(term));
+
+        }
+
+        private JsonResult NewMethod(string term)
+        {
             using (var db = new AirportDbContext())
             {
                 DateTime start = DateTime.Now;
@@ -190,10 +187,6 @@ namespace Airborn.Controllers
 
                 return Json(airportIdentifiers);
             }
-
-
-
-
         }
 
         public JsonResult PopulateRunways(string airportIdentifier)
