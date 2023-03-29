@@ -78,12 +78,24 @@ namespace Airborn.web.Models
         {
             get
             {
+                string runwayInformation;
+
                 if (RunwayLength.Length > 0)
                 {
-                    return RunwayLengthConverted?.ToString("#,##0") + " ft";
+                    if(RunwayWidth.Length > 0){
+                        runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft x " + RunwayWidth + " ft";
+                    }
+                    else{
+                        runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft";
+                    }
                 }
+                else 
+                {
+                    runwayInformation = "Unknown";
+                }
+                
 
-                return "Unknown";
+                return runwayInformation;
             }
         }
 

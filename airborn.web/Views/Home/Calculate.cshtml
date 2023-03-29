@@ -10,8 +10,10 @@
 <form asp-action="Calculate" method="post" class="form-horizontal">
 
     <br />
-    <h4><b>Airborn is your free takeoff and landing calculator</b>. 
-    <br />Tell us your about your flight, and we'll tell you how much runway the Pilot's Operating Handbook says you'll need.</h4>
+    <h4><b>Airborn is your free takeoff and landing calculator</b>.
+        <br />Tell us your about your flight, and we'll tell you how much runway the Pilot's Operating Handbook says
+        you'll need.
+    </h4>
 
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -24,58 +26,24 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
-                placeholder="Airport Identifier"
-                    data-val-required="Airport identifier is required"
-                    />
+                    placeholder="Airport Identifier" data-val-required="Airport identifier is required" />
                 <label for="AirportIdentifier">Airport</label>
             </div>
         </div>
 
- @section Scripts{
-                <script>
-                    $(document).ready(function () {
-                        $('#AirportIdentifier').autocomplete({
-                            source: '/Home/AutocompleteAirportIdentifier',
-                            minLength: 2,
-                            select: function (event, ui) {
-                            $.ajax({  
-                                type: "POST",  
-                                url: "/Home/PopulateRunways?airportIdentifier=" + ui.item.label,  
-                                data: "{}",  
-                                success: function (data) {  
-                                    var s = '<option value="-1">Select...</option>';  
-                                    for (var i = 0; i < data.length; i++) {  
-                                        s += '<option value="' + data[i].label + '">' + data[i].label + '</option>';  
-                                    }  
-                                    $("#RunwayIdentifier").html(s);  
-                                $.ajax({  
-                                    type: "POST",  
-                                    url: "/Home/GetAirportInformation?airportIdentifier=" + ui.item.label,  
-                                    data: "{}",  
-                                    success: function (data) {  
-                                        $("#FieldElevation").val(data.fieldElevation);  
-                                    }  
-                                });   
-                                }  
-                            });                             
-                                //If you want to do something on the select event, you may do it here
-                                //$("#tags").html(ui.item.label);
-                            }
-                        });
+        @section Scripts{
+            <script>
+                $(document).ready(function () {
+                    $('#AirportIdentifier').autocomplete({
+                        source: '/Home/AutocompleteAirportIdentifier',
+                        minLength: 2
                     });
-                </script>
-            }         
+                });
+            </script>
+        }
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="FieldElevation" class="form-control" maxlength="10" 
-                    placeholder="Field elevation" data-val-required="Field Elevation is required" />
-                <label for="FieldElevation">Field elevation (ft)</label>
-            </div>
-        </div>       
 
-        <div class="col-sm-3">
-            <div class="form-floating">
-                
                 <select asp-for="AircraftType" class="form-select">
                     <option value="SR22_G2">Cirrus SR22 G2</option>
                     <option value="SR22T_G5">Cirrus SR22T G5</option>
@@ -86,25 +54,26 @@
         </div>
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="AircraftWeight" class="form-control" maxlength="10"
-                    placeholder="Aircraft weight" data-val-required="Aircraft weight is required"/>
+                <input asp-for="AircraftWeight" class="form-control" maxlength="10" placeholder="Aircraft weight"
+                    data-val-required="Aircraft weight is required" />
                 <label for="AircraftWeight">Aircraft weight (lbs)</label>
             </div>
         </div>
 
     </div>
-    
+
     <br />
-   <div>
+    <div>
         <h6>The weather</h6>
     </div>
     <div class="form-group row">
         <div class="col-sm-3">
-            <div class="form-floating">  
-            <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3" placeholder="Wind direction °M" />
-            <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
+            <div class="form-floating">
+                <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3"
+                    placeholder="Wind direction °M" />
+                <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
             </div>
-        </div>  
+        </div>
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="WindStrength" class="form-control" placeholder="Wind strength (kts)" maxlength="3" />
@@ -112,36 +81,36 @@
             </div>
         </div>
         <div class="col-sm-2">
-            <div class="form-floating">   
+            <div class="form-floating">
                 <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="2" />
                 <label asp-for="Temperature">Temperature</label>
             </div>
         </div>
         <div class="col-sm-1">
-            <div class="form-floating"> 
-                <select style="width:auto;" asp-for="TemperatureType" class="form-control" >
+            <div class="form-floating">
+                <select style="width:auto;" asp-for="TemperatureType" class="form-control">
                     <option value="C">°C</option>
                     <option value="F">°F</option>
-                </select>            
+                </select>
             </div>
-        </div>             
+        </div>
 
         <div class="col-sm-2">
-            <div class="form-floating">           
+            <div class="form-floating">
                 <input asp-for="AltimeterSetting" class="form-control" maxlength="5" placeholder="Altimeter setting" />
                 <label asp-for="AltimeterSetting">Altimeter setting</label>
             </div>
         </div>
         <div class="col-sm-1">
-            <div class="form-floating"> 
-                <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control" >
+            <div class="form-floating">
+                <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control">
                     <option value="MB">mb</option>
                     <option value="HG">Hg</option>
                 </select>
             </div>
-        </div>           
-    </div>    
-    
+        </div>
+    </div>
+
     <br />
 
     <div class="form-group row">
@@ -153,19 +122,33 @@
 
     <br />
 
-    @foreach (PerformanceCalculationResultPageModel result in Model?.Results.OrderByDescending(r => r.HeadwindComponent))
+    @if (Model.Airport is not null) {
+
+    <div>
+        <div class="form-group row">
+            <h5>@Model.Airport?.Name</h5>
+            <div>
+                Field elevation: @Model.Airport?.FieldElevation ft
+            </div>
+        </div>
+    </div>
+            
+    <br />
+    }
+
+    @foreach (PerformanceCalculationResultPageModel result in Model?.Results.OrderByDescending(r =>
+    r.HeadwindComponent))
     {
         <div>
             <div class="form-group row">
                 <h6>Runway @result.Runway.Runway_Name</h6>
-            </div>    
+            </div>
 
             <div class="form-group row">
 
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly
-                            value="@result.Runway.RunwayLengthFriendly" />
+                        <input class="form-control" maxlength="10" readonly value="@result.Runway.RunwayLengthFriendly" />
                         <label>Runway length</label>
                     </div>
                 </div>
@@ -174,31 +157,22 @@
                         <input class="form-control" maxlength="10" readonly
                             value="@result.Runway.RunwayHeadingMagneticConverted" />
                         <label>Runway heading</label>
-                    </div>   
-                </div>                
-                <div class="col-sm-3">
-                    <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly
-                            value="@result.HeadwindComponentOutput" />
-                        <label>@result.HeadwindComponentText component</label>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly
-                            value="@result.CrosswindComponentOutput" />
-                        <label>Crosswind component (@result.CrosswindComponentText)</label>
-                    </div>   
+                        <input class="form-control" maxlength="10" readonly value="@result.WindFormatted" />
+                        <label>Wind</label>
+                    </div>
                 </div>
             </div>
             <br />
 
             <div class="form-group row">
-                
+
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly
-                            value="@result.Takeoff_Groundroll_Formatted" />
+                        <input class="form-control" maxlength="10" readonly value="@result.Takeoff_Groundroll_Formatted" />
                         <label>Takeoff: Ground roll</label>
                     </div>
                 </div>
@@ -207,12 +181,11 @@
                         <input class="form-control" maxlength="10" readonly
                             value="@result.Takeoff_50FtClearance_Formatted" />
                         <label>Takeoff: 50' obstacle</label>
-                    </div>         
+                    </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly
-                            value="@result.Landing_Groundroll_Formatted" />
+                        <input class="form-control" maxlength="10" readonly value="@result.Landing_Groundroll_Formatted" />
                         <label>Landing: ground roll</label>
                     </div>
                 </div>
@@ -221,14 +194,14 @@
                         <input class="form-control" maxlength="10" readonly
                             value="@result.Landing_50FtClearance_Formatted" />
                         <label>Landing: 50' obstacle</label>
-                    </div>         
+                    </div>
                 </div>
             </div>
 
         </div>
         <br />
     }
-    
+
 
 
 

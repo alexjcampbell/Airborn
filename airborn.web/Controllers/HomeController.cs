@@ -167,83 +167,10 @@ namespace Airborn.Controllers
 
         }
 
-        private JsonResult NewMethod(string term)
-        {
-            using (var db = new AirportDbContext())
-            {
-                DateTime start = DateTime.Now;
-
-                var airportIdentifiers = (from airport in db.Airports
-                                          where EF.Functions.Like(airport.Ident, term + "%")
-                                          select new
-                                          {
-                                              label = airport.Ident,
-                                              val = airport.Id
-                                          }).AsNoTracking().Take(20).ToList();
-
-                DateTime end = DateTime.Now;
-
-                Trace.WriteLine($"Query time taken: {(end - start).TotalSeconds}");
-
-                return Json(airportIdentifiers);
-            }
-        }
-
-        public JsonResult PopulateRunways(string airportIdentifier)
-        {
-            // todo: move this out of the controller and into a ScenarioPageModel
-
-            using (var db = new AirportDbContext())
-            {
-                var runways = (from runway in db.Runways
-                               where runway.Airport_Ident.Equals(airportIdentifier.ToUpper())
-                               select new
-                               {
-                                   label = runway.Runway_Name,
-                                   val = runway.Runway_Name
-                               }
-                    ).ToList();
-
-                runways.AddRange(runways);
-
-                return Json(runways);
-            }
-        }
-
         public JsonResult GetAirportInformation(string airportIdentifier)
         {
-            // todo: move this out of the controller and into a ScenarioPageModel
 
-            using (var db = new AirportDbContext())
-            {
-                Airport airport = db.Airports.Single<Airport>(
-                    a => a.Ident.Equals(airportIdentifier.ToUpper())
-                    );
-
-                return Json(airport);
-            }
-        }
-
-        public JsonResult GetRunwayDetail(string airportIdentifier, string runwayId)
-        {
-            // todo: move this out of the controller and into a ScenarioPageModel
-
-            using (var db = new AirportDbContext())
-            {
-                Runway runway = db.Runways.Single<Runway>(
-                    a => (
-                            (a.Airport_Ident.Equals(airportIdentifier.ToUpper()))
-                            &&
-                            (
-                                a.Runway_Name == runwayId
-
-                            )
-                        )
-                    )
-                    ;
-
-                return Json(runway);
-            }
+            return Json(CalculatePageModel.GetAirport(airportIdentifier));
         }
 
     }

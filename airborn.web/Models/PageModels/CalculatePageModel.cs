@@ -81,13 +81,9 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required]
-        [Range(-2000, 20000,
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        [Display(Name = "Field Elevation")]
-        public int? FieldElevation
-        {
-            get; set;
+        public Airport Airport{
+            get;
+            set;
         }
 
         [Range(-50, 50,
@@ -160,7 +156,7 @@ namespace Airborn.web.Models
                 )
                 ;
 
-            PerformanceCalculator.Airport.FieldElevation = FieldElevation.Value;
+            Airport = GetAirport(AirportIdentifier);
 
             PerformanceCalculator.AircraftWeight = AircraftWeight.Value;
 
@@ -195,8 +191,17 @@ namespace Airborn.web.Models
 
         }
 
+        public void GetRunwaysForAirport()
+        {
+            using (var db = new AirportDbContext())
+            {
+                this.Runways = db.Runways.Where<Runway>
+                    (r => r.Airport_Ident.StartsWith(this.AirportIdentifier.ToUpper())
+                    ).ToList<Runway>();
+            }
+        }        
 
-        public Airport GetAirport(string airportIdentifier)
+        public static Airport GetAirport(string airportIdentifier)
         {
 
             using (var db = new AirportDbContext())
@@ -206,16 +211,6 @@ namespace Airborn.web.Models
                     );
 
                 return airport;
-            }
-        }
-
-        public void GetRunwaysForAirport()
-        {
-            using (var db = new AirportDbContext())
-            {
-                this.Runways = db.Runways.Where<Runway>
-                    (r => r.Airport_Ident.StartsWith(this.AirportIdentifier.ToUpper())
-                    ).ToList<Runway>();
             }
         }        
 
@@ -248,6 +243,7 @@ namespace Airborn.web.Models
                 return airportIdentifiersList;
             }        
         }
+        
 
     }
 }

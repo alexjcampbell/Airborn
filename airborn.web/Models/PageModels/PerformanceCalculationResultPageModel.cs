@@ -60,11 +60,11 @@ namespace Airborn.web.Models
             {
                 if (Result?.CrosswindComponent > 0)
                 {
-                    return "Right";
+                    return " right";
                 }
                 else if (Result?.CrosswindComponent < 0)
                 {
-                    return "Left";
+                    return " left";
                 }
                 return "";
             }
@@ -88,13 +88,13 @@ namespace Airborn.web.Models
             {
                 if (Result?.HeadwindComponent > 0)
                 {
-                    return "Headwind";
+                    return " headwind";
                 }
                 else if (Result?.HeadwindComponent < 0)
                 {
-                    return "Tailwind";
+                    return " tailwind";
                 }
-                return "Headwind";
+                return " headwind";
             }
         }
         public double? HeadwindComponent
@@ -136,6 +136,15 @@ namespace Airborn.web.Models
                 return "0 kts";
             }
         }
+
+        public string WindFormatted
+        {
+            get
+            {
+                return HeadwindComponentOutput + HeadwindComponentText + ", " + CrosswindComponentOutput + CrosswindComponentText;
+                
+            }
+        }        
 
         public double? Takeoff_GroundRoll
         {
