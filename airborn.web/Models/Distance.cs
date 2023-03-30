@@ -4,22 +4,22 @@ namespace Airborn.web.Models
 {
     public struct Distance : IEquatable<Distance>, IComparable<Distance>
     {
-        private static readonly double MetersPerKilometer = 1000.0;
-        private static readonly double CentimetersPerMeter = 100.0;
-        private static readonly double CentimetersPerInch = 2.54;
-        private static readonly double InchesPerFoot = 12.0;
-        private static readonly double FeetPerYard = 3.0;
-        private static readonly double FeetPerMeter = CentimetersPerMeter / (CentimetersPerInch * InchesPerFoot);
-        private static readonly double InchesPerMeter = CentimetersPerMeter / CentimetersPerInch;
+        private static readonly decimal MetersPerKilometer = 1000.0m;
+        private static readonly decimal CentimetersPerMeter = 100.0m;
+        private static readonly decimal CentimetersPerInch = 2.54m;
+        private static readonly decimal InchesPerFoot = 12.0m;
+        private static readonly decimal FeetPerYard = 3.0m;
+        private static readonly decimal FeetPerMeter = CentimetersPerMeter / (CentimetersPerInch * InchesPerFoot);
+        private static readonly decimal InchesPerMeter = CentimetersPerMeter / CentimetersPerInch;
 
-        private readonly double _meters;
+        private readonly decimal _meters;
 
-        public Distance(double meters)
+        public Distance(decimal meters)
         {
             this._meters = meters;
         }
 
-        public double TotalKilometers
+        public decimal TotalKilometers
         {
             get
             {
@@ -27,7 +27,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double TotalMeters
+        public decimal TotalMeters
         {
             get
             {
@@ -35,7 +35,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double TotalCentimeters
+        public decimal TotalCentimeters
         {
             get
             {
@@ -43,7 +43,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double TotalYards
+        public decimal TotalYards
         {
             get
             {
@@ -51,7 +51,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double TotalFeet
+        public decimal TotalFeet
         {
             get
             {
@@ -59,7 +59,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double TotalInches
+        public decimal TotalInches
         {
             get
             {
@@ -67,32 +67,32 @@ namespace Airborn.web.Models
             }
         }
 
-        public static Distance FromKilometers(double value)
+        public static Distance FromKilometers(decimal value)
         {
             return new Distance(value * MetersPerKilometer);
         }
 
-        public static Distance FromMeters(double value)
+        public static Distance FromMeters(decimal value)
         {
             return new Distance(value);
         }
 
-        public static Distance FromCentimeters(double value)
+        public static Distance FromCentimeters(decimal value)
         {
             return new Distance(value / CentimetersPerMeter);
         }
 
-        public static Distance FromYards(double value)
+        public static Distance FromYards(decimal value)
         {
             return new Distance(value * FeetPerYard / FeetPerMeter);
         }
 
-        public static Distance FromFeet(double value)
+        public static Distance FromFeet(decimal value)
         {
             return new Distance(value / FeetPerMeter);
         }
 
-        public static Distance FromInches(double value)
+        public static Distance FromInches(decimal value)
         {
             return new Distance(value / InchesPerMeter);
         }

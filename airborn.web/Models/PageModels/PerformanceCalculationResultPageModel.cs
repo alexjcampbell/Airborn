@@ -30,7 +30,7 @@ namespace Airborn.web.Models
         }
 
 
-        public double? CrosswindComponent
+        public decimal? CrosswindComponent
         {
             get
             {
@@ -38,7 +38,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? CrosswindComponentAbs
+        public decimal? CrosswindComponentAbs
         {
             get
             {
@@ -78,7 +78,7 @@ namespace Airborn.web.Models
                 {
                     return CrosswindComponentAbs?.ToString(",##0") + " kts";
                 }
-                return "0 kts";
+                return "0 kts x-wind";
             }
         }
 
@@ -97,7 +97,7 @@ namespace Airborn.web.Models
                 return " headwind";
             }
         }
-        public double? HeadwindComponent
+        public decimal? HeadwindComponent
         {
             get
             {
@@ -106,7 +106,7 @@ namespace Airborn.web.Models
 
         }
 
-        public double? HeadwindComponentAbs
+        public decimal? HeadwindComponentAbs
         {
             get
             {
@@ -146,7 +146,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Takeoff_GroundRoll
+        public decimal? Takeoff_GroundRoll
         {
             get
             {
@@ -177,7 +177,7 @@ namespace Airborn.web.Models
         }
 
 
-        public double? Takeoff_50FtClearance
+        public decimal? Takeoff_50FtClearance
         {
             get
             {
@@ -205,7 +205,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Landing_GroundRoll
+        public decimal? Landing_GroundRoll
         {
             get
             {
@@ -237,7 +237,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Landing_50FtClearance
+        public decimal? Landing_50FtClearance
         {
             get
             {
@@ -266,7 +266,7 @@ namespace Airborn.web.Models
 
 
 
-        public double? Takeoff_PercentageRunwayUsed_GroundRoll
+        public decimal? Takeoff_PercentageRunwayUsed_GroundRoll
         {
             get
             {
@@ -274,7 +274,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Landing_PercentageRunwayUsed_GroundRoll
+        public decimal? Landing_PercentageRunwayUsed_GroundRoll
         {
             get
             {
@@ -282,7 +282,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Takeoff_PercentageRunwayUsed_DistanceToClear50Ft
+        public decimal? Takeoff_PercentageRunwayUsed_DistanceToClear50Ft
         {
             get
             {
@@ -290,7 +290,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? Landing_PercentageRunwayUsed_DistanceToClear50Ft
+        public decimal? Landing_PercentageRunwayUsed_DistanceToClear50Ft
         {
             get
             {

@@ -112,7 +112,7 @@ namespace Airborn.Tests
             );            
 
             Assert.AreEqual(-10, result.CrosswindComponent);
-            Assert.AreEqual(0, result.HeadwindComponent);
+            Assert.AreEqual(0, (int)result.HeadwindComponent);
         }
 
         [TestMethod]
@@ -127,8 +127,8 @@ namespace Airborn.Tests
                 runway, wind
             );
 
-            Assert.AreEqual(-6, result.CrosswindComponent);
-            Assert.AreEqual(8, result.HeadwindComponent);
+            Assert.AreEqual(-6.42787609686539m, result.CrosswindComponent);
+            Assert.AreEqual(7.66044443118978m, result.HeadwindComponent);
         }
 
         [TestMethod]

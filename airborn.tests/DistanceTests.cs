@@ -18,7 +18,7 @@ namespace Airborn.Tests
         public void TestFeetPerKilometer()
         {
             Distance distance = Distance.FromKilometers(1);
-            Assert.AreEqual(3280.8398950131236, distance.TotalFeet);
+            Assert.AreEqual(3280.8398950131233595800524934m, distance.TotalFeet);
         }
     }
 }

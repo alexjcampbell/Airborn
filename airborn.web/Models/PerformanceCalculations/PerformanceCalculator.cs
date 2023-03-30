@@ -201,7 +201,7 @@ namespace Airborn.web.Models
             result.JsonFileLowerWeight = jsonFileLowerWeight;
             result.JsonFileHigherWeight = jsonFileHigherWeight;
 
-            double weightInterpolationFactor =
+            decimal weightInterpolationFactor =
                 aircraft.GetWeightInterpolationFactor(Convert.ToInt32(AircraftWeight));
 
             result.Takeoff_GroundRoll =
@@ -248,7 +248,7 @@ namespace Airborn.web.Models
         /// Interpolates between two distances based on the weight interpolation factor
         /// i.e. if the weight interpolation factor is 0.5, it will return the average of the two distances
         /// </summary>
-        private static double InterpolateDistanceByWeight(double weightInterpolationFactor, double distance_LowerWeight, double distance_HigherWeight)
+        private static decimal InterpolateDistanceByWeight(decimal weightInterpolationFactor, decimal distance_LowerWeight, decimal distance_HigherWeight)
         {
             return distance_LowerWeight +
                 (weightInterpolationFactor * (distance_HigherWeight - distance_LowerWeight));
@@ -257,7 +257,7 @@ namespace Airborn.web.Models
         /// <summary>
         /// Gets the raw distance from the JSON file for a given scenario mode
         /// </summary>
-        public double GetDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
+        public decimal GetDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
         {
             /*  The performance data in the JSON is provided by the manufacturer in 
                 pressure altitude intervals of 1000 ft and temperature intervals of
@@ -295,11 +295,11 @@ namespace Airborn.web.Models
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
-            double distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, lowerTemperature);
+            decimal distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
+            decimal distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, lowerTemperature);
 
             // interpolate between the lower and higher pressure altitude for the lower temperature
-            double distanceLowerTempInterpolated = Interpolate(
+            decimal distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
                 distanceForUpperPressureAltitudeLowerTemp,
                 PressureAltitude,
@@ -308,11 +308,11 @@ namespace Airborn.web.Models
 
             // then get the performance data for the higher temperature and the lower and higher
             // pressure altitude
-            double distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, upperTemperature);
-            double distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, upperTemperature);
+            decimal distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, upperTemperature);
+            decimal distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, upperTemperature);
 
             // interpolate between the lower and higher pressure altitude for the higher temperature
-            double distanceUpperTempInterpolated = Interpolate(
+            decimal distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
                 PressureAltitude,
@@ -320,7 +320,7 @@ namespace Airborn.web.Models
             );
 
             // interpolate between the lower and higher temperature
-            double distanceInterpolated = Interpolate(
+            decimal distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
                 TemperatureCelcius,
@@ -340,7 +340,7 @@ namespace Airborn.web.Models
         /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
         /// it will return 0.5
         /// </summary>
-        public static double CalculateInterpolationFactor(int value, int lowerBound, int upperBound)
+        public static decimal CalculateInterpolationFactor(int value, int lowerBound, int upperBound)
         {
             if (value < 0)
             {
@@ -350,7 +350,7 @@ namespace Airborn.web.Models
             if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
             if (value > upperBound) { throw new ArgumentOutOfRangeException(); }
 
-            double interpolationFactor = (double)(value - lowerBound) / (double)(upperBound - lowerBound);
+            decimal interpolationFactor = (decimal)(value - lowerBound) / (decimal)(upperBound - lowerBound);
 
             return interpolationFactor;
         }
@@ -375,14 +375,14 @@ namespace Airborn.web.Models
             return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
         }
 
-        public static double Interpolate(double lowerValue, double upperValue, int valueForInterpolation, int desiredInterval)
+        public static decimal Interpolate(decimal lowerValue, decimal upperValue, int valueForInterpolation, int desiredInterval)
         {
             int lowerInterpolation = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
             int upperInterpolation = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
 
-            double interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerInterpolation, upperInterpolation);
+            decimal interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerInterpolation, upperInterpolation);
 
-            double interpolatedValue =
+            decimal interpolatedValue =
                 (upperValue - lowerValue)
                 *
                 interpolationFactor

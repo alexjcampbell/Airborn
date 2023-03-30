@@ -65,7 +65,7 @@ namespace Airborn.web.Models
 
         }
 
-        public double GetPerformanceDataValueForConditions(JsonPerformanceProfileList profiles, PerformanceCalculator calculator, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
+        public decimal GetPerformanceDataValueForConditions(JsonPerformanceProfileList profiles, PerformanceCalculator calculator, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
         {
             System.Diagnostics.Debug.Write("\nprofiles null " + profiles is null);
             System.Diagnostics.Debug.Write("\nprofiles length is " + profiles.Count.ToString());

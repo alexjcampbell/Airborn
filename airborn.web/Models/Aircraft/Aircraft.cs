@@ -18,8 +18,8 @@ namespace Airborn.web.Models
 
         // the implementing aircraft class must implement the POH rules for adjusting
         // the performance data for wind, slope, surface etc
-        public abstract double MakeTakeoffAdjustments(PerformanceCalculationResult result, double takeoffDistance);
-        public abstract double MakeLandingAdjustments(PerformanceCalculationResult result, double landingDistance);
+        public abstract decimal MakeTakeoffAdjustments(PerformanceCalculationResult result, decimal takeoffDistance);
+        public abstract decimal MakeLandingAdjustments(PerformanceCalculationResult result, decimal landingDistance);
 
         public abstract string JsonFileName_LowerWeight();
         public abstract string JsonFileName_HigherWeight();
@@ -45,7 +45,7 @@ namespace Airborn.web.Models
 
         }
 
-        public double GetWeightInterpolationFactor(int weight)
+        public decimal GetWeightInterpolationFactor(int weight)
         {
             if(weight <= 0)
             {
@@ -63,7 +63,7 @@ namespace Airborn.web.Models
             int lowerWeight = GetLowerWeight();
             int higherWeight = GetHigherWeight();
 
-            double weightInterpolationFactor = (double)(weight - lowerWeight) / (double)(higherWeight - lowerWeight);
+            decimal weightInterpolationFactor = (decimal)(weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
 
             return weightInterpolationFactor;
         }

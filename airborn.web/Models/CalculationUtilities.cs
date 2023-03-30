@@ -6,15 +6,15 @@ namespace Airborn.web.Models
     public static class CalculationUtilities
     {
 
-        public static double AngularDifference(int angle1, int angle2)
+        public static decimal AngularDifference(int angle1, int angle2)
         {
-            double difference = (angle2 - angle1 + 180) % 360 - 180;
+            decimal difference = (angle2 - angle1 + 180) % 360 - 180;
             return difference < -180 ? difference + 360 : difference;
         }
 
-        public static double ConvertDegreesToRadians(int degrees)
+        public static decimal ConvertDegreesToRadians(decimal degrees)
         {
-            double radians = (Math.PI / 180) * (double)degrees;
+            decimal radians = ((decimal)Math.PI / 180) * (decimal)degrees;
             return radians;
         }
 

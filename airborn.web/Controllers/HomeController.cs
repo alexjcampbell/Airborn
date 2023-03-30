@@ -22,7 +22,7 @@ namespace Airborn.Controllers
             _logger = logger;
             _env = env;
         }
-
+        
         public IActionResult Index()
         {
             CalculatePageModel model = new CalculatePageModel();

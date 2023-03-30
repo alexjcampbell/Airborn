@@ -60,7 +60,7 @@ namespace Airborn.web.Models
         public string Surface_Friendly_Output
         {
             get{
-                if(Surface_Friendly.Length > 0){
+                if(Surface_Friendly?.Length > 0){
                     return Surface_Friendly;
                 }
                 else{
@@ -81,16 +81,28 @@ namespace Airborn.web.Models
         }
 
         [NotMapped]
-        public double? RunwayLengthConverted
+        public decimal? RunwayLengthConverted
         {
             get{
                 if(RunwayLength.Length > 0){
-                    return Convert.ToDouble(RunwayLength);
+                    return Convert.ToDecimal(RunwayLength);
                 }
                 return null;
 
             }
         }
+
+               [NotMapped]
+        public decimal? DisplacedThresholdConverted
+        {
+            get{
+                if(DisplacedThresholdFt.Length > 0){
+                    return Convert.ToDecimal(DisplacedThresholdFt);
+                }
+                return null;
+
+            }
+        } 
 
         [NotMapped]
         public string RunwayLengthFriendly
@@ -118,13 +130,22 @@ namespace Airborn.web.Models
             }
         }
 
-
-        // todo use or remove this
         [NotMapped]
-        public Distance TakeoffAvailableLength { get; }
+        public Distance LandingAvailableLength {
+            get
+            {
+                if(RunwayLengthConverted != null && DisplacedThresholdConverted != null){
+                    return Distance.FromFeet(RunwayLengthConverted.Value - DisplacedThresholdConverted.Value);
+                }
+                else if(RunwayLengthConverted != null) {
+                    return Distance.FromFeet(RunwayLengthConverted.Value);
+                }
+                else{
+                    return new Distance(0);
+                }
+            }
+        }
 
-        [NotMapped]
-        public Distance LandingAvailableLength { get; }
 
         [NotMapped]
         public Direction RunwayHeading { get; set; }

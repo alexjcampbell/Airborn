@@ -28,9 +28,9 @@ namespace Airborn.web.Models
             get;
         }
 
-        private double _takeoff_GroundRoll;
+        private decimal _takeoff_GroundRoll;
 
-        public double Takeoff_GroundRoll
+        public decimal Takeoff_GroundRoll
         {
             get
             {
@@ -42,9 +42,9 @@ namespace Airborn.web.Models
             }
         }
 
-        private double _takeoff_50FtClearance;
+        private decimal _takeoff_50FtClearance;
 
-        public double Takeoff_50FtClearance
+        public decimal Takeoff_50FtClearance
         {
             get
             {
@@ -56,9 +56,9 @@ namespace Airborn.web.Models
             }
         }
 
-        private double _landing_Groundroll;
+        private decimal _landing_Groundroll;
 
-        public double Landing_GroundRoll
+        public decimal Landing_GroundRoll
         {
             get
             {
@@ -70,9 +70,9 @@ namespace Airborn.web.Models
             }
         }
 
-        private double _landing_50FtClearance;
+        private decimal _landing_50FtClearance;
 
-        public double Landing_50FtClearance
+        public decimal Landing_50FtClearance
         {
             get
             {
@@ -85,37 +85,37 @@ namespace Airborn.web.Models
         }
 
 
-        public int HeadwindComponent
+        public decimal HeadwindComponent
         {
             get
             {
-                return Convert.ToInt32(
+                return Convert.ToDecimal(
                 Wind.StrengthKts * Math.Cos(
-                    CalculationUtilities.ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic)
+                    (double)CalculationUtilities.ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic)
                     )
                     );
             }
         }
 
-        public int CrosswindComponent
+        public decimal CrosswindComponent
         {
             get
             {
-                return Convert.ToInt32(
+                return Convert.ToDecimal(
                      Wind.StrengthKts * Math.Sin(
-                        CalculationUtilities.ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic)
+                        (double)CalculationUtilities.ConvertDegreesToRadians(WindRunwayAngularDifferenceMagnetic)
                         )
                 );
             }
         }
 
 
-        public int WindRunwayAngularDifferenceMagnetic
+        public decimal WindRunwayAngularDifferenceMagnetic
         {
             get
             {
 
-                int difference = (int)CalculationUtilities.AngularDifference(Runway.RunwayHeading.DirectionMagnetic, Wind.Direction.DirectionMagnetic);
+                decimal difference = (int)CalculationUtilities.AngularDifference(Runway.RunwayHeading.DirectionMagnetic, Wind.Direction.DirectionMagnetic);
 
                 return difference;
             }

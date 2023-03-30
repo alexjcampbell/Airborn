@@ -36,7 +36,7 @@ namespace Airborn.Tests
         public void Test_CalculateInterpolationFactor()
         {
 
-            Assert.AreEqual(0.5, PerformanceCalculator.CalculateInterpolationFactor(15, 10, 20));
+            Assert.AreEqual(0.5m, PerformanceCalculator.CalculateInterpolationFactor(15, 10, 20));
             Assert.AreEqual(0, PerformanceCalculator.CalculateInterpolationFactor(10, 10, 20));
             Assert.AreEqual(1, PerformanceCalculator.CalculateInterpolationFactor(20, 10, 20));
 
