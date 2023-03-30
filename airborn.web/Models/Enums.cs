@@ -33,5 +33,5 @@ namespace Airborn.web.Models
         Takeoff_50FtClearance,
         Landing_GroundRoll,
         Landing_50FtClearance
-    }    
+    }
 }

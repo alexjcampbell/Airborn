@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Airborn.web
 {
     public static class Utilities
-    {        
+    {
         public static string IsActive(this IHtmlHelper htmlHelper, string controllers = null, string actions = null, string cssClass = "active")
         {
             var currentController = htmlHelper?.ViewContext.RouteData.Values["controller"] as string;

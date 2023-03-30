@@ -142,9 +142,9 @@ namespace Airborn.web.Models
             get
             {
                 return HeadwindComponentOutput + HeadwindComponentText + ", " + CrosswindComponentOutput + CrosswindComponentText;
-                
+
             }
-        }        
+        }
 
         public double? Takeoff_GroundRoll
         {

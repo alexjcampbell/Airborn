@@ -240,7 +240,7 @@ namespace Airborn.web.Models
                         GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileLowerWeight),
                         GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileHigherWeight)
                 ));
-            
+
             return result;
         }
 
