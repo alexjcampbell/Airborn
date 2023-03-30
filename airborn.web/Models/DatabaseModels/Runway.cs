@@ -50,6 +50,25 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("Surface_Friendly")]
+        public string Surface_Friendly
+        {
+            get; set;
+        }
+
+        [NotMapped] 
+        public string Surface_Friendly_Output
+        {
+            get{
+                if(Surface_Friendly.Length > 0){
+                    return Surface_Friendly;
+                }
+                else{
+                    return "Unknown";
+                }
+            }
+        }
+
         [Column("Displaced_Threshold_Ft")]
         public string DisplacedThresholdFt
         {

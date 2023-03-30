@@ -10,9 +10,8 @@
 <form asp-action="Calculate" method="post" class="form-horizontal">
 
     <br />
-    <h4><b>Airborn is your free takeoff and landing calculator</b>.
-        <br />Tell us your about your flight, and we'll tell you how much runway the Pilot's Operating Handbook says
-        you'll need.
+    <h4><b>Airborn is a free takeoff and landing calculator.</b>
+        <br />Tell us your about your flight, and we'll show you takeoff and landing performance information for each runway.
     </h4>
 
 
@@ -152,6 +151,12 @@
                         <label>Runway length</label>
                     </div>
                 </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input class="form-control" maxlength="10" readonly value="@result.Runway.Surface_Friendly_Output" />
+                        <label>Runway length</label>
+                    </div>
+                </div>                
                 <div class="col-sm-3">
                     <div class="form-floating">
                         <input class="form-control" maxlength="10" readonly
