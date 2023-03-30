@@ -25,7 +25,8 @@ namespace Airborn.Web
                     // Add the following line:
                     webBuilder.UseSentry(o =>
                     {
-                        o.Dsn = "https://1594b4e8f3b44db18f389f618b7683ca@o4504821941796864.ingest.sentry.io/4504821943894016";
+
+                        o.Dsn = Environment.GetEnvironmentVariable("SENTRY_KEY");
                         // When configuring for the first time, to see what the SDK is doing:
                         o.Debug = true;
                         // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
