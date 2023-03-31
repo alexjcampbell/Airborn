@@ -22,7 +22,7 @@ namespace Airborn.Controllers
             _logger = logger;
             _env = env;
         }
-        
+
         public IActionResult Index()
         {
             CalculatePageModel model = new CalculatePageModel();
@@ -161,7 +161,7 @@ namespace Airborn.Controllers
         public JsonResult AutocompleteAirportIdentifier(string term)
         {
 
-            term = term.ToUpper();
+            term = term?.ToUpper();
 
             return Json(CalculatePageModel.SearchForAirportsByIdentifier(term));
 

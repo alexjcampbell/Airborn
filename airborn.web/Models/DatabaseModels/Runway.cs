@@ -17,7 +17,7 @@ namespace Airborn.web.Models
         }
 
         public int Runway_Id
-        {
+        {   
             get; set;
         }
 
@@ -25,7 +25,7 @@ namespace Airborn.web.Models
         {
             get; set;
         }
-        
+
         public string Runway_Name
         {
             get; set;
@@ -56,14 +56,17 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [NotMapped] 
+        [NotMapped]
         public string Surface_Friendly_Output
         {
-            get{
-                if(Surface_Friendly?.Length > 0){
+            get
+            {
+                if (Surface_Friendly?.Length > 0)
+                {
                     return Surface_Friendly;
                 }
-                else{
+                else
+                {
                     return "Unknown";
                 }
             }
@@ -73,7 +76,7 @@ namespace Airborn.web.Models
         public string DisplacedThresholdFt
         {
             get; set;
-        }    
+        }
 
         public string Heading_DegT
         {
@@ -83,8 +86,10 @@ namespace Airborn.web.Models
         [NotMapped]
         public decimal? RunwayLengthConverted
         {
-            get{
-                if(RunwayLength.Length > 0){
+            get
+            {
+                if (RunwayLength.Length > 0)
+                {
                     return Convert.ToDecimal(RunwayLength);
                 }
                 return null;
@@ -92,17 +97,19 @@ namespace Airborn.web.Models
             }
         }
 
-               [NotMapped]
+        [NotMapped]
         public decimal? DisplacedThresholdConverted
         {
-            get{
-                if(DisplacedThresholdFt.Length > 0){
+            get
+            {
+                if (DisplacedThresholdFt.Length > 0)
+                {
                     return Convert.ToDecimal(DisplacedThresholdFt);
                 }
                 return null;
 
             }
-        } 
+        }
 
         [NotMapped]
         public string RunwayLengthFriendly
@@ -113,34 +120,40 @@ namespace Airborn.web.Models
 
                 if (RunwayLength.Length > 0)
                 {
-                    if(RunwayWidth.Length > 0){
+                    if (RunwayWidth.Length > 0)
+                    {
                         runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft x " + RunwayWidth + " ft";
                     }
-                    else{
+                    else
+                    {
                         runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft";
                     }
                 }
-                else 
+                else
                 {
                     runwayInformation = "Unknown";
                 }
-                
+
 
                 return runwayInformation;
             }
         }
 
         [NotMapped]
-        public Distance LandingAvailableLength {
+        public Distance LandingAvailableLength
+        {
             get
             {
-                if(RunwayLengthConverted != null && DisplacedThresholdConverted != null){
+                if (RunwayLengthConverted != null && DisplacedThresholdConverted != null)
+                {
                     return Distance.FromFeet(RunwayLengthConverted.Value - DisplacedThresholdConverted.Value);
                 }
-                else if(RunwayLengthConverted != null) {
+                else if (RunwayLengthConverted != null)
+                {
                     return Distance.FromFeet(RunwayLengthConverted.Value);
                 }
-                else{
+                else
+                {
                     return new Distance(0);
                 }
             }
@@ -152,7 +165,7 @@ namespace Airborn.web.Models
 
         public string RunwayHeadingMagneticConverted
         {
-            get 
+            get
             {
                 return RunwayHeading.DirectionMagnetic.ToString() + " °M";
             }
