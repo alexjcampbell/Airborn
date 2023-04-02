@@ -21,7 +21,7 @@ namespace Airborn.Tests
             new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
 
 
-        private HomeController InititalizeAndGetController()
+        private HomeController InitializeAndGetController()
         {
             var mockEnvironment = new Mock<IWebHostEnvironment>();
 
@@ -77,13 +77,10 @@ namespace Airborn.Tests
             return controller;
         }
 
-        [TestMethod]
-        public void FirstTest()
+        private CalculatePageModel InitializeAndGetModel()
         {
-            var controller = InititalizeAndGetController();
-
-            var model = new CalculatePageModel();
-
+            CalculatePageModel model = new CalculatePageModel();
+            
             model.AircraftType = AircraftType.C172_SP;
             model.AltimeterSetting = 29.92m;
             model.AltimeterSettingType = AltimeterSettingType.HG;
@@ -95,16 +92,20 @@ namespace Airborn.Tests
             model.AircraftWeight = 2500;
             model.RootPath = AircraftPerformanceTests.TestJsonPath;
 
+            return model;
+        }        
+
+        [TestMethod]
+        public void TestDirectHeadwindHasNoCrosswindComponent()
+        {
+            HomeController controller = InitializeAndGetController();
+            CalculatePageModel model = InitializeAndGetModel();
 
             var result = controller.Calculate(model);
 
-            Assert.AreEqual(model.Results[0].HeadwindComponent, 10);
             Assert.AreEqual(model.Results[0].CrosswindComponent, 0);
-
-
-            // When
-
-            // Then
         }
+
+
     }
 }

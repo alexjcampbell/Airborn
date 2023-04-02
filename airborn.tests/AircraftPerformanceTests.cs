@@ -36,8 +36,13 @@ namespace Airborn.Tests
         public void Test_CalculateInterpolationFactor()
         {
 
+            // 15 is halfway between 10 and 20, so interpolation factor should be 0.5
             Assert.AreEqual(0.5m, PerformanceCalculator.CalculateInterpolationFactor(15, 10, 20));
+
+            // 10 is at the lower bound between 10 and 20, so interpolation factor should be 0
             Assert.AreEqual(0, PerformanceCalculator.CalculateInterpolationFactor(10, 10, 20));
+
+            // 20 is at the upper bound between 10 and 20, so interpolation factor should be 1
             Assert.AreEqual(1, PerformanceCalculator.CalculateInterpolationFactor(20, 10, 20));
 
         }

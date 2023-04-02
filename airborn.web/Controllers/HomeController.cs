@@ -84,7 +84,7 @@ namespace Airborn.Controllers
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
             {
-                model.GetRunwaysForAirport(_dbContext);
+                _dbContext.GetRunwaysForAirport(model.AirportIdentifier);
             }
 
             if (!ModelState.IsValid)
@@ -179,13 +179,13 @@ namespace Airborn.Controllers
         {
 
             term = term?.ToUpper();
-            return Json(PageModel.SearchForAirportsByIdentifier(term, _dbContext));
+            return Json(_dbContext.SearchForAirportsByIdentifier(term));
 
         }
 
         public JsonResult GetAirportInformation(string airportIdentifier)
         {
-            return Json(PageModel.GetAirport(airportIdentifier, _dbContext));
+            return Json(_dbContext.GetAirport(airportIdentifier));
         }
 
     }
