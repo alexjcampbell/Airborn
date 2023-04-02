@@ -145,7 +145,7 @@ namespace Airborn.web.Models
         }
 
 
-        public void Calculate()
+        public void Calculate(AirportDbContext db)
         {
 
 
@@ -159,26 +159,23 @@ namespace Airborn.web.Models
 
             List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
 
-            using (var db = new AirportDbContext())
+            foreach (Runway runway in
+                db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
             {
+                Runway primaryRunway = runway;
 
-                foreach (Runway runway in
-                    db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
-                {
-                    Runway primaryRunway = runway;
+                // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
+                string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
 
-                    // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
-                    string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
+                primaryRunway.RunwayHeading =
+                    new Direction(
+                        int.Parse(runwayName) * 10,
+                        0
+                        );
 
-                    primaryRunway.RunwayHeading =
-                        new Direction(
-                            int.Parse(runwayName) * 10,
-                            0
-                            );
-
-                    Runways.Add(primaryRunway);
-                }
+                Runways.Add(primaryRunway);
             }
+
 
 
             foreach (Runway runway in Runways)

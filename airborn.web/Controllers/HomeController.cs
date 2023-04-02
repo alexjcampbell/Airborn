@@ -14,37 +14,44 @@ namespace Airborn.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AirportDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
+        public CalculatePageModel PageModel
+        {
+            get;
+            set;
+        }
+
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
         {
             _logger = logger;
             _env = env;
+            _dbContext = dbContext;
+            PageModel = new CalculatePageModel();
+            PageModel.RootPath = env.WebRootPath;
+
         }
 
         public IActionResult Index()
         {
-            CalculatePageModel model = new CalculatePageModel();
-
-            return View(model);
+            return View(PageModel);
         }
 
         public IActionResult Calculate()
         {
-
-            CalculatePageModel model = new CalculatePageModel();
 
 
             if (Request.Cookies["TemperatureType"]?.Length > 0)
             {
                 if (Request.Cookies["TemperatureType"] == "C")
                 {
-                    model.TemperatureType = TemperatureType.C;
+                    PageModel.TemperatureType = TemperatureType.C;
                 }
                 else if (Request.Cookies["TemperatureType"] == "F")
                 {
-                    model.TemperatureType = TemperatureType.F;
+                    PageModel.TemperatureType = TemperatureType.F;
                 }
             }
 
@@ -52,20 +59,20 @@ namespace Airborn.Controllers
             {
                 if (Request.Cookies["AltimeterSettingType"] == "MB")
                 {
-                    model.AltimeterSettingType = AltimeterSettingType.MB;
+                    PageModel.AltimeterSettingType = AltimeterSettingType.MB;
                 }
                 else if (Request.Cookies["AltimeterSettingType"] == "HG")
                 {
-                    model.AltimeterSettingType = AltimeterSettingType.HG;
+                    PageModel.AltimeterSettingType = AltimeterSettingType.HG;
                 }
             }
 
             if (Request.Cookies["MagneticVariation"]?.Length > 0)
             {
-                model.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
+                PageModel.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
             }
 
-            return View(model);
+            return View(PageModel);
         }
 
         // POST: Home/Calculate
@@ -77,9 +84,8 @@ namespace Airborn.Controllers
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
             {
-                model.GetRunwaysForAirport();
+                model.GetRunwaysForAirport(_dbContext);
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -88,7 +94,12 @@ namespace Airborn.Controllers
 
             try
             {
-                model.LoadAircraftPerformance(_env.WebRootPath);
+                // if we're running this from a Controller test, RootPath will already be set, so don't override it
+                if(model.RootPath == null)
+                {
+                    model.RootPath = _env.WebRootPath;
+                }
+                model.LoadAircraftPerformance(_dbContext);
             }
             catch (PressureAltitudePerformanceProfileNotFoundException e)
             {
@@ -123,6 +134,7 @@ namespace Airborn.Controllers
 
                 return View(model);
             }
+            /*
             catch (Exception e)
             {
                 ModelState.AddModelError(
@@ -132,10 +144,15 @@ namespace Airborn.Controllers
 
                 return View(model);
             }
+            */
 
-            HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());
-            HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());
-            HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
+            // check for null before we try to add cookies, so we can unit test this controller
+            if(HttpContext != null)
+            {
+                HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());
+                HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());
+                HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
+            }
 
             return View(model);
         }
@@ -162,15 +179,13 @@ namespace Airborn.Controllers
         {
 
             term = term?.ToUpper();
-
-            return Json(CalculatePageModel.SearchForAirportsByIdentifier(term));
+            return Json(PageModel.SearchForAirportsByIdentifier(term, _dbContext));
 
         }
 
         public JsonResult GetAirportInformation(string airportIdentifier)
         {
-
-            return Json(CalculatePageModel.GetAirport(airportIdentifier));
+            return Json(PageModel.GetAirport(airportIdentifier, _dbContext));
         }
 
     }

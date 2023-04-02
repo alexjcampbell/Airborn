@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Airborn.web.Models
 {
@@ -19,6 +21,11 @@ namespace Airborn.web.Models
 
         private PerformanceCalculator PerformanceCalculator
         {
+            get;
+            set;
+        }
+
+        public string RootPath{
             get;
             set;
         }
@@ -38,7 +45,7 @@ namespace Airborn.web.Models
 
         [Required]
         [Display(Name = "Aircraft Weight")]
-        public int? AircraftWeight
+        public int AircraftWeight
         {
             get; set;
         }
@@ -81,7 +88,8 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        public Airport Airport{
+        public Airport Airport
+        {
             get;
             set;
         }
@@ -138,7 +146,7 @@ namespace Airborn.web.Models
 
 
 
-        public void LoadAircraftPerformance(string rootPath)
+        public void LoadAircraftPerformance(AirportDbContext db)
         {
 
 
@@ -148,17 +156,19 @@ namespace Airborn.web.Models
                 WindStrength.Value
                 );
 
+            Airport = GetAirport(AirportIdentifier, db);
+
             PerformanceCalculator = new PerformanceCalculator(
                 AircraftType,
-                GetAirport(AirportIdentifier),
+                Airport,
                 wind,
-                rootPath
+                RootPath
                 )
                 ;
 
-            Airport = GetAirport(AirportIdentifier);
 
-            PerformanceCalculator.AircraftWeight = AircraftWeight.Value;
+
+            PerformanceCalculator.AircraftWeight = AircraftWeight;
 
             if (TemperatureType == Models.TemperatureType.F)
             {
@@ -179,7 +189,7 @@ namespace Airborn.web.Models
                 PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
             }
 
-            PerformanceCalculator.Calculate();
+            PerformanceCalculator.Calculate(db);
 
             foreach (PerformanceCalculationResult result in PerformanceCalculator.Results)
             {
@@ -191,59 +201,61 @@ namespace Airborn.web.Models
 
         }
 
-        public void GetRunwaysForAirport()
-        {
-            using (var db = new AirportDbContext())
-            {
-                this.Runways = db.Runways.Where<Runway>
-                    (r => r.Airport_Ident.StartsWith(this.AirportIdentifier.ToUpper())
-                    ).ToList<Runway>();
-            }
-        }        
-
-        public static Airport GetAirport(string airportIdentifier)
+        public void GetRunwaysForAirport(AirportDbContext db)
         {
 
-            using (var db = new AirportDbContext())
-            {
-                Airport airport = db.Airports.Single<Airport>(
-                    a => a.Ident.Equals(airportIdentifier.ToUpper())
-                    );
-
-                return airport;
-            }
-        }        
-
-        public static List<KeyValuePair<string, string>> SearchForAirportsByIdentifier(string term)
-        {
-            using (var db = new AirportDbContext())
-            {
-                DateTime start = DateTime.Now;
-
-                var airportIdentifiers = (from airport in db.Airports
-                                          where EF.Functions.Like(airport.Ident, term + "%")
-                                          select new
-                                          {
-                                              label = airport.Ident,
-                                              val = airport.Id
-                                          }).AsNoTracking().Take(20);
-
-                DateTime end = DateTime.Now;
-
-                List<KeyValuePair<string, string>> airportIdentifiersList = new List<KeyValuePair<string, string>>();
-
-                foreach(var airport in airportIdentifiers)
-                {
-                    airportIdentifiersList.Add(new KeyValuePair<string, string>(airport.val.ToString(), airport.label));
-                }
-
-                // Remnants of past performance debugging:
-                // Trace.WriteLine($"Query time taken: {(end - start).TotalSeconds}");
-
-                return airportIdentifiersList;
-            }        
+            // We defensively check for r.Airport_Ident being null before we check StartsWith,
+            // because otherwise EF will throw a NullReferenceException if no Airport_Ident
+            // is set on a row
+            this.Runways = db.Runways.Where<Runway>
+                (r => r.Airport_Ident != null && r.Airport_Ident.StartsWith(this.AirportIdentifier.ToUpper())
+                ).ToList<Runway>();
         }
-        
+
+        public Airport GetAirport(string airportIdentifier, AirportDbContext db)
+        {
+            if(db.Airports.Count() == 0)
+            {
+                throw new ArgumentOutOfRangeException("airportIdentifer " + airportIdentifier + " not found in database. (Database is empty.)");
+            }
+
+            Airport airport = db.Airports.Single<Airport>(
+                a => a.Ident.Equals(airportIdentifier.ToUpper())
+                );
+
+            return airport;
+
+        }
+
+        public List<KeyValuePair<string, string>> SearchForAirportsByIdentifier(string term, AirportDbContext db)
+        {
+
+            DateTime start = DateTime.Now;
+
+            var airportIdentifiers = (from airport in db.Airports
+                                      where EF.Functions.Like(airport.Ident, term + "%")
+                                      select new
+                                      {
+                                          label = airport.Ident,
+                                          val = airport.Id
+                                      }).AsNoTracking().Take(20);
+
+            DateTime end = DateTime.Now;
+
+            List<KeyValuePair<string, string>> airportIdentifiersList = new List<KeyValuePair<string, string>>();
+
+            foreach (var airport in airportIdentifiers)
+            {
+                airportIdentifiersList.Add(new KeyValuePair<string, string>(airport.val.ToString(), airport.label));
+            }
+
+            // Remnants of past performance debugging:
+            // Trace.WriteLine($"Query time taken: {(end - start).TotalSeconds}");
+
+            return airportIdentifiersList;
+
+        }
+
 
     }
 }

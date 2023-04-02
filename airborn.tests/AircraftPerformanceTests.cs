@@ -8,7 +8,7 @@ namespace Airborn.Tests
     public class AircraftPerformanceTests
     {
 
-        private const string _testJsonPath = "../../Debug/net6.0/SR22_G2_3400.json";
+        public static string TestJsonPath = "../../Debug/net6.0/SR22_G2_3400.json";
 
         private int _defaultMagneticVariation = -20;
 
@@ -19,7 +19,7 @@ namespace Airborn.Tests
                 AircraftType.SR22_G2,
                 new Airport(),
                 Wind.FromMagnetic(windDirectionMagnetic, _defaultMagneticVariation, windStrength),
-                _testJsonPath
+                TestJsonPath
                 );
 
             calculator.TemperatureCelcius = 12;

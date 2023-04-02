@@ -4,14 +4,20 @@ using Microsoft.EntityFrameworkCore;
 namespace Airborn.web.Models
 {
     // >dotnet ef migration add testMigration
-    public class AirportDbContext : DbContext
+    public class AirportDbContext : DbContext, IAirportDbContext
     {
-        public DbSet<Airport> Airports { get; set; }
+        public AirportDbContext(){
+            
+        }
 
-        public DbSet<Runway> Runways { get; set; }
+        public AirportDbContext(DbContextOptions<AirportDbContext> options)
+        : base(options) {
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message));
+        }
+
+        public virtual DbSet<Airport> Airports { get; set; }
+
+        public virtual DbSet<Runway> Runways { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
