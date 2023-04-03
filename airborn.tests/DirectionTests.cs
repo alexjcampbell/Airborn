@@ -7,17 +7,26 @@ namespace Airborn.Tests
     public class DirectionTests
     {
         [TestMethod]
-        public void TestTrueToMagnetic()
+        public void TestTrueToMagnetic_Minus20()
         {
-            Direction direction = Direction.FromTrue(350, -20);
+            int directionDegrees = 350;
+            int magneticVariation = -20;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
             Assert.AreEqual(330, direction.DirectionMagnetic);
 
-            direction = Direction.FromTrue(350, 20);
-            Assert.AreEqual(010, direction.DirectionMagnetic);
+            directionDegrees = 10;
+            direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(350, direction.DirectionMagnetic);
 
+            directionDegrees = 0;
+            direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(340, direction.DirectionMagnetic);
+
+            directionDegrees = 0;
             // a heading of 360 is the same as 0, but this should return 0
-            direction = Direction.FromTrue(350, 10);
-            Assert.AreEqual(0, direction.DirectionMagnetic);
+            direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(340, direction.DirectionMagnetic);
             
         }
 

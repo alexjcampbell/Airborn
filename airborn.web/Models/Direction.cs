@@ -6,7 +6,13 @@ namespace Airborn.web.Models
     {
         private readonly int _directionTrue;
 
-        private readonly int _magneticVariation;
+        private readonly int? _magneticVariation;
+
+        public Direction(int directionTrue)
+        {
+            this._directionTrue = directionTrue;
+        }
+
 
         public Direction(int directionTrue, int magneticVariation)
         {
@@ -31,7 +37,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public int MagneticVariation
+        public int? MagneticVariation
         {
             get
             {
@@ -39,15 +45,25 @@ namespace Airborn.web.Models
             }
         }
 
+        public static Direction FromMagnetic(int directionMagnetic)
+        {
+            return new Direction(ConvertMagneticToTrue(directionMagnetic, null));
+        }
+
         public static Direction FromMagnetic(int directionMagnetic, int magneticVariation)
         {
             return new Direction(ConvertMagneticToTrue(directionMagnetic, magneticVariation), magneticVariation);
         }
 
+        public static Direction FromTrue(int directionTrue)
+        {
+            return new Direction(directionTrue);
+        }
+
         public static Direction FromTrue(int directionTrue, int magneticVariation)
         {
             return new Direction(directionTrue, magneticVariation);
-        }
+        }        
 
         public override bool Equals(object obj)
         {
@@ -77,38 +93,59 @@ namespace Airborn.web.Models
             return string.Format("{0}[m]", DirectionTrue);
         }
 
-        private static int ConvertMagneticToTrue(int directionMagnetic, int magneticVariation)
+        /// <summary>
+        /// We compute the magnetic direction from a true direction by subtracting the magnetic variation
+        /// from the true direction. (Magnetic variation will be positive if east, negative if west)
+        /// </summary>
+        private static int ConvertMagneticToTrue(int directionMagnetic, int? magneticVariation)
         {
 
-            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
-            int directionTrue = (directionMagnetic - magneticVariation) % 360;
+            if (magneticVariation.HasValue)
+            {
+                directionMagnetic -= magneticVariation.Value;
+            }
 
-            if (directionTrue < 0)
-            {
-                return directionTrue + 360;
-            }
-            else
-            {
-                return directionTrue;
-            }
+            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
+            int directionTrue = directionMagnetic % 360;
+
+            return ReturnPositiveDirectionIfNegative(directionTrue);
 
         }
 
-        private static int ConvertTrueToMagnetic(int directionTrue, int magneticVariation)
+        /// <summary>
+        /// We compute the true direction from a magnetic direction by adding the magnetic variation
+        /// to the magnetic direction. (Magnetic variation will be positive if east, negative if west)
+        /// </summary>
+        private static int ConvertTrueToMagnetic(int directionTrue, int? magneticVariation)
         {
 
-            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
-            int directionMagnetic = (directionTrue + magneticVariation) % 360;
-
-            if (directionMagnetic < 0)
+            if (magneticVariation.HasValue)
             {
-                return directionMagnetic + 360;
+                directionTrue += magneticVariation.Value;
+            }
+
+            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
+            int directionMagnetic = directionTrue % 360;
+
+            return ReturnPositiveDirectionIfNegative(directionMagnetic);
+
+        }
+
+        /// <summary>
+        /// Converting from true to magnetic (or magnetic to true) can result in a negative direction
+        /// e.g. a direction of 10 degrees magnetic with magnetic variation of 20 degrees west results in
+        /// a direction of -10. To fix this, we add 360
+        /// </summary>
+        private static int ReturnPositiveDirectionIfNegative(int direction)
+        {
+            if (direction < 0)
+            {
+                return direction + 360;
             }
             else
             {
-                return directionMagnetic;
+                return direction;
             }
-
         }
     }
 }

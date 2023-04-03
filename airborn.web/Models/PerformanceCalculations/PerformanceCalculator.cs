@@ -77,70 +77,46 @@ namespace Airborn.web.Models
             }
         }
 
-        private int _temperatureCelcius;
-
         public int TemperatureCelcius
         {
-            get
-            {
-                return _temperatureCelcius;
-            }
-            set
-            {
-                _temperatureCelcius = value;
-            }
+            get;
+            set;
         }
 
-
-        private int _qnh;
 
         public int QNH
         {
-            get
-            {
-                return _qnh;
-            }
-            set
-            {
-                _qnh = value;
-            }
+            get;
+            set;
         }
 
-        public int PressureAltitude
+        public decimal PressureAltitude
         {
             get
             {
-                return ((1013 - QNH) * 30) + Airport.FieldElevation;
+                return CalculationUtilities.CalculatePressureAltitudeAtAirport(QNH, Airport.FieldElevation);
             }
         }
-
-        private double _aircraftWeight;
 
         public double AircraftWeight
         {
-            get
-            {
-                return _aircraftWeight;
-            }
-            set
-            {
-                _aircraftWeight = value;
-            }
+            get;
+            set;
         }
 
-        public double DensityAltitude
+        public decimal DensityAltitude
         {
             get
             {
-                return ((TemperatureCelcius - ISATemperature) * 120) + PressureAltitude;
+                return CalculationUtilities.CalculateDensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude);
             }
         }
 
-        public double ISATemperature
+        public decimal ISATemperature
         {
             get
             {
-                return 15 - (2 * ((double)PressureAltitude / 1000));
+                return CalculationUtilities.CalculateISATemperatureForPressureAltitude(PressureAltitude);
             }
         }
 
@@ -267,52 +243,44 @@ namespace Airborn.web.Models
                 and pressure altitude of 1000 and 2000 ft, and interpolate between them
             */
 
-            JsonPerformanceProfileList profileList;
+            // gets the takeoff (or landing) profiles, depending on ScenarioMode
+            JsonPerformanceProfileList profileList = PopulateJsonPerformanceProfileList(scenarioMode, jsonFile);
 
-            if (scenarioMode == ScenarioMode.Takeoff_GroundRoll || scenarioMode == ScenarioMode.Takeoff_50FtClearance)
-            {
-                profileList = jsonFile.TakeoffProfiles;
-            }
-            else if (scenarioMode == ScenarioMode.Landing_GroundRoll || scenarioMode == ScenarioMode.Landing_50FtClearance)
-            {
-                profileList = jsonFile.LandingProfiles;
-            }
-            else
-            {
-                throw new Exception("Invalid scenario mode");
-            }
+            int pressureAltitudeAsInt = (int)PressureAltitude;
+            const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
+            const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
             // get the upper and lower bounds for pressure altitude and temperature
             // ie using the example below this will return 1000 ft and 2000 ft
             // and 10 and 20 degreses
-            int lowerPressureAltidude = GetLowerBoundForInterpolation(PressureAltitude, 1000);
-            int upperPressureAltidude = GetUpperBoundForInterpolation(PressureAltitude, 1000);
-            int lowerTemperature = GetLowerBoundForInterpolation(TemperatureCelcius, 10);
-            int upperTemperature = GetUpperBoundForInterpolation(TemperatureCelcius, 10);
+            int lowerPressureAltidude = GetLowerBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
+            int upperPressureAltidude = GetUpperBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
+            int lowerTemperature = GetLowerBoundForInterpolation(TemperatureCelcius, temperatureInterval);
+            int upperTemperature = GetUpperBoundForInterpolation(TemperatureCelcius, temperatureInterval);
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
             decimal distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
             decimal distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, lowerTemperature);
 
-            // interpolate between the lower and higher pressure altitude for the lower temperature
-            decimal distanceLowerTempInterpolated = Interpolate(
-                distanceForLowerPressureAltitudeLowerTemp,
-                distanceForUpperPressureAltitudeLowerTemp,
-                PressureAltitude,
-                1000 // pressure altitudes in the json comes in intervals of 1000
-            );
-
             // then get the performance data for the higher temperature and the lower and higher
             // pressure altitude
             decimal distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, upperTemperature);
             decimal distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, upperTemperature);
 
+            // interpolate between the lower and higher pressure altitude for the lower temperature
+            decimal distanceLowerTempInterpolated = Interpolate(
+                distanceForLowerPressureAltitudeLowerTemp,
+                distanceForUpperPressureAltitudeLowerTemp,
+                (int)PressureAltitude,
+                pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
+            );
+
             // interpolate between the lower and higher pressure altitude for the higher temperature
             decimal distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
-                PressureAltitude,
+                (int)PressureAltitude,
                 1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
@@ -330,6 +298,26 @@ namespace Airborn.web.Models
             return distanceInterpolated;
 
 
+        }
+
+        private static JsonPerformanceProfileList PopulateJsonPerformanceProfileList(ScenarioMode scenarioMode, JsonFile jsonFile)
+        {
+            JsonPerformanceProfileList profileList;
+
+            if (scenarioMode == ScenarioMode.Takeoff_GroundRoll || scenarioMode == ScenarioMode.Takeoff_50FtClearance)
+            {
+                profileList = jsonFile.TakeoffProfiles;
+            }
+            else if (scenarioMode == ScenarioMode.Landing_GroundRoll || scenarioMode == ScenarioMode.Landing_50FtClearance)
+            {
+                profileList = jsonFile.LandingProfiles;
+            }
+            else
+            {
+                throw new Exception("Invalid scenario mode");
+            }
+
+            return profileList;
         }
 
         /// <summary>
@@ -386,6 +374,35 @@ namespace Airborn.web.Models
                 + lowerValue;
 
             return interpolatedValue;
+
+        }
+
+
+        private struct PerformanceInputMatrix
+        {
+            public int TemperatureLowerValue
+            {
+                get;
+                set;
+            }
+
+            public int TemperatureUpperValue
+            {
+                get;
+                set;
+            }
+
+            public int PressureAltitudeLowerValue
+            {
+                get;
+                set;
+            }
+
+            public int PressureAltitudeUpperValue
+            {
+                get;
+                set;
+            }
 
         }
 

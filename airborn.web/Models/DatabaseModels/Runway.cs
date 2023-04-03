@@ -171,6 +171,11 @@ namespace Airborn.web.Models
             }
         }
 
+        public static Runway FromMagnetic(int magneticHeading)
+        {
+            return new Runway(Direction.FromMagnetic(magneticHeading));
+        }
+
         public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
         {
             return new Runway(Direction.FromMagnetic(magneticHeading, magneticVariation));

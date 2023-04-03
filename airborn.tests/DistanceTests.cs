@@ -20,5 +20,10 @@ namespace Airborn.Tests
             Distance distance = Distance.FromKilometers(1);
             Assert.AreEqual(3280.8398950131233595800524934m, distance.TotalFeet);
         }
+
+        [TestMethod]
+        public void TestReturnPositiveDirectionIfNegative() {
+
+        }
     }
 }

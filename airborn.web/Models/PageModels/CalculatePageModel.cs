@@ -128,7 +128,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        public double? DensityAltitude
+        public decimal? DensityAltitude
         {
             get
             {
@@ -136,7 +136,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double? PressureAltitude
+        public decimal? PressureAltitude
         {
             get
             {
@@ -166,28 +166,10 @@ namespace Airborn.web.Models
                 )
                 ;
 
-
-
             PerformanceCalculator.AircraftWeight = AircraftWeight.Value;
 
-            if (TemperatureType == Models.TemperatureType.F)
-            {
-                PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature);
-            }
-            else
-            {
-                PerformanceCalculator.TemperatureCelcius = (int)Temperature.Value;
-            }
-
-            if (AltimeterSettingType == Models.AltimeterSettingType.HG)
-            {
-
-                PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
-            }
-            else
-            {
-                PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
-            }
+            SetTemperatureBasedOnDegreesForC();
+            SetAltimeterSettingBasedOnMborHg();
 
             PerformanceCalculator.Calculate(db);
 
@@ -201,8 +183,29 @@ namespace Airborn.web.Models
 
         }
 
+        private void SetAltimeterSettingBasedOnMborHg()
+        {
+            if (AltimeterSettingType == Models.AltimeterSettingType.HG)
+            {
 
+                PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
+            }
+            else
+            {
+                PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
+            }
+        }
 
-
+        private void SetTemperatureBasedOnDegreesForC()
+        {
+            if (TemperatureType == Models.TemperatureType.F)
+            {
+                PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature);
+            }
+            else
+            {
+                PerformanceCalculator.TemperatureCelcius = (int)Temperature.Value;
+            }
+        }
     }
 }

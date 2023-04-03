@@ -39,6 +39,11 @@ namespace Airborn.web.Models
             _strengthGustsKts = strengthGustsKts;
         }
 
+        public static Wind FromMagnetic(int magneticHeading, int strengthKts)
+        {
+            return new Wind(Direction.FromMagnetic(magneticHeading), strengthKts);
+        }
+
         public static Wind FromMagnetic(int magneticHeading, int magneticVariation, int strengthKts)
         {
             return new Wind(Direction.FromMagnetic(magneticHeading, magneticVariation), strengthKts);

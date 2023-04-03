@@ -65,10 +65,16 @@ namespace Airborn.web.Models
 
         }
 
-        public decimal GetPerformanceDataValueForConditions(JsonPerformanceProfileList profiles, PerformanceCalculator calculator, ScenarioMode scenarioMode, int pressureAltitude, int temperatureCelcius)
+        public decimal GetPerformanceDataValueForConditions(
+            JsonPerformanceProfileList profiles,
+            PerformanceCalculator calculator,
+            ScenarioMode scenarioMode,
+            int pressureAltitude,
+            int temperatureCelcius
+        )
         {
-            System.Diagnostics.Debug.Write("\nprofiles null " + profiles is null);
-            System.Diagnostics.Debug.Write("\nprofiles length is " + profiles.Count.ToString());
+            System.Diagnostics.Debug.WriteLine("profiles null " + profiles is null);
+            System.Diagnostics.Debug.WriteLine("profiles length is " + profiles.Count.ToString());
 
             // check to make sure that we actually have data for this Pressure Altitude and Temperature
             int maxPressureAltitudeAvailable = profiles.Max(p => p.PressureAltitude);
