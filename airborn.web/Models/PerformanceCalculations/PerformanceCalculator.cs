@@ -77,14 +77,14 @@ namespace Airborn.web.Models
             }
         }
 
-        public int TemperatureCelcius
+        public decimal TemperatureCelcius
         {
             get;
             set;
         }
 
 
-        public int QNH
+        public decimal QNH
         {
             get;
             set;
@@ -94,7 +94,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculatePressureAltitudeAtAirport(QNH, Airport.FieldElevation);
+                return CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation);
             }
         }
 
@@ -255,8 +255,8 @@ namespace Airborn.web.Models
             // and 10 and 20 degreses
             int lowerPressureAltidude = GetLowerBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
             int upperPressureAltidude = GetUpperBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
-            int lowerTemperature = GetLowerBoundForInterpolation(TemperatureCelcius, temperatureInterval);
-            int upperTemperature = GetUpperBoundForInterpolation(TemperatureCelcius, temperatureInterval);
+            int lowerTemperature = GetLowerBoundForInterpolation((int)TemperatureCelcius, temperatureInterval);
+            int upperTemperature = GetUpperBoundForInterpolation((int)TemperatureCelcius, temperatureInterval);
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
@@ -288,12 +288,9 @@ namespace Airborn.web.Models
             decimal distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
-                TemperatureCelcius,
+                (int)TemperatureCelcius,
                 10 // temperatures in the json comes in intervals of 10
             );
-
-            System.Diagnostics.Debug.Write(
-                $"Distance interpolated: {distanceInterpolated} for pressure altitude {PressureAltitude} and temperature {TemperatureCelcius} ");
 
             return distanceInterpolated;
 

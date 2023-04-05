@@ -73,8 +73,6 @@ namespace Airborn.web.Models
             int temperatureCelcius
         )
         {
-            System.Diagnostics.Debug.WriteLine("profiles null " + profiles is null);
-            System.Diagnostics.Debug.WriteLine("profiles length is " + profiles.Count.ToString());
 
             // check to make sure that we actually have data for this Pressure Altitude and Temperature
             int maxPressureAltitudeAvailable = profiles.Max(p => p.PressureAltitude);

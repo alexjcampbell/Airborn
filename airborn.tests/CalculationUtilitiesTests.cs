@@ -84,7 +84,7 @@ namespace Airborn.Tests
         public void TestFahrenheitToCelcius_ZeroDegreesFahrenheitEqualsMinus17Point()
         {
             int numberOfDegreesFahrenheit = 0;
-            decimal expectedDegreesCelcius = -17;
+            decimal expectedDegreesCelcius = -17.777777777777777777777777778m;
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
@@ -117,10 +117,10 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_100DegreesFahrenheitEquals38DegreesCelcius()
+        public void TestFahrenheitToCelcius_100DegreesFahrenheitEquals37ishDegreesCelcius()
         {
             int numberOfDegreesFahrenheit = 100;
-            decimal expectedDegreesCelcius = 37m;
+            decimal expectedDegreesCelcius = 37.777777777777777777777777778m;
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
@@ -132,11 +132,11 @@ namespace Airborn.Tests
         public void TestInchesToMillibars_29Point92InchesOfMercuryEquals1013Millibars()
         {
             decimal inchesOfMercury = 29.92m;
-            decimal expectedMillibars = 1013m;
+            decimal expectedMillibars = 1013.25m;
 
             Assert.AreEqual(
-                expectedMillibars,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                Math.Round(expectedMillibars, 2),
+                Math.Round(CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury), 2)
                 );
         }
 
@@ -144,7 +144,7 @@ namespace Airborn.Tests
         public void TestInchesToMillibars_30Point00InchesOfMercuryEquals1013Millibars()
         {
             decimal inchesOfMercury = 30m;
-            decimal expectedMillibars = 1015m;
+            decimal expectedMillibars = 1015.9592245980m;
 
             Assert.AreEqual(
                 expectedMillibars,
@@ -461,20 +461,32 @@ namespace Airborn.Tests
                 );
         }
 
-
-        // CalculateAngularDifferenceBetweenRunwayAndWind
-        // Runway heading 0 degrees
-        // Wind heading 0 degrees
-        // Wind heading 45 degrees
-        // Wind heading 90 degrees
-        // Wind heading 135 degrees
-        // Wind heading 180 degrees
-        // Wind heading 225 degrees
-        // Wind heading 270 degrees
-        // Wind heading 315 degrees
-        // Wind heading 360 degrees
-
         // GetPressureAltitudeAtAirport
+
+        [TestMethod]
+        public void TestCalculatePressureAltitude_3092HgEquals1047Hpa()
+        {
+            decimal qnh = 1047.115307485672m;
+            decimal altimeter = 30.92m;
+
+            Assert.AreEqual(
+                qnh,
+                CalculationUtilities.ConvertInchesOfMercuryToMillibars(altimeter)
+                );              
+        }
+
+        [TestMethod]
+        public void TestGetPressureAltitudeAtAirport_0ftEquals0ft()
+        {
+            int elevation = 0;
+            decimal qnh = 1013.25m;
+            int expectedPressureAltitude = 0;
+
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, elevation)
+                );
+        }
 
 
 

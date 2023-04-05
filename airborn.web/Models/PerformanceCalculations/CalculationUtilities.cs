@@ -31,17 +31,17 @@ namespace Airborn.web.Models
             return radians;
         }
 
-        public static int ConvertFahrenheitToCelcius(decimal? fahrenheitTemperature)
+        public static decimal ConvertFahrenheitToCelcius(decimal fahrenheitTemperature)
         {
-            return (int)((fahrenheitTemperature - 32) * 5 / 9);
+            return ((fahrenheitTemperature - 32) * 5 / 9);
         }
 
-        public static int ConvertInchesOfMercuryToMillibars(decimal? inchesOfMercury)
+        public static decimal ConvertInchesOfMercuryToMillibars(decimal inchesOfMercury)
         {
             // once we've converted inches of mercury to hectopascals we can safely treat this
             // as an int (29.92 inches of mercury will end up being 1013 at which point the 
             // decimals don't matter)
-            return (int)(inchesOfMercury * 33.8639M);
+            return inchesOfMercury * 33.8653074866m;
         }
 
 
@@ -50,9 +50,9 @@ namespace Airborn.web.Models
                 // ISA temperature decreases by 2 degrees Celsius for every 1000 feet
                 // of altitude
 
-                int isaTemperatureAtSeaLevel = 15;
-                int temperatureLapseRate = 2;
-                int altitudeInterval = 1000;
+                decimal isaTemperatureAtSeaLevel = 15;
+                decimal temperatureLapseRate = 2;
+                decimal altitudeInterval = 1000;
 
                 return isaTemperatureAtSeaLevel - (temperatureLapseRate * ((decimal)pressureAltitude / altitudeInterval));
         }
@@ -79,15 +79,19 @@ namespace Airborn.web.Models
             return AngularDifference(runwayHeading, windDirection);
         }
 
-        public static decimal CalculatePressureAltitudeAtAirport(int QNH, int fieldElevation)
+        public static decimal CalculatePressureAltitudeAtFieldElevation(decimal QNH, int fieldElevation)
         {
-            int standardPressure = 1013;
-            int lapseRate = 30;
+            decimal standardPressure = 1013.25m;
+            
+            // folks usually round this to 30, but, fun fact, the formula is actually
+            // 96 × ( T in kelvin) / QNH (in hPa)
+            // at T = ISA (15C) and QNH = 1013.25 hPa, this is 27.3
+            decimal lapseRate = 27.3m;
 
             return ((standardPressure - QNH) * lapseRate) + fieldElevation;
         }
 
-        public static decimal CalculateDensityAltitudeAtAirport(int temperatureCelcius, decimal isaTemperature, decimal pressureAltitude)
+        public static decimal CalculateDensityAltitudeAtAirport(decimal temperatureCelcius, decimal isaTemperature, decimal pressureAltitude)
         {
             return ((temperatureCelcius - isaTemperature) * 120) + pressureAltitude;
         }

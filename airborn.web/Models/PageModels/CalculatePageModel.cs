@@ -195,7 +195,7 @@ namespace Airborn.web.Models
             if (AltimeterSettingType == Models.AltimeterSettingType.HG)
             {
 
-                PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting);
+                PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting.Value);
             }
             else
             {
@@ -207,7 +207,7 @@ namespace Airborn.web.Models
         {
             if (TemperatureType == Models.TemperatureType.F)
             {
-                PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature);
+                PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature.Value);
             }
             else
             {

@@ -14,13 +14,18 @@ using Airborn.Controllers;
 
 namespace Airborn.Tests
 {
+
+    // TODO: these are mostly testing the model, not the controller,
+    // so we should move them out to CalculagePageModelTests.cs
+
     [TestClass]
     public class ControllerTests
     {
+
         private ILogger<HomeController> _doesntDoMuch =
             new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
 
-        // Default values for the runway
+        // Default values for the default runway
         const string _default_airport_Ident = "KJFK";
         const int _default_Runway_Id = 1;
         const string _default_RunwayWidth = "150";
@@ -34,22 +39,23 @@ namespace Airborn.Tests
 
         // Default values for the model
         const AircraftType _default_AircraftType = AircraftType.C172_SP;
-        const decimal _default_AltimeterSetting = 29.92m;
-        const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.HG;
+        const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.HPA;
         const string _default_AirportIdentifier = "KJFK";
         const int _default_Temperature = 15;
         const TemperatureType _default_TemperatureType = TemperatureType.C;
         const int _default_WindDirectionMagnetic = 220;
         const int _default_WindStrength = 10;
         const int _default_TemperatureCelcius = 12;
-        const int _default_QNH = 1013;
+        const decimal _default_QNH = 1013.25m;
         const double _default_AircraftWeight = 2500;
 
         List<Runway> TestRunways = new List<Runway>();
         List<Airport> TestAirports = new List<Airport>();
 
+        HomeController _controller;
+        CalculatePageModel _model;
 
-        private HomeController InitializeAndGetController()
+        private void InitializeController()
         {
             var mockEnvironment = new Mock<IWebHostEnvironment>();
 
@@ -95,9 +101,7 @@ namespace Airborn.Tests
             airportDbSet.As<IQueryable<Airport>>().Setup(m => m.GetEnumerator()).Returns(() => queryableAirports.GetEnumerator());
 
 
-            var controller = new HomeController(_doesntDoMuch, mockEnvironment.Object, airportDbContext.Object);
-
-            return controller;
+            _controller = new HomeController(_doesntDoMuch, mockEnvironment.Object, airportDbContext.Object);
         }
 
         private void SetupTestRunway(int runwayId, int runwayHeading, string runwayName)
@@ -114,105 +118,222 @@ namespace Airborn.Tests
             
         }
 
-        private CalculatePageModel InitializeAndGetModel()
+        private void InitializeModel()
         {
-            CalculatePageModel model = new CalculatePageModel();
+            _model = new CalculatePageModel();
 
-            model.AircraftType = _default_AircraftType;
-            model.AltimeterSetting = _default_AltimeterSetting;
-            model.AltimeterSettingType = _default_AltimeterSettingType;
-            model.AirportIdentifier = _default_AirportIdentifier;
-            model.Temperature = _default_Temperature;
-            model.TemperatureType = _default_TemperatureType;
-            model.WindDirectionMagnetic = _default_WindDirectionMagnetic;
-            model.WindStrength = _default_WindStrength;
-            model.AircraftWeight = _default_AircraftWeight;
-            model.RootPath = AircraftPerformanceTests.TestJsonPath;
-
-            return model;
+            _model.AircraftType = _default_AircraftType;
+            _model.AltimeterSetting = _default_QNH;
+            _model.AltimeterSettingType = _default_AltimeterSettingType;
+            _model.AirportIdentifier = _default_AirportIdentifier;
+            _model.Temperature = _default_Temperature;
+            _model.TemperatureType = _default_TemperatureType;
+            _model.WindDirectionMagnetic = _default_WindDirectionMagnetic;
+            _model.WindStrength = _default_WindStrength;
+            _model.AircraftWeight = _default_AircraftWeight;
+            _model.RootPath = AircraftPerformanceTests.TestJsonPath;
         }
 
         [TestMethod]
         public void TestDirectHeadwindHasNoCrosswindComponent()
         {
-            HomeController controller = InitializeAndGetController();
-            CalculatePageModel model = InitializeAndGetModel();
+            InitializeController();
+            InitializeModel();
 
-            var result = controller.Calculate(model);
+            var result = _controller.Calculate(_model);
 
-            Assert.AreEqual(model.Results[0].CrosswindComponent, 0);
+            _model.WindDirectionMagnetic = 220;
+            int expectedCrosswind = 0;
+
+            Assert.AreEqual(_model.Results[0].CrosswindComponent, expectedCrosswind);
         }
 
         [TestMethod]
-        public void TestPressureAltitudeEqualsFieldAltitudeWhenStandardPressure()
+        public void TestDirectTailwindHasNoCrosswindComponent()
         {
-            HomeController controller = InitializeAndGetController();
-            CalculatePageModel model = InitializeAndGetModel();
+            InitializeController();
+            InitializeModel();
 
-            model.AltimeterSetting = 1013.25m;
-            model.AltimeterSettingType = AltimeterSettingType.MB;
+            _model.WindDirectionMagnetic = 40;
+            int expectedCrosswind = 0;
 
-            var result = controller.Calculate(model);
+            var result = _controller.Calculate(_model);
 
-            // altimeter setting of 1013.25 is standard pressure at sea level,
-            // so field elevation should equal pressure altitude
-            Assert.AreEqual(_default_FieldElevation, model.PressureAltitude);
+            Assert.AreEqual(expectedCrosswind, Math.Round(_model.Results[0].CrosswindComponent.Value));
         }
 
-        // test best runway for wind
+        [TestMethod]
+        public void TestCrosswindComponentIsCorrect()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.WindDirectionMagnetic = 90;
+            decimal expectedCrosswind = -7.6604444311898m;
+
+            var result = _controller.Calculate(_model);
+
+            Assert.AreEqual(expectedCrosswind, _model.Results[0].CrosswindComponent);
+        }
+
+        [TestMethod]
+        public void TestCrosswindComponentIsCorrectForOppositeWind()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.WindDirectionMagnetic = 270;
+            decimal expectedCrosswind = 7.66044443118978m;
+
+            var result = _controller.Calculate(_model);
+
+            Assert.AreEqual(expectedCrosswind, _model.Results[0].CrosswindComponent);
+        }
+
+        [TestMethod]
+        public void TestPressureAltitudeEqualsFieldAltitudeWhenStandardPressureMb()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 1013.25m;
+            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+
+            var result = _controller.Calculate(_model);
+
+            // altimeter setting of 1013.25m is standard pressure at sea level,
+            // so field elevation should equal pressure altitude
+            // but due to rounding errors, pressure altitude doesn't quite equal zero ft (sea level)
+            decimal expectedPressureAltitude = 6.825m;
+
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+        }
+
+        [TestMethod]
+        public void TestPressureAltitudeEqualsFieldAltitudeWhenStandardPressureHg()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 29.92m;
+            _model.AltimeterSettingType = AltimeterSettingType.HG;
+
+            var result = _controller.Calculate(_model);
+
+            decimal expectedPressureAltitude = 0.0000000253344m;
+
+            // Altimeter setting of 29.92 is standard pressure at sea level, so field elevation
+            // should equal pressure altitude. However, rounding errors mean pressure altitude doesn't 
+            // quite equal zero ft (sea level) as you'd expect
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+        }
+
+        [TestMethod]
+        public void TestPressureAltitudeIsCorrectWhenAltimeterSettingIsLowerThanStandard()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 29.82m;
+            _model.AltimeterSettingType = AltimeterSettingType.HG;
+
+            var result = _controller.Calculate(_model);
+
+            // lower pressure means higher altitude, at a rate of ~90 feet per inch of mercury
+            decimal expectedPressureAltitude = _default_FieldElevation + 92.4522894637524m;
+
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+        } 
+
+        [TestMethod]
+        public void TestPressureAltitudeIsCorrectWhenAltimeterSettingIsHigherThanStandard()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 30.02m;
+            _model.AltimeterSettingType = AltimeterSettingType.HG;
+
+            var result = _controller.Calculate(_model);
+
+            // higher pressure means lower altitude, at a rate of ~90 feet per inch of mercury
+            decimal expectedPressureAltitude = _default_FieldElevation - 92.4522894130836m;
+
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+        }
+
+
         [TestMethod]
         public void TestRunwaysWithMostHeadwindAreFirst()
         {
-            HomeController controller = InitializeAndGetController();
-            CalculatePageModel model = InitializeAndGetModel();
+            InitializeController();
+            InitializeModel();
 
-            model.WindDirectionMagnetic = 220;
+            _model.WindDirectionMagnetic = 220;
 
-            var result = controller.Calculate(model);
+            var result = _controller.Calculate(_model);
 
             int expectedRunwayHeading = 220;
 
-            Assert.AreEqual(expectedRunwayHeading, model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
 
             // we need to reset the model because the controller modifies it in the previous pass
-            model = InitializeAndGetModel();
+            InitializeModel();
 
-            model.WindDirectionMagnetic = 90;
+            _model.WindDirectionMagnetic = 90;
             expectedRunwayHeading = 90;
 
-            result = controller.Calculate(model);
+            result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedRunwayHeading, model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
 
 
             // we need to reset the model again because the controller modifies it in the previous pass
-            model = InitializeAndGetModel();
+            InitializeModel();
 
             // this is weird, but 360 degrees also = 0 degrees
-            model.WindDirectionMagnetic = 360;
+            _model.WindDirectionMagnetic = 360;
             expectedRunwayHeading = 0;
 
-            result = controller.Calculate(model);
+            result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedRunwayHeading, model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic); 
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic); 
 
         }
 
         [TestMethod]
         public void TestRunwaysWithMostTailwindAreLast()
         {
-            HomeController controller = InitializeAndGetController();
-            CalculatePageModel model = InitializeAndGetModel();
+            InitializeController();
+            InitializeModel();
 
-            model.WindDirectionMagnetic = 220;
+            _model.WindDirectionMagnetic = 220;
 
-            var result = controller.Calculate(model);
+            var result = _controller.Calculate(_model);
 
             // with a 220 degree wind, runway 36 should have the most tailwind
             // yes, it's expected runway heading is zero
             int expectedRunwayHeading = 0;
 
-            Assert.AreEqual(expectedRunwayHeading, model.ResultsSortedByHeadwind[4].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[4].Runway.RunwayHeading.DirectionMagnetic);
         }
+
+        [TestMethod]
+        public void TestRunwaysWithMostCrosswindAreInMiddle()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.WindDirectionMagnetic = 220;
+
+            var result = _controller.Calculate(_model);
+
+            // with a 220 degree wind, runway 36 should have the most tailwind
+            // yes, it's expected runway heading is zero
+            int expectedRunwayHeading = 160;
+
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[2].Runway.RunwayHeading.DirectionMagnetic);
+        }
+
     }
 }

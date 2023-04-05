@@ -11,7 +11,7 @@ namespace Airborn.web.Models
     public enum AltimeterSettingType
     {
         HG,
-        MB
+        HPA
     }
 
     public enum RunwaySurface
