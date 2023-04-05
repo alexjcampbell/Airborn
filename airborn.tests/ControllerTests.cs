@@ -263,7 +263,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitudeShouldNotBeNegative()
+        public void TestReturnResultsEvenWhenPressureAltitudeIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -273,6 +273,10 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
+            Assert.IsTrue(_model.PressureAltitude < 0);
+
+            Assert.IsTrue(_model.PressureAltitudeAlwaysPositiveOrZero == 0);
+
             // 1040 hPa will result in a negative pressure altitude, but the POH doesn't provide performance
             // information for negative pressure altitudes - so, in the PerformanceCalcator we treat negative
             // pressure altitudes as zero. We test if that this working by checking to see that there are 
@@ -280,10 +284,6 @@ namespace Airborn.Tests
             // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
             // 400 ft pressure altitudes)
             Assert.IsTrue(_model.Results.Count > 0);
-
-            Assert.IsTrue(_model.PressureAltitude < 0);
-
-            Assert.IsTrue(_model.PressureAltitudeAlwaysPositiveOrZero == 0);
         }
 
         [TestMethod]
@@ -303,6 +303,26 @@ namespace Airborn.Tests
 
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitudeAlwaysPositiveOrZero);
         }
+
+        [TestMethod]
+        public void TestReturnResultsEvenWhenTemperatureIsNegative()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.Temperature = -10;
+            _model.TemperatureType = TemperatureType.C;
+
+            var result = _controller.Calculate(_model);
+            
+            // 1040 hPa will result in a negative pressure altitude, but the POH doesn't provide performance
+            // information for negative pressure altitudes - so, in the PerformanceCalcator we treat negative
+            // pressure altitudes as zero. We test if that this working by checking to see that there are 
+            // performance results being returned (if our override of negative pressure altitudes to zero
+            // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
+            // 400 ft pressure altitudes)
+            Assert.IsTrue(_model.Results.Count > 0);
+        }        
 
         [TestMethod]
         public void TestRunwaysWithMostHeadwindAreFirst()

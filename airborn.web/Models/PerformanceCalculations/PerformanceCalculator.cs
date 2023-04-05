@@ -136,8 +136,13 @@ namespace Airborn.web.Models
 
             if(PressureAltitude < 0)
             {
-                Notes.Add("Pressure altitude is negative. The POH data is only valid for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
+                Notes.Add("Pressure altitude is negative. The POH only provides performance data for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
             }
+
+            if(TemperatureCelcius < 0)
+            {
+                Notes.Add("Temperature is negative. The POH data only provides performance date for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
+            }            
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
@@ -261,7 +266,7 @@ namespace Airborn.web.Models
             JsonPerformanceProfileList profileList = PopulateJsonPerformanceProfileList(scenarioMode, jsonFile);
 
             int pressureAltitudeAsInt = (int)PressureAltitudeAlwaysPositiveOrZero;
-            int temperatureAsInt = (int)TemperatureCelcius;
+            int temperatureAsInt = TemperatureCelcius > 0 ? (int)TemperatureCelcius : 0;
 
             const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
             const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
