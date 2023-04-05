@@ -64,82 +64,403 @@ namespace Airborn.Tests
         {
             int numberOfDegrees = 180;
             decimal expectedRadians = 3.1415926535897900000000000040m; // Pi
-            
+
             Assert.AreEqual(
                 expectedRadians,
                 CalculationUtilities.ConvertDegreesToRadians(numberOfDegrees)
                 );
         }
 
-               [TestMethod]
+        [TestMethod]
         public void TestDegreesToRadians_360DegreesEqualsTwoPi()
         {
             int numberOfDegrees = 360;
             decimal expectedRadians = 6.2831853071795800000000000080m; // Pi * 2
-            
+
             Assert.AreEqual(expectedRadians, CalculationUtilities.ConvertDegreesToRadians(numberOfDegrees));
-        } 
+        }
 
-        // ConvertFahrenheitToCelcius
-        // 0 degrees fahrenheit
-        // 32 degrees fahrenheit
-        // 50 degrees fahrenheit
-        // 100 degrees fahrenheit
+        [TestMethod]
+        public void TestFahrenheitToCelcius_ZeroDegreesFahrenheitEqualsMinus17Point()
+        {
+            int numberOfDegreesFahrenheit = 0;
+            decimal expectedDegreesCelcius = -17;
 
-        // ConvertInchesOfMercuryToMillibars
-        // 29.92 inches of mercury
+            Assert.AreEqual(
+                expectedDegreesCelcius,
+                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                );
+        }
 
-        //CalculateHeadwindComponent
-        // CalculateISATemperatureForPressureAltitude
-        // sea level
-        // 1000 ft
-        // 10000 ft
+        [TestMethod]
+        public void TestFahrenheitToCelcius_32DegreesFahrenheitEqualsZeroDegreesCelcius()
+        {
+            int numberOfDegreesFahrenheit = 32;
+            decimal expectedDegreesCelcius = 0m;
 
-        //CalculateHeadwindComponent
-        // 15 kts
-        // 0 degrees
-        // 45 degrees
-        // 90 degrees
-        // 135 degrees
-        // 180 degrees
-        // 225 degrees
-        // 270 degrees
-        // 315 degrees
-        // 360 degrees
+            Assert.AreEqual(
+                expectedDegreesCelcius,
+                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                );
+        }
 
-        // 0 kts
-        // 0 degrees
-        // 45 degrees
-        // 90 degrees
-        // 135 degrees
-        // 180 degrees
-        // 225 degrees
-        // 270 degrees
-        // 315 degrees
-        // 360 degrees
+        [TestMethod]
+        public void TestFahrenheitToCelcius_50DegreesFahrenheitEquals10DegreesCelcius()
+        {
+            int numberOfDegreesFahrenheit = 50;
+            decimal expectedDegreesCelcius = 10m;
 
-        //CalculateCrosswindComponent
-        // 15 kts
-        // 0 degrees
-        // 45 degrees
-        // 90 degrees
-        // 135 degrees
-        // 180 degrees
-        // 225 degrees
-        // 270 degrees
-        // 315 degrees
-        // 360 degrees
+            Assert.AreEqual(
+                expectedDegreesCelcius,
+                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                );
+        }
 
-        // 0 kts
-        // 0 degrees
-        // 45 degrees
-        // 90 degrees
-        // 135 degrees
-        // 180 degrees
-        // 225 degrees
-        // 270 degrees
-        // 315 degrees
-        // 360 degrees        
+        [TestMethod]
+        public void TestFahrenheitToCelcius_100DegreesFahrenheitEquals38DegreesCelcius()
+        {
+            int numberOfDegreesFahrenheit = 100;
+            decimal expectedDegreesCelcius = 37m;
+
+            Assert.AreEqual(
+                expectedDegreesCelcius,
+                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                );
+        }
+
+        [TestMethod]
+        public void TestInchesToMillibars_29Point92InchesOfMercuryEquals1013Millibars()
+        {
+            decimal inchesOfMercury = 29.92m;
+            decimal expectedMillibars = 1013m;
+
+            Assert.AreEqual(
+                expectedMillibars,
+                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                );
+        }
+
+        [TestMethod]
+        public void TestInchesToMillibars_30Point00InchesOfMercuryEquals1013Millibars()
+        {
+            decimal inchesOfMercury = 30m;
+            decimal expectedMillibars = 1015m;
+
+            Assert.AreEqual(
+                expectedMillibars,
+                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                );
+        }
+
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_0KtsWindAt0DegreesEquals0kts()
+        {
+            int windSpeed = 0;
+            int windDirection = 0;
+            int expectedHeadwind = 0;
+
+            Assert.AreEqual(
+                expectedHeadwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt0DegreesEquals15KtsHeadwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 0;
+            int expectedHeadwind = 15;
+
+            Assert.AreEqual(
+                expectedHeadwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt45DegreesEquals7ktsHeadwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 45;
+            decimal expectedHeadwind = 10.6066017177982m;
+
+            Assert.AreEqual(
+                expectedHeadwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt90DegreesEquals0ktsHeadwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 90;
+            decimal expectedHeadwind = 0m;
+
+            Assert.AreEqual(
+                expectedHeadwind,
+                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection),0)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt135DegreesEquals10ktsTailwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 135;
+            decimal expectedTailwind = -10.6066017177982m;
+
+            Assert.AreEqual(
+                expectedTailwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt180DegreesEquals15ktsTailwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 180;
+            decimal expectedTailwind = -15m;
+
+            Assert.AreEqual(
+                expectedTailwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt225DegreesEquals7ktsTailwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 225;
+            decimal expectedTailwind = -10.6066017177983m;
+
+            Assert.AreEqual(
+                expectedTailwind,
+                CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateHeadwindComponent_15KtsWindAt270DegreesEquals0ktsTailwind()
+        {
+            int windSpeed = 15;
+            int windDirection = 270;
+            decimal expectedHeadwind = 0m;
+
+            Assert.AreEqual(
+                expectedHeadwind,
+                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection),0)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_0ktsWindAt0DegreesEquals0KtsCrosswind()
+        {
+            int windSpeed = 0;
+            int windDirection = 0;
+            decimal expectedCrosswind = 0m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt0DegreesEquals0KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 0;
+            decimal expectedCrosswind = 0m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt45DegreesEquals10KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 45;
+            decimal expectedCrosswind = 10.6066017177982m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt90DegreesEquals15KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 90;
+            decimal expectedCrosswind = 15m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt135DegreesEquals10KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 135;
+            decimal expectedCrosswind = 10.6066017177982m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt180DegreesEquals0KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 180;
+            decimal expectedCrosswind = 0m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                Math.Round(CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection))
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateCrosswindComponent_15KtsWindAt225DegreesEquals10KtsCrosswind()
+        {
+            int windSpeed = 15;
+            int windDirection = 225;
+            decimal expectedCrosswind = -10.6066017177982m;
+
+            Assert.AreEqual(
+                expectedCrosswind,
+                CalculationUtilities.CalculateCrosswindComponent(windSpeed, windDirection)
+                );
+        }
+
+        public void TestCalculateISATemperatureCelciusForPressureAltitude_0ftEquals15C()
+        {
+            int pressureAltitude = 0;
+            decimal expectedTemperature = 15m;
+
+            Assert.AreEqual(
+                expectedTemperature,
+                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateISATemperatureCelciusForPressureAltitude_1000ftEquals13C()
+        {
+            int pressureAltitude = 1000;
+            decimal expectedTemperature = 13;
+
+            Assert.AreEqual(
+                expectedTemperature,
+                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateISATemperatureCelciusForPressureAltitude_10000ftEqualsMinus1C()
+        {
+            int pressureAltitude = 10000;
+            decimal expectedTemperature = -5;
+
+            Assert.AreEqual(
+                expectedTemperature,
+                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd0DegreesWindEquals0Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 0;
+            decimal expectedDifference = 0;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd45DegreesWindEquals45Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 45;
+            decimal expectedDifference = 45;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd90DegreesWindEquals90Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 90;
+            decimal expectedDifference = 90;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd135DegreesWindEquals135Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 135;
+            decimal expectedDifference = 135;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd180DegreesWindEquals180Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 180;
+            decimal expectedDifference = -180;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
+        [TestMethod]
+        public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd225DegreesWindEquals225Degrees()
+        {
+            int runwayHeading = 0;
+            int windHeading = 225;
+            decimal expectedDifference = -135;
+
+            Assert.AreEqual(
+                expectedDifference,
+                CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                );
+        }
+
 
         // CalculateAngularDifferenceBetweenRunwayAndWind
         // Runway heading 0 degrees

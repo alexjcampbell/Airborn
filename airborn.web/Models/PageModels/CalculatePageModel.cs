@@ -36,6 +36,13 @@ namespace Airborn.web.Models
             set;
         }
 
+        public List<PerformanceCalculationResultPageModel> ResultsSortedByHeadwind
+        {
+            get
+            {
+                return Results.OrderByDescending(o => o.HeadwindComponent).ToList();
+            }
+        }
 
         public List<Runway> Runways
         {

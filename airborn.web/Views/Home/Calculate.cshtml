@@ -137,8 +137,7 @@
     <br />
     }
 
-    @foreach (PerformanceCalculationResultPageModel result in Model?.Results.OrderByDescending(r =>
-    r.HeadwindComponent))
+    @foreach (PerformanceCalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
     {
         <div>
             <div class="form-group row">
