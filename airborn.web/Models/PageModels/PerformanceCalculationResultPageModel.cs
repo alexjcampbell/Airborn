@@ -162,14 +162,14 @@ namespace Airborn.web.Models
                 if (Result != null)
                 {
 
-                    return
-                        Result?.Takeoff_GroundRoll.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Takeoff_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                        + ")"
-                        ;
+                    string result = Result?.Takeoff_GroundRoll.ToString("#,##") + " ft";
+
+                    if (Takeoff_PercentageRunwayUsed_GroundRoll.HasValue)
+                    {
+                        result += " (" + Takeoff_PercentageRunwayUsed_GroundRoll?.ToString("P0") + ")";
+                    }
+
+                    return result;
                 }
 
                 return "";
@@ -191,14 +191,15 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    return
-                        Result?.Takeoff_50FtClearance.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Takeoff_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + ")"
-                        ;
+                    string result = Result?.Takeoff_50FtClearance.ToString("#,##") + " ft";
+
+                    if (Takeoff_PercentageRunwayUsed_DistanceToClear50Ft.HasValue)
+                    {
+                        result += " (" + Takeoff_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0") + ")";
+                    }
+
+
+                    return result;
                 }
 
                 return "";
@@ -219,17 +220,16 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    if (Runway.RunwayLength.Length > 0)
+
+                    string result = Result?.Landing_GroundRoll.ToString("#,##") + " ft";
+
+                    if (Landing_PercentageRunwayUsed_GroundRoll.HasValue)
                     {
-                        return
-                            Result?.Landing_GroundRoll.ToString("#,##")
-                            +
-                            " ft ("
-                            +
-                            Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0")
-                            + ")"
-                            ;
+                        result += " (" + Landing_PercentageRunwayUsed_GroundRoll?.ToString("P0") + ")";
                     }
+
+                    return result;
+
                 }
 
                 return "";
@@ -251,14 +251,14 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    return
-                        Result?.Landing_50FtClearance.ToString("#,##")
-                        +
-                        " ft ("
-                        +
-                        Landing_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0")
-                        + ")"
-                        ;
+                    string result = Result?.Landing_50FtClearance.ToString("#,##") + " ft";
+
+                    if (Landing_PercentageRunwayUsed_DistanceToClear50Ft.HasValue)
+                    {
+                        result += " (" + Landing_PercentageRunwayUsed_DistanceToClear50Ft?.ToString("P0") + ")";
+                    }
+
+                    return result;
                 }
                 return "";
             }
