@@ -65,6 +65,10 @@ namespace Airborn.Tests
             airportDbContext.Setup(o => o.Runways).Returns(() => runwayDbSet.Object);
             
             SetupTestRunway(_default_Runway_Heading, _default_Runway_Id, _default_Runway_Name);
+            SetupTestRunway(2, 230, "23L");
+            SetupTestRunway(3, 160, "16");
+            SetupTestRunway(4, 360, "36");
+            SetupTestRunway(5, 90, "9L");            
 
             // Set up the DbSet as an IQueryable so it can be enumerated.
             var queryableRunways = TestRunways.AsQueryable();
@@ -157,7 +161,7 @@ namespace Airborn.Tests
 
         // test best runway for wind
         [TestMethod]
-        public void TestRunwaysMostIntoWindAreFirst()
+        public void TestRunwaysWithMostHeadwindAreFirst()
         {
             HomeController controller = InitializeAndGetController();
             CalculatePageModel model = InitializeAndGetModel();
@@ -165,12 +169,6 @@ namespace Airborn.Tests
             model.WindDirectionMagnetic = 220;
 
             var result = controller.Calculate(model);
-
-            // 22R will already be in there from the default setup
-            SetupTestRunway(2, 230, "23L");
-            SetupTestRunway(3, 160, "16");
-            SetupTestRunway(4, 360, "36");
-            SetupTestRunway(5, 90, "9L");
 
             int expectedRunwayHeading = 220;
 
@@ -200,5 +198,21 @@ namespace Airborn.Tests
 
         }
 
+        [TestMethod]
+        public void TestRunwaysWithMostTailwindAreLast()
+        {
+            HomeController controller = InitializeAndGetController();
+            CalculatePageModel model = InitializeAndGetModel();
+
+            model.WindDirectionMagnetic = 220;
+
+            var result = controller.Calculate(model);
+
+            // with a 220 degree wind, runway 36 should have the most tailwind
+            // yes, it's expected runway heading is zero
+            int expectedRunwayHeading = 0;
+
+            Assert.AreEqual(expectedRunwayHeading, model.ResultsSortedByHeadwind[4].Runway.RunwayHeading.DirectionMagnetic);
+        }
     }
 }
