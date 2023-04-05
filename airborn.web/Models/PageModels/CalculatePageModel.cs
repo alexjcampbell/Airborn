@@ -151,7 +151,18 @@ namespace Airborn.web.Models
             }
         }
 
+        public decimal? PressureAltitudeAlwaysPositiveOrZero
+        {
+            get
+            {
+                return PerformanceCalculator?.PressureAltitudeAlwaysPositiveOrZero;
+            }
+        }
 
+        public List<string> Notes
+        {
+            get { return PerformanceCalculator?.Notes; }
+        }
 
         public void LoadAircraftPerformance(AirportDbContext db)
         {

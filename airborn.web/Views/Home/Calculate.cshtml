@@ -121,18 +121,37 @@
 
     <br />
 
-    @if (Model.Airport is not null) {
+    @if (Model.Notes is not null && Model.Notes.Count != 0) {
 
-    <div>
-        <div class="form-group row">
-            <h5>@Model.Airport?.Name</h5>
-            <div>
-                Field elevation: @Model.Airport?.FieldElevation ft
-                <br />
-                Density altitude: @Model.DensityAltitude?.ToString("#,##") ft
+        <div>
+            <div class="form-group row">
+                <h5>@Model.Airport?.Name</h5>
+                <div>
+                    Field elevation: @Model.Airport?.FieldElevation ft
+                    <br />
+                    Pressure altitude: @Model.PressureAltitude?.ToString("#,##") ft
+                    <br />
+                    Density altitude: @Model.DensityAltitude?.ToString("#,##") ft
+                </div>
             </div>
         </div>
-    </div>
+    }
+
+    @if(Model.Notes is not null) {
+    <div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+            <ul>
+
+                @foreach (string note in Model.Notes) {
+                <li>
+                    @note
+                </li>
+                }
+            </ul>
+            </div>
+        </div>
+    </div>    
             
     <br />
     }
@@ -155,7 +174,7 @@
                 <div class="col-sm-3">
                     <div class="form-floating">
                         <input class="form-control" maxlength="10" readonly value="@result.Runway.Surface_Friendly_Output" />
-                        <label>Runway length</label>
+                        <label>Runway surface</label>
                     </div>
                 </div>                
                 <div class="col-sm-3">

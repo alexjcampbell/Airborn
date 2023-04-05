@@ -98,6 +98,14 @@ namespace Airborn.web.Models
             }
         }
 
+        public decimal PressureAltitudeAlwaysPositiveOrZero
+        {
+            get
+            {
+                return PressureAltitude >= 0 ? PressureAltitude : 0;
+            }
+        }
+
         public double AircraftWeight
         {
             get;
@@ -120,10 +128,16 @@ namespace Airborn.web.Models
             }
         }
 
+        // notes to return to the UI about the calculations
+        public List<string> Notes = new List<string>();
 
         public void Calculate(AirportDbContext db)
         {
 
+            if(PressureAltitude < 0)
+            {
+                Notes.Add("Pressure altitude is negative. The POH data is only valid for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
+            }
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
@@ -246,7 +260,9 @@ namespace Airborn.web.Models
             // gets the takeoff (or landing) profiles, depending on ScenarioMode
             JsonPerformanceProfileList profileList = PopulateJsonPerformanceProfileList(scenarioMode, jsonFile);
 
-            int pressureAltitudeAsInt = (int)PressureAltitude;
+            int pressureAltitudeAsInt = (int)PressureAltitudeAlwaysPositiveOrZero;
+            int temperatureAsInt = (int)TemperatureCelcius;
+
             const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
             const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
@@ -255,8 +271,8 @@ namespace Airborn.web.Models
             // and 10 and 20 degreses
             int lowerPressureAltidude = GetLowerBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
             int upperPressureAltidude = GetUpperBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
-            int lowerTemperature = GetLowerBoundForInterpolation((int)TemperatureCelcius, temperatureInterval);
-            int upperTemperature = GetUpperBoundForInterpolation((int)TemperatureCelcius, temperatureInterval);
+            int lowerTemperature = GetLowerBoundForInterpolation(temperatureAsInt, temperatureInterval);
+            int upperTemperature = GetUpperBoundForInterpolation(temperatureAsInt, temperatureInterval);
 
             // then get the performance data for the lower temperature and the lower and higher
             // pressure altitude
@@ -272,7 +288,7 @@ namespace Airborn.web.Models
             decimal distanceLowerTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeLowerTemp,
                 distanceForUpperPressureAltitudeLowerTemp,
-                (int)PressureAltitude,
+                pressureAltitudeAsInt,
                 pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
             );
 
@@ -280,7 +296,7 @@ namespace Airborn.web.Models
             decimal distanceUpperTempInterpolated = Interpolate(
                 distanceForLowerPressureAltitudeUpperTemp,
                 distanceForUpperPressureAltitudeUpperTemp,
-                (int)PressureAltitude,
+                pressureAltitudeAsInt,
                 1000 // pressure altitudes in the json comes in intervals of 1000
             );
 
@@ -288,7 +304,7 @@ namespace Airborn.web.Models
             decimal distanceInterpolated = Interpolate(
                 (int)distanceLowerTempInterpolated,
                 (int)distanceUpperTempInterpolated,
-                (int)TemperatureCelcius,
+                temperatureAsInt,
                 10 // temperatures in the json comes in intervals of 10
             );
 

@@ -69,12 +69,12 @@ namespace Airborn.Tests
 
             var runwayDbSet = new Mock<DbSet<Runway>>();
             airportDbContext.Setup(o => o.Runways).Returns(() => runwayDbSet.Object);
-            
+
             SetupTestRunway(_default_Runway_Heading, _default_Runway_Id, _default_Runway_Name);
             SetupTestRunway(2, 230, "23L");
             SetupTestRunway(3, 160, "16");
             SetupTestRunway(4, 360, "36");
-            SetupTestRunway(5, 90, "9L");            
+            SetupTestRunway(5, 90, "9L");
 
             // Set up the DbSet as an IQueryable so it can be enumerated.
             var queryableRunways = TestRunways.AsQueryable();
@@ -115,7 +115,7 @@ namespace Airborn.Tests
             runway.Runway_Name = runwayName;
 
             TestRunways.Add(runway);
-            
+
         }
 
         private void InitializeModel()
@@ -243,7 +243,7 @@ namespace Airborn.Tests
             decimal expectedPressureAltitude = _default_FieldElevation + 92.4522894637524m;
 
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
-        } 
+        }
 
         [TestMethod]
         public void TestPressureAltitudeIsCorrectWhenAltimeterSettingIsHigherThanStandard()
@@ -262,6 +262,47 @@ namespace Airborn.Tests
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
         }
 
+        [TestMethod]
+        public void TestPressureAltitudeShouldNotBeNegative()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 1040;
+            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+
+            var result = _controller.Calculate(_model);
+
+            // 1040 hPa will result in a negative pressure altitude, but the POH doesn't provide performance
+            // information for negative pressure altitudes - so, in the PerformanceCalcator we treat negative
+            // pressure altitudes as zero. We test if that this working by checking to see that there are 
+            // performance results being returned (if our override of negative pressure altitudes to zero
+            // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
+            // 400 ft pressure altitudes)
+            Assert.IsTrue(_model.Results.Count > 0);
+
+            Assert.IsTrue(_model.PressureAltitude < 0);
+
+            Assert.IsTrue(_model.PressureAltitudeAlwaysPositiveOrZero == 0);
+        }
+
+        [TestMethod]
+        public void TestPressureAltitudeShouldOnlyOverrideToZeroWhenPressureAltitudeIsNegative()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AltimeterSetting = 1000;
+            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+
+            decimal expectedPressureAltitude = 361.725m;
+
+            var result = _controller.Calculate(_model);
+
+            Assert.IsTrue(_model.PressureAltitude > 0);
+
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitudeAlwaysPositiveOrZero);
+        }
 
         [TestMethod]
         public void TestRunwaysWithMostHeadwindAreFirst()
@@ -297,7 +338,7 @@ namespace Airborn.Tests
 
             result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic); 
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
 
         }
 
