@@ -32,6 +32,8 @@ namespace Airborn.Web
                         // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
                         // We recommend adjusting this value in production.
                         o.TracesSampleRate = 1.0;
+                        o.AttachStacktrace = true;
+                        o.SendDefaultPii = true;
                     });
 
                     webBuilder.UseStartup<Startup>();
