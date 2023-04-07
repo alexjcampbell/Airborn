@@ -247,20 +247,18 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// Gets the raw distance from the JSON file for a given scenario mode
+        /// The performance data in the JSON is provided by the manufacturer in 
+        /// pressure altitude intervals of 1000 ft and temperature intervals of
+        /// 10 degrees celcius. This function looks bit complicated but all it 
+        /// is getting the two relevant performance numbers and interpolating between
+        /// them
+        ///
+        /// i.e. if the scenario's temperature is 12 degrees and pressure altitude
+        /// is 1500 ft, it will find the performance data for 10 and 20 degrees C
+        /// and pressure altitude of 1000 and 2000 ft, and interpolate between them
         /// </summary>
         public decimal GetDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
         {
-            /*  The performance data in the JSON is provided by the manufacturer in 
-                pressure altitude intervals of 1000 ft and temperature intervals of
-                10 degrees celcius. This function looks bit complicated but all it 
-                is getting the two relevant performance numbers and interpolating between
-                them
-
-                i.e. if the scenario's temperature is 12 degrees and pressure altitude
-                is 1500 ft, it will find the performance data for 10 and 20 degrees C
-                and pressure altitude of 1000 and 2000 ft, and interpolate between them
-            */
 
             // gets the takeoff (or landing) profiles, depending on ScenarioMode
             JsonPerformanceProfileList profileList = PopulateJsonPerformanceProfileList(scenarioMode, jsonFile);
@@ -279,30 +277,20 @@ namespace Airborn.web.Models
             int lowerTemperature = GetLowerBoundForInterpolation(temperatureAsInt, temperatureInterval);
             int upperTemperature = GetUpperBoundForInterpolation(temperatureAsInt, temperatureInterval);
 
-            // then get the performance data for the lower temperature and the lower and higher
-            // pressure altitude
-            decimal distanceForLowerPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, lowerTemperature);
-            decimal distanceForUpperPressureAltitudeLowerTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, lowerTemperature);
-
-            // then get the performance data for the higher temperature and the lower and higher
-            // pressure altitude
-            decimal distanceForLowerPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, lowerPressureAltidude, upperTemperature);
-            decimal distanceForUpperPressureAltitudeUpperTemp = jsonFile.GetPerformanceDataValueForConditions(profileList, this, scenarioMode, upperPressureAltidude, upperTemperature);
-
             // interpolate between the lower and higher pressure altitude for the lower temperature
             decimal distanceLowerTempInterpolated = Interpolate(
-                distanceForLowerPressureAltitudeLowerTemp,
-                distanceForUpperPressureAltitudeLowerTemp,
+                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, lowerPressureAltidude, lowerTemperature),
+                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, upperPressureAltidude, lowerTemperature),
                 pressureAltitudeAsInt,
                 pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
             );
 
             // interpolate between the lower and higher pressure altitude for the higher temperature
             decimal distanceUpperTempInterpolated = Interpolate(
-                distanceForLowerPressureAltitudeUpperTemp,
-                distanceForUpperPressureAltitudeUpperTemp,
+                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, lowerPressureAltidude, upperTemperature),
+                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, upperPressureAltidude, upperTemperature),
                 pressureAltitudeAsInt,
-                1000 // pressure altitudes in the json comes in intervals of 1000
+                pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
             );
 
             // interpolate between the lower and higher temperature
@@ -317,6 +305,7 @@ namespace Airborn.web.Models
 
 
         }
+
 
         private static JsonPerformanceProfileList PopulateJsonPerformanceProfileList(ScenarioMode scenarioMode, JsonFile jsonFile)
         {

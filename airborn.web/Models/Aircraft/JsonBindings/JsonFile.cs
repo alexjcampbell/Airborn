@@ -67,26 +67,26 @@ namespace Airborn.web.Models
 
         public decimal GetPerformanceDataValueForConditions(
             JsonPerformanceProfileList profiles,
-            PerformanceCalculator calculator,
             ScenarioMode scenarioMode,
-            int pressureAltitude,
+            decimal actualPressureAltitude,
+            int pressureAltitudeToFind,
             int temperatureCelcius
         )
         {
 
             // check to make sure that we actually have data for this Pressure Altitude and Temperature
             int maxPressureAltitudeAvailable = profiles.Max(p => p.PressureAltitude);
-            if (pressureAltitude > maxPressureAltitudeAvailable)
+            if (pressureAltitudeToFind > maxPressureAltitudeAvailable)
             {
-                throw new PressureAltitudePerformanceProfileNotFoundException(calculator.PressureAltitude);
+                throw new PressureAltitudePerformanceProfileNotFoundException(actualPressureAltitude);
             }
 
             JsonPerformanceProfile profile =
-                FindByPressureAltitude(profiles, scenarioMode, pressureAltitude);
+                FindByPressureAltitude(profiles, scenarioMode, pressureAltitudeToFind);
 
             if (profile == null)
             {
-                throw new PressureAltitudePerformanceProfileNotFoundException(calculator.PressureAltitude);
+                throw new PressureAltitudePerformanceProfileNotFoundException(actualPressureAltitude);
             }
 
             switch (scenarioMode)
@@ -102,7 +102,7 @@ namespace Airborn.web.Models
 
             }
 
-            throw new ArgumentException($"No performance data found for pressure altitude: {pressureAltitude} and temperature: {temperatureCelcius}");
+            throw new ArgumentException($"No performance data found for pressure altitude: {pressureAltitudeToFind} and temperature: {temperatureCelcius}");
         }
 
         public JsonPerformanceProfile FindByPressureAltitude(JsonPerformanceProfileList profiles, ScenarioMode scenarioMode, int pressureAltitude)

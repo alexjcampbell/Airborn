@@ -10,11 +10,11 @@
 <form asp-action="Calculate" method="post" class="form-horizontal">
 
     <br />
-    <h4><b>Airborn is a free takeoff and landing calculator.</b>
-        <br />Tell us your about your flight, and we'll show you takeoff and landing performance information for each runway.
+    <h4><b>Airborn is a free takeoff and landing distance calculator for C172, SR22, and SR22T aircraft</b>
+        <br />Tell us your about your flight, and we'll show you takeoff and landing distance for each runway.
     </h4>
 
-
+    <br />
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <br />
 
@@ -26,7 +26,7 @@
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
                     placeholder="Airport Identifier" data-val-required="Airport identifier is required" />
-                <label for="AirportIdentifier">Airport</label>
+                <label for="AirportIdentifier">Start typing airport name...</label>
             </div>
         </div>
 
@@ -121,8 +121,8 @@
 
     <br />
 
-    @if (Model.Notes is not null && Model.Notes.Count != 0) {
-
+    
+        @if (Model is not null && Model.Results.Count > 0) {
         <div>
             <div class="form-group row">
                 <h5>@Model.Airport?.Name</h5>
@@ -135,9 +135,10 @@
                 </div>
             </div>
         </div>
-    }
+        }
+    
 
-    @if(Model.Notes is not null) {
+    @if (Model.Notes is not null && Model.Notes.Count != 0) {
     <br />
     <div>
         <div class="form-group row">
@@ -155,6 +156,7 @@
         </div>
     </div>    
             
+    <br />
     <br />
     }
 

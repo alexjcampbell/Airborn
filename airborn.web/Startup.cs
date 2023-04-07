@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.Data.Sqlite;
 using Airborn.web.Models;
+using OpenTelemetry.Trace;
+using Sentry;
 
 namespace Airborn.Web
 {
@@ -30,6 +32,7 @@ namespace Airborn.Web
             services.AddControllersWithViews();
 
             services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
+
         }
 
 
@@ -47,6 +50,10 @@ namespace Airborn.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+
+
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -55,7 +62,7 @@ namespace Airborn.Web
             // Enable automatic tracing integration.
             // If running with .NET 5 or below, make sure to put this middleware
             // right after `UseRouting()`.
-            app.UseSentryTracing();      
+            app.UseSentryTracing();
 
             app.UseAuthorization();
 
@@ -65,6 +72,9 @@ namespace Airborn.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Calculate}/{id?}");
             });
+
+  
         }
     }
+
 }

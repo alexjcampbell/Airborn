@@ -6,6 +6,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using System.Diagnostics.Metrics;
+using Honeycomb.OpenTelemetry;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Exporter.Jaeger;
+using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Logs;
+
 
 namespace Airborn.Web
 {
@@ -13,7 +23,15 @@ namespace Airborn.Web
     {
         public static void Main(string[] args)
         {
+
             CreateHostBuilder(args).Build().Run();
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRazorPages();
+            services.AddHttpClient();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,11 +39,9 @@ namespace Airborn.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
 
-
                     // Add the following line:
                     webBuilder.UseSentry(o =>
                     {
-
                         o.Dsn = Environment.GetEnvironmentVariable("SENTRY_KEY");
                         // When configuring for the first time, to see what the SDK is doing:
                         o.Debug = true;
@@ -39,8 +55,9 @@ namespace Airborn.Web
                     webBuilder.UseStartup<Startup>();
 
 
-
                 });
 
+
     }
+
 }

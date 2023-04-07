@@ -43,8 +43,15 @@ namespace Airborn.web.Models
         {
             if(Airports.Count() == 0)
             {
-                throw new ArgumentOutOfRangeException("airportIdentifer " + airportIdentifier + " not found in database. (Database is empty.)");
+                throw new ArgumentOutOfRangeException("Airports database is empty.");
             }
+
+            if(Airports.Count<Airport>(
+                a => a.Ident.Equals(airportIdentifier.ToUpper())
+                ) == 0)
+                {
+                    throw new ArgumentOutOfRangeException("Airport not found: " + airportIdentifier + ".", airportIdentifier);
+                };
 
             Airport airport = Airports.Single<Airport>(
                 a => a.Ident.Equals(airportIdentifier.ToUpper())

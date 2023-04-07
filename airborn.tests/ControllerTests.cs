@@ -17,6 +17,8 @@ namespace Airborn.Tests
 
     // TODO: these are mostly testing the model, not the controller,
     // so we should move them out to CalculagePageModelTests.cs
+    // although the dependency injection we get for free from using the controller
+    // for DbContext is quite useful here
 
     [TestClass]
     public class ControllerTests
