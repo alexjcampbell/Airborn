@@ -159,7 +159,7 @@ namespace Airborn.web.Models
             {
                 Runway primaryRunway = runway;
 
-                // RunwayIdentifer could be 10R or 28L so we use Substring to get only the first two characters
+                // RunwayIdentifer could be 10R or 28L so we use a regex to get only the first two characters
                 string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
 
                 primaryRunway.RunwayHeading =
@@ -203,7 +203,7 @@ namespace Airborn.web.Models
                     InterpolateDistanceByWeight(
                         weightInterpolationFactor,
                         GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight),
-                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight)
+                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileHigherWeight)
                 ));
 
             result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments

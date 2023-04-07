@@ -10,7 +10,7 @@
 <form asp-action="Calculate" method="post" class="form-horizontal">
 
     <br />
-    <h4><b>Airborn is a free takeoff and landing distance calculator for C172, SR22, and SR22T aircraft</b>
+    <h4><b>Airborn is a free takeoff and landing distance calculator.</b>
         <br />Tell us your about your flight, and we'll show you takeoff and landing distance for each runway.
     </h4>
 
@@ -135,11 +135,11 @@
                 </div>
             </div>
         </div>
+        <br />
         }
     
 
-    @if (Model.Notes is not null && Model.Notes.Count != 0) {
-    <br />
+    @if (Model.Notes != null && Model.Notes.Count != 0) {
     <div>
         <div class="form-group row">
             <div class="col-sm-12">
@@ -151,13 +151,12 @@
                     @note
                 </li>
                 }
-            </ul>
+            </ul> 
+            <br />
             </div>
         </div>
     </div>    
             
-    <br />
-    <br />
     }
 
     @foreach (PerformanceCalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
