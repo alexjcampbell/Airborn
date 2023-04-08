@@ -398,5 +398,28 @@ namespace Airborn.Tests
             Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[2].Runway.RunwayHeading.DirectionMagnetic);
         }
 
+
+        [TestMethod]
+        public void TestIsBestWindTrueWhenRunwayIsMostAlignedWithWind()
+        {
+            InitializeController();
+            InitializeModel();
+
+            var result = _controller.Calculate(_model);
+
+            Assert.IsTrue(_model.ResultsSortedByHeadwind.First().IsBestWind);
+        }
+
+        [TestMethod]
+        public void TestIsBestWindFalseWhenRunwayIsNotMostAlignedWithWind()
+        {
+            InitializeController();
+            InitializeModel();
+
+            var result = _controller.Calculate(_model);
+
+            Assert.IsFalse(_model.ResultsSortedByHeadwind.Last().IsBestWind);
+        }
+
     }
 }

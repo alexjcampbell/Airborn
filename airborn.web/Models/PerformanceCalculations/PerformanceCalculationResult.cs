@@ -98,6 +98,6 @@ namespace Airborn.web.Models
             get;
             set;
         }
-        
+
     }
 }

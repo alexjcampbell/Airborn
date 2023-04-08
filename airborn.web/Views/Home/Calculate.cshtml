@@ -168,11 +168,19 @@
 
     }
 
-    @foreach (PerformanceCalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
+    @foreach (CalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
     {
         <div>
             <div class="form-group row">
-                <h6>Runway @result.Runway.Runway_Name</h6>
+                <div class="col-sm-3">
+                    <h6>Runway @result.Runway.Runway_Name
+                    @if (result.IsBestWind)
+                    {
+                        <span class="badge bg-success">(Best wind)</span>
+                    }
+                    </h6>
+                </div>
+                
             </div>
 
             <div class="form-group row">

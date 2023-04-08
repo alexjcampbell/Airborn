@@ -16,7 +16,7 @@ namespace Airborn.web.Models
         public CalculatePageModel()
         {
             Runways = new List<Runway>();
-            Results = new List<PerformanceCalculationResultPageModel>();
+            Results = new List<CalculationResultPageModel>();
         }
 
         private PerformanceCalculator PerformanceCalculator
@@ -31,13 +31,13 @@ namespace Airborn.web.Models
             set;
         }
 
-        public List<PerformanceCalculationResultPageModel> Results
+        public List<CalculationResultPageModel> Results
         {
             get;
             set;
         }
 
-        public List<PerformanceCalculationResultPageModel> ResultsSortedByHeadwind
+        public List<CalculationResultPageModel> ResultsSortedByHeadwind
         {
             get
             {
@@ -187,10 +187,22 @@ namespace Airborn.web.Models
 
             foreach (PerformanceCalculationResult result in PerformanceCalculator.Results)
             {
-                PerformanceCalculationResultPageModel pageModelResult =
-                    new PerformanceCalculationResultPageModel(result, result.Runway);
+                CalculationResultPageModel pageModelResult =
+                    new CalculationResultPageModel(result, result.Runway);
 
                 Results.Add(pageModelResult);
+            }
+
+            foreach (CalculationResultPageModel result in Results)
+            {
+                if (this.ResultsSortedByHeadwind.First().HeadwindComponent == result.HeadwindComponent)
+                {
+                    result.IsBestWind = true;
+                }
+                else
+                {
+                    result.IsBestWind = false;
+                }
             }
 
         }

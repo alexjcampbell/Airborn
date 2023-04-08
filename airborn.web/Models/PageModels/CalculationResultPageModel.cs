@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Airborn.web.Models
 {
-    public class PerformanceCalculationResultPageModel
+    public class CalculationResultPageModel
     {
-        private PerformanceCalculationResultPageModel()
+        private CalculationResultPageModel()
         {
         }
 
-        public PerformanceCalculationResultPageModel(PerformanceCalculationResult result, Runway runway)
+        public CalculationResultPageModel(PerformanceCalculationResult result, Runway runway)
         {
             Result = result;
             Runway = runway;
@@ -29,6 +29,11 @@ namespace Airborn.web.Models
             set;
         }
 
+        public bool IsBestWind
+        {
+            get;
+            set;
+        }
 
         public decimal? CrosswindComponent
         {
