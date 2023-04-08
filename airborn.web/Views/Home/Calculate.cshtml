@@ -15,7 +15,7 @@
     </h4>
 
     <br />
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <br />
 
     <div>
@@ -25,8 +25,9 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
-                    placeholder="Airport Identifier" data-val-required="Airport identifier is required" />
+                    placeholder="Airport Identifier" />
                 <label for="AirportIdentifier">Start typing airport name...</label>
+                <span asp-validation-for="AirportIdentifier" class="text-danger"></span>
             </div>
         </div>
 
@@ -49,13 +50,14 @@
                     <option value="C172_SP">Cessna 172SP</option>
                 </select>
                 <label for="AircraftType">Aircraft type</label>
+                <span asp-validation-for="AircraftType" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="AircraftWeight" class="form-control" maxlength="10" placeholder="Aircraft weight"
-                    data-val-required="Aircraft weight is required" />
+                <input asp-for="AircraftWeight" class="form-control" maxlength="10" placeholder="Aircraft weight" />
                 <label for="AircraftWeight">Aircraft weight (lbs)</label>
+                <span asp-validation-for="AircraftWeight" class="text-danger"></span>
             </div>
         </div>
 
@@ -71,18 +73,21 @@
                 <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3"
                     placeholder="Wind direction °M" />
                 <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
+                <span asp-validation-for="WindDirectionMagnetic" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="WindStrength" class="form-control" placeholder="Wind strength (kts)" maxlength="3" />
                 <label asp-for="WindStrength">Wind strength (kts)</label>
+                <span asp-validation-for="WindStrength" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-2">
             <div class="form-floating">
                 <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="3" />
                 <label asp-for="Temperature">Temperature</label>
+                <span asp-validation-for="Temperature" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-1">
@@ -98,6 +103,7 @@
             <div class="form-floating">
                 <input asp-for="AltimeterSetting" class="form-control" maxlength="5" placeholder="Altimeter setting" />
                 <label asp-for="AltimeterSetting">Altimeter setting</label>
+                <span asp-validation-for="AltimeterSetting" class="text-danger"></span>
             </div>
         </div>
         <div class="col-sm-1">
@@ -121,8 +127,9 @@
 
     <br />
 
-    
-        @if (Model is not null && Model.Results.Count > 0) {
+
+    @if (Model is not null && Model.Results.Count > 0)
+    {
         <div>
             <div class="form-group row">
                 <h5>@Model.Airport?.Name</h5>
@@ -136,27 +143,29 @@
             </div>
         </div>
         <br />
-        }
-    
+    }
 
-    @if (Model.Notes != null && Model.Notes.Count != 0) {
-    <div>
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <b>Notes</b>
-            <ul>
 
-                @foreach (string note in Model.Notes) {
-                <li>
-                    @note
-                </li>
-                }
-            </ul> 
-            <br />
+    @if (Model.Notes != null && Model.Notes.Count != 0)
+    {
+        <div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <b>Notes</b>
+                    <ul>
+
+                        @foreach (string note in Model.Notes)
+                        {
+                            <li>
+                                @note
+                            </li>
+                        }
+                    </ul>
+                    <br />
+                </div>
             </div>
         </div>
-    </div>    
-            
+
     }
 
     @foreach (PerformanceCalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
@@ -176,10 +185,11 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <input class="form-control" maxlength="10" readonly value="@result.Runway.Surface_Friendly_Output" />
+                        <input class="form-control" maxlength="10" readonly
+                            value="@result.Runway.Surface_Friendly_Output" />
                         <label>Runway surface</label>
                     </div>
-                </div>                
+                </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
                         <input class="form-control" maxlength="10" readonly

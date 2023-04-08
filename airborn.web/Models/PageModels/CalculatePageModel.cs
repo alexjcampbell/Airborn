@@ -25,7 +25,8 @@ namespace Airborn.web.Models
             set;
         }
 
-        public string RootPath{
+        public string RootPath
+        {
             get;
             set;
         }
@@ -50,19 +51,16 @@ namespace Airborn.web.Models
             set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Aircraft Weight is required.")]
+        [Range(2000, 4000,
+        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Aircraft Weight")]
         public double? AircraftWeight
         {
             get; set;
         }
 
-        public RunwaySurface RunwaySurface
-        {
-            get; set;
-        }
-
-        [Required]
+        [Required(ErrorMessage = "Wind Strength is required.")]
         [Range(0, 200,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Wind Strength")]
@@ -71,7 +69,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Wind Direction is required.")]
         [Range(0, 359,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Wind Direction")]
@@ -80,12 +78,8 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Required(ErrorMessage = "Airport Identifier is required.")]
         public string AirportIdentifier
-        {
-            get; set;
-        }
-
-        public string RunwayIdentifier
         {
             get; set;
         }
@@ -108,7 +102,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Wind Direction is required.")]
         [Range(-50, 100,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public decimal? Temperature
@@ -116,7 +110,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Wind Direction is required.")]
         [Display(Name = "Altimeter Setting")]
         public decimal? AltimeterSetting
         {

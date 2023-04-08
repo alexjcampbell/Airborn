@@ -316,7 +316,7 @@ namespace Airborn.Tests
             _model.TemperatureType = TemperatureType.C;
 
             var result = _controller.Calculate(_model);
-            
+
             // 1040 hPa will result in a negative pressure altitude, but the POH doesn't provide performance
             // information for negative pressure altitudes - so, in the PerformanceCalcator we treat negative
             // pressure altitudes as zero. We test if that this working by checking to see that there are 
@@ -324,7 +324,7 @@ namespace Airborn.Tests
             // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
             // 400 ft pressure altitudes)
             Assert.IsTrue(_model.Results.Count > 0);
-        }        
+        }
 
         [TestMethod]
         public void TestRunwaysWithMostHeadwindAreFirst()

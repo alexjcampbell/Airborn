@@ -134,15 +134,15 @@ namespace Airborn.web.Models
         public void Calculate(AirportDbContext db)
         {
 
-            if(PressureAltitude < 0)
+            if (PressureAltitude < 0)
             {
                 Notes.Add("Pressure altitude is negative. The POH only provides performance data for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
             }
 
-            if(TemperatureCelcius < 0)
+            if (TemperatureCelcius < 0)
             {
                 Notes.Add("Temperature is negative. The POH data only provides performance date for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
-            }            
+            }
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
@@ -273,9 +273,9 @@ namespace Airborn.web.Models
             // ie using the example below this will return 1000 ft and 2000 ft
             // and 10 and 20 degreses
             int lowerPressureAltidude = GetLowerBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
-            int upperPressureAltidude = GetUpperBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
+            int upperPressureAltidude = lowerPressureAltidude + pressureAltitudeInterval;
             int lowerTemperature = GetLowerBoundForInterpolation(temperatureAsInt, temperatureInterval);
-            int upperTemperature = GetUpperBoundForInterpolation(temperatureAsInt, temperatureInterval);
+            int upperTemperature = lowerTemperature + temperatureInterval;
 
             // interpolate between the lower and higher pressure altitude for the lower temperature
             decimal distanceLowerTempInterpolated = Interpolate(
