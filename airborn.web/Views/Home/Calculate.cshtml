@@ -7,16 +7,31 @@
 
 <br />
 
+<div class="jumbotron">
+    <h1 class="display-4">Airborn is a free takeoff and landing distance calculator.</h1>
+    <p class="lead">Tell us your about your flight, and we'll provide takeoff and landing distances and other useful
+        information for
+        each runway at your airport. These are calculated based on performance numbers from the airplane's flight
+        manual.
+    </p>
+    <p>This is an open-source project, if
+        you want to contribute check out <a href="https://github.com/alexjcampbell/Airborn">our Github</a>.</p>
+    <hr class="my-4">
+</div>
+
 <form asp-action="Calculate" method="post" class="form-horizontal">
 
     <br />
-    <h4><b>Airborn is a free takeoff and landing distance calculator.</b>
-        <br />Tell us your about your flight, and we'll show you takeoff and landing distance for each runway.
-    </h4>
+    @if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Any()))
+    {
 
-    <br />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <br />
+        <div class="alert alert-warning" role="alert">
+            <strong>Holy guacamole!</strong> It looks like you missed a few fields that we need to calculate your
+            performance information.
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <br />
+    }
 
     <div>
         <h6>The flight</h6>
@@ -26,7 +41,7 @@
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
                     placeholder="Airport Identifier" />
-                <label for="AirportIdentifier">Start typing airport name...</label>
+                <label for="AirportIdentifier">Airport name...</label>
                 <span asp-validation-for="AirportIdentifier" class="text-danger"></span>
             </div>
         </div>
@@ -119,10 +134,10 @@
     <br />
 
     <div class="form-group row">
-        <div class="col-sm-12">
+        <div class="col-sm-3">
             <button type="submit" style="width: 100%" class="btn btn-primary btn-lg">Calculate Performance</button>
         </div>
-
+        <div class="col-sm-9"></div>
     </div>
 
     <br />
@@ -174,13 +189,13 @@
             <div class="form-group row">
                 <div class="col-sm-3">
                     <h6>Runway @result.Runway.Runway_Name
-                    @if (result.IsBestWind)
-                    {
-                        <span class="badge bg-success">(Best wind)</span>
-                    }
+                        @if (result.IsBestWind)
+                        {
+                            <span class="badge bg-success">(Best wind)</span>
+                        }
                     </h6>
                 </div>
-                
+
             </div>
 
             <div class="form-group row">
