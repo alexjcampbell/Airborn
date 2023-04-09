@@ -159,7 +159,7 @@ namespace Airborn.web.Models
             get { return PerformanceCalculator?.Notes; }
         }
 
-        public void LoadAircraftPerformance(AirportDbContext db)
+        public void Calculate(AirportDbContext db)
         {
 
 
@@ -194,6 +194,12 @@ namespace Airborn.web.Models
                 Results.Add(pageModelResult);
             }
 
+            SetIsBestWindIfRunwayIsMostIntoWind();
+
+        }
+
+        private void SetIsBestWindIfRunwayIsMostIntoWind()
+        {
             foreach (CalculationResultPageModel result in Results)
             {
                 if (this.ResultsSortedByHeadwind.First().HeadwindComponent == result.HeadwindComponent)
@@ -205,7 +211,6 @@ namespace Airborn.web.Models
                     result.IsBestWind = false;
                 }
             }
-
         }
 
         private void SetAltimeterSettingBasedOnMborHg()

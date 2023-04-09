@@ -160,13 +160,7 @@ namespace Airborn.web.Models
                 Runway primaryRunway = runway;
 
                 // RunwayIdentifer could be 10R or 28L so we use a regex to get only the first two characters
-                string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
-
-                primaryRunway.RunwayHeading =
-                    new Direction(
-                        int.Parse(runwayName) * 10,
-                        0
-                        );
+                SetRunwayHeading(runway, primaryRunway);
 
                 Runways.Add(primaryRunway);
             }
@@ -178,6 +172,17 @@ namespace Airborn.web.Models
                 Results.Add(result);
             }
 
+        }
+
+        private static void SetRunwayHeading(Runway runway, Runway primaryRunway)
+        {
+            string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
+
+            primaryRunway.RunwayHeading =
+                new Direction(
+                    int.Parse(runwayName) * 10,
+                    0
+                    );
         }
 
         /// <summary>
