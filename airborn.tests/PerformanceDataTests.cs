@@ -6,7 +6,7 @@ using Moq;
 namespace Airborn.Tests
 {
     [TestClass]
-    public class BookDistancesTests
+    public class PerformanceDataTests
     {
 
         Mock<JsonFile> jsonFile = new Mock<JsonFile>();
@@ -62,7 +62,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -75,7 +75,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -88,7 +88,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -101,14 +101,14 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
             decimal expectedGroundRoll_0 = 100;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.LandingBookDistances[0].GroundRoll);
+                bookNumbersList.LandingPerformanceData[0].GroundRoll);
 
         }
 
@@ -117,14 +117,14 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
             decimal expectedGroundRoll_0 = 120;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.LandingBookDistances[0].DistanceToClear50Ft);
+                bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft);
 
         }
 
@@ -133,14 +133,14 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
             decimal expectedGroundRoll_0 = 100;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.TakeoffBookDistances[0].GroundRoll);
+                bookNumbersList.TakeoffPerformanceData[0].GroundRoll);
 
         }
 
@@ -149,14 +149,14 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
             decimal expectedGroundRoll_0 = 600;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.TakeoffBookDistances[4].DistanceToClear50Ft);
+                bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft);
 
         }
 
@@ -170,7 +170,7 @@ namespace Airborn.Tests
             decimal distanceToClear50Ft = 120;
             Scenario scenario = Scenario.Takeoff;
 
-            BookDistances bookDistances = new BookDistances(scenario, pressureAltitude, temperature, groundRoll, distanceToClear50Ft);
+            PerformanceData bookDistances = new PerformanceData(scenario, pressureAltitude, temperature, groundRoll, distanceToClear50Ft);
 
             Assert.AreEqual(temperature, bookDistances.Temperature);
             Assert.AreEqual(pressureAltitude, bookDistances.PressureAltitude);
@@ -184,11 +184,11 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
-            var takeoffBookDistances = bookNumbersList.TakeoffBookDistances;
+            var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
 
             Assert.IsTrue(takeoffBookDistances.Count > 0);
 
@@ -203,11 +203,11 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
-            var landingBookDistances = bookNumbersList.LandingBookDistances;
+            var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
             Assert.IsTrue(landingBookDistances.Count > 0);
 
@@ -222,12 +222,12 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
-            var takeoffBookDistances = bookNumbersList.TakeoffBookDistances;
-            var landingBookDistances = bookNumbersList.LandingBookDistances;
+            var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
+            var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
             Assert.AreEqual(20, takeoffBookDistances.Count);
             Assert.AreEqual(20, landingBookDistances.Count);
@@ -238,12 +238,12 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookDistancesList();
+            var bookNumbersList = new PerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
-            var takeoffBookDistances = bookNumbersList.TakeoffBookDistances;
-            var landingBookDistances = bookNumbersList.LandingBookDistances;
+            var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
+            var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
             var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, 0, 10);
             var landingBookDistance = bookNumbersList.FindBookDistance(Scenario.Landing, 0, 10);
@@ -260,7 +260,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookDistancesList = new BookDistancesList();
+            var bookDistancesList = new PerformanceDataList();
 
             //bookDistancesList.GetInterpolateBookDistances(Scenario.Takeoff, 0, 10, 100, 120);
 

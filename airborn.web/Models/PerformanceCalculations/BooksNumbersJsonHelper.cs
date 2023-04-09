@@ -6,7 +6,7 @@ namespace Airborn.web.Models
 {
     public static class BookNumbersJsonHelper
     {
-        public static JsonFile LoadJson(this BookDistances bookNumbers, string path)
+        public static JsonFile LoadJson(this PerformanceData bookNumbers, string path)
         {
             JsonFile jsonFile = JsonSerializer.Deserialize<JsonFile>(File.ReadAllText(path));
 

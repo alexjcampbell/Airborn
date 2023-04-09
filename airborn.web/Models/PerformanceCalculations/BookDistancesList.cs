@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Airborn.web.Models
 {
-    public class BookDistancesList : List<BookDistances>
+    public class PerformanceDataList : List<PerformanceData>
     {
         const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
         const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
-        public BookDistancesList()
+        public PerformanceData()
         {
         }
 
-        public List<BookDistances> TakeoffBookDistances
+        public List<PerformanceData> TakeoffPerformanceData
         {
             get
             {
@@ -20,7 +20,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public List<BookDistances> LandingBookDistances
+        public List<PerformanceData> LandingPerformanceData
         {
             get
             {
@@ -49,7 +49,7 @@ namespace Airborn.web.Models
                 var groundRoll = profile.GroundRoll[i];
                 var clear50Ft = profile.Clear50FtObstacle[i];
 
-                var bookNumbers = new BookDistances(
+                var bookNumbers = new PerformanceData(
                     scenario,
                     profile.PressureAltitude,
                     groundRoll.Temperature,
@@ -61,9 +61,9 @@ namespace Airborn.web.Models
             }
         }
 
-        public BookDistances FindBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature)
+        public PerformanceData FindBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature)
         {
-            List<BookDistances> bookDistances = FindAll(p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude);
+            List<PerformanceData> bookDistances = FindAll(p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude);
 
             if (bookDistances.Count == 0)
             {
@@ -73,7 +73,7 @@ namespace Airborn.web.Models
             return bookDistances[0];
         }
 
-        public BookDistances GetInterpolatedBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature)
+        public PerformanceData GetInterpolatedBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature)
         {
             throw new NotImplementedException();
         }

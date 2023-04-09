@@ -2,13 +2,13 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class BookDistances
+    public class PerformanceData
     {
-        private BookDistances()
+        private PerformanceData()
         {
         }
 
-        public BookDistances(Scenario scenario, decimal pressureAltitude, decimal temperature, decimal groundRoll, decimal distanceToClear50Ft)
+        public PerformanceData(Scenario scenario, decimal pressureAltitude, decimal temperature, decimal groundRoll, decimal distanceToClear50Ft)
         {
             Scenario = scenario;
             PressureAltitude = pressureAltitude;
