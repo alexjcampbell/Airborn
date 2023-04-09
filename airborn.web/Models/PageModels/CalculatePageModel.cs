@@ -55,7 +55,7 @@ namespace Airborn.web.Models
         [Range(2000, 4000,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Aircraft Weight")]
-        public double? AircraftWeight
+        public int? AircraftWeight
         {
             get; set;
         }
@@ -79,6 +79,7 @@ namespace Airborn.web.Models
         }
 
         [Required(ErrorMessage = "Airport Identifier is required.")]
+        [MaxLength(4)]
         public string AirportIdentifier
         {
             get; set;
@@ -105,7 +106,7 @@ namespace Airborn.web.Models
         [Required(ErrorMessage = "Wind Direction is required.")]
         [Range(-50, 100,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public decimal? Temperature
+        public int? Temperature
         {
             get; set;
         }

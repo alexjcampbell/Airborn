@@ -8,12 +8,14 @@ namespace Airborn.web.Models
     // >dotnet ef migration add testMigration
     public class AirportDbContext : DbContext, IAirportDbContext
     {
-        public AirportDbContext(){
-            
+        public AirportDbContext()
+        {
+
         }
 
         public AirportDbContext(DbContextOptions<AirportDbContext> options)
-        : base(options) {
+        : base(options)
+        {
 
         }
 
@@ -26,7 +28,7 @@ namespace Airborn.web.Models
             modelBuilder.Entity<Runway>()
                 .HasKey(r => r.Runway_Id)
                 .HasName("Runway_Id");
-        }           
+        }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)
         {
@@ -41,17 +43,17 @@ namespace Airborn.web.Models
 
         public Airport GetAirport(string airportIdentifier)
         {
-            if(Airports.Count() == 0)
+            if (Airports.Count() == 0)
             {
                 throw new ArgumentOutOfRangeException("Airports database is empty.");
             }
 
-            if(Airports.Count<Airport>(
+            if (Airports.Count<Airport>(
                 a => a.Ident.Equals(airportIdentifier.ToUpper())
                 ) == 0)
-                {
-                    throw new ArgumentOutOfRangeException("Airport not found: " + airportIdentifier + ".", airportIdentifier);
-                };
+            {
+                throw new AirportNotFoundException("Airport not found: " + airportIdentifier);
+            };
 
             Airport airport = Airports.Single<Airport>(
                 a => a.Ident.Equals(airportIdentifier.ToUpper())
@@ -88,6 +90,6 @@ namespace Airborn.web.Models
 
             return airportIdentifiersList;
 
-        }         
+        }
     }
 }

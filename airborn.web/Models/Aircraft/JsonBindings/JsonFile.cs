@@ -10,7 +10,7 @@ namespace Airborn.web.Models
     public class JsonFile
     {
 
-        private JsonFile()
+        public JsonFile()
         {
         }
 
@@ -21,7 +21,7 @@ namespace Airborn.web.Models
 
         protected JsonPerformanceProfileList _takeoffProfiles;
 
-        public JsonPerformanceProfileList TakeoffProfiles
+        public virtual JsonPerformanceProfileList TakeoffProfiles
         {
             get
             {
@@ -35,7 +35,7 @@ namespace Airborn.web.Models
 
         protected JsonPerformanceProfileList _landingProfiles;
 
-        public JsonPerformanceProfileList LandingProfiles
+        public virtual JsonPerformanceProfileList LandingProfiles
         {
             get
             {

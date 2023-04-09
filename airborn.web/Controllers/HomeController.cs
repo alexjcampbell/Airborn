@@ -91,7 +91,7 @@ namespace Airborn.Controllers
             try
             {
                 // if we're running this from a Controller test, RootPath will already be set, so don't override it
-                if(model.RootPath == null)
+                if (model.RootPath == null)
                 {
                     model.RootPath = _env.WebRootPath;
                 }
@@ -100,7 +100,7 @@ namespace Airborn.Controllers
             catch (PressureAltitudePerformanceProfileNotFoundException e)
             {
                 ModelState.AddModelError(
-                    "FieldElevation",
+                    "AltimeterSetting",
                     e.Message
                 );
 
@@ -118,7 +118,6 @@ namespace Airborn.Controllers
 
                 return View(model);
             }
-
             catch (AircraftWeightOutOfRangeException e)
             {
                 ModelState.AddModelError(
@@ -127,6 +126,17 @@ namespace Airborn.Controllers
                         $"No performance data found for Weight {model.AircraftWeight}, weight must be between {e.MinWeight} and {e.MaxWeight}"
                     ))
                     ;
+
+                return View(model);
+            }
+            catch (AirportNotFoundException e)
+            {
+                ModelState.AddModelError(
+                    "AirportIdentifier",
+                    String.Format(
+                        $"No airport found for '{e.AirportName}'"
+                    )
+                );
 
                 return View(model);
             }
@@ -143,7 +153,7 @@ namespace Airborn.Controllers
             */
 
             // check for null before we try to add cookies, so we can unit test this controller
-            if(HttpContext != null)
+            if (HttpContext != null)
             {
                 HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());
                 HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());

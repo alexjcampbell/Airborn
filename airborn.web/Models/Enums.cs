@@ -26,6 +26,13 @@ namespace Airborn.web.Models
         SR22T_G5,
         C172_SP
     }
+
+    public enum Scenario
+    {
+        Takeoff,
+        Landing
+    }
+
     public enum ScenarioMode
 
     {

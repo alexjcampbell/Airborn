@@ -171,8 +171,6 @@ namespace Airborn.web.Models
                 Runways.Add(primaryRunway);
             }
 
-
-
             foreach (Runway runway in Runways)
             {
                 PerformanceCalculationResult result = CalculatePerformanceForRunway(aircraft, jsonFileLowerWeight, jsonFileHigherWeight, runway);
@@ -381,35 +379,6 @@ namespace Airborn.web.Models
                 + lowerValue;
 
             return interpolatedValue;
-
-        }
-
-
-        private struct PerformanceInputMatrix
-        {
-            public int TemperatureLowerValue
-            {
-                get;
-                set;
-            }
-
-            public int TemperatureUpperValue
-            {
-                get;
-                set;
-            }
-
-            public int PressureAltitudeLowerValue
-            {
-                get;
-                set;
-            }
-
-            public int PressureAltitudeUpperValue
-            {
-                get;
-                set;
-            }
 
         }
 

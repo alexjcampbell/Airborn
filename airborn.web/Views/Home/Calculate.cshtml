@@ -40,8 +40,8 @@
         <div class="col-sm-3">
             <div class="form-floating">
                 <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
-                    placeholder="Airport Identifier" />
-                <label for="AirportIdentifier">Airport name...</label>
+                    placeholder="Airport Identifier" maxlength="4" />
+                <label for="AirportIdentifier">Airport identifier (ICAO)</label>
                 <span asp-validation-for="AirportIdentifier" class="text-danger"></span>
             </div>
         </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="AircraftWeight" class="form-control" maxlength="10" placeholder="Aircraft weight" />
+                <input asp-for="AircraftWeight" class="form-control" maxlength="4" placeholder="Aircraft weight" />
                 <label for="AircraftWeight">Aircraft weight (lbs)</label>
                 <span asp-validation-for="AircraftWeight" class="text-danger"></span>
             </div>
@@ -132,6 +132,7 @@
     </div>
 
     <br />
+    <hr class="my-4">
 
     <div class="form-group row">
         <div class="col-sm-3">
@@ -139,24 +140,37 @@
         </div>
         <div class="col-sm-9"></div>
     </div>
-
-    <br />
-
+    <hr class="my-4">
 
     @if (Model is not null && Model.Results.Count > 0)
     {
         <div>
             <div class="form-group row">
-                <h5>@Model.Airport?.Name</h5>
-                <div>
-                    Field elevation: @Model.Airport?.FieldElevation ft
-                    <br />
-                    Pressure altitude: @Model.PressureAltitude?.ToString("#,##") ft
-                    <br />
-                    Density altitude: @Model.DensityAltitude?.ToString("#,##") ft
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <h5>@Model.Airport?.Name</h5>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <span>Field elevation: @Model.Airport?.FieldElevation ft</span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <span>Pressure altitude: @Model.PressureAltitude?.ToString("#,##") ft</span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <span>
+                            Density altitude: @Model.DensityAltitude?.ToString("#,##") ft
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
+
         <br />
     }
 
@@ -263,7 +277,7 @@
         <br />
     }
 
-
+    <hr class="my-4">
 
 
 

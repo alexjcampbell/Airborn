@@ -132,7 +132,7 @@ namespace Airborn.Tests
             _model.TemperatureType = _default_TemperatureType;
             _model.WindDirectionMagnetic = _default_WindDirectionMagnetic;
             _model.WindStrength = _default_WindStrength;
-            _model.AircraftWeight = _default_AircraftWeight;
+            _model.AircraftWeight = (int)_default_AircraftWeight;
             _model.RootPath = AircraftPerformanceTests.TestJsonPath;
         }
 
