@@ -2,7 +2,12 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class PerformanceData
+    /// <summary>Represents the groundroll distance and the distance to clear a 50' obstacle
+    /// for a given pressure altitude and temperature. This is an abstract class because it's only 
+    /// intended to provide the foundation for the two concrete classes BookPerformanceData and 
+    /// InterpolatedPerformanceData
+    /// </summary>
+    public abstract class PerformanceData
     {
         private PerformanceData()
         {
@@ -18,9 +23,6 @@ namespace Airborn.web.Models
         }
 
         public Scenario Scenario;
-
-        const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
-        const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
         public decimal PressureAltitude
         {

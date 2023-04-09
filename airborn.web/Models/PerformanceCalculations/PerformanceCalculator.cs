@@ -191,6 +191,22 @@ namespace Airborn.web.Models
             result.JsonFileLowerWeight = jsonFileLowerWeight;
             result.JsonFileHigherWeight = jsonFileHigherWeight;
 
+            // get the lower weight data
+            PeformanceDataInterpolator interpolatorLowerWeight = new PeformanceDataInterpolator(
+                Scenario.Takeoff, PressureAltitude, TemperatureCelcius, jsonFileLowerWeight);
+
+            // interpolate the lower weight dat
+            InterpolatedPerformanceData lowerWeightInterpolatedData =
+                interpolatorLowerWeight.GetInterpolatedBookDistance(Scenario.Takeoff);
+
+            // get the higher weight data
+            PeformanceDataInterpolator interpolatorHigherWeight = new PeformanceDataInterpolator(
+                Scenario.Takeoff, PressureAltitude, TemperatureCelcius, jsonFileHigherWeight);
+
+            // interpolate the higher weight data
+            InterpolatedPerformanceData higherWeightInterpolatedData =
+                interpolatorHigherWeight.GetInterpolatedBookDistance(Scenario.Takeoff);
+
             decimal weightInterpolationFactor =
                 aircraft.GetWeightInterpolationFactor(Convert.ToInt32(AircraftWeight));
 
@@ -200,8 +216,8 @@ namespace Airborn.web.Models
                     result,
                     InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileLowerWeight),
-                        GetDistanceFromJson(ScenarioMode.Takeoff_GroundRoll, jsonFileHigherWeight)
+                        lowerWeightInterpolatedData.GroundRoll,
+                        higherWeightInterpolatedData.GroundRoll
                 ));
 
             result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments
@@ -209,8 +225,8 @@ namespace Airborn.web.Models
                     result,
                     InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileLowerWeight),
-                        GetDistanceFromJson(ScenarioMode.Takeoff_50FtClearance, jsonFileHigherWeight)
+                        lowerWeightInterpolatedData.DistanceToClear50Ft,
+                        higherWeightInterpolatedData.DistanceToClear50Ft
                 ));
 
             result.Landing_GroundRoll = aircraft.MakeLandingAdjustments
@@ -218,8 +234,8 @@ namespace Airborn.web.Models
                     result,
                     InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileLowerWeight),
-                        GetDistanceFromJson(ScenarioMode.Landing_GroundRoll, jsonFileHigherWeight)
+                        lowerWeightInterpolatedData.GroundRoll,
+                        higherWeightInterpolatedData.GroundRoll
                 ));
 
             result.Landing_50FtClearance = aircraft.MakeLandingAdjustments
@@ -227,8 +243,8 @@ namespace Airborn.web.Models
                     result,
                     InterpolateDistanceByWeight(
                         weightInterpolationFactor,
-                        GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileLowerWeight),
-                        GetDistanceFromJson(ScenarioMode.Landing_50FtClearance, jsonFileHigherWeight)
+                        lowerWeightInterpolatedData.DistanceToClear50Ft,
+                        higherWeightInterpolatedData.DistanceToClear50Ft
                 ));
 
             return result;
@@ -244,86 +260,6 @@ namespace Airborn.web.Models
                 (weightInterpolationFactor * (distance_HigherWeight - distance_LowerWeight));
         }
 
-        /// <summary>
-        /// The performance data in the JSON is provided by the manufacturer in 
-        /// pressure altitude intervals of 1000 ft and temperature intervals of
-        /// 10 degrees celcius. This function looks bit complicated but all it 
-        /// is getting the two relevant performance numbers and interpolating between
-        /// them
-        ///
-        /// i.e. if the scenario's temperature is 12 degrees and pressure altitude
-        /// is 1500 ft, it will find the performance data for 10 and 20 degrees C
-        /// and pressure altitude of 1000 and 2000 ft, and interpolate between them
-        /// </summary>
-        public decimal GetDistanceFromJson(ScenarioMode scenarioMode, JsonFile jsonFile)
-        {
-
-            // gets the takeoff (or landing) profiles, depending on ScenarioMode
-            JsonPerformanceProfileList profileList = PopulateJsonPerformanceProfileList(scenarioMode, jsonFile);
-
-            int pressureAltitudeAsInt = (int)PressureAltitudeAlwaysPositiveOrZero;
-            int temperatureAsInt = TemperatureCelcius > 0 ? (int)TemperatureCelcius : 0;
-
-            const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
-            const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
-
-            // get the upper and lower bounds for pressure altitude and temperature
-            // ie using the example below this will return 1000 ft and 2000 ft
-            // and 10 and 20 degreses
-            int lowerPressureAltidude = GetLowerBoundForInterpolation(pressureAltitudeAsInt, pressureAltitudeInterval);
-            int upperPressureAltidude = lowerPressureAltidude + pressureAltitudeInterval;
-            int lowerTemperature = GetLowerBoundForInterpolation(temperatureAsInt, temperatureInterval);
-            int upperTemperature = lowerTemperature + temperatureInterval;
-
-            // interpolate between the lower and higher pressure altitude for the lower temperature
-            decimal distanceLowerTempInterpolated = Interpolate(
-                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, lowerPressureAltidude, lowerTemperature),
-                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, upperPressureAltidude, lowerTemperature),
-                pressureAltitudeAsInt,
-                pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
-            );
-
-            // interpolate between the lower and higher pressure altitude for the higher temperature
-            decimal distanceUpperTempInterpolated = Interpolate(
-                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, lowerPressureAltidude, upperTemperature),
-                jsonFile.GetPerformanceDataValueForConditions(profileList, scenarioMode, PressureAltitude, upperPressureAltidude, upperTemperature),
-                pressureAltitudeAsInt,
-                pressureAltitudeInterval // pressure altitudes in the json comes in intervals of 1000
-            );
-
-            // interpolate between the lower and higher temperature
-            decimal distanceInterpolated = Interpolate(
-                (int)distanceLowerTempInterpolated,
-                (int)distanceUpperTempInterpolated,
-                temperatureAsInt,
-                10 // temperatures in the json comes in intervals of 10
-            );
-
-            return distanceInterpolated;
-
-
-        }
-
-
-        private static JsonPerformanceProfileList PopulateJsonPerformanceProfileList(ScenarioMode scenarioMode, JsonFile jsonFile)
-        {
-            JsonPerformanceProfileList profileList;
-
-            if (scenarioMode == ScenarioMode.Takeoff_GroundRoll || scenarioMode == ScenarioMode.Takeoff_50FtClearance)
-            {
-                profileList = jsonFile.TakeoffProfiles;
-            }
-            else if (scenarioMode == ScenarioMode.Landing_GroundRoll || scenarioMode == ScenarioMode.Landing_50FtClearance)
-            {
-                profileList = jsonFile.LandingProfiles;
-            }
-            else
-            {
-                throw new Exception("Invalid scenario mode");
-            }
-
-            return profileList;
-        }
 
         /// <summary>
         /// This function gives you an interpolation factor between two values:
@@ -334,7 +270,7 @@ namespace Airborn.web.Models
         {
             if (value < 0)
             {
-                throw new PressureAltitudePerformanceProfileNotFoundException(value);
+                throw new ArgumentOutOfRangeException(value.ToString());
             }
 
             if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
@@ -364,6 +300,7 @@ namespace Airborn.web.Models
         {
             return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
         }
+
 
         public static decimal Interpolate(decimal lowerValue, decimal upperValue, int valueForInterpolation, int desiredInterval)
         {

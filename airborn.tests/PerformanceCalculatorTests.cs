@@ -24,7 +24,7 @@ namespace Airborn.Tests
             return calculator;
 
         }
-        
+
         [TestMethod]
         public void Test_CrosswindComponent_NoCrosswind()
         {
@@ -52,7 +52,7 @@ namespace Airborn.Tests
 
             PerformanceCalculationResult result = new PerformanceCalculationResult(
                 runway, wind
-            );            
+            );
 
             Assert.AreEqual(-10, result.CrosswindComponent);
             Assert.AreEqual(0, (int)result.HeadwindComponent);

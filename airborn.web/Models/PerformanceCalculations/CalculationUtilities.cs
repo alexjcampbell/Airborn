@@ -17,12 +17,13 @@ namespace Airborn.web.Models
 
             difference = difference < -180 ? difference + 360 : difference;
 
-            if(difference > 360){
+            if (difference > 360)
+            {
                 throw new ArgumentException("The difference between the two angles cannot be more than 360 degrees. (Distance was " + difference + ")");
             }
 
             return difference;
-            
+
         }
 
         public static decimal ConvertDegreesToRadians(decimal degrees)
@@ -47,21 +48,21 @@ namespace Airborn.web.Models
 
         public static decimal CalculateISATemperatureForPressureAltitude(decimal pressureAltitude)
         {
-                // ISA temperature decreases by 2 degrees Celsius for every 1000 feet
-                // of altitude
+            // ISA temperature decreases by 2 degrees Celsius for every 1000 feet
+            // of altitude
 
-                decimal isaTemperatureAtSeaLevel = 15;
-                decimal temperatureLapseRate = 2;
-                decimal altitudeInterval = 1000;
+            decimal isaTemperatureAtSeaLevel = 15;
+            decimal temperatureLapseRate = 2;
+            decimal altitudeInterval = 1000;
 
-                return isaTemperatureAtSeaLevel - (temperatureLapseRate * ((decimal)pressureAltitude / altitudeInterval));
+            return isaTemperatureAtSeaLevel - (temperatureLapseRate * ((decimal)pressureAltitude / altitudeInterval));
         }
 
         public static decimal CalculateHeadwindComponent(int windStrength, decimal windRunwayAngularDifferenceMagnetic)
         {
             return (decimal)(
                 windStrength * Math.Cos((double)ConvertDegreesToRadians(windRunwayAngularDifferenceMagnetic))
-            );            
+            );
         }
 
 
@@ -72,7 +73,7 @@ namespace Airborn.web.Models
                     (double)CalculationUtilities.ConvertDegreesToRadians(windRunwayAngularDifferenceMagnetic)
                     )
             );
-        }        
+        }
 
         public static decimal CalculateAngularDifferenceBetweenRunwayAndWind(int runwayHeading, int windDirection)
         {
@@ -82,7 +83,7 @@ namespace Airborn.web.Models
         public static decimal CalculatePressureAltitudeAtFieldElevation(decimal QNH, int fieldElevation)
         {
             decimal standardPressure = 1013.25m;
-            
+
             // folks usually round this to 30, but, fun fact, the formula is actually
             // 96 × ( T in kelvin) / QNH (in hPa)
             // at T = ISA (15C) and QNH = 1013.25 hPa, this is 27.3

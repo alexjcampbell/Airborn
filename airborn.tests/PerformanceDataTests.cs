@@ -62,7 +62,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -75,7 +75,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -88,7 +88,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -101,7 +101,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -117,7 +117,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -133,7 +133,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -149,7 +149,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -170,7 +170,7 @@ namespace Airborn.Tests
             decimal distanceToClear50Ft = 120;
             Scenario scenario = Scenario.Takeoff;
 
-            PerformanceData bookDistances = new PerformanceData(scenario, pressureAltitude, temperature, groundRoll, distanceToClear50Ft);
+            PerformanceData bookDistances = new BookPerformanceData(scenario, pressureAltitude, temperature, groundRoll, distanceToClear50Ft);
 
             Assert.AreEqual(temperature, bookDistances.Temperature);
             Assert.AreEqual(pressureAltitude, bookDistances.PressureAltitude);
@@ -184,7 +184,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -203,7 +203,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -222,7 +222,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -238,7 +238,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new PerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList();
 
             bookNumbersList.PopulateFromJson(jsonFile.Object);
 
@@ -260,7 +260,7 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookDistancesList = new PerformanceDataList();
+            var bookDistancesList = new BookPerformanceDataList();
 
             //bookDistancesList.GetInterpolateBookDistances(Scenario.Takeoff, 0, 10, 100, 120);
             // todo: finish this test
