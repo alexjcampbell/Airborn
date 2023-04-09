@@ -201,7 +201,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedHeadwind,
-                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection),0)
+                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection), 0)
                 );
         }
 
@@ -253,7 +253,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedHeadwind,
-                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection),0)
+                Math.Round(CalculationUtilities.CalculateHeadwindComponent(windSpeed, windDirection), 0)
                 );
         }
 
@@ -472,7 +472,7 @@ namespace Airborn.Tests
             Assert.AreEqual(
                 qnh,
                 CalculationUtilities.ConvertInchesOfMercuryToMillibars(altimeter)
-                );              
+                );
         }
 
         [TestMethod]
@@ -488,7 +488,45 @@ namespace Airborn.Tests
                 );
         }
 
+        [TestMethod]
+        public void TestDensityAltitudeAtSeaLevelISA_EqualsPressureAltitude()
+        {
+            decimal temperature = 15m;
+            decimal expectedDensityAltitude = 0;
 
+            Assert.AreEqual(
+                expectedDensityAltitude,
+                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, 15, 0)
+                );
+        }
+
+        [TestMethod]
+        public void TestDensityAltitudeAt1000ftISA_EqualsPressureAltitude()
+        {
+            decimal temperature = 13m;
+            decimal expectedDensityAltitude = 1000;
+
+            Assert.AreEqual(
+                expectedDensityAltitude,
+                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, 13, 1000)
+                );
+        }
+
+        [TestMethod]
+        public void TestDensityAltitudeAtSeaLevelAtISAMinus2DegreesIsCorrect()
+        {
+            decimal temperature = 13;
+            decimal expectedDensityAltitude = -240;
+            decimal qnh = 1013.25m;
+
+            decimal pressureAltitude = CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, 0);
+            decimal isaTemperature = CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude);
+
+            Assert.AreEqual(
+                expectedDensityAltitude,
+                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, isaTemperature, pressureAltitude)
+                );
+        }
 
     }
 

@@ -8,7 +8,7 @@ namespace Airborn.web.Models
         const int pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
         const int temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
-        public PerformanceData()
+        public PerformanceDataList()
         {
         }
 
