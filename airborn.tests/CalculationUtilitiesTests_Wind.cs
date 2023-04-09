@@ -81,79 +81,6 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_ZeroDegreesFahrenheitEqualsMinus17Point()
-        {
-            int numberOfDegreesFahrenheit = 0;
-            decimal expectedDegreesCelcius = -17.777777777777777777777777778m;
-
-            Assert.AreEqual(
-                expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
-                );
-        }
-
-        [TestMethod]
-        public void TestFahrenheitToCelcius_32DegreesFahrenheitEqualsZeroDegreesCelcius()
-        {
-            int numberOfDegreesFahrenheit = 32;
-            decimal expectedDegreesCelcius = 0m;
-
-            Assert.AreEqual(
-                expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
-                );
-        }
-
-        [TestMethod]
-        public void TestFahrenheitToCelcius_50DegreesFahrenheitEquals10DegreesCelcius()
-        {
-            int numberOfDegreesFahrenheit = 50;
-            decimal expectedDegreesCelcius = 10m;
-
-            Assert.AreEqual(
-                expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
-                );
-        }
-
-        [TestMethod]
-        public void TestFahrenheitToCelcius_100DegreesFahrenheitEquals37ishDegreesCelcius()
-        {
-            int numberOfDegreesFahrenheit = 100;
-            decimal expectedDegreesCelcius = 37.777777777777777777777777778m;
-
-            Assert.AreEqual(
-                expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
-                );
-        }
-
-        [TestMethod]
-        public void TestInchesToMillibars_29Point92InchesOfMercuryEquals1013Millibars()
-        {
-            decimal inchesOfMercury = 29.92m;
-            decimal expectedMillibars = 1013.25m;
-
-            Assert.AreEqual(
-                Math.Round(expectedMillibars, 2),
-                Math.Round(CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury), 2)
-                );
-        }
-
-        [TestMethod]
-        public void TestInchesToMillibars_30Point00InchesOfMercuryEquals1013Millibars()
-        {
-            decimal inchesOfMercury = 30m;
-            decimal expectedMillibars = 1015.9592245980m;
-
-            Assert.AreEqual(
-                expectedMillibars,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
-                );
-        }
-
-
-        [TestMethod]
         public void TestCalculateHeadwindComponent_0KtsWindAt0DegreesEquals0kts()
         {
             int windSpeed = 0;
@@ -348,41 +275,6 @@ namespace Airborn.Tests
                 );
         }
 
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_0ftEquals15C()
-        {
-            int pressureAltitude = 0;
-            decimal expectedTemperature = 15m;
-
-            Assert.AreEqual(
-                expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
-                );
-        }
-
-        [TestMethod]
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_1000ftEquals13C()
-        {
-            int pressureAltitude = 1000;
-            decimal expectedTemperature = 13;
-
-            Assert.AreEqual(
-                expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
-                );
-        }
-
-        [TestMethod]
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_10000ftEqualsMinus1C()
-        {
-            int pressureAltitude = 10000;
-            decimal expectedTemperature = -5;
-
-            Assert.AreEqual(
-                expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
-                );
-        }
-
         [TestMethod]
         public void TestCalculateAngularDifferenceBetweenRunwayAndWind_0DegreesRunwayAnd0DegreesWindEquals0Degrees()
         {
@@ -460,74 +352,6 @@ namespace Airborn.Tests
                 CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
                 );
         }
-
-        // GetPressureAltitudeAtAirport
-
-        [TestMethod]
-        public void TestCalculatePressureAltitude_3092HgEquals1047Hpa()
-        {
-            decimal qnh = 1047.115307485672m;
-            decimal altimeter = 30.92m;
-
-            Assert.AreEqual(
-                qnh,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(altimeter)
-                );
-        }
-
-        [TestMethod]
-        public void TestGetPressureAltitudeAtAirport_0ftEquals0ft()
-        {
-            int elevation = 0;
-            decimal qnh = 1013.25m;
-            int expectedPressureAltitude = 0;
-
-            Assert.AreEqual(
-                expectedPressureAltitude,
-                CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, elevation)
-                );
-        }
-
-        [TestMethod]
-        public void TestDensityAltitudeAtSeaLevelISA_EqualsPressureAltitude()
-        {
-            decimal temperature = 15m;
-            decimal expectedDensityAltitude = 0;
-
-            Assert.AreEqual(
-                expectedDensityAltitude,
-                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, 15, 0)
-                );
-        }
-
-        [TestMethod]
-        public void TestDensityAltitudeAt1000ftISA_EqualsPressureAltitude()
-        {
-            decimal temperature = 13m;
-            decimal expectedDensityAltitude = 1000;
-
-            Assert.AreEqual(
-                expectedDensityAltitude,
-                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, 13, 1000)
-                );
-        }
-
-        [TestMethod]
-        public void TestDensityAltitudeAtSeaLevelAtISAMinus2DegreesIsCorrect()
-        {
-            decimal temperature = 13;
-            decimal expectedDensityAltitude = -240;
-            decimal qnh = 1013.25m;
-
-            decimal pressureAltitude = CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, 0);
-            decimal isaTemperature = CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude);
-
-            Assert.AreEqual(
-                expectedDensityAltitude,
-                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, isaTemperature, pressureAltitude)
-                );
-        }
-
     }
 
 }
