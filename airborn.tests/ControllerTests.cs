@@ -286,6 +286,8 @@ namespace Airborn.Tests
             // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
             // 400 ft pressure altitudes)
             Assert.IsTrue(_model.Results.Count > 0);
+
+            Assert.IsTrue(_model.Notes.Find(p => p.Contains("Pressure altitude is negative")) != null);
         }
 
         [TestMethod]
@@ -324,6 +326,8 @@ namespace Airborn.Tests
             // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
             // 400 ft pressure altitudes)
             Assert.IsTrue(_model.Results.Count > 0);
+
+            Assert.IsTrue(_model.Notes.Find(p => p.Contains("Temperature is negative")) != null);
         }
 
         [TestMethod]
