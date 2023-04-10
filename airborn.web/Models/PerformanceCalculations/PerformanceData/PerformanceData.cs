@@ -58,7 +58,7 @@ namespace Airborn.web.Models
         public decimal AircraftWeight
         {
             get;
-            private set;
+            set;
         }
     }
 }

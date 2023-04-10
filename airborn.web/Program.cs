@@ -25,6 +25,7 @@ namespace Airborn.Web
         {
 
             CreateHostBuilder(args).Build().Run();
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -32,6 +33,10 @@ namespace Airborn.Web
         {
             services.AddRazorPages();
             services.AddHttpClient();
+
+
+
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -61,3 +66,4 @@ namespace Airborn.Web
     }
 
 }
+

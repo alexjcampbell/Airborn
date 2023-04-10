@@ -46,7 +46,7 @@ namespace Airborn.Tests
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 10, higherWeight, 650, 770));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 20, higherWeight, 750, 870));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 20, higherWeight, 850, 970));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 20, higherWeight, 950, 1070));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 20, higherWeight, 950, 1130));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 20, higherWeight, 1050, 1270));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 20, higherWeight, 1150, 1370));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 20, higherWeight, 1250, 1470));
@@ -97,10 +97,8 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
 
-            // we're at 1000ft pressure altitude, so we should get the 1000ft pressure altitude data
-            // which is 800ft ground roll and 960ft to clear 50ft obstacle
-            Assert.AreEqual(800, interpolatedPerformanceData.GroundRoll);
-            Assert.AreEqual(960, interpolatedPerformanceData.DistanceToClear50Ft);
+            Assert.AreEqual(810, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(962, interpolatedPerformanceData.DistanceToClear50Ft);
 
         }
 
@@ -125,10 +123,8 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
 
-            // we're at 2000ft pressure altitude, so we should get the 2000ft pressure altitude data
-            // which is 900 ground roll and 1080ft to clear 50ft obstacle
-            Assert.AreEqual(900, interpolatedPerformanceData.GroundRoll);
-            Assert.AreEqual(1080, interpolatedPerformanceData.DistanceToClear50Ft);
+            Assert.AreEqual(910, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(1090, interpolatedPerformanceData.DistanceToClear50Ft);
 
         }
 
@@ -307,6 +303,45 @@ namespace Airborn.Tests
                     actualAircraftWeight
                 );
             });
+        }
+
+
+        [TestMethod]
+        public void TestUpperWeightDistancesAreHigherThanLowerWeightDistances()
+        {
+            decimal actualPressureAltitude = 2000;
+            decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 2900;
+
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
+
+            PeformanceDataInterpolator interpolatorLower = GetPerformanceInterpolator(
+                actualPressureAltitude,
+                actualTemperature,
+                actualAircraftWeight,
+                performanceDataList);
+
+            InterpolatedPerformanceData lowerData =
+                interpolatorLower.GetInterpolatedBookDistance(
+                    Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2),
+                    Scenario.Takeoff);
+
+            actualAircraftWeight = 3400;
+
+            PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
+                actualPressureAltitude,
+                actualTemperature,
+                actualAircraftWeight,
+                performanceDataList);
+
+            InterpolatedPerformanceData upperData =
+                interpolatorUpper.GetInterpolatedBookDistance(
+                    Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2),
+                    Scenario.Takeoff);
+
+            Assert.IsTrue(upperData.GroundRoll > lowerData.GroundRoll);
+            Assert.IsTrue(upperData.DistanceToClear50Ft > lowerData.DistanceToClear50Ft);
+
         }
     }
 }

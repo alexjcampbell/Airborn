@@ -175,10 +175,7 @@ namespace Airborn.web.Models
             InterpolatedPerformanceData lowerWeight = InterpolateByPressureAltitude(d1, d2, d3, d4, AircraftLowerWeight);
             InterpolatedPerformanceData upperWeight = InterpolateByPressureAltitude(d5, d6, d7, d8, AircraftHigherWeight);
 
-            decimal weightInterpolationFactor =
-                GetWeightInterpolationFactor(Convert.ToInt32(AircraftActualWeigth));
-
-            return InterpolateByAircraftWeight(lowerWeight, upperWeight, weightInterpolationFactor);
+            return InterpolateByAircraftWeight(lowerWeight, upperWeight, AircraftActualWeigth);
 
         }
 
@@ -223,8 +220,13 @@ namespace Airborn.web.Models
 
             lowerTemperaturePerformanceData.GroundRoll = interpolatedGroundRoll;
             lowerTemperaturePerformanceData.DistanceToClear50Ft = interpolatedDistanceToClear50Ft;
+            lowerTemperaturePerformanceData.AircraftWeight = weight;
             upperTemperaturePerformanceData.GroundRoll = interpolatedGroundRoll;
             upperTemperaturePerformanceData.DistanceToClear50Ft = interpolatedDistanceToClear50Ft;
+            upperTemperaturePerformanceData.AircraftWeight = weight;
+
+            lowerPressureAltitudePerformanceData.AircraftWeight = weight;
+            upperPresssureAltitudePerformanceData.AircraftWeight = weight;
 
             return InterpolateByTemperature(
                 lowerTemperaturePerformanceData,
@@ -268,8 +270,8 @@ namespace Airborn.web.Models
         }
 
         public InterpolatedPerformanceData InterpolateByAircraftWeight(
-             PerformanceData lowerTemperaturePerformanceData,
-             PerformanceData upperTemperaturePerformanceData,
+             PerformanceData lowerWeightPerformanceData,
+             PerformanceData upperWeightPerformanceData,
              decimal weight)
         {
             // bookData1 will be like: pressure altitude 1000, temperature 10
@@ -277,22 +279,20 @@ namespace Airborn.web.Models
             // actualTemperature will be like 15
             // we need to do a two-way interpolation here
 
-            decimal interpolatedGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.GroundRoll,
-                upperTemperaturePerformanceData.GroundRoll,
-                (int)weight,
-                _temperatureInterval
-                );
+            decimal interpolatedGroundRoll = InterpolateDistanceByWeight(
+                GetWeightInterpolationFactor((int)AircraftActualWeigth),
+                lowerWeightPerformanceData.GroundRoll,
+                upperWeightPerformanceData.GroundRoll
+            );
 
-            decimal interpolatedDistanceToClear50Ft = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.DistanceToClear50Ft,
-                upperTemperaturePerformanceData.DistanceToClear50Ft,
-                (int)weight,
-                _temperatureInterval
+            decimal interpolatedDistanceToClear50Ft = InterpolateDistanceByWeight(
+                GetWeightInterpolationFactor((int)AircraftActualWeigth),
+                lowerWeightPerformanceData.DistanceToClear50Ft,
+                upperWeightPerformanceData.DistanceToClear50Ft
             );
 
             return new InterpolatedPerformanceData(
-                lowerTemperaturePerformanceData.Scenario,
+                lowerWeightPerformanceData.Scenario,
                 ActualPressureAltitude,
                 ActualTemperature,
                 weight,

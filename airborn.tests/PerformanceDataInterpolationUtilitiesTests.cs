@@ -9,32 +9,8 @@ namespace Airborn.Tests
     public class AircraftPerformanceTests
     {
 
-        public static string TestJsonPath = "../../Debug/net6.0/SR22_G2_3400.json";
-
-        private int _defaultMagneticVariation = -20;
-
-        private PerformanceCalculator GetCalculator(int windDirectionMagnetic, int windStrength)
-        {
-
-            PerformanceCalculator calculator = new PerformanceCalculator(
-                AircraftType.SR22_G2,
-                new Airport(),
-                Wind.FromMagnetic(windDirectionMagnetic, _defaultMagneticVariation, windStrength),
-                TestJsonPath
-                );
-
-            calculator.TemperatureCelcius = 12;
-            calculator.QNH = 1013;
-            calculator.Airport.FieldElevation = 1500;
-            calculator.Airport.Ident = "KCRQ";
-
-            return calculator;
-
-        }
-
-
         [TestMethod]
-        public void Test_CalculateInterpolationFactor()
+        public void PerformanceDataInterpolationUtilitiesTests()
         {
 
             // 15 is halfway between 10 and 20, so interpolation factor should be 0.5
