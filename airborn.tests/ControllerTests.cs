@@ -40,7 +40,7 @@ namespace Airborn.Tests
         const int _default_FieldElevation = 0;
 
         // Default values for the model
-        const AircraftType _default_AircraftType = AircraftType.C172_SP;
+        const AircraftType _default_AircraftType = AircraftType.SR22_G2;
         const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.HPA;
         const string _default_AirportIdentifier = "KJFK";
         const int _default_Temperature = 15;
@@ -49,7 +49,7 @@ namespace Airborn.Tests
         const int _default_WindStrength = 10;
         const int _default_TemperatureCelcius = 12;
         const decimal _default_QNH = 1013.25m;
-        const double _default_AircraftWeight = 2500;
+        const double _default_AircraftWeight = 3000;
 
         List<Runway> TestRunways = new List<Runway>();
         List<Airport> TestAirports = new List<Airport>();
@@ -207,7 +207,6 @@ namespace Airborn.Tests
             // so field elevation should equal pressure altitude
             // but due to rounding errors, pressure altitude doesn't quite equal zero ft (sea level)
             decimal expectedPressureAltitude = 6.825m;
-
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
         }
 

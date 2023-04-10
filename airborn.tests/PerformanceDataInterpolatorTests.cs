@@ -11,28 +11,66 @@ namespace Airborn.Tests
     {
         private static BookPerformanceDataList SetupTestPerformanceData()
         {
-            BookPerformanceDataList performanceDataList = new BookPerformanceDataList();
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 10, 100, 120));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 10, 200, 240));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 10, 300, 360));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 10, 400, 480));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 10, 500, 600));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 10, 600, 720));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 20, 700, 840));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 20, 800, 960));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 20, 900, 1080));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 20, 1000, 1200));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 20, 1100, 1320));
-            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 20, 1200, 1440));
+            decimal lowerWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetLowerWeight();
+            decimal higherWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetHigherWeight();
+
+            BookPerformanceDataList performanceDataList = new BookPerformanceDataList((int)lowerWeight, (int)higherWeight);
+
+            // lower weight
+
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 10, lowerWeight, 100, 120));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 10, lowerWeight, 200, 240));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 10, lowerWeight, 300, 360));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 10, lowerWeight, 400, 480));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 10, lowerWeight, 500, 600));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 10, lowerWeight, 600, 720));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 20, lowerWeight, 700, 840));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 20, lowerWeight, 800, 960));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 20, lowerWeight, 900, 1080));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 20, lowerWeight, 1000, 1200));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 20, lowerWeight, 1100, 1320));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 20, lowerWeight, 1200, 1440));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 30, lowerWeight, 1300, 2840));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 30, lowerWeight, 1400, 2960));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 30, lowerWeight, 1500, 2080));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 30, lowerWeight, 1600, 2200));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 30, lowerWeight, 1700, 2320));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 30, lowerWeight, 1800, 2440));
+
+
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 10, higherWeight, 150, 170));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 10, higherWeight, 250, 270));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 10, higherWeight, 350, 370));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 10, higherWeight, 450, 470));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 10, higherWeight, 550, 670));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 10, higherWeight, 650, 770));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 20, higherWeight, 750, 870));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 20, higherWeight, 850, 970));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 20, higherWeight, 950, 1070));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 20, higherWeight, 1050, 1270));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 20, higherWeight, 1150, 1370));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 20, higherWeight, 1250, 1470));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 0, 30, higherWeight, 1750, 870));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 1000, 30, higherWeight, 1850, 3970));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 2000, 30, higherWeight, 1950, 3070));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 3000, 30, higherWeight, 2050, 3270));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 30, higherWeight, 2150, 3370));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 30, higherWeight, 2250, 3470));
+
             return performanceDataList;
         }
 
-        private static PeformanceDataInterpolator GetPerformanceInterpolator(decimal actualPressureAltitude, decimal actualTemperature, BookPerformanceDataList performanceDataList)
+        private static PeformanceDataInterpolator GetPerformanceInterpolator(
+            decimal actualPressureAltitude,
+            decimal actualTemperature,
+            decimal actualWeight,
+            BookPerformanceDataList performanceDataList)
         {
             return new PeformanceDataInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualWeight,
                 performanceDataList
             );
         }
@@ -43,6 +81,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 1000;
             decimal actualTemperature = 20;
+            decimal actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -50,10 +89,13 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualWeight,
                 performanceDataList
             );
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(Scenario.Takeoff);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
+
+            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
 
             // we're at 1000ft pressure altitude, so we should get the 1000ft pressure altitude data
             // which is 800ft ground roll and 960ft to clear 50ft obstacle
@@ -67,6 +109,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -74,10 +117,13 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(Scenario.Takeoff);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
+
+            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
 
             // we're at 2000ft pressure altitude, so we should get the 2000ft pressure altitude data
             // which is 900 ground roll and 1080ft to clear 50ft obstacle
@@ -91,6 +137,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 1500;
             decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -98,12 +145,16 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitude(
                 performanceDataList[1],
-                performanceDataList[2]
+                performanceDataList[2],
+                performanceDataList[3],
+                performanceDataList[4],
+                actualAircraftWeight
             );
 
             // we're at 1500ft pressure altitude, so we should get the 1500ft pressure altitude data
@@ -118,6 +169,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 1500;
             decimal actualTemperature = 25;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -125,12 +177,14 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperature(
                 performanceDataList[1],
-                performanceDataList[2]
+                performanceDataList[2],
+                actualAircraftWeight
             );
 
             // we're at 25 degrees C, so we should get the 25 degrees C data
@@ -145,6 +199,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -152,12 +207,14 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperature(
                 performanceDataList[1],
-                performanceDataList[2]
+                performanceDataList[2],
+                actualAircraftWeight
             );
 
             // we're at 20 degrees C, so we should get the 20 degrees C data
@@ -172,6 +229,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 30;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -179,12 +237,15 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperature(
                 performanceDataList[2],
-                performanceDataList[3]
+                performanceDataList[3],
+                actualAircraftWeight
+
             );
 
             // we're at 30 degrees C, so we should get the 30 degrees C data
@@ -199,6 +260,7 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = -1000;
             decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -206,6 +268,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
+                actualAircraftWeight,
                 performanceDataList
             );
 
@@ -213,7 +276,10 @@ namespace Airborn.Tests
             {
                 InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitude(
                     performanceDataList[0],
-                    performanceDataList[1]
+                    performanceDataList[1],
+                    performanceDataList[3],
+                    performanceDataList[4],
+                    actualAircraftWeight
                 );
             });
         }
@@ -223,16 +289,22 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = -20;
+            decimal actualAircraftWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
-            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(actualPressureAltitude, actualTemperature, performanceDataList);
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
+                actualPressureAltitude,
+                actualTemperature,
+                actualAircraftWeight,
+                performanceDataList);
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
                 InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperature(
                     performanceDataList[0],
-                    performanceDataList[1]
+                    performanceDataList[1],
+                    actualAircraftWeight
                 );
             });
         }

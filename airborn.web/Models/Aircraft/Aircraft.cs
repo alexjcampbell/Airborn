@@ -14,7 +14,7 @@ namespace Airborn.web.Models
         {
         }
 
-    
+
 
         // the implementing aircraft class must implement the POH rules for adjusting
         // the performance data for wind, slope, surface etc
@@ -27,7 +27,7 @@ namespace Airborn.web.Models
         public abstract int GetLowerWeight();
         public abstract int GetHigherWeight();
 
-        public static Aircraft GetAircraftFromAircraftType (AircraftType aircraftType)
+        public static Aircraft GetAircraftFromAircraftType(AircraftType aircraftType)
         {
 
             switch (aircraftType)
@@ -45,28 +45,7 @@ namespace Airborn.web.Models
 
         }
 
-        public decimal GetWeightInterpolationFactor(int weight)
-        {
-            if(weight <= 0)
-            {
-                throw new Exception("Weight must be greater than zero");
-            }
-            else if (weight < GetLowerWeight())
-            {
-                throw new AircraftWeightOutOfRangeException(GetLowerWeight(), GetHigherWeight());
-            }
-            else if (weight > GetHigherWeight())
-            {
-                throw new AircraftWeightOutOfRangeException(GetLowerWeight(), GetHigherWeight());
-            }
 
-            int lowerWeight = GetLowerWeight();
-            int higherWeight = GetHigherWeight();
-
-            decimal weightInterpolationFactor = (decimal)(weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
-
-            return weightInterpolationFactor;
-        }
 
     }
 }

@@ -83,6 +83,14 @@ namespace Airborn.web.Models
             set;
         }
 
+        public decimal TemperatureCelciusAlwaysPositiveOrZero
+        {
+            get
+            {
+                return TemperatureCelcius >= 0 ? TemperatureCelcius : 0;
+            }
+        }
+
 
         public decimal QNH
         {
@@ -106,7 +114,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public double AircraftWeight
+        public decimal AircraftWeight
         {
             get;
             set;
@@ -146,12 +154,6 @@ namespace Airborn.web.Models
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
-            string fullPathLowerWeight = Path.Combine(JsonPath, aircraft.JsonFileName_LowerWeight());
-            string fullPathHigherWeight = Path.Combine(JsonPath, aircraft.JsonFileName_HigherWeight());
-
-            JsonFile jsonFileLowerWeight = new JsonFile(fullPathLowerWeight);
-            JsonFile jsonFileHigherWeight = new JsonFile(fullPathHigherWeight);
-
             List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
 
             foreach (Runway runway in
@@ -167,7 +169,7 @@ namespace Airborn.web.Models
 
             foreach (Runway runway in Runways)
             {
-                PerformanceCalculationResult result = CalculatePerformanceForRunway(aircraft, jsonFileLowerWeight, jsonFileHigherWeight, runway);
+                PerformanceCalculationResult result = CalculatePerformanceForRunway(aircraft, runway);
 
                 Results.Add(result);
             }
@@ -188,140 +190,65 @@ namespace Airborn.web.Models
         /// <summary>
         /// Calculates the performance for a given runway
         /// </summary>
-        private PerformanceCalculationResult CalculatePerformanceForRunway(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight, Runway runway)
+        private PerformanceCalculationResult CalculatePerformanceForRunway(Aircraft aircraft, Runway runway)
         {
             PerformanceCalculationResult result =
                 new PerformanceCalculationResult(runway, Wind);
 
-            result.JsonFileLowerWeight = jsonFileLowerWeight;
-            result.JsonFileHigherWeight = jsonFileHigherWeight;
+            BookPerformanceDataList bookPerformanceDataList = new BookPerformanceDataList(aircraft.GetLowerWeight(), aircraft.GetHigherWeight());
+            bookPerformanceDataList.PopulateFromJsonStringPath(aircraft, JsonPath);
 
             // get the lower weight data
-            PeformanceDataInterpolator interpolatorLowerWeight = new PeformanceDataInterpolator(
-                Scenario.Takeoff, PressureAltitude, TemperatureCelcius, jsonFileLowerWeight);
+            PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
+                Scenario.Takeoff,
+                PressureAltitudeAlwaysPositiveOrZero,
+                TemperatureCelciusAlwaysPositiveOrZero,
+                (decimal)AircraftWeight,
+                bookPerformanceDataList);
 
-            // interpolate the lower weight dat
-            InterpolatedPerformanceData lowerWeightInterpolatedData =
-                interpolatorLowerWeight.GetInterpolatedBookDistance(Scenario.Takeoff);
+            InterpolatedPerformanceData interpolatedTakeoffData =
+                takeoffInterpolator.GetInterpolatedBookDistance(
+                    aircraft,
+                    Scenario.Takeoff);
 
-            // get the higher weight data
-            PeformanceDataInterpolator interpolatorHigherWeight = new PeformanceDataInterpolator(
-                Scenario.Takeoff, PressureAltitude, TemperatureCelcius, jsonFileHigherWeight);
+            PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
+                Scenario.Landing,
+                PressureAltitudeAlwaysPositiveOrZero,
+                TemperatureCelciusAlwaysPositiveOrZero,
+                (decimal)AircraftWeight,
+                bookPerformanceDataList);
 
-            // interpolate the higher weight data
-            InterpolatedPerformanceData higherWeightInterpolatedData =
-                interpolatorHigherWeight.GetInterpolatedBookDistance(Scenario.Takeoff);
-
-            decimal weightInterpolationFactor =
-                aircraft.GetWeightInterpolationFactor(Convert.ToInt32(AircraftWeight));
+            InterpolatedPerformanceData interpolatedLandingData =
+                landingInterpolator.GetInterpolatedBookDistance(
+                    aircraft,
+                    Scenario.Landing);
 
             result.Takeoff_GroundRoll =
                 aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    InterpolateDistanceByWeight(
-                        weightInterpolationFactor,
-                        lowerWeightInterpolatedData.GroundRoll,
-                        higherWeightInterpolatedData.GroundRoll
-                ));
+                    interpolatedTakeoffData.GroundRoll
+                );
 
             result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    InterpolateDistanceByWeight(
-                        weightInterpolationFactor,
-                        lowerWeightInterpolatedData.DistanceToClear50Ft,
-                        higherWeightInterpolatedData.DistanceToClear50Ft
-                ));
+                    interpolatedTakeoffData.DistanceToClear50Ft
+                );
 
             result.Landing_GroundRoll = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    InterpolateDistanceByWeight(
-                        weightInterpolationFactor,
-                        lowerWeightInterpolatedData.GroundRoll,
-                        higherWeightInterpolatedData.GroundRoll
-                ));
+                    interpolatedLandingData.GroundRoll
+                );
 
             result.Landing_50FtClearance = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    InterpolateDistanceByWeight(
-                        weightInterpolationFactor,
-                        lowerWeightInterpolatedData.DistanceToClear50Ft,
-                        higherWeightInterpolatedData.DistanceToClear50Ft
-                ));
+                    interpolatedLandingData.DistanceToClear50Ft
+                );
 
             return result;
-        }
-
-        /// <summary>
-        /// Interpolates between two distances based on the weight interpolation factor
-        /// i.e. if the weight interpolation factor is 0.5, it will return the average of the two distances
-        /// </summary>
-        private static decimal InterpolateDistanceByWeight(decimal weightInterpolationFactor, decimal distance_LowerWeight, decimal distance_HigherWeight)
-        {
-            return distance_LowerWeight +
-                (weightInterpolationFactor * (distance_HigherWeight - distance_LowerWeight));
-        }
-
-
-        /// <summary>
-        /// This function gives you an interpolation factor between two values:
-        /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
-        /// it will return 0.5
-        /// </summary>
-        public static decimal CalculateInterpolationFactor(int value, int lowerBound, int upperBound)
-        {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException(value.ToString());
-            }
-
-            if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
-            if (value > upperBound) { throw new ArgumentOutOfRangeException(); }
-
-            decimal interpolationFactor = (decimal)(value - lowerBound) / (decimal)(upperBound - lowerBound);
-
-            return interpolationFactor;
-        }
-
-        public static int GetLowerBoundForInterpolation(int value, int desiredInterval)
-        {
-            int lowerBound = value - (value % desiredInterval);
-
-            return lowerBound;
-        }
-
-        public static int GetUpperBoundForInterpolation(int value, int desiredInterval)
-        {
-            int lowerBound = value - (value % desiredInterval);
-            int upperBound = lowerBound + desiredInterval;
-
-            return upperBound;
-        }
-
-        public static (int, int) GetUpperAndLowBoundsForInterpolation(int value, int desiredInterval)
-        {
-            return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
-        }
-
-
-        public static decimal Interpolate(decimal lowerValue, decimal upperValue, int valueForInterpolation, int desiredInterval)
-        {
-            int lowerInterpolation = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
-            int upperInterpolation = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
-
-            decimal interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerInterpolation, upperInterpolation);
-
-            decimal interpolatedValue =
-                (upperValue - lowerValue)
-                *
-                interpolationFactor
-                + lowerValue;
-
-            return interpolatedValue;
-
         }
 
     }

@@ -9,23 +9,45 @@ namespace Airborn.Tests
     public class PerformanceDataTests
     {
 
-        Mock<JsonFile> jsonFile = new Mock<JsonFile>();
+        Mock<JsonFile> jsonFileLowerWeight = new Mock<JsonFile>();
+        Mock<JsonFile> jsonFileHigherWeight = new Mock<JsonFile>();
+
+        Aircraft aircraft = new SR22T_G5();
+
+        private int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetLowerWeight();
+        private int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetHigherWeight();
 
         public void Setup()
         {
-            jsonFile.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
-            jsonFile.Setup(x => x.LandingProfiles).Returns(new JsonPerformanceProfileList());
+            jsonFileLowerWeight.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
+            jsonFileLowerWeight.Setup(x => x.LandingProfiles).Returns(new JsonPerformanceProfileList());
 
+            jsonFileLowerWeight.Object.AircraftWeight = _aircraftLowerWeight;
 
-            jsonFile.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(0, "Takeoff"));
-            jsonFile.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(1000, "Takeoff"));
-            jsonFile.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(2000, "Takeoff"));
-            jsonFile.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(3000, "Takeoff"));
+            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(0, "Takeoff"));
+            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(1000, "Takeoff"));
+            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(2000, "Takeoff"));
+            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(3000, "Takeoff"));
 
-            jsonFile.Object.LandingProfiles.Add(PopulateAndReturnProfile(0, "Landing"));
-            jsonFile.Object.LandingProfiles.Add(PopulateAndReturnProfile(1000, "Landing"));
-            jsonFile.Object.LandingProfiles.Add(PopulateAndReturnProfile(2000, "Landing"));
-            jsonFile.Object.LandingProfiles.Add(PopulateAndReturnProfile(3000, "Landing"));
+            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(0, "Landing"));
+            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(1000, "Landing"));
+            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(2000, "Landing"));
+            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(3000, "Landing"));
+
+            jsonFileHigherWeight.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
+            jsonFileHigherWeight.Setup(x => x.LandingProfiles).Returns(new JsonPerformanceProfileList());
+
+            jsonFileHigherWeight.Object.AircraftWeight = _aircraftHigherWeight;
+
+            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(0, "Takeoff"));
+            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(1000, "Takeoff"));
+            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(2000, "Takeoff"));
+            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnProfile(3000, "Takeoff"));
+
+            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(0, "Landing"));
+            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(1000, "Landing"));
+            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(2000, "Landing"));
+            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnProfile(3000, "Landing"));
 
         }
 
@@ -52,6 +74,7 @@ namespace Airborn.Tests
                 // use 1/10th of the pressure altitude to add some upward slope as pressure altitude increases
                 clear50Ft.Distance = (i * 120) * (int)(0.1m * pressureAltitude + 1); // +1 to avoid multipling by zero and getting zero
                 profile.Clear50FtObstacle.Add(clear50Ft);
+
             }
 
             return profile;
@@ -62,9 +85,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             Assert.IsTrue(bookNumbersList.Count > 0);
 
@@ -75,9 +98,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             Assert.IsTrue(bookNumbersList.FindAll(x => x.Scenario == Scenario.Takeoff).Count > 0);
 
@@ -88,9 +111,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             Assert.IsTrue(bookNumbersList.FindAll(x => x.Scenario == Scenario.Landing).Count > 0);
 
@@ -101,9 +124,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             decimal expectedGroundRoll_0 = 100;
 
@@ -117,9 +140,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             decimal expectedGroundRoll_0 = 120;
 
@@ -133,9 +156,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             decimal expectedGroundRoll_0 = 100;
 
@@ -149,9 +172,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             decimal expectedGroundRoll_0 = 600;
 
@@ -168,9 +191,17 @@ namespace Airborn.Tests
             decimal pressureAltitude = 1000;
             decimal groundRoll = 100;
             decimal distanceToClear50Ft = 120;
+            decimal aircraftWeight = 3000;
             Scenario scenario = Scenario.Takeoff;
 
-            PerformanceData bookDistances = new BookPerformanceData(scenario, pressureAltitude, temperature, groundRoll, distanceToClear50Ft);
+            PerformanceData bookDistances = new BookPerformanceData(
+                scenario,
+                pressureAltitude,
+                temperature,
+                aircraftWeight,
+                groundRoll,
+                distanceToClear50Ft
+                );
 
             Assert.AreEqual(temperature, bookDistances.Temperature);
             Assert.AreEqual(pressureAltitude, bookDistances.PressureAltitude);
@@ -184,9 +215,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
 
@@ -203,9 +234,9 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
@@ -222,15 +253,15 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
-            Assert.AreEqual(20, takeoffBookDistances.Count);
-            Assert.AreEqual(20, landingBookDistances.Count);
+            Assert.AreEqual(40, takeoffBookDistances.Count);
+            Assert.AreEqual(40, landingBookDistances.Count);
         }
 
         [TestMethod]
@@ -238,15 +269,20 @@ namespace Airborn.Tests
         {
             Setup();
 
-            var bookNumbersList = new BookPerformanceDataList();
+            var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
-            bookNumbersList.PopulateFromJson(jsonFile.Object);
+            bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
             var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
-            var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, 0, 10);
-            var landingBookDistance = bookNumbersList.FindBookDistance(Scenario.Landing, 0, 10);
+            decimal pressureAltitude = 0;
+            decimal temperature = 10;
+            decimal aircraftWeight = 2900;
+
+
+            var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, aircraftWeight);
+            var landingBookDistance = bookNumbersList.FindBookDistance(Scenario.Landing, pressureAltitude, temperature, aircraftWeight);
 
             Assert.AreEqual(100, takeoffBookDistance.GroundRoll);
             Assert.AreEqual(120, takeoffBookDistance.DistanceToClear50Ft);
@@ -255,17 +291,6 @@ namespace Airborn.Tests
             Assert.AreEqual(120, landingBookDistance.DistanceToClear50Ft);
         }
 
-        [TestMethod]
-        public void TestGetInterpolatedBookDistancesReturnsInterpolatedResult()
-        {
-            Setup();
-
-            var bookDistancesList = new BookPerformanceDataList();
-
-            //bookDistancesList.GetInterpolateBookDistances(Scenario.Takeoff, 0, 10, 100, 120);
-            // todo: finish this test
-            Assert.AreEqual(true, true);
-        }
 
     }
 }

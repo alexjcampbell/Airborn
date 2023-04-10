@@ -1,13 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Airborn.web.Models
 {
     public class BookPerformanceDataList : List<BookPerformanceData>
     {
 
-        public BookPerformanceDataList()
+        public BookPerformanceDataList(int AircraftLowerWeight, int AircraftHigherWeight)
+            : base()
         {
+            this.AircraftLowerWeight = AircraftLowerWeight;
+            this.AircraftHigherWeight = AircraftHigherWeight;
+        }
+
+        public int AircraftLowerWeight
+        {
+            get;
+            private set;
+        }
+
+        public int AircraftHigherWeight
+        {
+            get;
+            private set;
         }
 
         public List<BookPerformanceData> TakeoffPerformanceData
@@ -26,50 +42,17 @@ namespace Airborn.web.Models
             }
         }
 
-        public void PopulateFromJson(JsonFile jsonFile)
+        public BookPerformanceData FindTakeoffBookDistance(decimal pressureAltitude, decimal temperature, decimal weight)
         {
-            foreach (var profile in jsonFile.TakeoffProfiles)
-            {
-                PopulateProfilesFromJson(Scenario.Takeoff, profile);
-            }
-            foreach (var profile in jsonFile.LandingProfiles)
-            {
-                PopulateProfilesFromJson(Scenario.Landing, profile);
-            }
+            return FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, weight);
         }
 
-        private void PopulateProfilesFromJson(
-            Scenario scenario,
-            JsonPerformanceProfile profile)
+        public BookPerformanceData FindLandingBookDistance(decimal pressureAltitude, decimal temperature, decimal weight)
         {
-            for (int i = 0; i < profile.GroundRoll.Count; i++)
-            {
-                var groundRoll = profile.GroundRoll[i];
-                var clear50Ft = profile.Clear50FtObstacle[i];
-
-                var bookNumbers = new BookPerformanceData(
-                    scenario,
-                    profile.PressureAltitude,
-                    groundRoll.Temperature,
-                    groundRoll.Distance,
-                    clear50Ft.Distance
-                );
-
-                Add(bookNumbers);
-            }
+            return FindBookDistance(Scenario.Landing, pressureAltitude, temperature, weight);
         }
 
-        public BookPerformanceData FindTakeoffBookDistance(decimal pressureAltitude, decimal temperature)
-        {
-            return FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature);
-        }
-
-        public BookPerformanceData FindLandingBookDistance(decimal pressureAltitude, decimal temperature)
-        {
-            return FindBookDistance(Scenario.Landing, pressureAltitude, temperature);
-        }
-
-        public BookPerformanceData FindBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature)
+        public BookPerformanceData FindBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature, decimal weight)
         {
 
             if (temperature < 0)
@@ -85,23 +68,79 @@ namespace Airborn.web.Models
                 pressureAltitude = 0;
             }
 
-            List<BookPerformanceData> bookDistances = FindAll(p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude && p.Temperature == temperature);
+            List<BookPerformanceData> bookDistances = FindAll(
+                p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude && p.Temperature == temperature && p.AircraftWeight == weight);
 
             if (bookDistances.Count == 0)
             {
-                throw new Exception("No book distances found for scenario " + scenario + " and pressure altitude " + pressureAltitude);
+                throw new Exception("No book distances found for scenario " + scenario + " and pressure altitude " + pressureAltitude + " temperature " + temperature + " weight " + weight);
             }
 
             if (bookDistances.Count > 1)
             {
-                throw new Exception("More than one book distance found for scenario " + scenario + " and pressure altitude " + pressureAltitude);
+                throw new Exception("More than one book distance found for scenario " + scenario + " and pressure altitude " + pressureAltitude + " temperature " + temperature + " weight " + weight);
             }
 
             return bookDistances[0];
         }
 
+        public void PopulateFromJsonStringPath(Aircraft aircraft, string jsonPath)
+        {
+            string fullPathLowerWeight = Path.Combine(jsonPath, aircraft.JsonFileName_LowerWeight());
+            string fullPathHigherWeight = Path.Combine(jsonPath, aircraft.JsonFileName_HigherWeight());
 
+            JsonFile jsonFileLowerWeight = new JsonFile(fullPathLowerWeight);
+            JsonFile jsonFileHigherWeight = new JsonFile(fullPathHigherWeight);
 
+            AircraftLowerWeight = aircraft.GetLowerWeight();
+            AircraftHigherWeight = aircraft.GetHigherWeight();
+
+            PopulateFromJson(aircraft, jsonFileLowerWeight, jsonFileHigherWeight);
+        }
+
+        public void PopulateFromJson(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight)
+        {
+
+            foreach (var profile in jsonFileLowerWeight.TakeoffProfiles)
+            {
+                PopulatePerformanceDataListFromJsonProfile(Scenario.Takeoff, profile, AircraftLowerWeight);
+            }
+            foreach (var profile in jsonFileLowerWeight.LandingProfiles)
+            {
+                PopulatePerformanceDataListFromJsonProfile(Scenario.Landing, profile, AircraftLowerWeight);
+            }
+            foreach (var profile in jsonFileHigherWeight.TakeoffProfiles)
+            {
+                PopulatePerformanceDataListFromJsonProfile(Scenario.Takeoff, profile, AircraftHigherWeight);
+            }
+            foreach (var profile in jsonFileHigherWeight.LandingProfiles)
+            {
+                PopulatePerformanceDataListFromJsonProfile(Scenario.Landing, profile, AircraftHigherWeight);
+            }
+        }
+
+        private void PopulatePerformanceDataListFromJsonProfile(
+            Scenario scenario,
+            JsonPerformanceProfile profile,
+            decimal weight)
+        {
+            for (int i = 0; i < profile.GroundRoll.Count; i++)
+            {
+                var groundRoll = profile.GroundRoll[i];
+                var clear50Ft = profile.Clear50FtObstacle[i];
+
+                var bookNumbers = new BookPerformanceData(
+                    scenario,
+                    profile.PressureAltitude,
+                    groundRoll.Temperature,
+                    weight,
+                    groundRoll.Distance,
+                    clear50Ft.Distance
+                );
+
+                Add(bookNumbers);
+            }
+        }
 
     }
 }

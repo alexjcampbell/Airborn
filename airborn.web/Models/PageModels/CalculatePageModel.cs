@@ -162,7 +162,6 @@ namespace Airborn.web.Models
         public void Calculate(AirportDbContext db)
         {
 
-
             Wind wind = Wind.FromMagnetic(
                 WindDirectionMagnetic.Value,
                 MagneticVariation.GetValueOrDefault(),

@@ -47,6 +47,12 @@ namespace Airborn.web.Models
             }
         }
 
+        public int AircraftWeight
+        {
+            get;
+            set;
+        }
+
         public void LoadJson(string path)
         {
 
@@ -63,70 +69,6 @@ namespace Airborn.web.Models
             JsonConvert.PopulateObject(json, this); ;
 
 
-        }
-
-        public decimal GetPerformanceDataValueForConditions(
-            JsonPerformanceProfileList profiles,
-            ScenarioMode scenarioMode,
-            decimal actualPressureAltitude,
-            int pressureAltitudeToFind,
-            int temperatureCelcius
-        )
-        {
-
-            // check to make sure that we actually have data for this Pressure Altitude and Temperature
-            int maxPressureAltitudeAvailable = profiles.Max(p => p.PressureAltitude);
-            if (pressureAltitudeToFind > maxPressureAltitudeAvailable)
-            {
-                throw new PressureAltitudePerformanceProfileNotFoundException(actualPressureAltitude);
-            }
-
-            JsonPerformanceProfile profile =
-                FindByPressureAltitude(profiles, scenarioMode, pressureAltitudeToFind);
-
-            if (profile == null)
-            {
-                throw new PressureAltitudePerformanceProfileNotFoundException(actualPressureAltitude);
-            }
-
-            switch (scenarioMode)
-            {
-                case ScenarioMode.Takeoff_50FtClearance:
-                case ScenarioMode.Landing_50FtClearance:
-
-                    return profile.Clear50FtObstacle.FindByTemperature(temperatureCelcius);
-
-                case ScenarioMode.Takeoff_GroundRoll:
-                case ScenarioMode.Landing_GroundRoll:
-                    return profile.GroundRoll.FindByTemperature(temperatureCelcius);
-
-            }
-
-            throw new ArgumentException($"No performance data found for pressure altitude: {pressureAltitudeToFind} and temperature: {temperatureCelcius}");
-        }
-
-        public JsonPerformanceProfile FindByPressureAltitude(JsonPerformanceProfileList profiles, ScenarioMode scenarioMode, int pressureAltitude)
-        {
-            string type = "";
-
-            switch (scenarioMode)
-            {
-                case ScenarioMode.Takeoff_50FtClearance:
-                case ScenarioMode.Takeoff_GroundRoll:
-                    type = "Takeoff";
-                    break;
-                case ScenarioMode.Landing_50FtClearance:
-                case ScenarioMode.Landing_GroundRoll:
-                    type = "Landing";
-                    break;
-            }
-
-            return profiles.Find(
-                p =>
-                p.PressureAltitude == pressureAltitude
-                &
-                p.Type == type
-                );
         }
 
     }
