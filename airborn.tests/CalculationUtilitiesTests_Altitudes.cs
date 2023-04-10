@@ -16,8 +16,9 @@ namespace Airborn.Tests
             decimal altimeter = 30.92m;
 
             Assert.AreEqual(
-                qnh,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(altimeter)
+                CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, 0),
+                CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(
+                    CalculationUtilities.ConvertInchesOfMercuryToMillibars(altimeter), 0)
                 );
         }
 

@@ -21,7 +21,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInchesToMillibars_30Point00InchesOfMercuryEquals1013Millibars()
+        public void TestInchesToMillibars_30Point00InchesOfMercuryEquals1015Millibars()
         {
             decimal inchesOfMercury = 30m;
             decimal expectedMillibars = 1015.9592245980m;
@@ -32,6 +32,17 @@ namespace Airborn.Tests
                 );
         }
 
+        [TestMethod]
+        public void TestInchesToMillibars_30Point92InchesOfMercuryEquals1047Millibars()
+        {
+            decimal inchesOfMercury = 30.92m;
+            decimal expectedMillibars = 1047.115307485672m;
+
+            Assert.AreEqual(
+                expectedMillibars,
+                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                );
+        }
     }
 
 }
