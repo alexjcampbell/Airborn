@@ -29,7 +29,7 @@ namespace Airborn.web.Models
         {
             ActualPressureAltitude = actualPressureAltitude;
             ActualTemperature = actualTemperature;
-            AircraftActualWeigth = aircraftActualWeigth;
+            AircraftActualWeight = aircraftActualWeigth;
             Scenario = scenario;
             JsonFileLowerWeight = jsonFileLowerWeight;
             JsonFileHigherWeight = jsonFileHigherWeight;
@@ -51,7 +51,7 @@ namespace Airborn.web.Models
         {
             ActualPressureAltitude = actualPressureAltitude;
             ActualTemperature = actualTemperature;
-            AircraftActualWeigth = actualWeight;
+            AircraftActualWeight = actualWeight;
             Scenario = scenario;
             _performanceDataList = performanceDataList;
         }
@@ -82,7 +82,7 @@ namespace Airborn.web.Models
             private set;
         }
 
-        public Scenario Scenario
+        public Scenario? Scenario
         {
             get;
             private set;
@@ -106,7 +106,7 @@ namespace Airborn.web.Models
             private set;
         }
 
-        public decimal AircraftActualWeigth
+        public decimal AircraftActualWeight
         {
             get;
             private set;
@@ -175,7 +175,7 @@ namespace Airborn.web.Models
             InterpolatedPerformanceData lowerWeight = InterpolateByPressureAltitude(d1, d2, d3, d4, AircraftLowerWeight);
             InterpolatedPerformanceData upperWeight = InterpolateByPressureAltitude(d5, d6, d7, d8, AircraftHigherWeight);
 
-            return InterpolateByAircraftWeight(lowerWeight, upperWeight, AircraftActualWeigth);
+            return InterpolateByAircraftWeight(lowerWeight, upperWeight, AircraftActualWeight);
 
         }
 
@@ -184,8 +184,13 @@ namespace Airborn.web.Models
             decimal temperature,
             decimal weight)
         {
+            if (Scenario == null)
+            {
+                throw new Exception("Scenario is null.  This should never happen.");
+            }
+
             return _performanceDataList.FindBookDistance(
-                Scenario,
+                Scenario.Value,
                 pressureAltitude,
                 temperature,
                 weight);
@@ -280,13 +285,13 @@ namespace Airborn.web.Models
             // we need to do a two-way interpolation here
 
             decimal interpolatedGroundRoll = InterpolateDistanceByWeight(
-                GetWeightInterpolationFactor((int)AircraftActualWeigth),
+                GetWeightInterpolationFactor((int)AircraftActualWeight),
                 lowerWeightPerformanceData.GroundRoll,
                 upperWeightPerformanceData.GroundRoll
             );
 
             decimal interpolatedDistanceToClear50Ft = InterpolateDistanceByWeight(
-                GetWeightInterpolationFactor((int)AircraftActualWeigth),
+                GetWeightInterpolationFactor((int)AircraftActualWeight),
                 lowerWeightPerformanceData.DistanceToClear50Ft,
                 upperWeightPerformanceData.DistanceToClear50Ft
             );

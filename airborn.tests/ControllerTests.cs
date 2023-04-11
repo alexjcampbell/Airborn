@@ -424,5 +424,50 @@ namespace Airborn.Tests
             Assert.IsFalse(_model.ResultsSortedByHeadwind.Last().IsBestWind);
         }
 
+
+        [TestMethod]
+        public void TestTakeoffGroundRollDistanceChangesWhenAircraftWeightChanges()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AircraftWeight = 2900;
+
+            var result = _controller.Calculate(_model);
+
+            decimal? takeoffGroundRollDistanceLowerWeight = _model.Results[0].Takeoff_GroundRoll;
+
+            InitializeModel();
+
+            _model.AircraftWeight = 3400;
+
+            result = _controller.Calculate(_model);
+            decimal? takeoffGroundRollDistanceHigherWeight = _model.Results[0].Takeoff_GroundRoll;
+
+            Assert.IsTrue(takeoffGroundRollDistanceHigherWeight > takeoffGroundRollDistanceLowerWeight);
+        }
+
+        [TestMethod]
+        public void TestLandingGroundRollDistanceChangesWhenAircraftWeightChanges()
+        {
+            InitializeController();
+            InitializeModel();
+
+            _model.AircraftWeight = 2900;
+
+            var result = _controller.Calculate(_model);
+
+            decimal? landingGroundRollDistanceLowerWeight = _model.Results[0].Landing_GroundRoll;
+
+            InitializeModel();
+
+            _model.AircraftWeight = 3400;
+
+            result = _controller.Calculate(_model);
+            decimal? landingGroundRollDistanceHigherWeight = _model.Results[0].Landing_GroundRoll;
+
+            Assert.IsTrue(landingGroundRollDistanceHigherWeight > landingGroundRollDistanceLowerWeight);
+        }
+
     }
 }

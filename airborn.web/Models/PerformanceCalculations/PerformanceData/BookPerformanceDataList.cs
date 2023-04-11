@@ -68,6 +68,15 @@ namespace Airborn.web.Models
                 pressureAltitude = 0;
             }
 
+            if (weight < AircraftLowerWeight)
+            {
+                throw new Exception("Weight " + weight + " is less than the lower possible weight " + AircraftLowerWeight);
+            }
+            if (weight > AircraftHigherWeight)
+            {
+                throw new Exception("Weight " + weight + " is greater than the higher possible weight " + AircraftHigherWeight);
+            }
+
             List<BookPerformanceData> bookDistances = FindAll(
                 p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude && p.Temperature == temperature && p.AircraftWeight == weight);
 
