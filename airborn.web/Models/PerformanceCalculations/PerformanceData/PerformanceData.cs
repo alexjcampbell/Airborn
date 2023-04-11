@@ -12,12 +12,13 @@ namespace Airborn.web.Models
         private PerformanceData()
         {
         }
+
         public PerformanceData(
             Scenario scenario,
             decimal pressureAltitude,
             decimal temperature,
             decimal aircraftWeight
-            ) : this(scenario, pressureAltitude, temperature, aircraftWeight, 0, 0)
+            ) : this(scenario, pressureAltitude, temperature, aircraftWeight, null, null)
         {
         }
 
@@ -27,14 +28,14 @@ namespace Airborn.web.Models
             decimal pressureAltitude,
             decimal temperature,
             decimal aircraftWeight,
-            decimal groundRoll,
-            decimal distanceToClear50Ft)
+            decimal? groundRoll,
+            decimal? distanceToClear50Ft)
         {
             Scenario = scenario;
             PressureAltitude = pressureAltitude;
             Temperature = temperature;
             AircraftWeight = aircraftWeight;
-            GroundRoll = groundRoll;
+            DistanceGroundRoll = groundRoll;
             DistanceToClear50Ft = distanceToClear50Ft;
         }
 
@@ -52,13 +53,13 @@ namespace Airborn.web.Models
             private set;
         }
 
-        public decimal GroundRoll
+        public decimal? DistanceGroundRoll
         {
             get;
             set;
         }
 
-        public decimal DistanceToClear50Ft
+        public decimal? DistanceToClear50Ft
         {
             get;
             set;

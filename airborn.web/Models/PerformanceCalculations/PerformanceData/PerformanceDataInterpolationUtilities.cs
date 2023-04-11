@@ -60,6 +60,11 @@ namespace Airborn.web.Models
             if (valueForInterpolation > GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval)) { throw new ArgumentOutOfRangeException(); }
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
 
+            if (valueForInterpolation == lowerValue)
+            {
+                return lowerValue;
+            }
+
             int lowerInterpolation = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
             int upperInterpolation = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
 

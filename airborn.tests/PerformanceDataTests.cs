@@ -131,7 +131,7 @@ namespace Airborn.Tests
             decimal expectedGroundRoll_0 = 100;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.LandingPerformanceData[0].GroundRoll);
+                bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll);
 
         }
 
@@ -163,7 +163,7 @@ namespace Airborn.Tests
             decimal expectedGroundRoll_0 = 100;
 
             Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.TakeoffPerformanceData[0].GroundRoll);
+                bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll);
 
         }
 
@@ -205,7 +205,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(temperature, bookDistances.Temperature);
             Assert.AreEqual(pressureAltitude, bookDistances.PressureAltitude);
-            Assert.AreEqual(groundRoll, bookDistances.GroundRoll);
+            Assert.AreEqual(groundRoll, bookDistances.DistanceGroundRoll);
             Assert.AreEqual(distanceToClear50Ft, bookDistances.DistanceToClear50Ft);
             Assert.AreEqual(scenario, bookDistances.Scenario);
         }
@@ -284,10 +284,10 @@ namespace Airborn.Tests
             var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, aircraftWeight);
             var landingBookDistance = bookNumbersList.FindBookDistance(Scenario.Landing, pressureAltitude, temperature, aircraftWeight);
 
-            Assert.AreEqual(100, takeoffBookDistance.GroundRoll);
+            Assert.AreEqual(100, takeoffBookDistance.DistanceGroundRoll);
             Assert.AreEqual(120, takeoffBookDistance.DistanceToClear50Ft);
 
-            Assert.AreEqual(100, landingBookDistance.GroundRoll);
+            Assert.AreEqual(100, landingBookDistance.DistanceGroundRoll);
             Assert.AreEqual(120, landingBookDistance.DistanceToClear50Ft);
         }
 

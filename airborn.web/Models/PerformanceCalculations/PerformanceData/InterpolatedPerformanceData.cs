@@ -5,6 +5,9 @@ namespace Airborn.web.Models
     public class InterpolatedPerformanceData : PerformanceData
     {
 
+        /// <summary>
+        /// Represents an interpolated groundroll distance and distance to clear a 50' obstacle
+        /// for a given pressure altitude, temperature, and aircraft weight
         public InterpolatedPerformanceData(
             Scenario scenario,
             decimal pressureAltitude,
@@ -18,22 +21,6 @@ namespace Airborn.web.Models
         {
         }
 
-        public InterpolatedPerformanceData(
-            Scenario scenario,
-            decimal pressureAltitude,
-            decimal temperature,
-            decimal weight,
-            decimal groundRoll,
-            decimal distanceToClear50Ft)
-            : base(
-                scenario,
-                pressureAltitude,
-                temperature,
-                weight,
-                groundRoll,
-                distanceToClear50Ft)
-        {
-        }
-    }
 
+    }
 }

@@ -130,7 +130,8 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 1000;
             decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            decimal actualWeight = 3400;
+            AircraftType aircraftType = AircraftType.SR22_G2;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -142,13 +143,13 @@ namespace Airborn.Tests
                 performanceDataList
             );
 
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(
                 aircraft);
 
-            Assert.AreEqual(810, interpolatedPerformanceData.GroundRoll);
-            Assert.AreEqual(962, interpolatedPerformanceData.DistanceToClear50Ft);
+            Assert.AreEqual(850, interpolatedPerformanceData.DistanceGroundRoll);
+            Assert.AreEqual(970, interpolatedPerformanceData.DistanceToClear50Ft);
 
         }
 
@@ -158,6 +159,7 @@ namespace Airborn.Tests
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 20;
             decimal actualAircraftWeight = 3000;
+            AircraftType aircraftType = AircraftType.SR22_G2;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -169,12 +171,12 @@ namespace Airborn.Tests
                 performanceDataList
             );
 
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData =
                 interpolator.GetInterpolatedBookDistance(aircraft);
 
-            Assert.AreEqual(910, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(910, interpolatedPerformanceData.DistanceGroundRoll);
             Assert.AreEqual(1090, interpolatedPerformanceData.DistanceToClear50Ft);
 
         }
@@ -207,7 +209,7 @@ namespace Airborn.Tests
             // we're at 1500ft pressure altitude, so we should get the 1500ft pressure altitude data
             // which is 250ft ground roll and 300ft to clear 50ft obstacle
             // the data is interpolated between the 1000ft and 2000ft pressure altitude data
-            Assert.AreEqual(250, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(250, interpolatedPerformanceData.DistanceGroundRoll);
             Assert.AreEqual(300, interpolatedPerformanceData.DistanceToClear50Ft);
         }
 
@@ -237,7 +239,7 @@ namespace Airborn.Tests
             // we're at 25 degrees C, so we should get the 25 degrees C data
             // which is 250ft ground roll and 300ft to clear 50ft obstacle
             // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(250, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(250, interpolatedPerformanceData.DistanceGroundRoll);
             Assert.AreEqual(300, interpolatedPerformanceData.DistanceToClear50Ft);
         }
 
@@ -267,7 +269,7 @@ namespace Airborn.Tests
             // we're at 20 degrees C, so we should get the 20 degrees C data
             // which is 200ft ground roll and 240ft to clear 50ft obstacle
             // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(200, interpolatedPerformanceData.GroundRoll);
+            Assert.AreEqual(200, interpolatedPerformanceData.DistanceGroundRoll);
             Assert.AreEqual(240, interpolatedPerformanceData.DistanceToClear50Ft);
         }
 
@@ -276,9 +278,10 @@ namespace Airborn.Tests
         {
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 30;
-            decimal actualAircraftWeight = 3000;
+            decimal actualAircraftWeight = 3400;
+            AircraftType aircraftType = AircraftType.SR22_G2;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(aircraftType);
 
             PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
                 Scenario.Takeoff,
@@ -289,8 +292,8 @@ namespace Airborn.Tests
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperature(
-                performanceDataList[2],
-                performanceDataList[3],
+                interpolator.FindBookDistance(actualPressureAltitude, actualTemperature, actualAircraftWeight),
+                interpolator.FindBookDistance(actualPressureAltitude, actualTemperature, actualAircraftWeight),
                 actualAircraftWeight
 
             );
@@ -298,8 +301,8 @@ namespace Airborn.Tests
             // we're at 30 degrees C, so we should get the 30 degrees C data
             // which is 300ft ground roll and 360ft to clear 50ft obstacle
             // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(300, interpolatedPerformanceData.GroundRoll);
-            Assert.AreEqual(360, interpolatedPerformanceData.DistanceToClear50Ft);
+            Assert.AreEqual(1950, interpolatedPerformanceData.DistanceGroundRoll);
+            Assert.AreEqual(3070, interpolatedPerformanceData.DistanceToClear50Ft);
         }
 
         [TestMethod]
@@ -357,6 +360,49 @@ namespace Airborn.Tests
             });
         }
 
+        [TestMethod]
+        public void TestTakeoffDistancesAreHigherWhenWeightIncreases()
+        {
+            AircraftType aircraftType = AircraftType.C172_SP;
+
+            decimal actualPressureAltitude = 2000;
+            decimal actualTemperature = 20;
+            decimal actualAircraftWeight = 2400;
+            Scenario scenario = Scenario.Takeoff;
+
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(aircraftType);
+
+            PeformanceDataInterpolator interpolatorLower = GetPerformanceInterpolator(
+                scenario,
+                actualPressureAltitude,
+                actualTemperature,
+                actualAircraftWeight,
+                performanceDataList);
+
+            InterpolatedPerformanceData lowerData =
+                interpolatorLower.GetInterpolatedBookDistance(
+                    Aircraft.GetAircraftFromAircraftType(aircraftType));
+
+            actualAircraftWeight = 2550;
+            actualPressureAltitude = 2000;
+            actualTemperature = 20;
+
+            PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
+                scenario,
+                actualPressureAltitude,
+                actualTemperature,
+                actualAircraftWeight,
+                performanceDataList);
+
+            InterpolatedPerformanceData upperData =
+                interpolatorUpper.GetInterpolatedBookDistance(
+                    Aircraft.GetAircraftFromAircraftType(aircraftType));
+
+            Assert.IsTrue(upperData.DistanceGroundRoll > lowerData.DistanceGroundRoll);
+            Assert.IsTrue(upperData.DistanceToClear50Ft > lowerData.DistanceToClear50Ft);
+
+        }
+
         /// <summary>
         /// Test that the takeoff and landing distances are the same when the aircraft weight changes
         /// This doesn't make a lot of sense from first principles, but the POH for C172 and SR22 doesn't
@@ -364,7 +410,7 @@ namespace Airborn.Tests
         /// in the Json
         /// </summary>
         [TestMethod]
-        public void TestTakeoffLandingDistancesAreSameWhenWeightChanges()
+        public void TestLandingDistancesAreSameWhenWeightChanges()
         {
             AircraftType aircraftType = AircraftType.C172_SP;
 
@@ -389,7 +435,6 @@ namespace Airborn.Tests
             actualAircraftWeight = 2550;
             actualPressureAltitude = 2000;
             actualTemperature = 20;
-            actualAircraftWeight = 2400;
 
 
             PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
@@ -403,10 +448,13 @@ namespace Airborn.Tests
                 interpolatorUpper.GetInterpolatedBookDistance(
                     Aircraft.GetAircraftFromAircraftType(aircraftType));
 
-            Assert.IsTrue(upperData.GroundRoll == lowerData.GroundRoll);
+            Assert.IsTrue(upperData.DistanceGroundRoll == lowerData.DistanceGroundRoll);
             Assert.IsTrue(upperData.DistanceToClear50Ft == lowerData.DistanceToClear50Ft);
 
         }
+
+
+
 
     }
 }

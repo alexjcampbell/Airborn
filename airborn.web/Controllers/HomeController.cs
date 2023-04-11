@@ -97,24 +97,12 @@ namespace Airborn.Controllers
                 }
                 model.Calculate(_dbContext);
             }
-            catch (PressureAltitudePerformanceProfileNotFoundException e)
+            catch (NoPerformanceDataFoundException e)
             {
                 ModelState.AddModelError(
                     "AltimeterSetting",
                     e.Message
                 );
-
-                return View(model);
-            }
-
-            catch (TemperaturePerformanceProfileNotFoundException)
-            {
-                ModelState.AddModelError(
-                    "TemperatureCelcius",
-                    String.Format(
-                        $"No performance data found for Temperature {model.Temperature} {model.TemperatureType}"
-                    ))
-                    ;
 
                 return View(model);
             }

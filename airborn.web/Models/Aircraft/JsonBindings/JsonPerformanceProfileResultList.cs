@@ -11,7 +11,7 @@ namespace Airborn.web.Models
 
             if (result == null)
             {
-                throw new TemperaturePerformanceProfileNotFoundException(temperature);
+                throw new ArgumentOutOfRangeException("temperature", temperature, "No performance profile found for the given temperature");
             }
 
             return result.Distance;

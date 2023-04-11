@@ -82,7 +82,7 @@ namespace Airborn.web.Models
 
             if (bookDistances.Count == 0)
             {
-                throw new Exception("No book distances found for scenario " + scenario + " and pressure altitude " + pressureAltitude + " temperature " + temperature + " weight " + weight);
+                throw new NoPerformanceDataFoundException(pressureAltitude, temperature, weight);
             }
 
             if (bookDistances.Count > 1)

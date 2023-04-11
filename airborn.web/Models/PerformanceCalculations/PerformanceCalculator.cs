@@ -145,6 +145,9 @@ namespace Airborn.web.Models
         // notes to return to the UI about the calculations
         public List<string> Notes = new List<string>();
 
+        public InterpolatedPerformanceData IntepolatedTakeoffPerformanceData;
+        public InterpolatedPerformanceData IntepolatedLandingPerformanceData;
+
         public void Calculate(AirportDbContext db)
         {
 
@@ -159,6 +162,8 @@ namespace Airborn.web.Models
             }
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
+
+            PopulateInterpolatedPerformanceData(aircraft);
 
             List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
 
@@ -182,6 +187,37 @@ namespace Airborn.web.Models
 
         }
 
+        private void PopulateInterpolatedPerformanceData(Aircraft aircraft)
+        {
+            BookPerformanceDataList bookPerformanceDataList = new BookPerformanceDataList(aircraft.GetLowerWeight(), aircraft.GetHigherWeight());
+            bookPerformanceDataList.PopulateFromJsonStringPath(aircraft, JsonPath);
+
+            // get the lower weight data
+            PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
+                Scenario.Takeoff,
+                PressureAltitudeAlwaysPositiveOrZero,
+                TemperatureCelciusAlwaysPositiveOrZero,
+                (decimal)AircraftWeight,
+                bookPerformanceDataList);
+
+            IntepolatedTakeoffPerformanceData =
+                takeoffInterpolator.GetInterpolatedBookDistance(
+                    aircraft);
+
+
+            PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
+                Scenario.Landing,
+                PressureAltitudeAlwaysPositiveOrZero,
+                TemperatureCelciusAlwaysPositiveOrZero,
+                (decimal)AircraftWeight,
+                bookPerformanceDataList);
+
+            IntepolatedLandingPerformanceData =
+                landingInterpolator.GetInterpolatedBookDistance(
+                    aircraft);
+
+        }
+
         private static void SetRunwayHeading(Runway runway, Runway primaryRunway)
         {
             string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
@@ -201,55 +237,30 @@ namespace Airborn.web.Models
             PerformanceCalculationResult result =
                 new PerformanceCalculationResult(runway, Wind);
 
-            BookPerformanceDataList bookPerformanceDataList = new BookPerformanceDataList(aircraft.GetLowerWeight(), aircraft.GetHigherWeight());
-            bookPerformanceDataList.PopulateFromJsonStringPath(aircraft, JsonPath);
-
-            // get the lower weight data
-            PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
-                Scenario.Takeoff,
-                PressureAltitudeAlwaysPositiveOrZero,
-                TemperatureCelciusAlwaysPositiveOrZero,
-                (decimal)AircraftWeight,
-                bookPerformanceDataList);
-
-            InterpolatedPerformanceData interpolatedTakeoffData =
-                takeoffInterpolator.GetInterpolatedBookDistance(
-                    aircraft);
-
-            PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
-                Scenario.Landing,
-                PressureAltitudeAlwaysPositiveOrZero,
-                TemperatureCelciusAlwaysPositiveOrZero,
-                (decimal)AircraftWeight,
-                bookPerformanceDataList);
-
-            InterpolatedPerformanceData interpolatedLandingData =
-                landingInterpolator.GetInterpolatedBookDistance(
-                    aircraft);
 
             result.Takeoff_GroundRoll =
                 aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    interpolatedTakeoffData.GroundRoll
+                    IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value
                 );
 
             result.Takeoff_50FtClearance = aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    interpolatedTakeoffData.DistanceToClear50Ft
+                    IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value
                 );
 
             result.Landing_GroundRoll = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    interpolatedLandingData.GroundRoll
+                    IntepolatedLandingPerformanceData.DistanceGroundRoll.Value
                 );
 
             result.Landing_50FtClearance = aircraft.MakeLandingAdjustments
                 (
                     result,
-                    interpolatedLandingData.DistanceToClear50Ft
+                    IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value
                 );
 
             return result;

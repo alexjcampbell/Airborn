@@ -87,17 +87,5 @@ namespace Airborn.web.Models
             }
         }
 
-        public JsonFile JsonFileLowerWeight
-        {
-            get;
-            set;
-        }
-
-        public JsonFile JsonFileHigherWeight
-        {
-            get;
-            set;
-        }
-
     }
 }
