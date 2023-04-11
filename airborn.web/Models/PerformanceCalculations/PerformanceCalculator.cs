@@ -18,12 +18,12 @@ namespace Airborn.web.Models
 
 
         public PerformanceCalculator(
-            AircraftType aircraftType,
+            Aircraft aircraft,
             Airport airport,
             Wind wind,
             string path)
         {
-            AircraftType = aircraftType;
+            Aircraft = aircraft;
             Airport = airport;
             _wind = wind;
             JsonPath = path;
@@ -136,6 +136,12 @@ namespace Airborn.web.Models
             }
         }
 
+        public Aircraft Aircraft
+        {
+            get;
+            private set;
+        }
+
         // notes to return to the UI about the calculations
         public List<string> Notes = new List<string>();
 
@@ -208,8 +214,7 @@ namespace Airborn.web.Models
 
             InterpolatedPerformanceData interpolatedTakeoffData =
                 takeoffInterpolator.GetInterpolatedBookDistance(
-                    aircraft,
-                    Scenario.Takeoff);
+                    aircraft);
 
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
                 Scenario.Landing,
@@ -220,8 +225,7 @@ namespace Airborn.web.Models
 
             InterpolatedPerformanceData interpolatedLandingData =
                 landingInterpolator.GetInterpolatedBookDistance(
-                    aircraft,
-                    Scenario.Landing);
+                    aircraft);
 
             result.Takeoff_GroundRoll =
                 aircraft.MakeTakeoffAdjustments

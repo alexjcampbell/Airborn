@@ -4,6 +4,20 @@ namespace Airborn.web.Models
 {
     public class InterpolatedPerformanceData : PerformanceData
     {
+
+        public InterpolatedPerformanceData(
+            Scenario scenario,
+            decimal pressureAltitude,
+            decimal temperature,
+            decimal weight)
+            : base(
+                scenario,
+                pressureAltitude,
+                temperature,
+                weight)
+        {
+        }
+
         public InterpolatedPerformanceData(
             Scenario scenario,
             decimal pressureAltitude,

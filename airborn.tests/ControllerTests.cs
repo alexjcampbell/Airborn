@@ -448,7 +448,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestLandingGroundRollDistanceChangesWhenAircraftWeightChanges()
+        public void TestLandingGroundRollDistanceIsSameWhenAircraftWeightChanges()
         {
             InitializeController();
             InitializeModel();
@@ -466,7 +466,7 @@ namespace Airborn.Tests
             result = _controller.Calculate(_model);
             decimal? landingGroundRollDistanceHigherWeight = _model.Results[0].Landing_GroundRoll;
 
-            Assert.IsTrue(landingGroundRollDistanceHigherWeight > landingGroundRollDistanceLowerWeight);
+            Assert.IsTrue(landingGroundRollDistanceHigherWeight == landingGroundRollDistanceLowerWeight);
         }
 
     }

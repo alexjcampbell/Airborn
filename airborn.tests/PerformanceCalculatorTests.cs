@@ -11,7 +11,7 @@ namespace Airborn.Tests
         {
 
             PerformanceCalculator calculator = new PerformanceCalculator(
-                AircraftType.SR22_G2,
+                Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2),
                 new Airport(),
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
                 ""

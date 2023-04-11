@@ -171,7 +171,7 @@ namespace Airborn.web.Models
             Airport = db.GetAirport(AirportIdentifier);
 
             PerformanceCalculator = new PerformanceCalculator(
-                AircraftType,
+                Aircraft.GetAircraftFromAircraftType(AircraftType),
                 Airport,
                 wind,
                 RootPath

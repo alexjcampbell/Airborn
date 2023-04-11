@@ -63,17 +63,60 @@ namespace Airborn.Tests
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 4000, 30, higherWeight, 2150, 3370));
             performanceDataList.Add(new BookPerformanceData(Scenario.Takeoff, 5000, 30, higherWeight, 2250, 3470));
 
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 10, lowerWeight, 120, 160));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 10, lowerWeight, 220, 260));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 10, lowerWeight, 320, 380));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 10, lowerWeight, 420, 500));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 10, lowerWeight, 520, 620));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 10, lowerWeight, 620, 740));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 20, lowerWeight, 720, 860));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 20, lowerWeight, 820, 980));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 20, lowerWeight, 920, 1100));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 20, lowerWeight, 1020, 1220));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 20, lowerWeight, 1120, 1340));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 20, lowerWeight, 1220, 1450));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 30, lowerWeight, 1320, 2820));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 30, lowerWeight, 1420, 2980));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 30, lowerWeight, 1520, 2100));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 30, lowerWeight, 1620, 2220));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 30, lowerWeight, 1720, 2340));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 30, lowerWeight, 1820, 2460));
+
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 10, higherWeight, 120, 160));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 10, higherWeight, 220, 260));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 10, higherWeight, 320, 380));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 10, higherWeight, 420, 500));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 10, higherWeight, 520, 620));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 10, higherWeight, 620, 740));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 20, higherWeight, 720, 860));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 20, higherWeight, 820, 980));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 20, higherWeight, 920, 1100));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 20, higherWeight, 1020, 1220));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 20, higherWeight, 1120, 1340));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 20, higherWeight, 1220, 1450));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 0, 30, higherWeight, 1320, 2820));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 1000, 30, higherWeight, 1420, 2980));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 2000, 30, higherWeight, 1520, 2100));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 3000, 30, higherWeight, 1620, 2220));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 4000, 30, higherWeight, 1720, 2340));
+            performanceDataList.Add(new BookPerformanceData(Scenario.Landing, 5000, 30, higherWeight, 1820, 2460));
+
+
+
+
+
             return performanceDataList;
         }
 
         private static PeformanceDataInterpolator GetPerformanceInterpolator(
+            Scenario scenario,
             decimal actualPressureAltitude,
             decimal actualTemperature,
             decimal actualWeight,
             BookPerformanceDataList performanceDataList)
         {
             return new PeformanceDataInterpolator(
-                Scenario.Takeoff,
+                scenario,
                 actualPressureAltitude,
                 actualTemperature,
                 actualWeight,
@@ -101,7 +144,8 @@ namespace Airborn.Tests
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
+            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(
+                aircraft);
 
             Assert.AreEqual(810, interpolatedPerformanceData.GroundRoll);
             Assert.AreEqual(962, interpolatedPerformanceData.DistanceToClear50Ft);
@@ -127,7 +171,8 @@ namespace Airborn.Tests
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2);
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(aircraft, Scenario.Takeoff);
+            InterpolatedPerformanceData interpolatedPerformanceData =
+                interpolator.GetInterpolatedBookDistance(aircraft);
 
             Assert.AreEqual(910, interpolatedPerformanceData.GroundRoll);
             Assert.AreEqual(1090, interpolatedPerformanceData.DistanceToClear50Ft);
@@ -296,6 +341,7 @@ namespace Airborn.Tests
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData(AircraftType.C172_SP);
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
+                Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
@@ -311,17 +357,26 @@ namespace Airborn.Tests
             });
         }
 
-
+        /// <summary>
+        /// Test that the takeoff and landing distances are the same when the aircraft weight changes
+        /// This doesn't make a lot of sense from first principles, but the POH for C172 and SR22 doesn't
+        /// provide landing distances for anything other than max gross weight, so that's what we've got
+        /// in the Json
+        /// </summary>
         [TestMethod]
-        public void TestTakeoffUpperWeightDistancesAreHigherThanLowerWeightDistances()
+        public void TestTakeoffLandingDistancesAreSameWhenWeightChanges()
         {
+            AircraftType aircraftType = AircraftType.C172_SP;
+
             decimal actualPressureAltitude = 2000;
             decimal actualTemperature = 20;
             decimal actualAircraftWeight = 2400;
+            Scenario scenario = Scenario.Landing;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(AircraftType.C172_SP);
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(aircraftType);
 
             PeformanceDataInterpolator interpolatorLower = GetPerformanceInterpolator(
+                scenario,
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
@@ -329,12 +384,16 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData lowerData =
                 interpolatorLower.GetInterpolatedBookDistance(
-                    Aircraft.GetAircraftFromAircraftType(AircraftType.C172_SP),
-                    Scenario.Takeoff);
+                    Aircraft.GetAircraftFromAircraftType(aircraftType));
 
             actualAircraftWeight = 2550;
+            actualPressureAltitude = 2000;
+            actualTemperature = 20;
+            actualAircraftWeight = 2400;
+
 
             PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
+                scenario,
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
@@ -342,50 +401,12 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData upperData =
                 interpolatorUpper.GetInterpolatedBookDistance(
-                    Aircraft.GetAircraftFromAircraftType(AircraftType.C172_SP),
-                    Scenario.Takeoff);
+                    Aircraft.GetAircraftFromAircraftType(aircraftType));
 
-            Assert.IsTrue(upperData.GroundRoll > lowerData.GroundRoll);
-            Assert.IsTrue(upperData.DistanceToClear50Ft > lowerData.DistanceToClear50Ft);
-
-        }
-
-        [TestMethod]
-        public void TestLandingUpperWeightDistancesAreHigherThanLowerWeightDistances()
-        {
-            decimal actualPressureAltitude = 2000;
-            decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 2400;
-
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(AircraftType.C172_SP);
-
-            PeformanceDataInterpolator interpolatorLower = GetPerformanceInterpolator(
-                actualPressureAltitude,
-                actualTemperature,
-                actualAircraftWeight,
-                performanceDataList);
-
-            InterpolatedPerformanceData lowerData =
-                interpolatorLower.GetInterpolatedBookDistance(
-                    Aircraft.GetAircraftFromAircraftType(AircraftType.C172_SP),
-                    Scenario.Landing);
-
-            actualAircraftWeight = 2550;
-
-            PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
-                actualPressureAltitude,
-                actualTemperature,
-                actualAircraftWeight,
-                performanceDataList);
-
-            InterpolatedPerformanceData upperData =
-                interpolatorUpper.GetInterpolatedBookDistance(
-                    Aircraft.GetAircraftFromAircraftType(AircraftType.C172_SP),
-                    Scenario.Landing);
-
-            Assert.IsTrue(upperData.GroundRoll > lowerData.GroundRoll);
-            Assert.IsTrue(upperData.DistanceToClear50Ft > lowerData.DistanceToClear50Ft);
+            Assert.IsTrue(upperData.GroundRoll == lowerData.GroundRoll);
+            Assert.IsTrue(upperData.DistanceToClear50Ft == lowerData.DistanceToClear50Ft);
 
         }
+
     }
 }

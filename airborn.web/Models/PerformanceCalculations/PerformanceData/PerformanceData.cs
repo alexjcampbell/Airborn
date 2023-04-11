@@ -12,6 +12,15 @@ namespace Airborn.web.Models
         private PerformanceData()
         {
         }
+        public PerformanceData(
+            Scenario scenario,
+            decimal pressureAltitude,
+            decimal temperature,
+            decimal aircraftWeight
+            ) : this(scenario, pressureAltitude, temperature, aircraftWeight, 0, 0)
+        {
+        }
+
 
         public PerformanceData(
             Scenario scenario,
