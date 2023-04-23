@@ -30,6 +30,7 @@ namespace Airborn.web.Models
             AircraftActualWeight = aircraftActualWeight;
             Scenario = scenario;
 
+            SetLowerAndUpperPressureAltitudeAndTemperature();
         }
 
         ///  <summary>
@@ -109,28 +110,7 @@ namespace Airborn.web.Models
 
         public InterpolatedPerformanceData GetInterpolatedBookDistance(Aircraft aircraft)
         {
-
-            _lowerPressureAltitude = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
-                (int)ActualPressureAltitude,
-                _pressureAltitudeInterval);
-            _upperPressureAltitude = _lowerPressureAltitude + _pressureAltitudeInterval;
-
-            _lowerTemperature = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
-                (int)ActualTemperature,
-                _temperatureInterval);
-
-            // this is a hacky workaround to the problem where our performance data only goes up to
-            // 40 degrees C, so we want to be able to interpolate between 40 and 50 degrees C
-            // instead we set the upper temperature to the lower temperature and then there's no
-            // interpolation to be done
-            if (ActualTemperature == _lowerTemperature)
-            {
-                _upperTemperature = _lowerTemperature;
-            }
-            else
-            {
-                _upperTemperature = _lowerTemperature + _temperatureInterval;
-            }
+            SetLowerAndUpperPressureAltitudeAndTemperature();
 
             AircraftLowerWeight = aircraft.GetLowerWeight();
             AircraftHigherWeight = aircraft.GetHigherWeight();
@@ -184,6 +164,20 @@ namespace Airborn.web.Models
 
         }
 
+        private void SetLowerAndUpperPressureAltitudeAndTemperature()
+        {
+            _lowerPressureAltitude = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
+                (int)ActualPressureAltitude,
+                _pressureAltitudeInterval);
+            _upperPressureAltitude = _lowerPressureAltitude + _pressureAltitudeInterval;
+
+            _lowerTemperature = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
+                (int)ActualTemperature,
+                _temperatureInterval);
+            _upperTemperature = _lowerTemperature + _temperatureInterval;
+
+        }
+
         public BookPerformanceData FindBookDistance(
             decimal pressureAltitude,
             decimal temperature,
@@ -205,7 +199,23 @@ namespace Airborn.web.Models
             PerformanceData upperTemperaturePerformanceData,
             decimal weight)
         {
+            InterpolatedPerformanceData interpolatedPerformanceDataByPressureAltitude =
+                InterpolateByPressureAltitudeOnly(lowerPressureAltitudePerformanceData, upperPresssureAltitudePerformanceData, weight);
 
+            lowerTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
+            lowerTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
+            upperTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
+            upperTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
+
+            return InterpolateByTemperatureOnly(
+                lowerTemperaturePerformanceData,
+                upperTemperaturePerformanceData,
+                weight
+                );
+        }
+
+        public InterpolatedPerformanceData InterpolateByPressureAltitudeOnly(PerformanceData lowerPressureAltitudePerformanceData, PerformanceData upperPressureAltitudePerformanceData, decimal weight)
+        {
             InterpolatedPerformanceData interpolatedPerformanceDataByPressureAltitude = new InterpolatedPerformanceData(
                 this.Scenario,
                 ActualPressureAltitude,
@@ -213,33 +223,40 @@ namespace Airborn.web.Models
                 weight
             );
 
-            interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerPressureAltitudePerformanceData.DistanceGroundRoll.Value,
-                upperPresssureAltitudePerformanceData.DistanceGroundRoll.Value,
-                (int)ActualPressureAltitude,
-                _pressureAltitudeInterval
+            if (ActualPressureAltitude == lowerPressureAltitudePerformanceData.PressureAltitude)
+            {
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = lowerPressureAltitudePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = lowerPressureAltitudePerformanceData.DistanceToClear50Ft;
+                return interpolatedPerformanceDataByPressureAltitude;
+            }
+            else if (ActualPressureAltitude == upperPressureAltitudePerformanceData.PressureAltitude)
+            {
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = upperPressureAltitudePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = upperPressureAltitudePerformanceData.DistanceToClear50Ft;
+                return interpolatedPerformanceDataByPressureAltitude;
+            }
+            else
+            {
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
+                    lowerPressureAltitudePerformanceData.DistanceGroundRoll.Value,
+                    upperPressureAltitudePerformanceData.DistanceGroundRoll.Value,
+                    (int)ActualPressureAltitude,
+                    _pressureAltitudeInterval
+                    );
+
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.Interpolate(
+                    lowerPressureAltitudePerformanceData.DistanceToClear50Ft.Value,
+                    upperPressureAltitudePerformanceData.DistanceToClear50Ft.Value,
+                    (int)ActualPressureAltitude,
+                    _pressureAltitudeInterval
                 );
 
-            interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerPressureAltitudePerformanceData.DistanceToClear50Ft.Value,
-                upperPresssureAltitudePerformanceData.DistanceToClear50Ft.Value,
-                (int)ActualPressureAltitude,
-                _pressureAltitudeInterval
-            );
 
-            lowerTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
-            lowerTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
-            upperTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
-            upperTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
-
-            return InterpolateByTemperature(
-                lowerTemperaturePerformanceData,
-                upperTemperaturePerformanceData,
-                weight
-                );
+                return interpolatedPerformanceDataByPressureAltitude;
+            }
         }
 
-        public InterpolatedPerformanceData InterpolateByTemperature(
+        public InterpolatedPerformanceData InterpolateByTemperatureOnly(
             PerformanceData lowerTemperaturePerformanceData,
             PerformanceData upperTemperaturePerformanceData,
             decimal weight)
@@ -251,6 +268,19 @@ namespace Airborn.web.Models
                 ActualTemperature,
                 weight
             );
+
+            if (ActualTemperature == lowerTemperaturePerformanceData.Temperature)
+            {
+                interpolatedPerformanceDataByTemperature.DistanceGroundRoll = lowerTemperaturePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = lowerTemperaturePerformanceData.DistanceToClear50Ft;
+                return interpolatedPerformanceDataByTemperature;
+            }
+            else if (ActualTemperature == upperTemperaturePerformanceData.Temperature)
+            {
+                interpolatedPerformanceDataByTemperature.DistanceGroundRoll = upperTemperaturePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = upperTemperaturePerformanceData.DistanceToClear50Ft;
+                return interpolatedPerformanceDataByTemperature;
+            }
 
             interpolatedPerformanceDataByTemperature.DistanceGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
                 lowerTemperaturePerformanceData.DistanceGroundRoll.Value,

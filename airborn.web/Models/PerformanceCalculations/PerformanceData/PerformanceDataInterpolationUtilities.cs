@@ -10,7 +10,7 @@ namespace Airborn.web.Models
         /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
         /// it will return 0.5
         /// </summary>
-        public static decimal CalculateInterpolationFactor(int value, int lowerBound, int upperBound)
+        public static decimal CalculateInterpolationFactor(decimal value, decimal lowerBound, decimal upperBound)
         {
             if (value < 0) { throw new ArgumentOutOfRangeException(value.ToString()); }
             if (lowerBound >= upperBound) { throw new ArgumentOutOfRangeException(); }
@@ -22,53 +22,80 @@ namespace Airborn.web.Models
             return interpolationFactor;
         }
 
-        public static int GetLowerBoundForInterpolation(int value, int desiredInterval)
+        /// <summary>
+        /// This function gives you an interpolated value between two values:
+        /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
+        /// it will return 5
+        /// </summary>
+        /// <param name="value">The value to interpolate</param>
+        /// <param name="desiredInterval">The interval to use for interpolation</param>
+        public static decimal GetLowerBoundForInterpolation(decimal value, decimal desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
 
-            int lowerBound = value - (value % desiredInterval);
+            // if the value is 360 and the desired interval is 100, we want to return 300
+            // so we need to subtract the remainder of 360 / 100 from 360
+            // 360 % 100 = 60
+            // 360 - 60 = 300
+            return value - (value % desiredInterval);
 
-            return lowerBound;
         }
 
-        public static int GetUpperBoundForInterpolation(int value, int desiredInterval)
+        public static decimal GetUpperBoundForInterpolation(decimal value, decimal desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
 
-            int lowerBound = value - (value % desiredInterval);
-            int upperBound = lowerBound + desiredInterval;
+            decimal lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
+            decimal upperBound = lowerBound + desiredInterval;
 
             return upperBound;
         }
 
-        public static (int, int) GetUpperAndLowBoundsForInterpolation(int value, int desiredInterval)
+        public static (decimal, decimal) GetUpperAndLowBoundsForInterpolation(decimal value, decimal desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
 
-            return (GetLowerBoundForInterpolation(value, desiredInterval), GetUpperBoundForInterpolation(value, desiredInterval));
+            decimal lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
+            decimal upperBound = GetUpperBoundForInterpolation(value, desiredInterval);
+
+            return (lowerBound, upperBound);
         }
 
-
-        public static decimal Interpolate(decimal lowerValue, decimal upperValue, int valueForInterpolation, int desiredInterval)
+        /// <summary>
+        /// This is useful when you have two values from the POH, let's say
+        /// </summary>
+        /// <param name="lowerValue">The lower of two values to interpolate beteeen (e.g. landing distance of 360 for a pressure altitude of 1000)</param>z
+        /// <param name="upperValue">The higher of two values to interpolate beteeen (e.g. landing distance of 440 for a pressure altitude of 1000)</param>
+        /// <param name="valueForInterpolation">The value to interpolate by (e.g. actual pressure altitude is 1500)</param>z
+        /// <param name="desiredInterval"> The interval at which values is provided in the underlying data (e.g. for pressure altitude, always 1000)</param>
+        public static decimal Interpolate(decimal lowerValue, decimal upperValue, decimal valueForInterpolation, int desiredInterval)
         {
 
-            if (valueForInterpolation < 0) { throw new ArgumentOutOfRangeException(valueForInterpolation.ToString()); }
-            if (valueForInterpolation < GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval)) { throw new ArgumentOutOfRangeException(); }
-            if (valueForInterpolation > GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval)) { throw new ArgumentOutOfRangeException(); }
-            if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
-
-            if (valueForInterpolation == lowerValue)
+            if (valueForInterpolation < 0)
             {
-                return lowerValue;
+                // if the value for interpolation is less than 0, we can't interpolate
+                throw new ArgumentOutOfRangeException(valueForInterpolation.ToString());
             }
 
-            int lowerInterpolation = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
-            int upperInterpolation = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
+            if (valueForInterpolation > valueForInterpolation + desiredInterval)
+            {
+                // if the value for interpolation is greater than the upper bound, we can't interpolate
+                throw new ArgumentOutOfRangeException();
+            }
 
-            decimal interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerInterpolation, upperInterpolation);
+            if (desiredInterval <= 0)
+            {
+                // if the desired interval is less than or equal to 0, we can't interpolate
+                throw new ArgumentOutOfRangeException();
+            }
+
+            decimal lowerbound = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
+            decimal upperBound = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
+
+            decimal interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerbound, upperBound);
 
             decimal interpolatedValue =
                 (upperValue - lowerValue)

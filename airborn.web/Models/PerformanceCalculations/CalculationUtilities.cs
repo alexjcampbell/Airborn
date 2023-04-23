@@ -28,7 +28,7 @@ namespace Airborn.web.Models
 
         public static decimal ConvertDegreesToRadians(decimal degrees)
         {
-            decimal radians = ((decimal)Math.PI / 180) * (decimal)degrees;
+            decimal radians = ((decimal)Math.PI / 180) * degrees;
             return radians;
         }
 
@@ -55,7 +55,7 @@ namespace Airborn.web.Models
             decimal temperatureLapseRate = 2;
             decimal altitudeInterval = 1000;
 
-            return isaTemperatureAtSeaLevel - (temperatureLapseRate * ((decimal)pressureAltitude / altitudeInterval));
+            return isaTemperatureAtSeaLevel - (temperatureLapseRate * (pressureAltitude / altitudeInterval));
         }
 
         public static decimal CalculateHeadwindComponent(int windStrength, decimal windRunwayAngularDifferenceMagnetic)

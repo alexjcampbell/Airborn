@@ -54,12 +54,24 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_Interpolate()
         {
-            Assert.AreEqual(1175, PerformanceDataInterpolationUtilities.Interpolate(1150, 1200, 15, 10));
-            Assert.AreEqual(1100, PerformanceDataInterpolationUtilities.Interpolate(1100, 1200, 10, 10));
-            Assert.AreEqual(1420, PerformanceDataInterpolationUtilities.Interpolate(1400, 1500, 1200, 1000));
+            Assert.AreEqual(3000, PerformanceDataInterpolationUtilities.Interpolate(3000, 4000, 60, 10));
+            Assert.AreEqual(3500, PerformanceDataInterpolationUtilities.Interpolate(3000, 4000, 65, 10));
+            Assert.AreEqual(3000, PerformanceDataInterpolationUtilities.Interpolate(3000, 4000, 70, 10));
         }
 
+        [TestMethod]
+        public void Test_GetLowerBoundForInterpolation()
+        {
+            Assert.AreEqual(10, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(10, 10));
+            Assert.AreEqual(10, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(15, 10));
+            Assert.AreEqual(20, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(20, 10));
+            Assert.AreEqual(20, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(25, 10));
 
+            Assert.AreEqual(1000, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(1000, 1000));
+            Assert.AreEqual(1000, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(1500, 1000));
+            Assert.AreEqual(2000, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(2000, 1000));
+            Assert.AreEqual(2000, PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(2500, 1000));
 
+        }
     }
 }
