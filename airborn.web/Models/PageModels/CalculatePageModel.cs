@@ -130,6 +130,9 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Display(Name = "Density Altitude")]
+        [Editable(false)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
         public decimal? DensityAltitude
         {
             get
@@ -138,11 +141,26 @@ namespace Airborn.web.Models
             }
         }
 
+
+        [Display(Name = "Pressure Altitude")]
+        [Editable(false)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
         public decimal? PressureAltitude
         {
             get
             {
                 return PerformanceCalculator?.PressureAltitude;
+            }
+        }
+
+        [Display(Name = "Field Elevation")]
+        [Editable(false)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
+        public decimal? FieldElevation
+        {
+            get
+            {
+                return Airport?.FieldElevation;
             }
         }
 
@@ -219,9 +237,13 @@ namespace Airborn.web.Models
 
                 PerformanceCalculator.QNH = CalculationUtilities.ConvertInchesOfMercuryToMillibars(AltimeterSetting.Value);
             }
-            else
+            else if (AltimeterSettingType == Models.AltimeterSettingType.MB)
             {
                 PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException($"AltimeterSettingType {AltimeterSetting.Value} is not valid");
             }
         }
 
@@ -231,9 +253,13 @@ namespace Airborn.web.Models
             {
                 PerformanceCalculator.TemperatureCelcius = CalculationUtilities.ConvertFahrenheitToCelcius(Temperature.Value);
             }
-            else
+            else if (TemperatureType == Models.TemperatureType.C)
             {
                 PerformanceCalculator.TemperatureCelcius = (int)Temperature.Value;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException($"TemperatureType {TemperatureType.Value} is not valid");
             }
         }
     }

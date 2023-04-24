@@ -41,7 +41,7 @@ namespace Airborn.Tests
 
         // Default values for the model
         const AircraftType _default_AircraftType = AircraftType.SR22_G2;
-        const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.HPA;
+        const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.MB;
         const string _default_AirportIdentifier = "KJFK";
         const int _default_Temperature = 15;
         const TemperatureType _default_TemperatureType = TemperatureType.C;
@@ -199,7 +199,7 @@ namespace Airborn.Tests
             InitializeModel();
 
             _model.AltimeterSetting = 1013.25m;
-            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+            _model.AltimeterSettingType = AltimeterSettingType.MB;
 
             var result = _controller.Calculate(_model);
 
@@ -270,7 +270,7 @@ namespace Airborn.Tests
             InitializeModel();
 
             _model.AltimeterSetting = 1040;
-            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+            _model.AltimeterSettingType = AltimeterSettingType.MB;
 
             var result = _controller.Calculate(_model);
 
@@ -296,7 +296,7 @@ namespace Airborn.Tests
             InitializeModel();
 
             _model.AltimeterSetting = 1000;
-            _model.AltimeterSettingType = AltimeterSettingType.HPA;
+            _model.AltimeterSettingType = AltimeterSettingType.MB;
 
             decimal expectedPressureAltitude = 361.725m;
 

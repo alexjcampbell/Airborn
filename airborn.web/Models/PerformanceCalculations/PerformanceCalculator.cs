@@ -161,9 +161,7 @@ namespace Airborn.web.Models
                 Notes.Add("Temperature is negative. The POH data only provides performance date for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
             }
 
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
-
-            PopulateInterpolatedPerformanceData(aircraft);
+            PopulateInterpolatedPerformanceData(Aircraft);
 
             List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
 
@@ -180,7 +178,7 @@ namespace Airborn.web.Models
 
             foreach (Runway runway in Runways)
             {
-                PerformanceCalculationResult result = CalculatePerformanceForRunway(aircraft, runway);
+                PerformanceCalculationResult result = CalculatePerformanceForRunway(Aircraft, runway);
 
                 Results.Add(result);
             }

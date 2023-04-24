@@ -11,10 +11,7 @@
     <h1 class="display-4">Airborn is a free takeoff and landing distance calculator.</h1>
     <p class="lead">Tell us your about your flight, and we'll provide takeoff and landing distances and other useful
         information for
-        each runway at your airport. These are calculated based on performance numbers from the airplane's flight
-        manual.
-    </p>
-    <p>This is an open-source project, if
+        each runway at your airport. This is an open-source project, if
         you want to contribute check out <a href="https://github.com/alexjcampbell/Airborn">our Github</a>.</p>
     <hr class="my-4">
 </div>
@@ -59,10 +56,7 @@
         <div class="col-sm-3">
             <div class="form-floating">
 
-                <select asp-for="AircraftType" class="form-select">
-                    <option value="SR22_G2">Cirrus SR22 G2</option>
-                    <option value="SR22T_G5">Cirrus SR22T G5</option>
-                    <option value="C172_SP">Cessna 172SP</option>
+                <select asp-for="AircraftType" asp-items="Html.GetEnumSelectList<AircraftType>()" class="form-select">
                 </select>
                 <label for="AircraftType">Aircraft type</label>
                 <span asp-validation-for="AircraftType" class="text-danger"></span>
@@ -107,9 +101,8 @@
         </div>
         <div class="col-sm-1">
             <div class="form-floating">
-                <select style="width:auto;" asp-for="TemperatureType" class="form-control">
-                    <option value="C">°C</option>
-                    <option value="F">°F</option>
+                <select style="width:auto;" asp-for="TemperatureType"
+                    asp-items="Html.GetEnumSelectList<TemperatureType>()" class="form-control" class="form-control">
                 </select>
             </div>
         </div>
@@ -123,9 +116,8 @@
         </div>
         <div class="col-sm-1">
             <div class="form-floating">
-                <select style="width:auto;" asp-for="AltimeterSettingType" class="form-control">
-                    <option value="MB">Mb</option>
-                    <option value="HG">Hg</option>
+                <select style="width:auto;" asp-for="AltimeterSettingType"
+                    asp-items="Html.GetEnumSelectList<AltimeterSettingType>()" class="form-control">
                 </select>
             </div>
         </div>
@@ -146,26 +138,31 @@
     {
         <div>
             <div class="form-group row">
-                <div class="col-sm-3">
+                <div class="col-sm-12">
                     <div class="form-floating">
                         <h5>@Model.Airport?.Name</h5>
                     </div>
                 </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <span>Field elevation: @Model.Airport?.FieldElevation ft</span>
+                        <input class="form-control" maxlength="10" readonly asp-for="@Model.FieldElevation" />
+                        <label>Field elevation (ft)</label>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <span>Pressure altitude: @Model.PressureAltitude?.ToString("#,##") ft</span>
+                        <input class="form-control" maxlength="10" readonly asp-for="@Model.PressureAltitude" />
+                        <label>Pressure altitude (ft)</label>
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-floating">
-                        <span>
-                            Density altitude: @Model.DensityAltitude?.ToString("#,##") ft
-                        </span>
+                        <input class="form-control" maxlength="10" readonly asp-for="@Model.DensityAltitude" />
+                        <label>
+                            Density altitude (ft)
+                        </label>
                     </div>
                 </div>
             </div>

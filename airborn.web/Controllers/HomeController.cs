@@ -62,7 +62,7 @@ namespace Airborn.Controllers
             {
                 if (Request.Cookies["AltimeterSettingType"] == "MB")
                 {
-                    PageModel.AltimeterSettingType = AltimeterSettingType.HPA;
+                    PageModel.AltimeterSettingType = AltimeterSettingType.MB;
                 }
                 else if (Request.Cookies["AltimeterSettingType"] == "HG")
                 {
