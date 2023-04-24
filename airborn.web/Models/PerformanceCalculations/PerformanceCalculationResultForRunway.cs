@@ -2,16 +2,16 @@ using System;
 
 namespace Airborn.web.Models
 {
-    public class PerformanceCalculationResult
+    public class PerformanceCalculationResultForRunway
     {
 
-        private PerformanceCalculationResult()
+        private PerformanceCalculationResultForRunway()
         {
 
         }
 
 
-        public PerformanceCalculationResult(Runway runway, Wind wind)
+        public PerformanceCalculationResultForRunway(Runway runway, Wind wind)
         {
             Runway = runway;
             Wind = wind;

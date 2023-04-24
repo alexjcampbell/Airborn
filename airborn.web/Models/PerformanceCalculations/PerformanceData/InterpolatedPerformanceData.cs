@@ -21,6 +21,5 @@ namespace Airborn.web.Models
         {
         }
 
-
     }
 }

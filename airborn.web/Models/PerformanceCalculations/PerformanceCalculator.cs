@@ -62,9 +62,9 @@ namespace Airborn.web.Models
 
         }
 
-        private List<PerformanceCalculationResult> _results = new List<PerformanceCalculationResult>();
+        private List<PerformanceCalculationResultForRunway> _results = new List<PerformanceCalculationResultForRunway>();
 
-        public List<PerformanceCalculationResult> Results
+        public List<PerformanceCalculationResultForRunway> Results
         {
             get
             {
@@ -170,7 +170,7 @@ namespace Airborn.web.Models
 
             PopulateInterpolatedPerformanceData(Aircraft);
 
-            List<PerformanceCalculationResult> results = new List<PerformanceCalculationResult>();
+            List<PerformanceCalculationResultForRunway> results = new List<PerformanceCalculationResultForRunway>();
 
             foreach (Runway runway in
                 db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
@@ -218,10 +218,10 @@ namespace Airborn.web.Models
         /// <summary>
         /// Calculates the performance for a given runway
         /// </summary>
-        private PerformanceCalculationResult CalculatePerformanceForRunway(Runway runway)
+        private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Runway runway)
         {
-            PerformanceCalculationResult result =
-                new PerformanceCalculationResult(runway, Wind);
+            PerformanceCalculationResultForRunway result =
+                new PerformanceCalculationResultForRunway(runway, Wind);
 
 
             result.Takeoff_GroundRoll =

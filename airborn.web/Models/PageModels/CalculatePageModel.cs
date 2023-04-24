@@ -209,7 +209,7 @@ namespace Airborn.web.Models
 
             PerformanceCalculator.Calculate(db);
 
-            foreach (PerformanceCalculationResult result in PerformanceCalculator.Results)
+            foreach (PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
             {
                 CalculationResultPageModel pageModelResult =
                     new CalculationResultPageModel(result, result.Runway);

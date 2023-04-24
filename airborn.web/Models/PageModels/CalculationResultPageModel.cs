@@ -11,13 +11,13 @@ namespace Airborn.web.Models
         {
         }
 
-        public CalculationResultPageModel(PerformanceCalculationResult result, Runway runway)
+        public CalculationResultPageModel(PerformanceCalculationResultForRunway result, Runway runway)
         {
             Result = result;
             Runway = runway;
         }
 
-        public PerformanceCalculationResult Result
+        public PerformanceCalculationResultForRunway Result
         {
             get;
             set;

@@ -10,13 +10,13 @@ namespace Airborn.web.Models
         }
 
 
-        public override decimal MakeTakeoffAdjustments(PerformanceCalculationResult result, decimal takeoffDistance)
+        public override decimal MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, decimal takeoffDistance)
         {
 
             if (result.HeadwindComponent > 0)
             {
                 // subtract 10% for each 12 knots of headwind
-                takeoffDistance = takeoffDistance * (1- ((result.HeadwindComponent / 12) * 0.1m));
+                takeoffDistance = takeoffDistance * (1 - ((result.HeadwindComponent / 12) * 0.1m));
             }
             else if (result.HeadwindComponent < 0)
             {
@@ -34,7 +34,7 @@ namespace Airborn.web.Models
             return takeoffDistance;
         }
 
-        public override decimal MakeLandingAdjustments(PerformanceCalculationResult result, decimal landingDistance)
+        public override decimal MakeLandingAdjustments(PerformanceCalculationResultForRunway result, decimal landingDistance)
         {
             if (result.HeadwindComponent > 0)
             {
