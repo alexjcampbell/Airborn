@@ -177,8 +177,13 @@ namespace Airborn.web.Models
             get { return PerformanceCalculator?.Notes; }
         }
 
+        /// <summary>
+        /// Sets up the PerformanceCalculator and calculates the results.
+        /// </summary>
+        /// <param name="db">The DbContext with the airport and runway number</param>
         public void Calculate(AirportDbContext db)
         {
+
 
             Wind wind = Wind.FromMagnetic(
                 WindDirectionMagnetic.Value,
@@ -188,15 +193,16 @@ namespace Airborn.web.Models
 
             Airport = db.GetAirport(AirportIdentifier);
 
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
+
             PerformanceCalculator = new PerformanceCalculator(
-                Aircraft.GetAircraftFromAircraftType(AircraftType),
+                aircraft,
                 Airport,
                 wind,
+                AircraftWeight.Value,
                 RootPath
                 )
                 ;
-
-            PerformanceCalculator.AircraftWeight = AircraftWeight.Value;
 
             SetTemperatureBasedOnDegreesForC();
             SetAltimeterSettingBasedOnMborHg();
@@ -215,6 +221,9 @@ namespace Airborn.web.Models
 
         }
 
+        /// <summary>
+        /// Sets the result field IsBestWind to true if the runway is the most into wind.
+        /// </summary>
         private void SetIsBestWindIfRunwayIsMostIntoWind()
         {
             foreach (CalculationResultPageModel result in Results)
@@ -230,6 +239,9 @@ namespace Airborn.web.Models
             }
         }
 
+        /// <summary>
+        /// Sets the QNH based on the AltimeterSettingType
+        /// </summary>
         private void SetAltimeterSettingBasedOnMborHg()
         {
             if (AltimeterSettingType == Models.AltimeterSettingType.HG)
@@ -247,6 +259,9 @@ namespace Airborn.web.Models
             }
         }
 
+        /// <summary>
+        /// Sets the TemperatureInCelcius field, and converts from fahrenheit if necessary.
+        /// </summary>
         private void SetTemperatureBasedOnDegreesForC()
         {
             if (TemperatureType == Models.TemperatureType.F)

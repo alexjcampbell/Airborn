@@ -37,44 +37,64 @@ namespace Airborn.web.Models
         ///  This constructor is used for testing purposes only - it allows us to pass in a list of
         ///  BookPerformanceData objects instead of a JsonFile object.
         ///  </summary>
+        ///  <param name="scenario"></param>
+        ///  <param name="actualPressureAltitude">Scenario tells us whether we're in takeoff or landing mode</param>
+        ///  <param name="actualTemperature">The actual reported temperature at the airport</param>
+        ///  <param name="actualWeight">The actual weight of the </param>
+        ///  <param name="bookPerformanceDataList">The BookPerformanceDataList that has been pre-populated with all of the book data</param>
         public PeformanceDataInterpolator(
             Scenario scenario,
             decimal actualPressureAltitude,
             decimal actualTemperature,
             decimal actualWeight,
-            BookPerformanceDataList performanceDataList
+            BookPerformanceDataList bookPerformanceDataList
         ) : this(scenario, actualPressureAltitude, actualTemperature, actualWeight)
         {
             Scenario = scenario;
-            _performanceDataList = performanceDataList;
+            _bookPerformanceDataList = bookPerformanceDataList;
         }
 
+        /// <summary>   
+        /// The raw JsonFile with the aircract data for the lower weight
+        /// </summary>
         public JsonFile JsonFileLowerWeight
         {
             get;
             private set;
         }
 
+        /// <summary>   
+        /// The raw JsonFile with the aircract data for the higher weight
+        /// </summary>
         public JsonFile JsonFileHigherWeight
         {
             get;
             private set;
         }
 
-        private BookPerformanceDataList _performanceDataList;
+        private BookPerformanceDataList _bookPerformanceDataList;
 
+        /// <summary>
+        /// The actual pressure altitude calculated from the airport elevation and the QNH
+        /// </summary>
         public decimal ActualPressureAltitude
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The actual temperature at the airport
+        /// </summary>
         public decimal ActualTemperature
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Whether we're in takeoff or landing scenario
+        /// </summary>
         public Scenario Scenario
         {
             get;
@@ -87,18 +107,28 @@ namespace Airborn.web.Models
         private decimal _lowerTemperature;
         private decimal _upperTemperature;
 
+        /// <summary>
+        /// The lowest weight for which we have performance data for this aircraft
+        /// </summary>
         public decimal AircraftLowerWeight
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The highest weight for which we have performance data for this aircraft
+        /// </summary>
         public decimal AircraftHigherWeight
         {
             get;
             private set;
         }
 
+
+        /// <summary>
+        /// The reported weight of the aircraft for which we're calculating performance for
+        /// </summary>
         public decimal AircraftActualWeight
         {
             get;
@@ -112,8 +142,12 @@ namespace Airborn.web.Models
         {
             SetLowerAndUpperPressureAltitudeAndTemperature();
 
+            // get the lower and higher weights for which we have performance data
             AircraftLowerWeight = aircraft.GetLowerWeight();
             AircraftHigherWeight = aircraft.GetHigherWeight();
+
+            // we need eight BookPerformanceDatas to interpolate between
+            // first by pressure altitude, then by temperature, then by weight
 
             BookPerformanceData d1 = FindBookDistance(
                     _lowerPressureAltitude,
@@ -184,7 +218,7 @@ namespace Airborn.web.Models
             decimal weight)
         {
 
-            return _performanceDataList.FindBookDistance(
+            return _bookPerformanceDataList.FindBookDistance(
                 Scenario,
                 pressureAltitude,
                 temperature,
@@ -225,12 +259,16 @@ namespace Airborn.web.Models
 
             if (ActualPressureAltitude == lowerPressureAltitudePerformanceData.PressureAltitude)
             {
+                // if we're at the lower or upper pressure altitude, then we don't need to interpolate and we use the lower data
+
                 interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = lowerPressureAltitudePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = lowerPressureAltitudePerformanceData.DistanceToClear50Ft;
                 return interpolatedPerformanceDataByPressureAltitude;
             }
             else if (ActualPressureAltitude == upperPressureAltitudePerformanceData.PressureAltitude)
             {
+                // if we're at the upper pressure altitude, then we don't need to interpolate and we use the upper data
+
                 interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = upperPressureAltitudePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = upperPressureAltitudePerformanceData.DistanceToClear50Ft;
                 return interpolatedPerformanceDataByPressureAltitude;
@@ -271,12 +309,16 @@ namespace Airborn.web.Models
 
             if (ActualTemperature == lowerTemperaturePerformanceData.Temperature)
             {
+                // if we're at the lower or upper temperature, then we don't need to interpolate and we use the lower data
+
                 interpolatedPerformanceDataByTemperature.DistanceGroundRoll = lowerTemperaturePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = lowerTemperaturePerformanceData.DistanceToClear50Ft;
                 return interpolatedPerformanceDataByTemperature;
             }
             else if (ActualTemperature == upperTemperaturePerformanceData.Temperature)
             {
+                // if we're at the upper temperature, then we don't need to interpolate and we use the upper data
+
                 interpolatedPerformanceDataByTemperature.DistanceGroundRoll = upperTemperaturePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = upperTemperaturePerformanceData.DistanceToClear50Ft;
                 return interpolatedPerformanceDataByTemperature;
@@ -313,13 +355,13 @@ namespace Airborn.web.Models
             );
 
             interpolatedPerformanceDataByWeight.DistanceGroundRoll = PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
-                GetWeightInterpolationFactor((int)AircraftActualWeight),
+                GetWeightInterpolationFactor(AircraftActualWeight),
                 lowerWeightPerformanceData.DistanceGroundRoll.Value,
                 upperWeightPerformanceData.DistanceGroundRoll.Value
             );
 
             interpolatedPerformanceDataByWeight.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
-                GetWeightInterpolationFactor((int)AircraftActualWeight),
+                GetWeightInterpolationFactor(AircraftActualWeight),
                 lowerWeightPerformanceData.DistanceToClear50Ft.Value,
                 upperWeightPerformanceData.DistanceToClear50Ft.Value
             );
@@ -327,7 +369,7 @@ namespace Airborn.web.Models
             return interpolatedPerformanceDataByWeight;
         }
 
-        public decimal GetWeightInterpolationFactor(int weight)
+        public decimal GetWeightInterpolationFactor(decimal weight)
         {
             if (weight <= 0)
             {
@@ -342,8 +384,8 @@ namespace Airborn.web.Models
                 throw new AircraftWeightOutOfRangeException((int)AircraftLowerWeight, (int)AircraftHigherWeight);
             }
 
-            int lowerWeight = (int)AircraftLowerWeight;
-            int higherWeight = (int)AircraftHigherWeight;
+            decimal lowerWeight = AircraftLowerWeight;
+            decimal higherWeight = AircraftHigherWeight;
 
             decimal weightInterpolationFactor = (decimal)(weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
 

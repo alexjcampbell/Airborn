@@ -14,6 +14,7 @@ namespace Airborn.Tests
                 Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2),
                 new Airport(),
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
+                2000,
                 ""
                 );
 

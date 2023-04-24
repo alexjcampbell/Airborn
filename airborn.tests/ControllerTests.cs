@@ -28,7 +28,7 @@ namespace Airborn.Tests
             new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
 
         // Default values for the default runway
-        const string _default_airport_Ident = "KJFK";
+        const string _default_AirportIdentifier = "KJFK";
         const int _default_Runway_Id = 1;
         const string _default_RunwayWidth = "150";
         const string _default_RunwayLength = "10000";
@@ -42,7 +42,6 @@ namespace Airborn.Tests
         // Default values for the model
         const AircraftType _default_AircraftType = AircraftType.SR22_G2;
         const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.MB;
-        const string _default_AirportIdentifier = "KJFK";
         const int _default_Temperature = 15;
         const TemperatureType _default_TemperatureType = TemperatureType.C;
         const int _default_WindDirectionMagnetic = 220;
@@ -92,7 +91,7 @@ namespace Airborn.Tests
                 new Airport()
             };
 
-            testAirports[0].Ident = _default_airport_Ident;
+            testAirports[0].Ident = _default_AirportIdentifier;
             testAirports[0].FieldElevation = _default_FieldElevation;
 
             // Set up the DbSet as an IQueryable so it can be enumerated.
@@ -110,7 +109,7 @@ namespace Airborn.Tests
         {
             Runway runway = new Runway(_default_Runway_Name);
 
-            runway.Airport_Ident = _default_airport_Ident;
+            runway.Airport_Ident = _default_AirportIdentifier;
             runway.Runway_Id = runwayId;
             runway.RunwayWidth = _default_RunwayWidth;
             runway.RunwayLength = _default_RunwayLength;
