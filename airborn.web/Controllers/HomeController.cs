@@ -49,6 +49,13 @@ namespace Airborn.Controllers
                 {
                     PageModel.TemperatureType = TemperatureType.F;
                 }
+                else
+                {
+                    throw new ArgumentOutOfRangeException
+                    (
+                        $"Unknown TemperatureType {Request.Cookies["TemperatureType"]}"
+                    );
+                }
             }
 
             if (Request.Cookies["AltimeterSettingType"]?.Length > 0)
@@ -60,6 +67,13 @@ namespace Airborn.Controllers
                 else if (Request.Cookies["AltimeterSettingType"] == "HG")
                 {
                     PageModel.AltimeterSettingType = AltimeterSettingType.HG;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException
+                    (
+                        $"Unknown AltimeterSettingType {Request.Cookies["AltimeterSettingType"]}"
+                    );
                 }
             }
 
