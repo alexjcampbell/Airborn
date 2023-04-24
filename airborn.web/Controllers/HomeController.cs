@@ -86,6 +86,11 @@ namespace Airborn.Controllers
             {
                 PageModel.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
             }
+
+            if (Request.Cookies["Airport"]?.Length > 0)
+            {
+                PageModel.AirportIdentifier = Request.Cookies["Airport"];
+            }
         }
 
         // POST: Home/Calculate
@@ -157,18 +162,22 @@ namespace Airborn.Controllers
             }
             */
 
+            SetCookies(model);
+
+            return View(model);
+        }
+
+        private void SetCookies(CalculatePageModel model)
+        {
             // check for null before we try to add cookies, so we can unit test this controller
             if (HttpContext != null)
             {
                 HttpContext.Response.Cookies.Append("TemperatureType", model.TemperatureType.ToString());
                 HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());
                 HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
+                HttpContext.Response.Cookies.Append("Airport", model.AirportIdentifier);
             }
-
-            return View(model);
         }
-
-
 
         public IActionResult Terms()
         {
