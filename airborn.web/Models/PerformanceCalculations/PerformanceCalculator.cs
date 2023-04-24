@@ -107,7 +107,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation);
+                return CalculationUtilities.PressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculateDensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude);
+                return CalculationUtilities.DensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculateISATemperatureForPressureAltitude(PressureAltitude);
+                return CalculationUtilities.ISATemperatureForPressureAltitude(PressureAltitude);
             }
         }
 
@@ -216,13 +216,12 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// Calculates the performance for a given runway
+        /// Takes the book numbers and adjusts them for the given runway and wind conditions
         /// </summary>
         private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Runway runway)
         {
             PerformanceCalculationResultForRunway result =
                 new PerformanceCalculationResultForRunway(runway, Wind);
-
 
             result.Takeoff_GroundRoll =
                 Aircraft.MakeTakeoffAdjustments

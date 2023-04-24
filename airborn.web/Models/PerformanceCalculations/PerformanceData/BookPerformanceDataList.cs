@@ -4,6 +4,9 @@ using System.IO;
 
 namespace Airborn.web.Models
 {
+    /// <summary>
+    /// Represents a list of BookPerformanceData objects for a given aircraft weight
+    /// </summary>
     public class BookPerformanceDataList : List<BookPerformanceData>
     {
 

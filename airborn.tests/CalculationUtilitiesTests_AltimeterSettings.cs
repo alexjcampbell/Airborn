@@ -16,7 +16,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 Math.Round(expectedMillibars, 2),
-                Math.Round(CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury), 2)
+                Math.Round(CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury), 2)
                 );
         }
 
@@ -28,7 +28,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedMillibars,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury)
                 );
         }
 
@@ -40,7 +40,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedMillibars,
-                CalculationUtilities.ConvertInchesOfMercuryToMillibars(inchesOfMercury)
+                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury)
                 );
         }
     }

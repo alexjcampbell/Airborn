@@ -23,9 +23,8 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// This function gives you an interpolated value between two values:
-        /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
-        /// it will return 5
+        /// POH data is provided in intervals, e.g. landing distance is provided for pressure altitudes of 1000, 2000, 3000, etc.
+        /// This function returns the lower bound for a given value and desired interval
         /// </summary>
         /// <param name="value">The value to interpolate</param>
         /// <param name="desiredInterval">The interval to use for interpolation</param>
@@ -42,6 +41,12 @@ namespace Airborn.web.Models
 
         }
 
+        /// <summary>
+        /// POH data is provided in intervals, e.g. landing distance is provided for pressure altitudes of 1000, 2000, 3000, etc.
+        /// This function returns the upper bound for a given value and desired interval
+        /// </summary>
+        /// <param name="value">The value to interpolate</param>
+        /// <param name="desiredInterval">The interval to use for interpolation</param>
         public static decimal GetUpperBoundForInterpolation(decimal value, decimal desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
@@ -53,6 +58,12 @@ namespace Airborn.web.Models
             return upperBound;
         }
 
+        /// <summary>
+        /// POH data is provided in intervals, e.g. landing distance is provided for pressure altitudes of 1000, 2000, 3000, etc.
+        /// This function returns the upper and lower bounds for a given value and desired interval
+        /// </summary>
+        /// <param name="value">The value to interpolate</param>
+        /// <param name="desiredInterval">The interval to use for interpolation</param>
         public static (decimal, decimal) GetUpperAndLowBoundsForInterpolation(decimal value, decimal desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
@@ -65,7 +76,7 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// This is useful when you have two values from the POH, let's say
+        /// Interpolates between two values
         /// </summary>
         /// <param name="lowerValue">The lower of two values to interpolate beteeen (e.g. landing distance of 360 for a pressure altitude of 1000)</param>z
         /// <param name="upperValue">The higher of two values to interpolate beteeen (e.g. landing distance of 440 for a pressure altitude of 1000)</param>

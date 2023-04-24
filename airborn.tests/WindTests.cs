@@ -14,14 +14,14 @@ namespace Airborn.Tests
             Wind wind = Wind.FromMagnetic(310, 10);
             Runway runway = Runway.FromMagnetic(010);
 
-            Assert.AreEqual(-60, CalculationUtilities.AngularDifference(10, 310));
+            Assert.AreEqual(-60, CalculationUtilities.SmallestAngularDifference(10, 310));
 
         }
 
         [TestMethod]
         public void TestAngularDifference_WindRightOfRunway()
         {
-            Assert.AreEqual(20, CalculationUtilities.AngularDifference(350, 10));
+            Assert.AreEqual(20, CalculationUtilities.SmallestAngularDifference(350, 10));
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Airborn.Tests
             int runwayHeading = 0;
             int windDirection = 0;
 
-            Assert.AreEqual(0, CalculationUtilities.AngularDifference(runwayHeading, windDirection));
+            Assert.AreEqual(0, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
 
         }
 
@@ -40,7 +40,7 @@ namespace Airborn.Tests
             int runwayHeading = 180;
             int windDirection = 0;
 
-            Assert.AreEqual(-180, CalculationUtilities.AngularDifference(runwayHeading, windDirection));
+            Assert.AreEqual(-180, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Airborn.Tests
             int runwayHeading = 160;
             int windDirection = 10;
 
-            Assert.AreEqual(-150, CalculationUtilities.AngularDifference(runwayHeading, windDirection));
+            Assert.AreEqual(-150, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
         }
 
         [TestMethod]
@@ -58,8 +58,8 @@ namespace Airborn.Tests
             int runwayHeading = 350;
             int windDirection = 10;
 
-            Assert.AreEqual(20, CalculationUtilities.AngularDifference(runwayHeading, windDirection));
-        }        
+            Assert.AreEqual(20, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
+        }
 
         [TestMethod]
         public void TestAngularDifference_NearNorthButEast()
@@ -67,8 +67,8 @@ namespace Airborn.Tests
             int runwayHeading = 10;
             int windDirection = 350;
 
-            Assert.AreEqual(-20, CalculationUtilities.AngularDifference(runwayHeading, windDirection));
-        }                
+            Assert.AreEqual(-20, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
+        }
 
     }
 

@@ -16,7 +16,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                CalculationUtilities.FahrenheitToCelcius(numberOfDegreesFahrenheit)
                 );
         }
 
@@ -28,7 +28,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                CalculationUtilities.FahrenheitToCelcius(numberOfDegreesFahrenheit)
                 );
         }
 
@@ -40,7 +40,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                CalculationUtilities.FahrenheitToCelcius(numberOfDegreesFahrenheit)
                 );
         }
 
@@ -52,7 +52,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDegreesCelcius,
-                CalculationUtilities.ConvertFahrenheitToCelcius(numberOfDegreesFahrenheit)
+                CalculationUtilities.FahrenheitToCelcius(numberOfDegreesFahrenheit)
                 );
         }
 
@@ -63,7 +63,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                CalculationUtilities.ISATemperatureForPressureAltitude(pressureAltitude)
                 );
         }
 
@@ -75,7 +75,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                CalculationUtilities.ISATemperatureForPressureAltitude(pressureAltitude)
                 );
         }
 
@@ -87,7 +87,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedTemperature,
-                CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude)
+                CalculationUtilities.ISATemperatureForPressureAltitude(pressureAltitude)
                 );
         }
 
@@ -98,12 +98,12 @@ namespace Airborn.Tests
             decimal expectedDensityAltitude = -240;
             decimal qnh = 1013.25m;
 
-            decimal pressureAltitude = CalculationUtilities.CalculatePressureAltitudeAtFieldElevation(qnh, 0);
-            decimal isaTemperature = CalculationUtilities.CalculateISATemperatureForPressureAltitude(pressureAltitude);
+            decimal pressureAltitude = CalculationUtilities.PressureAltitudeAtFieldElevation(qnh, 0);
+            decimal isaTemperature = CalculationUtilities.ISATemperatureForPressureAltitude(pressureAltitude);
 
             Assert.AreEqual(
                 expectedDensityAltitude,
-                CalculationUtilities.CalculateDensityAltitudeAtAirport(temperature, isaTemperature, pressureAltitude)
+                CalculationUtilities.DensityAltitudeAtAirport(temperature, isaTemperature, pressureAltitude)
                 );
         }
 

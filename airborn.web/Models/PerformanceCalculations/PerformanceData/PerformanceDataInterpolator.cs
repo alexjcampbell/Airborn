@@ -149,6 +149,7 @@ namespace Airborn.web.Models
             // we need eight BookPerformanceDatas to interpolate between
             // first by pressure altitude, then by temperature, then by weight
 
+            // TODO: check that these are all correct and refactor to make it easier to verify
             BookPerformanceData d1 = FindBookDistance(
                     _lowerPressureAltitude,
                     _lowerTemperature,
@@ -160,8 +161,8 @@ namespace Airborn.web.Models
                     AircraftLowerWeight);
 
             BookPerformanceData d3 = FindBookDistance(
-                    _upperPressureAltitude,
-                    _lowerTemperature,
+                    _lowerPressureAltitude,
+                    _upperTemperature,
                     AircraftLowerWeight);
 
             BookPerformanceData d4 = FindBookDistance(
@@ -180,7 +181,7 @@ namespace Airborn.web.Models
                     AircraftHigherWeight);
 
             BookPerformanceData d7 = FindBookDistance(
-                    _upperPressureAltitude,
+                    _lowerPressureAltitude,
                     _lowerTemperature,
                     AircraftHigherWeight);
 
@@ -387,7 +388,7 @@ namespace Airborn.web.Models
             decimal lowerWeight = AircraftLowerWeight;
             decimal higherWeight = AircraftHigherWeight;
 
-            decimal weightInterpolationFactor = (decimal)(weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
+            decimal weightInterpolationFactor = (weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
 
             return weightInterpolationFactor;
         }

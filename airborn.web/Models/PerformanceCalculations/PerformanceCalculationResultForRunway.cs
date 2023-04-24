@@ -58,7 +58,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculateHeadwindComponent(
+                return CalculationUtilities.HeadwindComponent(
                     Wind.StrengthKts,
                     WindRunwayAngularDifferenceMagnetic
                 );
@@ -69,7 +69,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculateCrosswindComponent(
+                return CalculationUtilities.CrosswindComponent(
                     Wind.StrengthKts,
                     WindRunwayAngularDifferenceMagnetic
                 );
@@ -80,7 +80,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.CalculateAngularDifferenceBetweenRunwayAndWind(
+                return CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(
                       Runway.RunwayHeading.DirectionMagnetic,
                     Wind.Direction.DirectionMagnetic
                 );
