@@ -91,6 +91,11 @@ namespace Airborn.Controllers
             {
                 PageModel.AirportIdentifier = Request.Cookies["Airport"];
             }
+
+            if (Request.Cookies["AircraftType"]?.Length > 0)
+            {
+                PageModel.AircraftType = Aircraft.GetAircraftTypeFromAircraftTypeString(Request.Cookies["AircraftType"]);
+            }
         }
 
         // POST: Home/Calculate

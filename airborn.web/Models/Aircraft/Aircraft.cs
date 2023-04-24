@@ -27,6 +27,23 @@ namespace Airborn.web.Models
         public abstract int GetLowerWeight();
         public abstract int GetHigherWeight();
 
+        public static AircraftType GetAircraftTypeFromAircraftTypeString(string aircraftType)
+        {
+
+            switch (aircraftType)
+            {
+                case "SR22_G2":
+                    return AircraftType.SR22_G2;
+                case "SR22T_G5":
+                    return AircraftType.SR22T_G5;
+                case "C172_SP":
+                    return AircraftType.C172_SP;
+                default:
+                    throw new Exception("Unknown aircraft type");
+            }
+
+        }
+
         public static Aircraft GetAircraftFromAircraftType(AircraftType aircraftType)
         {
 
@@ -41,7 +58,6 @@ namespace Airborn.web.Models
                 default:
                     throw new Exception("Unknown aircraft type");
             }
-
 
         }
 
