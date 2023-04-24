@@ -9,9 +9,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void LandingDistanceIncludesDisplacedThreshold()
         {
-            int runwayHeading = 0;
-
-            Runway runway = new Runway(Direction.FromMagnetic(runwayHeading));
+            Runway runway = new Runway("28");
 
             // regrettably, yes, these are stored as text in the database
             runway.RunwayLength = "5000";

@@ -168,18 +168,9 @@ namespace Airborn.web.Models
             foreach (Runway runway in
                 db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
             {
-                Runway primaryRunway = runway;
+                Runways.Add(runway);
 
-                // RunwayIdentifer could be 10R or 28L so we use a regex to get only the first two characters
-                SetRunwayHeading(runway, primaryRunway);
-
-                Runways.Add(primaryRunway);
-            }
-
-            foreach (Runway runway in Runways)
-            {
                 PerformanceCalculationResult result = CalculatePerformanceForRunway(Aircraft, runway);
-
                 Results.Add(result);
             }
 
@@ -190,12 +181,11 @@ namespace Airborn.web.Models
             BookPerformanceDataList bookPerformanceDataList = new BookPerformanceDataList(aircraft.GetLowerWeight(), aircraft.GetHigherWeight());
             bookPerformanceDataList.PopulateFromJsonStringPath(aircraft, JsonPath);
 
-            // get the lower weight data
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
                 Scenario.Takeoff,
                 PressureAltitudeAlwaysPositiveOrZero,
                 TemperatureCelciusAlwaysPositiveOrZero,
-                (decimal)AircraftWeight,
+                AircraftWeight,
                 bookPerformanceDataList);
 
             IntepolatedTakeoffPerformanceData =
@@ -207,24 +197,13 @@ namespace Airborn.web.Models
                 Scenario.Landing,
                 PressureAltitudeAlwaysPositiveOrZero,
                 TemperatureCelciusAlwaysPositiveOrZero,
-                (decimal)AircraftWeight,
+                AircraftWeight,
                 bookPerformanceDataList);
 
             IntepolatedLandingPerformanceData =
                 landingInterpolator.GetInterpolatedBookDistance(
                     aircraft);
 
-        }
-
-        private static void SetRunwayHeading(Runway runway, Runway primaryRunway)
-        {
-            string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
-
-            primaryRunway.RunwayHeading =
-                new Direction(
-                    int.Parse(runwayName) * 10,
-                    0
-                    );
         }
 
         /// <summary>

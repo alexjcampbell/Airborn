@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.web.Models
@@ -7,17 +8,23 @@ namespace Airborn.web.Models
     [Table("Runways")]
     public class Runway
     {
-        private Runway()
+
+        public Runway()
         {
+        }
+
+        public Runway(string runwayName)
+        {
+            Runway_Name = runwayName;
         }
 
         public Runway(Direction runwayHeading)
         {
-            RunwayHeading = runwayHeading;
+            _runwayHeading = runwayHeading;
         }
 
         public int Runway_Id
-        {   
+        {
             get; set;
         }
 
@@ -74,11 +81,6 @@ namespace Airborn.web.Models
 
         [Column("Displaced_Threshold_Ft")]
         public string DisplacedThresholdFt
-        {
-            get; set;
-        }
-
-        public string Heading_DegT
         {
             get; set;
         }
@@ -159,9 +161,24 @@ namespace Airborn.web.Models
             }
         }
 
+        private Direction? _runwayHeading;
 
         [NotMapped]
-        public Direction RunwayHeading { get; set; }
+        public Direction RunwayHeading
+        {
+            get
+            {
+                if (_runwayHeading.HasValue)
+                {
+                    return _runwayHeading.Value;
+                }
+                else
+                {
+                    return GetRunwayHeading(this);
+                }
+            }
+        }
+
 
         public string RunwayHeadingMagneticConverted
         {
@@ -179,6 +196,21 @@ namespace Airborn.web.Models
         public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
         {
             return new Runway(Direction.FromMagnetic(magneticHeading, magneticVariation));
+        }
+
+        /// <summary>
+        /// Sets the calculator's runway heading for a given runway
+        /// </summary>
+        private static Direction GetRunwayHeading(Runway runway)
+        {
+            // RunwayIdentifer could be like 10R or 28L so we use a regex to get only the first two characters
+            string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
+
+            // runway heading is the runway name (e.g. 10 or 28) multiplied by 10
+            return new Direction(
+                    int.Parse(runwayName) * 10,
+                    0
+                    );
         }
     }
 }

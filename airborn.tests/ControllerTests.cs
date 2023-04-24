@@ -108,7 +108,7 @@ namespace Airborn.Tests
 
         private void SetupTestRunway(int runwayId, int runwayHeading, string runwayName)
         {
-            Runway runway = new Runway(Direction.FromMagnetic(runwayHeading, 0));
+            Runway runway = new Runway(_default_Runway_Name);
 
             runway.Airport_Ident = _default_airport_Ident;
             runway.Runway_Id = runwayId;
