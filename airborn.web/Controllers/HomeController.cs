@@ -37,8 +37,13 @@ namespace Airborn.Controllers
 
         public IActionResult Calculate()
         {
+            ReadCookies();
 
+            return View(PageModel);
+        }
 
+        private void ReadCookies()
+        {
             if (Request.Cookies["TemperatureType"]?.Length > 0)
             {
                 if (Request.Cookies["TemperatureType"] == "C")
@@ -81,8 +86,6 @@ namespace Airborn.Controllers
             {
                 PageModel.MagneticVariation = int.Parse(Request.Cookies["MagneticVariation"]);
             }
-
-            return View(PageModel);
         }
 
         // POST: Home/Calculate
