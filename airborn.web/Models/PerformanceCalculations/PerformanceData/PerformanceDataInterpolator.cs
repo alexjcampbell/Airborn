@@ -136,8 +136,13 @@ namespace Airborn.web.Models
         }
 
         private const int _pressureAltitudeInterval = 1000; // the interval at which performance data is provided in the POH
+
         private const int _temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
+        /// <summary>
+        /// Get the interpolated performance data from the POH for a given aircraft
+        /// </summary>
+        /// <param name="aircraft">The aircraft that we're calculating performance for</param>
         public InterpolatedPerformanceData GetInterpolatedBookDistance(Aircraft aircraft)
         {
             SetLowerAndUpperPressureAltitudeAndTemperature();
@@ -149,7 +154,6 @@ namespace Airborn.web.Models
             // we need eight BookPerformanceDatas to interpolate between
             // first by pressure altitude, then by temperature, then by weight
 
-            // TODO: check that these are all correct and refactor to make it easier to verify
             BookPerformanceData d1 = FindBookDistance(
                     _lowerPressureAltitude,
                     _lowerTemperature,
@@ -370,6 +374,10 @@ namespace Airborn.web.Models
             return interpolatedPerformanceDataByWeight;
         }
 
+        /// <summary>
+        /// Returns the interpolation factor for the given weight.  The interpolation factor is the percentage distance that the given weight is between the lowest
+        /// and highest possible weight for the aircraft
+        /// </summary>
         public decimal GetWeightInterpolationFactor(decimal weight)
         {
             if (weight <= 0)
@@ -388,6 +396,8 @@ namespace Airborn.web.Models
             decimal lowerWeight = AircraftLowerWeight;
             decimal higherWeight = AircraftHigherWeight;
 
+            // interpolaton factor is the percentage distance that the given weight is between the lowest
+            // and highest possible weight for the aircraft
             decimal weightInterpolationFactor = (weight - lowerWeight) / (decimal)(higherWeight - lowerWeight);
 
             return weightInterpolationFactor;

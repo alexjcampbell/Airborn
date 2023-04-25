@@ -10,7 +10,8 @@ namespace Airborn.web.Models
 {
 
     /// <summary>
-    /// This class is responsible for calculating the performance of a given aircraft at a given airport in a given set of conditions.
+    /// This class is responsible for calculating the performance of a given aircraft at a 
+    /// given airport in a given set of conditions.
     /// </summary>
     public class PerformanceCalculator
     {

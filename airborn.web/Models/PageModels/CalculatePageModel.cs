@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Airborn.web.Models
 {
+    /// <summary>
+    /// The model for the Calculate page
+    /// </summary>
     public class CalculatePageModel
     {
 
@@ -34,7 +37,7 @@ namespace Airborn.web.Models
         public List<CalculationResultPageModel> Results
         {
             get;
-            set;
+            private set;
         }
 
         public List<CalculationResultPageModel> ResultsSortedByHeadwind
@@ -48,7 +51,7 @@ namespace Airborn.web.Models
         public List<Runway> Runways
         {
             get;
-            set;
+            private set;
         }
 
         [Required(ErrorMessage = "Aircraft Weight is required.")]

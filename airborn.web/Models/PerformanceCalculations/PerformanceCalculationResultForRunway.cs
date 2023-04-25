@@ -2,6 +2,10 @@ using System;
 
 namespace Airborn.web.Models
 {
+
+    /// <summary>
+    /// This class is responsible for storing the results of a performance calculation for a given runway
+    /// </summary>
     public class PerformanceCalculationResultForRunway
     {
 
@@ -9,7 +13,6 @@ namespace Airborn.web.Models
         {
 
         }
-
 
         public PerformanceCalculationResultForRunway(Runway runway, Wind wind)
         {

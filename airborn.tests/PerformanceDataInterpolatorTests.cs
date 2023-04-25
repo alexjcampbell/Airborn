@@ -145,20 +145,20 @@ namespace Airborn.Tests
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
-                0,
+                0, // pressure altitude
                 actualTemperature,
                 actualAircraftWeight,
-                1000,
-                20000
+                1000, // distance ground roll
+                20000 // distance to clear 50 ft
             );
 
             BookPerformanceData d2 = new BookPerformanceData(
                 Scenario.Takeoff,
-                1000,
+                1000, // pressure altitude
                 actualTemperature,
                 actualAircraftWeight,
-                3000,
-                40000
+                3000, // distance ground roll
+                40000 // distance to clear 50 ft
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitudeOnly(
@@ -191,20 +191,20 @@ namespace Airborn.Tests
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
-                1000,
-                10,
+                1000, // actual pressure altitude
+                10, // actual temperature
                 actualAircraftWeight,
-                1000,
-                2000
+                1000, // weight
+                2000 // distance to clear 50 ft
             );
 
             BookPerformanceData d2 = new BookPerformanceData(
                 Scenario.Takeoff,
-                2000,
-                10,
+                2000, // actual pressure altitude
+                10, // actual temperature
                 actualAircraftWeight,
-                3000,
-                4000
+                3000, // weight
+                4000 // distance to clear 50 ft
             );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitudeOnly(
@@ -491,8 +491,6 @@ namespace Airborn.Tests
                     Aircraft.GetAircraftFromAircraftType(aircraftType));
 
             actualAircraftWeight = 2550;
-            actualPressureAltitude = 2000;
-            actualTemperature = 20;
 
             PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
                 scenario,

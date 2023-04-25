@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Airborn.web.Models
 {
+    /// <summary>
+    /// The model for each runway's calculation result, which is displayed on the Calculate page
+    /// </summary>
     public class CalculationResultPageModel
     {
         private CalculationResultPageModel()

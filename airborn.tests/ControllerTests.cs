@@ -423,9 +423,8 @@ namespace Airborn.Tests
             Assert.IsFalse(_model.ResultsSortedByHeadwind.Last().IsBestWind);
         }
 
-
         [TestMethod]
-        public void TestTakeoffGroundRollDistanceChangesWhenAircraftWeightChanges()
+        public void TestTakeoffGroundRollDistanceIsGreaterWhenAircraftWeightIncreases()
         {
             InitializeController();
             InitializeModel();
@@ -449,24 +448,35 @@ namespace Airborn.Tests
         [TestMethod]
         public void TestLandingGroundRollDistanceIsSameWhenAircraftWeightChanges()
         {
+            // Initialize the controller and model
             InitializeController();
             InitializeModel();
 
+            // Set the aircraft weight to the lower weight
             _model.AircraftWeight = 2900;
 
+            // Calculate the takeoff ground roll distance
             var result = _controller.Calculate(_model);
 
+            // Get the takeoff ground roll distance at the lower weight
             decimal? landingGroundRollDistanceLowerWeight = _model.Results[0].Landing_GroundRoll;
 
+            // Reinitialize the model
             InitializeModel();
 
+            // Set the aircraft weight to the higher weight
             _model.AircraftWeight = 3400;
 
+            // Calculate the takeoff ground roll distance
             result = _controller.Calculate(_model);
+
+            // Get the takeoff ground roll distance at the higher weight
             decimal? landingGroundRollDistanceHigherWeight = _model.Results[0].Landing_GroundRoll;
 
+            // Assert that the takeoff ground roll distance at the higher weight is equal to the takeoff ground roll distance at the lower weight
             Assert.IsTrue(landingGroundRollDistanceHigherWeight == landingGroundRollDistanceLowerWeight);
         }
+
 
     }
 }
