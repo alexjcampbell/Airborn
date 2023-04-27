@@ -148,11 +148,21 @@ namespace Airborn.web.Models
             private set;
         }
 
-        // notes to return to the UI about the calculations
+        // notes to return to the UI about the calculations (e.g. that pressure altitude is < 0 so we're using 0)
         public List<string> Notes = new List<string>();
 
         public InterpolatedPerformanceData IntepolatedTakeoffPerformanceData;
         public InterpolatedPerformanceData IntepolatedLandingPerformanceData;
+
+        private PerformanceCalculationLogger _logger = new PerformanceCalculationLogger();
+
+        public PerformanceCalculationLogger Logger
+        {
+            get
+            {
+                return _logger;
+            }
+        }
 
         public void Calculate(AirportDbContext db)
         {
@@ -169,7 +179,7 @@ namespace Airborn.web.Models
                 Notes.Add("Temperature is negative. The POH data only provides performance date for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
             }
 
-            PopulateInterpolatedPerformanceData(Aircraft);
+            PopulateInterpolatedPerformanceData();
 
             List<PerformanceCalculationResultForRunway> results = new List<PerformanceCalculationResultForRunway>();
 
@@ -184,35 +194,48 @@ namespace Airborn.web.Models
 
         }
 
-        private void PopulateInterpolatedPerformanceData(Aircraft aircraft)
+        /// <summary>
+        /// Populates the interpolated takeoff and landing distances for the given aircraft
+        /// </summary>
+        private void PopulateInterpolatedPerformanceData()
         {
             BookPerformanceDataList bookPerformanceDataList =
-                new BookPerformanceDataList(aircraft.GetLowerWeight(), aircraft.GetHigherWeight());
+                new BookPerformanceDataList(Aircraft.GetLowerWeight(), Aircraft.GetHigherWeight());
 
             // populate the list of book performance data from the JSON file
-            bookPerformanceDataList.PopulateFromJsonStringPath(aircraft, JsonPath);
+            bookPerformanceDataList.PopulateFromJsonStringPath(Aircraft, JsonPath);
+
+            _logger.Add($"Book performance data list populated from JSON file {Aircraft.JsonFileName_LowerWeight()} and {Aircraft.JsonFileName_HigherWeight()}");
+
+            PerformanceCalculationLogItem takeoffLogger = new PerformanceCalculationLogItem("Getting takeoff performance from the POH table, and interpolating:");
+            _logger.Add(takeoffLogger);
 
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
                 Scenario.Takeoff,
                 PressureAltitudeAlwaysPositiveOrZero,
                 TemperatureCelciusAlwaysPositiveOrZero,
                 AircraftWeight,
-                bookPerformanceDataList);
+                bookPerformanceDataList,
+                takeoffLogger);
 
             IntepolatedTakeoffPerformanceData =
-                takeoffInterpolator.GetInterpolatedBookDistance(
-                    aircraft);
+                takeoffInterpolator.GetInterpolatedBookDistances(
+                    Aircraft);
+
+            PerformanceCalculationLogItem landingLogger = new PerformanceCalculationLogItem("Calculating landing performance from the POH table, and interpolating:");
+            _logger.Add(landingLogger);
 
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
                 Scenario.Landing,
                 PressureAltitudeAlwaysPositiveOrZero,
                 TemperatureCelciusAlwaysPositiveOrZero,
                 AircraftWeight,
-                bookPerformanceDataList);
+                bookPerformanceDataList,
+                landingLogger);
 
             IntepolatedLandingPerformanceData =
-                landingInterpolator.GetInterpolatedBookDistance(
-                    aircraft);
+                landingInterpolator.GetInterpolatedBookDistances(
+                    Aircraft);
 
         }
 

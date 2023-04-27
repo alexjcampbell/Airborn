@@ -36,7 +36,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
         }
 
@@ -56,12 +57,13 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(
+            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
 
             Assert.AreEqual(300, interpolatedPerformanceData.DistanceGroundRoll);
@@ -84,12 +86,13 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
-            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistance(
+            InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
 
             Assert.AreEqual(1320, interpolatedPerformanceData.DistanceGroundRoll);
@@ -112,13 +115,15 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
+
             );
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData =
-                interpolator.GetInterpolatedBookDistance(aircraft);
+                interpolator.GetInterpolatedBookDistances(aircraft);
 
             Assert.AreEqual(2320, interpolatedPerformanceData.DistanceGroundRoll);
             Assert.AreEqual(2784, interpolatedPerformanceData.DistanceToClear50Ft);
@@ -140,7 +145,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -186,7 +192,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -233,7 +240,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -279,7 +287,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -327,7 +336,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -378,7 +388,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
             BookPerformanceData d1 = new BookPerformanceData(
@@ -427,7 +438,8 @@ namespace Airborn.Tests
                 actualPressureAltitude,
                 actualTemperature,
                 actualAircraftWeight,
-                performanceDataList
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
             );
 
 
@@ -487,7 +499,7 @@ namespace Airborn.Tests
                 performanceDataList);
 
             InterpolatedPerformanceData lowerData =
-                interpolatorLower.GetInterpolatedBookDistance(
+                interpolatorLower.GetInterpolatedBookDistances(
                     Aircraft.GetAircraftFromAircraftType(aircraftType));
 
             actualAircraftWeight = 2550;
@@ -500,7 +512,7 @@ namespace Airborn.Tests
                 performanceDataList);
 
             InterpolatedPerformanceData upperData =
-                interpolatorUpper.GetInterpolatedBookDistance(
+                interpolatorUpper.GetInterpolatedBookDistances(
                     Aircraft.GetAircraftFromAircraftType(aircraftType));
 
             Assert.IsTrue(upperData.DistanceGroundRoll > lowerData.DistanceGroundRoll);

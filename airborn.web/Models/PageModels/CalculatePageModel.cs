@@ -99,6 +99,16 @@ namespace Airborn.web.Models
             set;
         }
 
+        private PerformanceCalculationLogger _logger = new PerformanceCalculationLogger();
+
+        public PerformanceCalculationLogger Logger
+        {
+            get
+            {
+                return _logger;
+            }
+        }
+
         [Range(-50, 50,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int? MagneticVariation
@@ -221,6 +231,8 @@ namespace Airborn.web.Models
             }
 
             SetIsBestWindIfRunwayIsMostIntoWind();
+
+            _logger = PerformanceCalculator.Logger;
 
         }
 

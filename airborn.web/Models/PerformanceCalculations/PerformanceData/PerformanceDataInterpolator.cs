@@ -22,13 +22,15 @@ namespace Airborn.web.Models
             Scenario scenario,
             decimal actualPressureAltitude,
             decimal actualTemperature,
-            decimal aircraftActualWeight
+            decimal aircraftActualWeight,
+            PerformanceCalculationLogItem logger
         )
         {
             ActualPressureAltitude = actualPressureAltitude;
             ActualTemperature = actualTemperature;
             AircraftActualWeight = aircraftActualWeight;
             Scenario = scenario;
+            _logger = logger;
 
             SetLowerAndUpperPressureAltitudeAndTemperature();
         }
@@ -42,13 +44,15 @@ namespace Airborn.web.Models
         ///  <param name="actualTemperature">The actual reported temperature at the airport</param>
         ///  <param name="actualWeight">The actual weight of the </param>
         ///  <param name="bookPerformanceDataList">The BookPerformanceDataList that has been pre-populated with all of the book data</param>
+        ///  <param name="logger">The logger that will be used to log how we calculate takeoff and landing distances</param>
         public PeformanceDataInterpolator(
             Scenario scenario,
             decimal actualPressureAltitude,
             decimal actualTemperature,
             decimal actualWeight,
-            BookPerformanceDataList bookPerformanceDataList
-        ) : this(scenario, actualPressureAltitude, actualTemperature, actualWeight)
+            BookPerformanceDataList bookPerformanceDataList,
+            PerformanceCalculationLogItem logger
+        ) : this(scenario, actualPressureAltitude, actualTemperature, actualWeight, logger)
         {
             Scenario = scenario;
             _bookPerformanceDataList = bookPerformanceDataList;
@@ -139,17 +143,23 @@ namespace Airborn.web.Models
 
         private const int _temperatureInterval = 10; // the internal at which which temperature data is provided in the POH
 
+        private PerformanceCalculationLogItem _logger;
+
         /// <summary>
         /// Get the interpolated performance data from the POH for a given aircraft
         /// </summary>
         /// <param name="aircraft">The aircraft that we're calculating performance for</param>
-        public InterpolatedPerformanceData GetInterpolatedBookDistance(Aircraft aircraft)
+        public InterpolatedPerformanceData GetInterpolatedBookDistances(Aircraft aircraft)
         {
-            SetLowerAndUpperPressureAltitudeAndTemperature();
+
+            _logger.Add($"Getting book perfomance data for {Scenario}, for aircraft {aircraft.GetType()}. Actual aircraft weight: {AircraftActualWeight} Actual pressure altitude: {ActualPressureAltitude}, actual temperature: {ActualTemperature}");
 
             // get the lower and higher weights for which we have performance data
             AircraftLowerWeight = aircraft.GetLowerWeight();
             AircraftHigherWeight = aircraft.GetHigherWeight();
+
+            PerformanceCalculationLogItem foundBookDataLogItem = new PerformanceCalculationLogItem("Found book data");
+            _logger.SubItems.Add(foundBookDataLogItem);
 
             // we need eight BookPerformanceDatas to interpolate between
             // first by pressure altitude, then by temperature, then by weight
@@ -157,42 +167,52 @@ namespace Airborn.web.Models
             BookPerformanceData d1 = FindBookDistance(
                     _lowerPressureAltitude,
                     _lowerTemperature,
-                    AircraftLowerWeight);
+                    AircraftLowerWeight,
+                    foundBookDataLogItem);
 
             BookPerformanceData d2 = FindBookDistance(
                     _upperPressureAltitude,
                     _lowerTemperature,
-                    AircraftLowerWeight);
+                    AircraftLowerWeight,
+                    foundBookDataLogItem
+                    );
 
             BookPerformanceData d3 = FindBookDistance(
                     _lowerPressureAltitude,
                     _upperTemperature,
-                    AircraftLowerWeight);
+                    AircraftLowerWeight,
+                    foundBookDataLogItem
+                    );
 
             BookPerformanceData d4 = FindBookDistance(
                     _upperPressureAltitude,
                     _upperTemperature == ActualTemperature ? ActualTemperature : _upperTemperature,
-                    AircraftLowerWeight);
+                    AircraftLowerWeight,
+                    foundBookDataLogItem);
 
             BookPerformanceData d5 = FindBookDistance(
                     _lowerPressureAltitude,
                     _lowerTemperature,
-                    AircraftHigherWeight);
+                    AircraftHigherWeight,
+                    foundBookDataLogItem);
 
             BookPerformanceData d6 = FindBookDistance(
                     _upperPressureAltitude,
                     _lowerTemperature,
-                    AircraftHigherWeight);
+                    AircraftHigherWeight,
+                    foundBookDataLogItem);
 
             BookPerformanceData d7 = FindBookDistance(
                     _lowerPressureAltitude,
                     _lowerTemperature,
-                    AircraftHigherWeight);
+                    AircraftHigherWeight,
+                    foundBookDataLogItem);
 
             BookPerformanceData d8 = FindBookDistance(
                     _upperPressureAltitude,
                     _upperTemperature == ActualTemperature ? ActualTemperature : _upperTemperature,
-                    AircraftHigherWeight);
+                    AircraftHigherWeight,
+                    foundBookDataLogItem);
 
             List<InterpolatedPerformanceData> interpolatedPerformanceDataList = new List<InterpolatedPerformanceData>();
 
@@ -220,14 +240,25 @@ namespace Airborn.web.Models
         public BookPerformanceData FindBookDistance(
             decimal pressureAltitude,
             decimal temperature,
-            decimal weight)
+            decimal weight,
+            PerformanceCalculationLogItem foundBookDataLogItem
+            )
         {
 
-            return _bookPerformanceDataList.FindBookDistance(
+
+
+            BookPerformanceData bookData = _bookPerformanceDataList.FindBookDistance(
                 Scenario,
                 pressureAltitude,
                 temperature,
                 weight);
+
+            PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"Aircraft weight {weight}, pressure altitude {pressureAltitude}, temperature {temperature}");
+            foundBookDataLogItem.SubItems.Add(item);
+
+            item.Add($"Ground roll {bookData.DistanceGroundRoll}, distance to clear 50' obstacle {bookData.DistanceToClear50Ft}");
+
+            return bookData;
         }
 
 
@@ -268,6 +299,9 @@ namespace Airborn.web.Models
 
                 interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = lowerPressureAltitudePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = lowerPressureAltitudePerformanceData.DistanceToClear50Ft;
+
+                _logger.Add($"No interpolation required for pressure altitude {ActualPressureAltitude}, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+
                 return interpolatedPerformanceDataByPressureAltitude;
             }
             else if (ActualPressureAltitude == upperPressureAltitudePerformanceData.PressureAltitude)
@@ -276,6 +310,9 @@ namespace Airborn.web.Models
 
                 interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = upperPressureAltitudePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = upperPressureAltitudePerformanceData.DistanceToClear50Ft;
+
+                _logger.Add($"No interpolation required for pressure altitude {ActualPressureAltitude}, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+
                 return interpolatedPerformanceDataByPressureAltitude;
             }
             else
@@ -294,6 +331,21 @@ namespace Airborn.web.Models
                     _pressureAltitudeInterval
                 );
 
+                // we need the pressure altitude interpolation factor for logging purposes
+                // TODO: make the Interpolate function return this value
+                decimal pressureAltitudeInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
+                    (int)ActualPressureAltitude,
+                    _lowerPressureAltitude,
+                    _upperPressureAltitude
+                );
+
+                PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem($"Interpolated performance data by pressure altitude for aircraft weight {weight}, temperature {lowerPressureAltitudePerformanceData.Temperature}");
+
+                logItem.Add($"Interpolating actual pressure altitude {ActualPressureAltitude}, between {lowerPressureAltitudePerformanceData.PressureAltitude} and {upperPressureAltitudePerformanceData.PressureAltitude}, with interpolation factor {pressureAltitudeInterpolationFactor}");
+                logItem.Add($"Lower pressure altitude performance data at {lowerPressureAltitudePerformanceData.PressureAltitude}, ground roll is: {lowerPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {lowerPressureAltitudePerformanceData.DistanceToClear50Ft}");
+                logItem.Add($"Upper pressure altitude performance data at {upperPressureAltitudePerformanceData.PressureAltitude}, ground roll is: {upperPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {upperPressureAltitudePerformanceData.DistanceToClear50Ft}");
+                logItem.Add($"Interpolated ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+                _logger.SubItems.Add(logItem);
 
                 return interpolatedPerformanceDataByPressureAltitude;
             }
@@ -318,6 +370,9 @@ namespace Airborn.web.Models
 
                 interpolatedPerformanceDataByTemperature.DistanceGroundRoll = lowerTemperaturePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = lowerTemperaturePerformanceData.DistanceToClear50Ft;
+
+                _logger.Add($"No interpolation required for temperature {ActualTemperature}, ground roll is: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
+
                 return interpolatedPerformanceDataByTemperature;
             }
             else if (ActualTemperature == upperTemperaturePerformanceData.Temperature)
@@ -326,6 +381,9 @@ namespace Airborn.web.Models
 
                 interpolatedPerformanceDataByTemperature.DistanceGroundRoll = upperTemperaturePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = upperTemperaturePerformanceData.DistanceToClear50Ft;
+
+                _logger.Add($"No interpolation required for temperature {ActualTemperature}, ground roll is: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
+
                 return interpolatedPerformanceDataByTemperature;
             }
 
@@ -342,6 +400,20 @@ namespace Airborn.web.Models
                 (int)ActualTemperature,
                 _temperatureInterval
             );
+
+            decimal temperatureInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
+                (int)ActualTemperature,
+                _lowerTemperature,
+                _upperTemperature
+            );
+
+            PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem($"Interpolated performance data by temperature for aircraft weight {weight}, pressure altitude {lowerTemperaturePerformanceData.PressureAltitude}");
+
+            logItem.Add($"Interpolating actual temperature {ActualTemperature}, between {lowerTemperaturePerformanceData.Temperature} and {upperTemperaturePerformanceData.Temperature}, with interpolation factor {temperatureInterpolationFactor}");
+            logItem.Add($"Lower temperature performance data at {lowerTemperaturePerformanceData.Temperature}: ground roll {lowerTemperaturePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle {lowerTemperaturePerformanceData.DistanceToClear50Ft}");
+            logItem.Add($"Upper temperature performance data at {upperTemperaturePerformanceData.Temperature}: ground roll {upperTemperaturePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle {upperTemperaturePerformanceData.DistanceToClear50Ft}");
+            logItem.Add($"Interpolated ground roll is: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
+            _logger.SubItems.Add(logItem);
 
             return interpolatedPerformanceDataByTemperature;
         }
@@ -370,6 +442,17 @@ namespace Airborn.web.Models
                 lowerWeightPerformanceData.DistanceToClear50Ft.Value,
                 upperWeightPerformanceData.DistanceToClear50Ft.Value
             );
+
+            decimal weightInterpolationFactor = GetWeightInterpolationFactor(AircraftActualWeight);
+
+            PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem("Interpolated weight performance data between:");
+
+            logItem.Add($"Interpolated weight {AircraftActualWeight}, between {lowerWeightPerformanceData.AircraftWeight} and {upperWeightPerformanceData.AircraftWeight}, with interpolation factor {weightInterpolationFactor}");
+            logItem.Add($"Lower weight performance data at {lowerWeightPerformanceData.AircraftWeight}: ground roll {lowerWeightPerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle {lowerWeightPerformanceData.DistanceToClear50Ft}");
+            logItem.Add($"Upper weight performance data at {upperWeightPerformanceData.AircraftWeight}: ground roll {upperWeightPerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle {upperWeightPerformanceData.DistanceToClear50Ft}");
+            logItem.Add($"Ground roll is: {interpolatedPerformanceDataByWeight.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByWeight.DistanceToClear50Ft}");
+
+            _logger.SubItems.Add(logItem);
 
             return interpolatedPerformanceDataByWeight;
         }
