@@ -10,49 +10,56 @@ namespace Airborn.web.Models
         }
 
 
-        public override decimal MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, decimal takeoffDistance)
+        public override Distance MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedTakeoffDistance)
         {
+
+            decimal adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
 
             if (result.HeadwindComponent > 0)
             {
                 // subtract 10% for each 12 knots of headwind
-                takeoffDistance = takeoffDistance * (1 - ((result.HeadwindComponent / 12) * 0.1m));
+                adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 12) * 0.1m));
             }
             else if (result.HeadwindComponent < 0)
             {
                 // add 10% for each 2 knots of tailwind up to 10 knots
                 decimal adjustment = (result.HeadwindComponent / 2) * 0.1m;
 
+                // don't allow more than 50% adjustment
                 if (adjustment > 0.5m) { adjustment = 0.5m; }
 
-                takeoffDistance = takeoffDistance * (1 - adjustment);
+                // make the adjustment
+                adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - adjustment);
 
             }
 
-
-
-            return takeoffDistance;
+            return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        public override decimal MakeLandingAdjustments(PerformanceCalculationResultForRunway result, decimal landingDistance)
+        public override Distance MakeLandingAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedLandingDistance)
         {
+            decimal adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
+
             if (result.HeadwindComponent > 0)
             {
                 // subtract 10% for each 13 knots of headwind
-                landingDistance = landingDistance * (1 - ((result.HeadwindComponent / 13) * 0.1m));
+                adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 13) * 0.1m));
             }
             else if (result.HeadwindComponent < 0)
             {
                 // add 10% for each 2 knots of tailwind up to 10 knots
+
                 decimal adjustment = (result.HeadwindComponent / 2) * 0.1m;
 
+                // don't allow more than 50% adjustment
                 if (adjustment > 0.5m) { adjustment = 0.5m; }
 
-                landingDistance = landingDistance * (1 - adjustment);
+                // make the adjustment
+                adjustedLandingDistance = adjustedLandingDistance * (1 - adjustment);
 
             }
 
-            return landingDistance;
+            return Distance.FromFeet(adjustedLandingDistance);
         }
 
     }

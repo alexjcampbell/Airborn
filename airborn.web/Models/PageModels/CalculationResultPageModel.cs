@@ -158,7 +158,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Result?.Takeoff_GroundRoll;
+                return Result?.Takeoff_GroundRoll.TotalFeet;
             }
         }
 
@@ -170,7 +170,7 @@ namespace Airborn.web.Models
                 if (Result != null)
                 {
 
-                    string result = Result?.Takeoff_GroundRoll.ToString("#,##") + " ft";
+                    string result = Result?.Takeoff_GroundRoll.ToString();
 
                     if (Takeoff_PercentageRunwayUsed_GroundRoll.HasValue)
                     {
@@ -189,7 +189,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Result?.Takeoff_50FtClearance;
+                return Result?.Takeoff_50FtClearance.TotalFeet;
             }
         }
 
@@ -199,7 +199,7 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    string result = Result?.Takeoff_50FtClearance.ToString("#,##") + " ft";
+                    string result = Result?.Takeoff_50FtClearance.ToString();
 
                     if (Takeoff_PercentageRunwayUsed_DistanceToClear50Ft.HasValue)
                     {
@@ -218,7 +218,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Result?.Landing_GroundRoll;
+                return Result?.Landing_GroundRoll.TotalFeet;
             }
         }
 
@@ -229,7 +229,7 @@ namespace Airborn.web.Models
                 if (Result != null)
                 {
 
-                    string result = Result?.Landing_GroundRoll.ToString("#,##") + " ft";
+                    string result = Result?.Landing_GroundRoll.ToString();
 
                     if (Landing_PercentageRunwayUsed_GroundRoll.HasValue)
                     {
@@ -249,7 +249,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Result?.Landing_50FtClearance;
+                return Result?.Landing_50FtClearance.TotalFeet;
             }
         }
 
@@ -259,7 +259,7 @@ namespace Airborn.web.Models
             {
                 if (Result != null)
                 {
-                    string result = Result?.Landing_50FtClearance.ToString("#,##") + " ft";
+                    string result = Result?.Landing_50FtClearance.ToString();
 
                     if (Landing_PercentageRunwayUsed_DistanceToClear50Ft.HasValue)
                     {

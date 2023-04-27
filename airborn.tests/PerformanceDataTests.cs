@@ -17,6 +17,8 @@ namespace Airborn.Tests
         private int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetLowerWeight();
         private int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(AircraftType.SR22_G2).GetHigherWeight();
 
+        private const double _minimumDistancePrecision = 0.01d;
+
         public void Setup()
         {
             jsonFileLowerWeight.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
@@ -128,10 +130,13 @@ namespace Airborn.Tests
 
             bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
-            decimal expectedGroundRoll_0 = 100;
+            double expectedGroundRoll_0 = 100;
 
-            Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll);
+            Assert.AreEqual(
+                expectedGroundRoll_0,
+                (double)bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
+                _minimumDistancePrecision
+                );
 
         }
 
@@ -144,10 +149,12 @@ namespace Airborn.Tests
 
             bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
-            decimal expectedGroundRoll_0 = 120;
+            double expectedDistance = 120;
 
-            Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft);
+            Assert.AreEqual(
+                expectedDistance,
+                (double)bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft.Value.TotalFeet,
+                _minimumDistancePrecision);
 
         }
 
@@ -160,10 +167,13 @@ namespace Airborn.Tests
 
             bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
-            decimal expectedGroundRoll_0 = 100;
+            double expectedGroundRoll_0 = 100;
 
-            Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll);
+            Assert.AreEqual(
+                expectedGroundRoll_0,
+                (double)bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
+                _minimumDistancePrecision
+                );
 
         }
 
@@ -176,11 +186,13 @@ namespace Airborn.Tests
 
             bookNumbersList.PopulateFromJson(aircraft, jsonFileLowerWeight.Object, jsonFileHigherWeight.Object);
 
-            decimal expectedGroundRoll_0 = 600;
+            double expectedDistance = 600;
 
-            Assert.AreEqual(expectedGroundRoll_0,
-                bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft);
-
+            Assert.AreEqual(
+                expectedDistance,
+                (double)bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft.Value.TotalFeet,
+                _minimumDistancePrecision
+                );
         }
 
         [TestMethod]
@@ -189,8 +201,8 @@ namespace Airborn.Tests
 
             decimal temperature = 10;
             decimal pressureAltitude = 1000;
-            decimal groundRoll = 100;
-            decimal distanceToClear50Ft = 120;
+            Distance groundRoll = Distance.FromFeet(100);
+            Distance distanceToClear50Ft = Distance.FromFeet(120);
             decimal aircraftWeight = 3000;
             Scenario scenario = Scenario.Takeoff;
 
@@ -284,11 +296,11 @@ namespace Airborn.Tests
             var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, aircraftWeight);
             var landingBookDistance = bookNumbersList.FindBookDistance(Scenario.Landing, pressureAltitude, temperature, aircraftWeight);
 
-            Assert.AreEqual(100, takeoffBookDistance.DistanceGroundRoll);
-            Assert.AreEqual(120, takeoffBookDistance.DistanceToClear50Ft);
+            Assert.AreEqual(100, takeoffBookDistance.DistanceGroundRoll.Value.TotalFeet);
+            Assert.AreEqual(120, takeoffBookDistance.DistanceToClear50Ft.Value.TotalFeet);
 
-            Assert.AreEqual(100, landingBookDistance.DistanceGroundRoll);
-            Assert.AreEqual(120, landingBookDistance.DistanceToClear50Ft);
+            Assert.AreEqual(100, landingBookDistance.DistanceGroundRoll.Value.TotalFeet);
+            Assert.AreEqual(120, landingBookDistance.DistanceToClear50Ft.Value.TotalFeet);
         }
 
 

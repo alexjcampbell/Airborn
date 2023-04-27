@@ -146,8 +146,8 @@ namespace Airborn.web.Models
                     profile.PressureAltitude,
                     groundRoll.Temperature,
                     weight,
-                    groundRoll.Distance,
-                    clear50Ft.Distance
+                    Distance.FromFeet(groundRoll.Distance),
+                    Distance.FromFeet(clear50Ft.Distance)
                 );
 
                 Add(bookNumbers);

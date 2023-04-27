@@ -25,8 +25,8 @@ namespace Airborn.web.Models
             decimal pressureAltitude,
             decimal temperature,
             decimal aircraftWeight,
-            decimal groundRoll,
-            decimal distanceToClear50Ft)
+            Distance groundRoll,
+            Distance distanceToClear50Ft)
             :
             base(
                 scenario,

@@ -31,26 +31,26 @@ namespace Airborn.web.Models
             get;
         }
 
-        public decimal Takeoff_GroundRoll
+        public Distance Takeoff_GroundRoll
         {
             get;
             set;
         }
 
 
-        public decimal Takeoff_50FtClearance
+        public Distance Takeoff_50FtClearance
         {
             get;
             set;
         }
 
-        public decimal Landing_GroundRoll
+        public Distance Landing_GroundRoll
         {
             get;
             set;
         }
 
-        public decimal Landing_50FtClearance
+        public Distance Landing_50FtClearance
         {
             get;
             set;

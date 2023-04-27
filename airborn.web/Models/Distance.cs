@@ -137,7 +137,8 @@ namespace Airborn.web.Models
 
         public override string ToString()
         {
-            return string.Format("{0}[m]", TotalMeters);
+            // default to ft, until we come back and support output in metres
+            return TotalFeet.ToString("N0") + " ft";
         }
     }
 }

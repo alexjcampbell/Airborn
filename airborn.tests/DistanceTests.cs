@@ -22,8 +22,12 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestReturnPositiveDirectionIfNegative() {
-
+        public void TestFormatToStringAsFt()
+        {
+            Distance distance = Distance.FromFeet(1000);
+            Assert.AreEqual("1,000 ft", distance.ToString());
         }
+
+
     }
 }

@@ -49,8 +49,8 @@ namespace Airborn.web.Models
             decimal pressureAltitude,
             decimal temperature,
             decimal aircraftWeight,
-            decimal? groundRoll,
-            decimal? distanceToClear50Ft)
+            Distance? groundRoll,
+            Distance? distanceToClear50Ft)
         {
             Scenario = scenario;
             PressureAltitude = pressureAltitude;
@@ -74,13 +74,13 @@ namespace Airborn.web.Models
             private set;
         }
 
-        public decimal? DistanceGroundRoll
+        public Distance? DistanceGroundRoll
         {
             get;
             set;
         }
 
-        public decimal? DistanceToClear50Ft
+        public Distance? DistanceToClear50Ft
         {
             get;
             set;

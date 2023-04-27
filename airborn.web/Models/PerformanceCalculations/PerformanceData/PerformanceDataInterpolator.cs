@@ -317,18 +317,20 @@ namespace Airborn.web.Models
             }
             else
             {
-                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
-                    lowerPressureAltitudePerformanceData.DistanceGroundRoll.Value,
-                    upperPressureAltitudePerformanceData.DistanceGroundRoll.Value,
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll =
+                Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+                    lowerPressureAltitudePerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                    upperPressureAltitudePerformanceData.DistanceGroundRoll.Value.TotalFeet,
                     (int)ActualPressureAltitude,
                     _pressureAltitudeInterval
-                    );
+                    ));
 
-                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.Interpolate(
-                    lowerPressureAltitudePerformanceData.DistanceToClear50Ft.Value,
-                    upperPressureAltitudePerformanceData.DistanceToClear50Ft.Value,
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+                    lowerPressureAltitudePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                    upperPressureAltitudePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
                     (int)ActualPressureAltitude,
                     _pressureAltitudeInterval
+                )
                 );
 
                 // we need the pressure altitude interpolation factor for logging purposes
@@ -387,18 +389,20 @@ namespace Airborn.web.Models
                 return interpolatedPerformanceDataByTemperature;
             }
 
-            interpolatedPerformanceDataByTemperature.DistanceGroundRoll = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.DistanceGroundRoll.Value,
-                upperTemperaturePerformanceData.DistanceGroundRoll.Value,
+            interpolatedPerformanceDataByTemperature.DistanceGroundRoll = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+                lowerTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                upperTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
                 (int)ActualTemperature,
                 _temperatureInterval
+            )
                 );
 
-            interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.DistanceToClear50Ft.Value,
-                upperTemperaturePerformanceData.DistanceToClear50Ft.Value,
+            interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+                lowerTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                upperTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
                 (int)ActualTemperature,
                 _temperatureInterval
+                )
             );
 
             decimal temperatureInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
@@ -431,17 +435,17 @@ namespace Airborn.web.Models
                 weight
             );
 
-            interpolatedPerformanceDataByWeight.DistanceGroundRoll = PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
+            interpolatedPerformanceDataByWeight.DistanceGroundRoll = Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
                 GetWeightInterpolationFactor(AircraftActualWeight),
-                lowerWeightPerformanceData.DistanceGroundRoll.Value,
-                upperWeightPerformanceData.DistanceGroundRoll.Value
+                lowerWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                upperWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet)
             );
 
-            interpolatedPerformanceDataByWeight.DistanceToClear50Ft = PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
+            interpolatedPerformanceDataByWeight.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
                 GetWeightInterpolationFactor(AircraftActualWeight),
-                lowerWeightPerformanceData.DistanceToClear50Ft.Value,
-                upperWeightPerformanceData.DistanceToClear50Ft.Value
-            );
+                lowerWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                upperWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet
+            ));
 
             decimal weightInterpolationFactor = GetWeightInterpolationFactor(AircraftActualWeight);
 
