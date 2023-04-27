@@ -150,7 +150,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return PerformanceCalculator?.DensityAltitude;
+                return PerformanceCalculator?.DensityAltitude.TotalFeet;
             }
         }
 
@@ -162,7 +162,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return PerformanceCalculator?.PressureAltitude;
+                return PerformanceCalculator?.PressureAltitude.TotalFeet;
             }
         }
 
@@ -181,7 +181,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return PerformanceCalculator?.PressureAltitudeAlwaysPositiveOrZero;
+                return PerformanceCalculator?.PressureAltitudeAlwaysPositiveOrZero.TotalFeet;
             }
         }
 

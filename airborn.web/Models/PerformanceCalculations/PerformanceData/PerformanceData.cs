@@ -25,7 +25,7 @@ namespace Airborn.web.Models
         /// <param name="aircraftWeight">The weight of the aircraft</param>
         public PerformanceData(
             Scenario scenario,
-            decimal pressureAltitude,
+            Distance pressureAltitude,
             decimal temperature,
             decimal aircraftWeight
             ) : this(scenario, pressureAltitude, temperature, aircraftWeight, null, null)
@@ -46,7 +46,7 @@ namespace Airborn.web.Models
         /// <param name="distanceToClear50Ft">(optional) The distance to clear a 50' obstacle from the POH</param>
         public PerformanceData(
             Scenario scenario,
-            decimal pressureAltitude,
+            Distance pressureAltitude,
             decimal temperature,
             decimal aircraftWeight,
             Distance? groundRoll,
@@ -62,7 +62,7 @@ namespace Airborn.web.Models
 
         public Scenario Scenario;
 
-        public decimal PressureAltitude
+        public Distance PressureAltitude
         {
             get;
             private set;

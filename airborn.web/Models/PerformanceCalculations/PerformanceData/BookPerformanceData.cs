@@ -22,7 +22,7 @@ namespace Airborn.web.Models
         /// <param name="distanceToClear50Ft">The distance to clear a 50' obstacle from the POH</param>
         public BookPerformanceData(
             Scenario scenario,
-            decimal pressureAltitude,
+            Distance pressureAltitude,
             decimal temperature,
             decimal aircraftWeight,
             Distance groundRoll,

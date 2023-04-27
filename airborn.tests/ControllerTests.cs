@@ -205,8 +205,8 @@ namespace Airborn.Tests
             // altimeter setting of 1013.25m is standard pressure at sea level,
             // so field elevation should equal pressure altitude
             // but due to rounding errors, pressure altitude doesn't quite equal zero ft (sea level)
-            decimal expectedPressureAltitude = 6.825m;
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+            double expectedPressureAltitude = 6.825f;
+            Assert.AreEqual(expectedPressureAltitude, (double)_model.PressureAltitude, 0.1f);
         }
 
         [TestMethod]
@@ -220,12 +220,15 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            decimal expectedPressureAltitude = 0.0000000253344m;
+            double expectedPressureAltitude = 0;
 
             // Altimeter setting of 29.92 is standard pressure at sea level, so field elevation
             // should equal pressure altitude. However, rounding errors mean pressure altitude doesn't 
             // quite equal zero ft (sea level) as you'd expect
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+            Assert.AreEqual(expectedPressureAltitude,
+            (double)
+                _model.PressureAltitude,
+                0.1f);
         }
 
         [TestMethod]

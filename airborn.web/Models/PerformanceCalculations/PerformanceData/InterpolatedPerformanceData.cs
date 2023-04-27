@@ -19,7 +19,7 @@ namespace Airborn.web.Models
         /// <param name="weight">The weight of the aircraft</param>
         public InterpolatedPerformanceData(
             Scenario scenario,
-            decimal pressureAltitude,
+            Distance pressureAltitude,
             decimal temperature,
             decimal weight)
             : base(

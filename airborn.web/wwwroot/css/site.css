@@ -18,7 +18,8 @@ a {
   border-color: #112d4e;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
   color: #fff;
   background-color: #1a4578;
   border-color: #112d4e;
@@ -33,6 +34,7 @@ a {
 html {
   font-size: 12px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -42,6 +44,7 @@ html {
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
 }
@@ -66,10 +69,23 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  line-height: 60px;
+  /* Vertically center the text there */
+}
+
+.list-group-collapse li>ul li:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.list-group-collapse li>ul {
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: -11px;
 }

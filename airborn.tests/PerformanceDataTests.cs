@@ -200,7 +200,7 @@ namespace Airborn.Tests
         {
 
             decimal temperature = 10;
-            decimal pressureAltitude = 1000;
+            Distance pressureAltitude = Distance.FromFeet(1000);
             Distance groundRoll = Distance.FromFeet(100);
             Distance distanceToClear50Ft = Distance.FromFeet(120);
             decimal aircraftWeight = 3000;
@@ -288,7 +288,7 @@ namespace Airborn.Tests
             var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
-            decimal pressureAltitude = 0;
+            Distance pressureAltitude = Distance.FromFeet(0);
             decimal temperature = 10;
             decimal aircraftWeight = 2900;
 

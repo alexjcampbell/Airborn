@@ -38,7 +38,7 @@ namespace Airborn.Tests
 
                         BookPerformanceData takeoffData = new BookPerformanceData(
                                 Scenario.Takeoff,
-                                pressure,
+                                Distance.FromFeet(pressure),
                                 temperature,
                                 weight,
                                 groundRoll,
@@ -49,7 +49,7 @@ namespace Airborn.Tests
 
                         BookPerformanceData landingData = new BookPerformanceData(
                                 Scenario.Landing,
-                                pressure,
+                                Distance.FromFeet(pressure),
                                 temperature,
                                 weight,
                                 Distance.FromFeet(groundRoll.TotalFeet * 1.1m),

@@ -45,17 +45,17 @@ namespace Airborn.web.Models
             }
         }
 
-        public BookPerformanceData FindTakeoffBookDistance(decimal pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindTakeoffBookDistance(Distance pressureAltitude, decimal temperature, decimal weight)
         {
             return FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, weight);
         }
 
-        public BookPerformanceData FindLandingBookDistance(decimal pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindLandingBookDistance(Distance pressureAltitude, decimal temperature, decimal weight)
         {
             return FindBookDistance(Scenario.Landing, pressureAltitude, temperature, weight);
         }
 
-        public BookPerformanceData FindBookDistance(Scenario scenario, decimal pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindBookDistance(Scenario scenario, Distance pressureAltitude, decimal temperature, decimal weight)
         {
 
             if (temperature < 0)
@@ -64,11 +64,11 @@ namespace Airborn.web.Models
                 // we've used the book performance for 0 degress C
                 temperature = 0;
             }
-            if (pressureAltitude < 0)
+            if (pressureAltitude.TotalFeet < 0)
             {
                 // downstream code will add a note to the UI that the pressure altitude is negative and so 
                 // we've used the book performance for 0 feet
-                pressureAltitude = 0;
+                pressureAltitude = Distance.FromFeet(0);
             }
 
             if (weight < AircraftLowerWeight)
@@ -81,11 +81,11 @@ namespace Airborn.web.Models
             }
 
             List<BookPerformanceData> bookDistances = FindAll(
-                p => p.Scenario == scenario && p.PressureAltitude == pressureAltitude && p.Temperature == temperature && p.AircraftWeight == weight);
+                p => p.Scenario == scenario && p.PressureAltitude.TotalFeet == pressureAltitude.TotalFeet && p.Temperature == temperature && p.AircraftWeight == weight);
 
             if (bookDistances.Count == 0)
             {
-                throw new NoPerformanceDataFoundException(pressureAltitude, temperature, weight);
+                throw new NoPerformanceDataFoundException(pressureAltitude.TotalFeet, temperature, weight);
             }
 
             if (bookDistances.Count > 1)
@@ -143,7 +143,7 @@ namespace Airborn.web.Models
 
                 var bookNumbers = new BookPerformanceData(
                     scenario,
-                    profile.PressureAltitude,
+                    Distance.FromFeet(profile.PressureAltitude),
                     groundRoll.Temperature,
                     weight,
                     Distance.FromFeet(groundRoll.Distance),

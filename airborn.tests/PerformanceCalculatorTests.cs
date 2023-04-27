@@ -84,9 +84,10 @@ namespace Airborn.Tests
             calculator.Airport.FieldElevation = 1500;
             calculator.QNH = 1013;
 
-            decimal expectedPressureAltitude = 1506.825m;
+            double expectedPressureAltitude = 1506.825f;
 
-            Assert.AreEqual(expectedPressureAltitude, calculator.PressureAltitude);
+            Assert.AreEqual(expectedPressureAltitude, (double)calculator.PressureAltitude.TotalFeet
+                , 0.01f);
         }
     }
 }

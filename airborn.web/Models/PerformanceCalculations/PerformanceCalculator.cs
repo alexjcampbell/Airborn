@@ -104,19 +104,23 @@ namespace Airborn.web.Models
             set;
         }
 
-        public decimal PressureAltitude
+        public Distance PressureAltitude
         {
             get
             {
-                return CalculationUtilities.PressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation);
+
+                return Distance.FromFeet(
+                    CalculationUtilities.PressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation)
+                    );
+
             }
         }
 
-        public decimal PressureAltitudeAlwaysPositiveOrZero
+        public Distance PressureAltitudeAlwaysPositiveOrZero
         {
             get
             {
-                return PressureAltitude >= 0 ? PressureAltitude : 0;
+                return PressureAltitude.TotalFeet >= 0 ? PressureAltitude : Distance.FromFeet(0);
             }
         }
 
@@ -126,11 +130,14 @@ namespace Airborn.web.Models
             set;
         }
 
-        public decimal DensityAltitude
+        public Distance DensityAltitude
         {
             get
             {
-                return CalculationUtilities.DensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude);
+                return
+                Distance.FromFeet(
+                    CalculationUtilities.DensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude.TotalFeet));
+
             }
         }
 
@@ -138,7 +145,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.ISATemperatureForPressureAltitude(PressureAltitude);
+                return CalculationUtilities.ISATemperatureForPressureAltitude(PressureAltitude.TotalFeet);
             }
         }
 
@@ -168,7 +175,7 @@ namespace Airborn.web.Models
         {
 
             // if the pressure altitude is negative, we'll use zero for the calculations
-            if (PressureAltitude < 0)
+            if (PressureAltitude.TotalFeet < 0)
             {
                 Notes.Add("Pressure altitude is negative. The POH only provides performance data for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
             }
@@ -205,9 +212,15 @@ namespace Airborn.web.Models
             // populate the list of book performance data from the JSON file
             bookPerformanceDataList.PopulateFromJsonStringPath(Aircraft, JsonPath);
 
-            _logger.Add($"Book performance data list populated from JSON file {Aircraft.JsonFileName_LowerWeight()} and {Aircraft.JsonFileName_HigherWeight()}");
+            PerformanceCalculationLogItem firstItem = new PerformanceCalculationLogItem(
+                $"Looking for aircraft performance data in these JSON files:");
+            firstItem.Add($"File: {Aircraft.JsonFileName_LowerWeight()}");
+            firstItem.Add($"File: {Aircraft.JsonFileName_HigherWeight()}");
+            _logger.Add(firstItem);
 
-            PerformanceCalculationLogItem takeoffLogger = new PerformanceCalculationLogItem("Getting takeoff performance from the POH table, and interpolating:");
+            PerformanceCalculationLogItem takeoffLogger = new PerformanceCalculationLogItem(
+                "Getting takeoff performance from the POH table and interpolating:"
+                );
             _logger.Add(takeoffLogger);
 
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
@@ -222,7 +235,9 @@ namespace Airborn.web.Models
                 takeoffInterpolator.GetInterpolatedBookDistances(
                     Aircraft);
 
-            PerformanceCalculationLogItem landingLogger = new PerformanceCalculationLogItem("Calculating landing performance from the POH table, and interpolating:");
+            PerformanceCalculationLogItem landingLogger = new PerformanceCalculationLogItem(
+                "Getting landing performance from the POH table and interpolating:"
+                );
             _logger.Add(landingLogger);
 
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
