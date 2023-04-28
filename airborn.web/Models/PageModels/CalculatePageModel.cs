@@ -124,8 +124,9 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required(ErrorMessage = "Wind Direction is required.")]
+        [Required(ErrorMessage = "Altimiter setting is required.")]
         [Display(Name = "Altimeter Setting")]
+        [AltimeterSetting]
         public decimal? AltimeterSetting
         {
             get; set;
