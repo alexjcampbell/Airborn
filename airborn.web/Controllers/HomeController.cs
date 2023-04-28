@@ -103,7 +103,6 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Calculate(CalculatePageModel model)
         {
-
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
             {
