@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Airborn.web.Models;
+using System.Text.Json;
 
 namespace Airborn.Controllers
 {
@@ -103,6 +104,10 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Calculate(CalculatePageModel model)
         {
+
+            _logger.LogInformation("Executing {Action} with parameters: {Parameters}", nameof(CalculatePageModel), JsonSerializer.Serialize(model));
+
+
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
             {
