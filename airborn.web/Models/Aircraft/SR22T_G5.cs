@@ -9,7 +9,7 @@ namespace Airborn.web.Models
         {
         }
 
-       public override string JsonFileName_LowerWeight()
+        public override string JsonFileName_LowerWeight()
         {
             return "../Data/SR22T_G5_2900.json";
         }
@@ -27,6 +27,11 @@ namespace Airborn.web.Models
         public override int GetHigherWeight()
         {
             return 3600;
-        }        
+        }
+
+        public override string GetAircraftTypeString()
+        {
+            return "Cirrus SR22T G5";
+        }
     }
 }

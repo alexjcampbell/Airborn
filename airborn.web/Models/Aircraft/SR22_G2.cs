@@ -27,6 +27,11 @@ namespace Airborn.web.Models
         public override int GetHigherWeight()
         {
             return 3400;
-        }        
+        }
+
+        public override string GetAircraftTypeString()
+        {
+            return "Cirrus SR22 G2";
+        }
     }
 }

@@ -72,5 +72,10 @@ namespace Airborn.web.Models
         {
             return 2550;
         }
+
+        public override string GetAircraftTypeString()
+        {
+            return "Cessna 172SP";
+        }
     }
 }

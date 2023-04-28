@@ -27,6 +27,8 @@ namespace Airborn.web.Models
         public abstract int GetLowerWeight();
         public abstract int GetHigherWeight();
 
+        public abstract string GetAircraftTypeString();
+
         public static AircraftType GetAircraftTypeFromAircraftTypeString(string aircraftType)
         {
 

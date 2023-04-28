@@ -55,9 +55,8 @@ namespace Airborn.web.Models
         }
 
         [Required(ErrorMessage = "Aircraft Weight is required.")]
-        [Range(2000, 4000,
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Display(Name = "Aircraft Weight")]
+        [AircraftWeight]
         public int? AircraftWeight
         {
             get; set;
@@ -124,7 +123,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required(ErrorMessage = "Altimiter setting is required.")]
+        [Required(ErrorMessage = "Altimeter setting is required.")]
         [Display(Name = "Altimeter Setting")]
         [AltimeterSetting]
         public decimal? AltimeterSetting

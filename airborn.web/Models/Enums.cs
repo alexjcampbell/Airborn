@@ -27,10 +27,10 @@ namespace Airborn.web.Models
 
     public enum AircraftType
     {
-        [Display(Name = "SR22 G2")]
+        [Display(Name = "Cirrus SR22 G2")]
         SR22_G2,
 
-        [Display(Name = "SR22T G5")]
+        [Display(Name = "Cirrus SR22T G5")]
         SR22T_G5,
 
         [Display(Name = "Cessna 172SP")]
