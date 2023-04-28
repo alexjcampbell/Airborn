@@ -159,6 +159,7 @@ namespace Airborn.web.Models
             PerformanceCalculationLogItem foundBookDataLogItem = new PerformanceCalculationLogItem("Looking for book data:");
 
             foundBookDataLogItem.Add($"Scenario: {Scenario}");
+            foundBookDataLogItem.Add($"Aircraft: {aircraft.GetAircraftTypeString()}");
             foundBookDataLogItem.Add($"Actual aircraft weight: {AircraftActualWeight}" + " lbs");
             foundBookDataLogItem.Add($"Actual pressure altitude: {ActualPressureAltitude}");
             foundBookDataLogItem.Add($"Actual temperature: {ActualTemperature}" + " °C");
@@ -312,12 +313,29 @@ namespace Airborn.web.Models
 
             if (ActualPressureAltitude.TotalFeet == lowerPressureAltitudePerformanceData.PressureAltitude.TotalFeet)
             {
-                // if we're at the lower or upper pressure altitude, then we don't need to interpolate and we use the lower data
+                // if we're at the lower pressure altitude, then we don't need to interpolate and we use the lower data
 
                 interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = lowerPressureAltitudePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = lowerPressureAltitudePerformanceData.DistanceToClear50Ft;
 
-                _logger.Add($"No interpolation required for pressure altitude {ActualPressureAltitude}, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+                PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"No interpolation required for pressure altitude {ActualPressureAltitude}");
+                item.Add($"Ground roll: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}");
+                item.Add($"Distance to clear 50ft: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+                _logger.SubItems.Add(item);
+
+                return interpolatedPerformanceDataByPressureAltitude;
+            }
+            if (ActualPressureAltitude.TotalFeet == upperPressureAltitudePerformanceData.PressureAltitude.TotalFeet)
+            {
+                // if we're at the upper pressure altitude, then we don't need to interpolate and we use the upper data
+
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = upperPressureAltitudePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = upperPressureAltitudePerformanceData.DistanceToClear50Ft;
+
+                PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"No interpolation required for pressure altitude {ActualPressureAltitude}");
+                item.Add($"Ground roll: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}");
+                item.Add($"Distance to clear 50ft: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+                _logger.SubItems.Add(item);
 
                 return interpolatedPerformanceDataByPressureAltitude;
             }
@@ -376,12 +394,27 @@ namespace Airborn.web.Models
 
             if (ActualTemperature == lowerTemperaturePerformanceData.Temperature)
             {
-                // if we're at the lower or upper temperature, then we don't need to interpolate and we use the lower data
+                // if we're at the lower, then we don't need to interpolate and we use the lower data
 
                 interpolatedPerformanceDataByTemperature.DistanceGroundRoll = lowerTemperaturePerformanceData.DistanceGroundRoll;
                 interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = lowerTemperaturePerformanceData.DistanceToClear50Ft;
 
-                _logger.Add($"No interpolation required for temperature {ActualTemperature}, ground roll is: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
+                PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"No interpolation required for temperature {ActualTemperature}");
+                item.Add($"Ground roll: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}");
+                item.Add($"Distance to clear 50' obstacle: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
+
+                return interpolatedPerformanceDataByTemperature;
+            }
+            else if (ActualTemperature == upperTemperaturePerformanceData.Temperature)
+            {
+                // if we're at the upper temperature, then we don't need to interpolate and we use the upper data
+
+                interpolatedPerformanceDataByTemperature.DistanceGroundRoll = upperTemperaturePerformanceData.DistanceGroundRoll;
+                interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = upperTemperaturePerformanceData.DistanceToClear50Ft;
+
+                PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"No interpolation required for temperature {ActualTemperature}");
+                item.Add($"Ground roll: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}");
+                item.Add($"Distance to clear 50' obstacle: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
 
                 return interpolatedPerformanceDataByTemperature;
             }

@@ -262,30 +262,38 @@ namespace Airborn.web.Models
             PerformanceCalculationResultForRunway result =
                 new PerformanceCalculationResultForRunway(runway, Wind);
 
+            PerformanceCalculationLogItem runwayLogger = new PerformanceCalculationLogItem("$Making takeoff and landing adjustments for runway {runway.Runway_Name}:");
+
             result.Takeoff_GroundRoll =
                 Aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value
+                    IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value,
+                    runwayLogger
                 );
 
             result.Takeoff_50FtClearance = Aircraft.MakeTakeoffAdjustments
                 (
                     result,
-                    IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value
+                    IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value,
+                    runwayLogger
                 );
 
             result.Landing_GroundRoll = Aircraft.MakeLandingAdjustments
                 (
                     result,
-                    IntepolatedLandingPerformanceData.DistanceGroundRoll.Value
+                    IntepolatedLandingPerformanceData.DistanceGroundRoll.Value,
+                    runwayLogger
                 );
 
             result.Landing_50FtClearance = Aircraft.MakeLandingAdjustments
                 (
                     result,
-                    IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value
+                    IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value,
+                    runwayLogger
                 );
+
+            _logger.Add(runwayLogger);
 
             return result;
         }

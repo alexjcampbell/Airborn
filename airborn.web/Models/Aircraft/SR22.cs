@@ -10,7 +10,10 @@ namespace Airborn.web.Models
         }
 
 
-        public override Distance MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedTakeoffDistance)
+        public override Distance MakeTakeoffAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLogItem logItem)
         {
 
             decimal adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
@@ -36,13 +39,17 @@ namespace Airborn.web.Models
             return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        public override Distance MakeLandingAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedLandingDistance)
+        public override Distance MakeLandingAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem)
         {
             decimal adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
 
             if (result.HeadwindComponent > 0)
             {
                 // subtract 10% for each 13 knots of headwind
+                logItem.Add("Subtracting 10% for each 13 knots of headwind");
                 adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 13) * 0.1m));
             }
             else if (result.HeadwindComponent < 0)

@@ -18,8 +18,16 @@ namespace Airborn.web.Models
 
         // the implementing aircraft class must implement the POH rules for adjusting
         // the performance data for wind, slope, surface etc
-        public abstract Distance MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedTakeoffDistance);
-        public abstract Distance MakeLandingAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedlandingDistance);
+        public abstract Distance MakeTakeoffAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLogItem logItem
+            );
+        public abstract Distance MakeLandingAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedlandingDistance,
+            PerformanceCalculationLogItem logItem
+            );
 
         public abstract string JsonFileName_LowerWeight();
         public abstract string JsonFileName_HigherWeight();

@@ -9,7 +9,11 @@ namespace Airborn.web.Models
         {
         }
 
-        public override Distance MakeTakeoffAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedTakeoffDistance)
+        public override Distance MakeTakeoffAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLogItem logItem
+            )
         {
             decimal adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
 
@@ -30,7 +34,11 @@ namespace Airborn.web.Models
             return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        public override Distance MakeLandingAdjustments(PerformanceCalculationResultForRunway result, Distance unadjustedLandingDistance)
+        public override Distance MakeLandingAdjustments(
+            PerformanceCalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem
+            )
         {
             decimal adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
 

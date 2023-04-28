@@ -12,6 +12,9 @@ namespace Airborn.web.Models
         /// </summary>
         public static decimal CalculateInterpolationFactor(decimal value, decimal lowerBound, decimal upperBound)
         {
+            // if the value is the same as the lower bound, there's no interpolation to be done here, so return 0
+            if (value == lowerBound) { return 0; }
+
             if (value < 0) { throw new ArgumentOutOfRangeException(value.ToString()); }
             if (lowerBound >= upperBound) { throw new ArgumentOutOfRangeException(); }
             if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
