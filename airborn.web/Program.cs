@@ -15,55 +15,53 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Exporter.Jaeger;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Logs;
+using OpenTelemetry.Exporter;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Airborn.web.Models;
+using Microsoft.AspNetCore.Routing;
 
+var builder = WebApplication.CreateBuilder(args);
 
-namespace Airborn.Web
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+
+// Add the following line:
+builder.WebHost.UseSentry(o =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+    o.Dsn = Environment.GetEnvironmentVariable("SENTRY_KEY");
+    // When configuring for the first time, to see what the SDK is doing:
+    o.Debug = true;
+    // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    o.TracesSampleRate = 1.0;
+    o.AttachStacktrace = true;
+    o.SendDefaultPii = true;
+});
 
-            CreateHostBuilder(args).Build().Run();
+builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
 
-        }
+var app = builder.Build();
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddRazorPages();
-            services.AddHttpClient();
-
-
-
-
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-
-                    // Add the following line:
-                    webBuilder.UseSentry(o =>
-                    {
-                        o.Dsn = Environment.GetEnvironmentVariable("SENTRY_KEY");
-                        // When configuring for the first time, to see what the SDK is doing:
-                        o.Debug = true;
-                        // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-                        // We recommend adjusting this value in production.
-                        o.TracesSampleRate = 1.0;
-                        o.AttachStacktrace = true;
-                        o.SendDefaultPii = true;
-                    });
-
-                    webBuilder.UseStartup<Startup>();
-
-
-                });
-
-
-    }
-
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Calculate}/{id?}");
+
+app.MapDefaultControllerRoute();
+
+app.Run();

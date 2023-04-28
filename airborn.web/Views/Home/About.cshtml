@@ -1,31 +1,42 @@
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "About Airborn.co";
 }
 
-<div class="form-group row g-3 align-items-center">
+<br />
 
-    <div class="col-sm-12">
-        <br />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Calculate">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="about">About</li>
+    </ol>
+</nav>
 
-        <h4>About <b>Airborn</b></h4>
-        <br />
-        <p>Aiborn is a free takeoff and landing distance calculator, and an <a
-                href="https://github.com/alexjcampbell/airborn/">open source project</a>
-            that sets out to take the pain out of "on the ground" flight planning.</p>
-        <p>It was motivated by the idea that folks are more likely to actually do takeoff and landing calculations
-            if there's an app that can quickly do the work for them, rather than digging through the POH and doing
-            multiple interpolations.</p>
-        <p>Nonetheless, we advise that this should only be used for entertainment or simulation purposes, and for actual
+<div class="jumbotron">
+    <h1 class="display-4"><b>About <i>Airborn.co</i></b>.</h1>
+    <p class="lead">Airborn is a free takeoff and landing distance calculator, and an <a
+            href="https://github.com/alexjcampbell/airborn/">open source project</a>
+        that sets out to take the pain out of "on the ground" flight planning.</p>
+    <p class="lead">It was motivated by the idea that folks are more likely to actually do takeoff and landing
+        calculations
+        if there's an app that can quickly do the work for them, rather than digging through the POH and doing
+        multiple interpolations.</p>
+    <div class="alert alert-warning" role="alert">
+        <p class="lead">Nonetheless, we advise that this should only be used for entertainment or simulation purposes,
+            and
+            for actual
             real-world flights we <i>strongly</i> recommend using ForeFlight's <a
                 href="https://foreflight.com/products/performance-plus/" target="_blank">Performance Plus</a> plan.</p>
-        <p>This is the v0.2 release, which performs basic takeoff and landing distance calculations.</p>
-        <p>Airport & Runway Data is courtesy of the folks at <a href="https://ourairports.com/data/">Our Airports</a>.
-        </p>
-        <h4>Get in touch</h4>
-        <p>For more info, you can get in touch with us at <a href="mailto:info@Airborn.co">info AT airborn.co</a></p>
-
-
     </div>
+    <p class="lead">This is the v0.2 release, which performs basic takeoff and landing distance calculations.</p>
+    <p class="lead">Airport & Runway Data is courtesy of the folks at <a href="https://ourairports.com/data/">Our
+            Airports</a>.
+    </p>
+    <h4>Get in touch</h4>
+    <p class="lead">For more info, you can get in touch with us at <a href="mailto:info@Airborn.co">info AT
+            airborn.co</a></p>
+
+
+</div>
 
 </div>
 

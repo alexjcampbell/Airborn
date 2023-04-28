@@ -14,7 +14,7 @@
         information for
         each runway at your airport. This is an open-source project, if
         you want to contribute check out <a href="https://github.com/alexjcampbell/Airborn" target="_blank">our
-            Github</a>, or <a asp-area="" asp-controller="Home" asp-action="About">get in touch</a>.</p>
+            Github</a> or <a asp-area="" asp-controller="Home" asp-action="About">get in touch</a>.</p>
     <hr class="my-4">
 </div>
 
@@ -152,21 +152,21 @@
         <hr class="my-4">
 
         <div class="form-group row">
-            <div class="col-sm-11 p3">
+            <div class="col-sm-10 p-3">
                 <div class="form-floating">
                     <h5>@Model.Airport?.Name</h5>
                 </div>
             </div>
-            <div class="col-sm-1 p3">
+            <div class="col-sm-1 p-3">
+                &nbsp;
+            </div>
+            <div class="col-sm-1 p-3">
 
                 <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                    Details
-                </button>
-
+                    data-bs-target="#primaryCalculationModal">Details</button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="airportCalculationModal"
+                <div class="modal fade" id="primaryCalculationModal" tabindex="-1" aria-labelledby="airportCalculationModal"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -275,7 +275,7 @@
     @foreach (CalculationResultPageModel result in Model?.ResultsSortedByHeadwind)
     {
         <div class="form-group row">
-            <div class="col-sm-11 p-3">
+            <div class="col-sm-10 p-3">
                 <h6>Runway @result.Runway.Runway_Name
                     @if (result.IsBestWind)
                     {
@@ -283,14 +283,13 @@
                     }
                 </h6>
             </div>
-
+            <div class="col-sm-1 p-3">
+                &nbsp;
+            </div>
             <div class="col-sm-1 p-3">
 
                 <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                    data-bs-target="#runwayModal_@result.Runway.Runway_Name">
-                    Details
-                </button>
-                <br />
+                    data-bs-target="#runwayModal_@result.Runway.Runway_Name">Details</button>
 
                 <!-- Modal -->
                 <div class="modal fade" id="runwayModal_@result.Runway.Runway_Name" tabindex="-1"
