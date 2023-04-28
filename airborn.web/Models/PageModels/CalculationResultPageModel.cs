@@ -305,5 +305,14 @@ namespace Airborn.web.Models
                 return Landing_50FtClearance / Runway.RunwayLengthConverted;
             }
         }
+
+        public PerformanceCalculationLogItem LogItem
+        {
+            get
+            {
+                return Result?.LogItem;
+            }
+
+        }
     }
 }

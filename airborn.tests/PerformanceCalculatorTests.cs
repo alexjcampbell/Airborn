@@ -38,7 +38,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(runwayHeading);
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind
+                runway, wind, new PerformanceCalculationLogItem("")
             );
 
             Assert.AreEqual(0, result.CrosswindComponent);
@@ -52,7 +52,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(180);
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind
+                runway, wind, new PerformanceCalculationLogItem("")
             );
 
             Assert.AreEqual(-10, result.CrosswindComponent);
@@ -68,7 +68,7 @@ namespace Airborn.Tests
 
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind
+                runway, wind, new PerformanceCalculationLogItem("")
             );
 
             Assert.AreEqual(-6.42787609686539m, result.CrosswindComponent);

@@ -14,10 +14,11 @@ namespace Airborn.web.Models
 
         }
 
-        public PerformanceCalculationResultForRunway(Runway runway, Wind wind)
+        public PerformanceCalculationResultForRunway(Runway runway, Wind wind, PerformanceCalculationLogItem logItem)
         {
             Runway = runway;
             Wind = wind;
+            LogItem = logItem;
         }
 
 
@@ -88,6 +89,12 @@ namespace Airborn.web.Models
                     Wind.Direction.DirectionMagnetic
                 );
             }
+        }
+
+        public PerformanceCalculationLogItem LogItem
+        {
+            get;
+            set;
         }
 
     }
