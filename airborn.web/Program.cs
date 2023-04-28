@@ -44,6 +44,18 @@ builder.WebHost.UseSentry(o =>
 
 builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
 
+var honeycombOptions = builder.Configuration.GetHoneycombOptions();
+
+// Setup OpenTelemetry Tracing
+builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
+    otelBuilder
+        .AddHoneycomb(honeycombOptions)
+        .AddCommonInstrumentations()
+);
+
+// Register Tracer so it can be injected into other components (eg Controllers)
+builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
