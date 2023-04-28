@@ -260,16 +260,14 @@
     {
         <div class="form-group row">
             <div class="col-sm-12">
-                <b>Notes</b>
-                <ul>
 
-                    @foreach (string note in Model.Notes)
-                    {
-                        <li>
-                            @note
-                        </li>
-                    }
-                </ul>
+                @foreach (string note in Model.Notes)
+                {
+                    <div class="alert alert-warning" role="alert">
+                        @note
+                    </div>
+                }
+
                 <br />
             </div>
         </div>
