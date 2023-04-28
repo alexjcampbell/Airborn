@@ -239,7 +239,16 @@ namespace Airborn.web.Models
             _lowerTemperature = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
                 (int)ActualTemperature,
                 _temperatureInterval);
-            _upperTemperature = _lowerTemperature + _temperatureInterval;
+
+            if (_lowerTemperature == ActualTemperature)
+            {
+                _upperTemperature = ActualTemperature;
+            }
+            else
+            {
+                _upperTemperature = _lowerTemperature + _temperatureInterval;
+            }
+
 
         }
 
@@ -250,9 +259,6 @@ namespace Airborn.web.Models
             PerformanceCalculationLogItem foundBookDataLogItem
             )
         {
-
-
-
             BookPerformanceData bookData = _bookPerformanceDataList.FindBookDistance(
                 Scenario,
                 pressureAltitude,
@@ -276,8 +282,12 @@ namespace Airborn.web.Models
             PerformanceData upperTemperaturePerformanceData,
             decimal weight)
         {
+            // first interpolate by pressure altitude
             InterpolatedPerformanceData interpolatedPerformanceDataByPressureAltitude =
-                InterpolateByPressureAltitudeOnly(lowerPressureAltitudePerformanceData, upperPresssureAltitudePerformanceData, weight);
+                InterpolateByPressureAltitudeOnly(
+                    lowerPressureAltitudePerformanceData,
+                    upperPresssureAltitudePerformanceData,
+                    weight);
 
             lowerTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
             lowerTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
@@ -311,55 +321,44 @@ namespace Airborn.web.Models
 
                 return interpolatedPerformanceDataByPressureAltitude;
             }
-            else if (ActualPressureAltitude.TotalFeet == upperPressureAltitudePerformanceData.PressureAltitude.TotalFeet)
-            {
-                // if we're at the upper pressure altitude, then we don't need to interpolate and we use the upper data
 
-                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll = upperPressureAltitudePerformanceData.DistanceGroundRoll;
-                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = upperPressureAltitudePerformanceData.DistanceToClear50Ft;
-
-                _logger.Add($"No interpolation required for pressure altitude {ActualPressureAltitude}, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
-
-                return interpolatedPerformanceDataByPressureAltitude;
-            }
-            else
-            {
-                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll =
+            interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll =
                 Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
                     lowerPressureAltitudePerformanceData.DistanceGroundRoll.Value.TotalFeet,
                     upperPressureAltitudePerformanceData.DistanceGroundRoll.Value.TotalFeet,
                     ActualPressureAltitude.TotalFeet,
                     _pressureAltitudeInterval
-                    ));
+                ));
 
-                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+            interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft =
+                Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
                     lowerPressureAltitudePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
                     upperPressureAltitudePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
                     ActualPressureAltitude.TotalFeet,
                     _pressureAltitudeInterval
-                )
-                );
+                ));
 
-                // we need the pressure altitude interpolation factor for logging purposes
-                // TODO: make the Interpolate function return this value
-                decimal pressureAltitudeInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
-                    ActualPressureAltitude.TotalFeet,
-                    _lowerPressureAltitude.TotalFeet,
-                    _upperPressureAltitude.TotalFeet
-                );
+            // we need the pressure altitude interpolation factor for logging purposes
+            // TODO: make the Interpolate function return this value
+            decimal pressureAltitudeInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
+                ActualPressureAltitude.TotalFeet,
+                _lowerPressureAltitude.TotalFeet,
+                _upperPressureAltitude.TotalFeet
+            );
 
-                PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem($"Interpolated performance data by pressure altitude for aircraft weight {weight}, temperature {lowerPressureAltitudePerformanceData.Temperature}");
+            PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem(
+                $"Interpolated performance data by pressure altitude for aircraft weight {weight}, temperature {lowerPressureAltitudePerformanceData.Temperature}");
 
-                logItem.Add($"Interpolating actual pressure altitude {ActualPressureAltitude.ToString()}, between {lowerPressureAltitudePerformanceData.PressureAltitude} and {upperPressureAltitudePerformanceData.PressureAltitude.ToString()}, with interpolation factor {pressureAltitudeInterpolationFactor.ToString("0.00")}");
-                logItem.SubItems[0].Add($"Lower temperature is {lowerPressureAltitudePerformanceData.Temperature}, upper temperature is {upperPressureAltitudePerformanceData.Temperature}");
-                logItem.SubItems[0].Add($"Aircraft weight is {weight}");
-                logItem.SubItems[0].Add($"Lower pressure altitude performance data at {lowerPressureAltitudePerformanceData.PressureAltitude.ToString()}, ground roll is: {lowerPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {lowerPressureAltitudePerformanceData.DistanceToClear50Ft}");
-                logItem.SubItems[0].Add($"Upper pressure altitude performance data at {upperPressureAltitudePerformanceData.PressureAltitude.ToString()}, ground roll is: {upperPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {upperPressureAltitudePerformanceData.DistanceToClear50Ft}");
-                logItem.Add($"Interpolated by pressure altitude, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
-                _logger.SubItems.Add(logItem);
+            logItem.Add($"Interpolating actual pressure altitude {ActualPressureAltitude.ToString()}, between {lowerPressureAltitudePerformanceData.PressureAltitude} and {upperPressureAltitudePerformanceData.PressureAltitude.ToString()}, with interpolation factor {pressureAltitudeInterpolationFactor.ToString("0.00")}");
+            logItem.SubItems[0].Add($"Lower temperature is {lowerPressureAltitudePerformanceData.Temperature}, upper temperature is {upperPressureAltitudePerformanceData.Temperature}");
+            logItem.SubItems[0].Add($"Aircraft weight is {weight}");
+            logItem.SubItems[0].Add($"Lower pressure altitude performance data at {lowerPressureAltitudePerformanceData.PressureAltitude.ToString()}, ground roll is: {lowerPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {lowerPressureAltitudePerformanceData.DistanceToClear50Ft}");
+            logItem.SubItems[0].Add($"Upper pressure altitude performance data at {upperPressureAltitudePerformanceData.PressureAltitude.ToString()}, ground roll is: {upperPressureAltitudePerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle is: {upperPressureAltitudePerformanceData.DistanceToClear50Ft}");
+            logItem.Add($"Interpolated by pressure altitude, ground roll is: {interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft}");
+            _logger.SubItems.Add(logItem);
 
-                return interpolatedPerformanceDataByPressureAltitude;
-            }
+            return interpolatedPerformanceDataByPressureAltitude;
+
         }
 
         public InterpolatedPerformanceData InterpolateByTemperatureOnly(
@@ -386,34 +385,27 @@ namespace Airborn.web.Models
 
                 return interpolatedPerformanceDataByTemperature;
             }
-            else if (ActualTemperature == upperTemperaturePerformanceData.Temperature)
-            {
-                // if we're at the upper temperature, then we don't need to interpolate and we use the upper data
 
-                interpolatedPerformanceDataByTemperature.DistanceGroundRoll = upperTemperaturePerformanceData.DistanceGroundRoll;
-                interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = upperTemperaturePerformanceData.DistanceToClear50Ft;
-
-                _logger.Add($"No interpolation required for temperature {ActualTemperature}, ground roll is: {interpolatedPerformanceDataByTemperature.DistanceGroundRoll}, distance to clear 50' obstacle is: {interpolatedPerformanceDataByTemperature.DistanceToClear50Ft}");
-
-                return interpolatedPerformanceDataByTemperature;
-            }
-
-            interpolatedPerformanceDataByTemperature.DistanceGroundRoll = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
-                upperTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
-                ActualTemperature,
-                _temperatureInterval
-            )
+            // interpolate the ground roll performance data by temperature
+            interpolatedPerformanceDataByTemperature.DistanceGroundRoll =
+                Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
+                    lowerTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                    upperTemperaturePerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                    ActualTemperature,
+                    _temperatureInterval
+                    )
                 );
 
+            // interpolate the distance to clear 50' obstacle performance data by temperature
             interpolatedPerformanceDataByTemperature.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.Interpolate(
-                lowerTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
-                upperTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
-                ActualTemperature,
-                _temperatureInterval
+                    lowerTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                    upperTemperaturePerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                    ActualTemperature,
+                    _temperatureInterval
                 )
             );
 
+            // we need the temperature interpolation factor for logging purposes
             decimal temperatureInterpolationFactor = PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(
                 ActualTemperature,
                 _lowerTemperature,
@@ -448,19 +440,22 @@ namespace Airborn.web.Models
 
             decimal weightInterpolationFactor = GetWeightInterpolationFactor(AircraftActualWeight);
 
-            interpolatedPerformanceDataByWeight.DistanceGroundRoll = Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
-                weightInterpolationFactor,
-                lowerWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet,
-                upperWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet)
+            interpolatedPerformanceDataByWeight.DistanceGroundRoll =
+                Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
+                    weightInterpolationFactor,
+                    lowerWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                    upperWeightPerformanceData.DistanceGroundRoll.Value.TotalFeet)
             );
 
-            interpolatedPerformanceDataByWeight.DistanceToClear50Ft = Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
-                weightInterpolationFactor,
-                lowerWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
-                upperWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet
-            ));
+            interpolatedPerformanceDataByWeight.DistanceToClear50Ft =
+                Distance.FromFeet(PerformanceDataInterpolationUtilities.InterpolateDistanceByWeight(
+                    weightInterpolationFactor,
+                    lowerWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                    upperWeightPerformanceData.DistanceToClear50Ft.Value.TotalFeet)
+            );
 
-            PerformanceCalculationLogItem logItem = new PerformanceCalculationLogItem("Interpolated weight performance data between:");
+            PerformanceCalculationLogItem logItem =
+                new PerformanceCalculationLogItem("Interpolated weight performance data between:");
 
             logItem.Add($"Interpolated weight {AircraftActualWeight} lbs, between {lowerWeightPerformanceData.AircraftWeight} lbs and {upperWeightPerformanceData.AircraftWeight} lbs, with interpolation factor {weightInterpolationFactor.ToString("0.00")}");
             logItem.SubItems[0].Add($"Lower weight performance data at {lowerWeightPerformanceData.AircraftWeight} lbs: ground roll {lowerWeightPerformanceData.DistanceGroundRoll}, distance to clear 50' obstacle {lowerWeightPerformanceData.DistanceToClear50Ft}");
