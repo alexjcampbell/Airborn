@@ -54,6 +54,8 @@ builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
         .AddCommonInstrumentations()
         .AddSqlClientInstrumentation()
         .AddAspNetCoreInstrumentationWithBaggage()
+        .AddConsoleExporter()
+        .AddOtlpExporter()
 );
 
 // Configure logging
@@ -73,6 +75,25 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 
 // Register Tracer so it can be injected into other components (eg Controllers)
 builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
+
+var appResourceBuilder = ResourceBuilder.CreateDefault()
+    .AddService("airborn.co", "v1");
+
+using var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddOpenTelemetry(options =>
+    {
+        options.SetResourceBuilder(appResourceBuilder);
+        options.AddOtlpExporter(option =>
+        {
+            option.Endpoint = new Uri("https://api.honeycomb.io");
+            option.Headers = "x-honeycomb-team=YOUR_API_KEY";
+        });
+    });
+});
+
+var logger = loggerFactory.CreateLogger<Program>();
+
 
 var app = builder.Build();
 
