@@ -51,6 +51,7 @@ builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
     otelBuilder
         .AddHoneycomb(honeycombOptions)
         .AddCommonInstrumentations()
+        .AddAspNetCoreInstrumentationWithBaggage()
 );
 
 // Register Tracer so it can be injected into other components (eg Controllers)
