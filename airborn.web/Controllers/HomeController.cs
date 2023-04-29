@@ -115,6 +115,7 @@ namespace Airborn.Controllers
             myActivity?.SetTag("WindDirection", model.WindDirectionMagnetic.ToString());
             myActivity?.SetTag("WindSpeed", model.WindStrength.ToString());
             myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
+            myActivity?.SetTag("IsModelValid", ModelState.IsValid.ToString());
 
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
@@ -167,17 +168,11 @@ namespace Airborn.Controllers
 
                 return View(model);
             }
-            /*
-            catch (Exception e)
-            {
-                ModelState.AddModelError(
-                    "AircraftType",
-                    e.Message
-                );
 
-                return View(model);
-            }
-            */
+            myActivity?.SetTag("PerformanceResultsFound", model.Results.Count);
+            myActivity?.SetTag("FieldElevation", model.FieldElevation.ToString());
+            myActivity?.SetTag("PressureAltitude", model.PressureAltitude.ToString());
+            myActivity?.SetTag("DensityAltitude", model.DensityAltitude.ToString());
 
             SetCookies(model);
 
