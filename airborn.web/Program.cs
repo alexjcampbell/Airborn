@@ -56,6 +56,14 @@ builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
         .AddAspNetCoreInstrumentationWithBaggage()
 );
 
+// Configure logging
+builder.Logging.AddOpenTelemetry(builder =>
+{
+    builder.IncludeFormattedMessage = true;
+    builder.IncludeScopes = true;
+    builder.ParseStateValues = true;
+});
+
 builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 {
     opt.IncludeScopes = true;
