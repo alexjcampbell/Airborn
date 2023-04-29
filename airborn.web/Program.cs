@@ -89,7 +89,11 @@ using var tracerProvider = Sdk.CreateTracerProviderBuilder()
         resource.AddService(
           serviceName: serviceName,
           serviceVersion: serviceVersion))
-    .AddConsoleExporter()
+    .AddOtlpExporter(option =>
+        {
+            option.Endpoint = new Uri("https://api.honeycomb.io");
+            option.Headers = "x-honeycomb-team=" + Environment.GetEnvironmentVariable("HONEYCOMB__APIKEY");
+        })
     .Build();
 
 var appResourceBuilder = ResourceBuilder.CreateDefault()
