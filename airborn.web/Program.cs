@@ -47,6 +47,9 @@ builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"D
 
 var honeycombOptions = builder.Configuration.GetHoneycombOptions();
 
+var serviceName = "airborn.co";
+var serviceVersion = "v1";
+
 // Setup OpenTelemetry Tracing
 builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
     otelBuilder
@@ -55,7 +58,11 @@ builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
         .AddSqlClientInstrumentation()
         .AddAspNetCoreInstrumentationWithBaggage()
         .AddConsoleExporter()
-        .AddOtlpExporter()
+        .AddOtlpExporter().
+        ConfigureResource(resource =>
+          resource.AddService(
+            serviceName: serviceName,
+            serviceVersion: serviceVersion))
 );
 
 // Configure logging
@@ -76,8 +83,17 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 // Register Tracer so it can be injected into other components (eg Controllers)
 builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
 
+using var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .AddSource(serviceName)
+    .ConfigureResource(resource =>
+        resource.AddService(
+          serviceName: serviceName,
+          serviceVersion: serviceVersion))
+    .AddConsoleExporter()
+    .Build();
+
 var appResourceBuilder = ResourceBuilder.CreateDefault()
-    .AddService("airborn.co", "v1");
+    .AddService(serviceName, serviceVersion);
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {

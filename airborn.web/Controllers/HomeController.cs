@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
@@ -103,9 +104,17 @@ namespace Airborn.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Calculate(CalculatePageModel model)
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("POST to Calculate");
 
-            _logger.LogInformation("Executing {Action} with parameters: {Parameters}", nameof(CalculatePageModel), JsonSerializer.Serialize(model));
-
+            myActivity?.SetTag("AirportIdentifier", model.AirportIdentifier);
+            myActivity?.SetTag("AircraftType", model.AircraftType.ToString());
+            myActivity?.SetTag("AircraftWeight", model.AircraftWeight.ToString());
+            myActivity?.SetTag("AltimeterSetting", model.AltimeterSetting.ToString());
+            myActivity?.SetTag("AltimeterSettingType", model.AltimeterSettingType.ToString());
+            myActivity?.SetTag("Temperature", model.Temperature.ToString());
+            myActivity?.SetTag("WindDirection", model.WindDirectionMagnetic.ToString());
+            myActivity?.SetTag("WindSpeed", model.WindStrength.ToString());
+            myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
 
             // make sure we have the runways loaded in the model so the dropdown on the page can get them
             if (model.AirportIdentifier?.Length > 0)
