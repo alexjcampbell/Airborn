@@ -87,7 +87,7 @@ using var loggerFactory = LoggerFactory.Create(builder =>
         options.AddOtlpExporter(option =>
         {
             option.Endpoint = new Uri("https://api.honeycomb.io");
-            option.Headers = "x-honeycomb-team=YOUR_API_KEY";
+            option.Headers = "x-honeycomb-team=" + Environment.GetEnvironmentVariable("HONEYCOMB__APIKEY");
         });
     });
 });
