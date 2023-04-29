@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Airborn.web.Models;
 using Microsoft.AspNetCore.Routing;
+using OpenTelemetry.Instrumentation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,8 +52,16 @@ builder.Services.AddOpenTelemetry().WithTracing(otelBuilder =>
     otelBuilder
         .AddHoneycomb(honeycombOptions)
         .AddCommonInstrumentations()
+        .AddSqlClientInstrumentation()
         .AddAspNetCoreInstrumentationWithBaggage()
 );
+
+builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
+{
+    opt.IncludeScopes = true;
+    opt.ParseStateValues = true;
+    opt.IncludeFormattedMessage = true;
+});
 
 // Register Tracer so it can be injected into other components (eg Controllers)
 builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
