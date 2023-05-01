@@ -50,6 +50,8 @@ namespace Airborn.Tests
         const decimal _default_QNH = 1013.25m;
         const double _default_AircraftWeight = 3000;
 
+        const double _defaultRunwayElevation = 0;
+
         List<Runway> TestRunways = new List<Runway>();
         List<Airport> TestAirports = new List<Airport>();
 
@@ -71,11 +73,16 @@ namespace Airborn.Tests
             var runwayDbSet = new Mock<DbSet<Runway>>();
             airportDbContext.Setup(o => o.Runways).Returns(() => runwayDbSet.Object);
 
-            SetupTestRunway(_default_Runway_Heading, _default_Runway_Id, _default_Runway_Name);
+            SetupTestRunway(_default_Runway_Id, _default_Runway_Heading, _default_Runway_Name);
             SetupTestRunway(2, 230, "23L");
-            SetupTestRunway(3, 160, "16");
-            SetupTestRunway(4, 360, "36");
-            SetupTestRunway(5, 90, "9L");
+            SetupTestRunway(3, 50, "5R");
+            SetupTestRunway(4, 160, "16");
+            SetupTestRunway(5, 340, "34");
+            SetupTestRunway(6, 180, "18");
+            SetupTestRunway(7, 360, "36");
+            SetupTestRunway(8, 90, "9L");
+            SetupTestRunway(9, 270, "27R");
+            SetupTestRunway(10, 40, "4L");
 
             // Set up the DbSet as an IQueryable so it can be enumerated.
             var queryableRunways = TestRunways.AsQueryable();
@@ -114,6 +121,7 @@ namespace Airborn.Tests
             runway.RunwayWidth = _default_RunwayWidth;
             runway.RunwayLength = _default_RunwayLength;
             runway.Runway_Name = runwayName;
+            runway.ElevationFt = _defaultRunwayElevation.ToString();
 
             TestRunways.Add(runway);
 
@@ -379,11 +387,11 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            // with a 220 degree wind, runway 36 should have the most tailwind
+            // with a 220 degree wind, runway 4 should have the most tailwind
             // yes, it's expected runway heading is zero
-            int expectedRunwayHeading = 0;
+            int expectedRunwayHeading = 40;
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[4].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[_model.Results.Count - 1].Runway.RunwayHeading.DirectionMagnetic);
         }
 
         [TestMethod]
@@ -398,7 +406,7 @@ namespace Airborn.Tests
 
             // with a 220 degree wind, runway 36 should have the most tailwind
             // yes, it's expected runway heading is zero
-            int expectedRunwayHeading = 160;
+            int expectedRunwayHeading = 180;
 
             Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[2].Runway.RunwayHeading.DirectionMagnetic);
         }

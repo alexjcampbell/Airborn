@@ -1,3 +1,4 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Airborn.web.Models;
 
@@ -38,7 +39,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(runwayHeading);
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem("")
+                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
             Assert.AreEqual(0, result.CrosswindComponent);
@@ -52,7 +53,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(180);
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem("")
+                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
             Assert.AreEqual(-10, result.CrosswindComponent);
@@ -68,7 +69,7 @@ namespace Airborn.Tests
 
 
             PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem("")
+                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
             Assert.AreEqual(-6.42787609686539m, result.CrosswindComponent);
@@ -76,7 +77,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_PressureAltitude()
+        public void Test_PressureAltitudeAt1500ElevationISAPressureIs1500()
         {
             PerformanceCalculator calculator = GetCalculator(0, 10);
 

@@ -63,6 +63,26 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("Elevation_Ft")]
+        public string ElevationFt
+        {
+            get; set;
+        }
+
+        [NotMapped]
+        public int? ElevationFt_Converted
+        {
+            get
+            {
+                if (ElevationFt == null || ElevationFt.Length == 0)
+                {
+                    return null;
+                }
+
+                return int.Parse(ElevationFt);
+            }
+        }
+
         [NotMapped]
         public string Surface_Friendly_Output
         {
@@ -179,13 +199,76 @@ namespace Airborn.web.Models
             }
         }
 
-
+        [NotMapped]
         public string RunwayHeadingMagneticConverted
         {
             get
             {
                 return RunwayHeading.DirectionMagnetic.ToString() + " °M";
             }
+        }
+
+        [NotMapped]
+        public decimal? Slope
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets the opposite runway for a given runway
+        /// </summary>
+        public static string GetOppositeRunway(string runway)
+        {
+            if (string.IsNullOrEmpty(runway))
+            {
+                throw new ArgumentException("Runway cannot be null or empty.");
+            }
+
+            bool hasLetter = false;
+            char letter = ' ';
+            string runwayNumber = runway;
+
+            if (char.IsLetter(runway[runway.Length - 1]))
+            {
+                hasLetter = true;
+                letter = runway[runway.Length - 1];
+                runwayNumber = runway.Substring(0, runway.Length - 1);
+            }
+
+            if (!int.TryParse(runwayNumber, out int number))
+            {
+                throw new ArgumentException("Invalid runway number format.");
+            }
+
+            int oppositeNumber = (number + 18) % 36;
+            if (oppositeNumber == 0)
+            {
+                oppositeNumber = 36;
+            }
+
+            string oppositeRunway = oppositeNumber.ToString();
+
+            if (hasLetter)
+            {
+                switch (letter)
+                {
+                    case 'L':
+                        letter = 'R';
+                        break;
+                    case 'R':
+                        letter = 'L';
+                        break;
+                    case 'C':
+                        // Keep the letter 'C' for the opposite runway
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid runway letter. Only L, R, and C are allowed.");
+                }
+
+                oppositeRunway += letter;
+            }
+
+            return oppositeRunway;
         }
 
         public static Runway FromMagnetic(int magneticHeading)
@@ -211,6 +294,19 @@ namespace Airborn.web.Models
                     int.Parse(runwayName) * 10,
                     0
                     );
+        }
+
+        public static double CalculateSlope(double startingElevation, double endingElevation, double distance)
+        {
+            if (distance <= 0)
+            {
+                throw new ArgumentException("Runway length must be greater than zero.");
+            }
+
+            double elevationDifference = endingElevation - startingElevation;
+            double slope = (elevationDifference / distance) * 100;
+
+            return slope;
         }
     }
 }

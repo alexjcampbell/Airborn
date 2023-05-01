@@ -195,6 +195,28 @@ namespace Airborn.web.Models
             {
                 Runways.Add(runway);
 
+                if (runway.RunwayLength != null)
+                {
+                    if (db.Runways.Count(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)) == 0)
+                    {
+                        // if there is no opposite runway, we can't calculate the slope
+                        runway.Slope = null;
+                    }
+                    else
+                    {
+                        // determine the opposite runway
+                        Runway oppositeRunway = db.Runways.Where(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)).First<Runway>();
+
+                        if (runway.ElevationFt_Converted.HasValue && oppositeRunway.ElevationFt_Converted.HasValue && runway.RunwayLengthConverted.HasValue)
+                        {
+                            runway.Slope = (decimal)Runway.CalculateSlope(
+                                runway.ElevationFt_Converted.Value,
+                                oppositeRunway.ElevationFt_Converted.Value,
+                                (double)runway.RunwayLengthConverted.Value);
+                        }
+                    }
+                }
+
                 // calculate the performance for this runway and aircraft
                 Results.Add(CalculatePerformanceForRunway(runway));
             }
@@ -263,7 +285,7 @@ namespace Airborn.web.Models
                 new PerformanceCalculationLogItem($"Calculating performance for runway {runway.Runway_Name}");
 
             PerformanceCalculationResultForRunway result =
-                new PerformanceCalculationResultForRunway(runway, Wind, runwayLogger);
+                new PerformanceCalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
 
             PerformanceCalculationLogItem takeoffAdjustmentsLogger = new PerformanceCalculationLogItem(
                 $"Making takeoff adjustments for runway {runway.Runway_Name}");

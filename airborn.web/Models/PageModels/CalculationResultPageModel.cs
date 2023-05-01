@@ -314,5 +314,26 @@ namespace Airborn.web.Models
             }
 
         }
+
+        public decimal? Slope
+        {
+            get
+            {
+                return Runway?.Slope;
+            }
+        }
+
+        public string Slope_Friendly
+        {
+            get
+            {
+                if (Slope.HasValue)
+                {
+                    return Slope.Value.ToString("0.00") + "%";
+                }
+                return "Unknown";
+            }
+        }
+
     }
 }
