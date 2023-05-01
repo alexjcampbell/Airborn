@@ -313,37 +313,6 @@ namespace Airborn.web.Models
             return result;
         }
 
-        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
-        {
-            PerformanceCalculationLogItem landingAdjustmentsLogger = new PerformanceCalculationLogItem(
-                $"Making landing adjustments for runway {runway.Runway_Name}");
-
-            runwayLogger.SubItems.Add(landingAdjustmentsLogger);
-
-            PerformanceCalculationLogItem landingGroundRollLogger = new PerformanceCalculationLogItem(
-                $"Making landing ground roll adjustments for runway {runway.Runway_Name}");
-
-            landingAdjustmentsLogger.SubItems.Add(landingGroundRollLogger);
-
-            result.Landing_GroundRoll = Aircraft.MakeLandingAdjustments
-                (
-                    result,
-                    IntepolatedLandingPerformanceData.DistanceGroundRoll.Value,
-                    landingGroundRollLogger
-                );
-
-            PerformanceCalculationLogItem landing50FtClearanceLogger = new PerformanceCalculationLogItem(
-                $"Making landing 50 ft clearance adjustments for runway {runway.Runway_Name}");
-
-            landingAdjustmentsLogger.SubItems.Add(landing50FtClearanceLogger);
-
-            result.Landing_50FtClearance = Aircraft.MakeLandingAdjustments
-                (
-                    result,
-                    IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value,
-                    landing50FtClearanceLogger
-                );
-        }
 
         private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
         {
@@ -377,5 +346,38 @@ namespace Airborn.web.Models
                     takeoff50FtClearanceLogger
                 );
         }
+
+        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
+        {
+            PerformanceCalculationLogItem landingAdjustmentsLogger = new PerformanceCalculationLogItem(
+                $"Making landing adjustments for runway {runway.Runway_Name}");
+
+            runwayLogger.SubItems.Add(landingAdjustmentsLogger);
+
+            PerformanceCalculationLogItem landingGroundRollLogger = new PerformanceCalculationLogItem(
+                $"Making landing ground roll adjustments for runway {runway.Runway_Name}");
+
+            landingAdjustmentsLogger.SubItems.Add(landingGroundRollLogger);
+
+            result.Landing_GroundRoll = Aircraft.MakeLandingAdjustments
+                (
+                    result,
+                    IntepolatedLandingPerformanceData.DistanceGroundRoll.Value,
+                    landingGroundRollLogger
+                );
+
+            PerformanceCalculationLogItem landing50FtClearanceLogger = new PerformanceCalculationLogItem(
+                $"Making landing 50 ft clearance adjustments for runway {runway.Runway_Name}");
+
+            landingAdjustmentsLogger.SubItems.Add(landing50FtClearanceLogger);
+
+            result.Landing_50FtClearance = Aircraft.MakeLandingAdjustments
+                (
+                    result,
+                    IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value,
+                    landing50FtClearanceLogger
+                );
+        }
+
     }
 }
