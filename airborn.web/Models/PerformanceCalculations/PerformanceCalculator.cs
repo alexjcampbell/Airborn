@@ -195,32 +195,37 @@ namespace Airborn.web.Models
             {
                 Runways.Add(runway);
 
-                if (runway.RunwayLength != null)
-                {
-                    if (db.Runways.Count(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)) == 0)
-                    {
-                        // if there is no opposite runway, we can't calculate the slope
-                        runway.Slope = null;
-                    }
-                    else
-                    {
-                        // determine the opposite runway
-                        Runway oppositeRunway = db.Runways.Where(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)).First<Runway>();
-
-                        if (runway.ElevationFt_Converted.HasValue && oppositeRunway.ElevationFt_Converted.HasValue && runway.RunwayLengthConverted.HasValue)
-                        {
-                            runway.Slope = (decimal)Runway.CalculateSlope(
-                                runway.ElevationFt_Converted.Value,
-                                oppositeRunway.ElevationFt_Converted.Value,
-                                (double)runway.RunwayLengthConverted.Value);
-                        }
-                    }
-                }
+                GetRunwaySlope(db, runway);
 
                 // calculate the performance for this runway and aircraft
                 Results.Add(CalculatePerformanceForRunway(runway));
             }
 
+        }
+
+        private void GetRunwaySlope(AirportDbContext db, Runway runway)
+        {
+            if (runway.RunwayLength != null)
+            {
+                if (db.Runways.Count(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)) == 0)
+                {
+                    // if there is no opposite runway, we can't calculate the slope
+                    runway.Slope = null;
+                }
+                else
+                {
+                    // determine the opposite runway
+                    Runway oppositeRunway = db.Runways.Where(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)).First<Runway>();
+
+                    if (runway.ElevationFt_Converted.HasValue && oppositeRunway.ElevationFt_Converted.HasValue && runway.RunwayLengthConverted.HasValue)
+                    {
+                        runway.Slope = (decimal)Runway.CalculateSlope(
+                            runway.ElevationFt_Converted.Value,
+                            oppositeRunway.ElevationFt_Converted.Value,
+                            (double)runway.RunwayLengthConverted.Value);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -240,11 +245,21 @@ namespace Airborn.web.Models
             firstItem.Add($"File: {Aircraft.JsonFileName_HigherWeight()}");
             _logger.Add(firstItem);
 
+
+            PopulateInterpolatedTakeoffData(bookPerformanceDataList);
+            PopulateInterpolatedLandingData(bookPerformanceDataList);
+
+        }
+
+        private void PopulateInterpolatedTakeoffData(BookPerformanceDataList bookPerformanceDataList)
+        {
+
             PerformanceCalculationLogItem takeoffLogger = new PerformanceCalculationLogItem(
                 "Getting takeoff performance from the POH table and interpolating:"
                 );
             _logger.Add(takeoffLogger);
 
+            // get the book takeoff performance data
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
                 Scenario.Takeoff,
                 PressureAltitudeAlwaysPositiveOrZero,
@@ -253,15 +268,21 @@ namespace Airborn.web.Models
                 bookPerformanceDataList,
                 takeoffLogger);
 
+            // interpolate the book takeoff performance data
             IntepolatedTakeoffPerformanceData =
                 takeoffInterpolator.GetInterpolatedBookDistances(
                     Aircraft);
+        }
 
+        private void PopulateInterpolatedLandingData(BookPerformanceDataList bookPerformanceDataList)
+        {
+            // get the book landing performance data
             PerformanceCalculationLogItem landingLogger = new PerformanceCalculationLogItem(
                 "Getting landing performance from the POH table and interpolating:"
                 );
             _logger.Add(landingLogger);
 
+            // get the book landing performance data
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
                 Scenario.Landing,
                 PressureAltitudeAlwaysPositiveOrZero,
@@ -273,7 +294,6 @@ namespace Airborn.web.Models
             IntepolatedLandingPerformanceData =
                 landingInterpolator.GetInterpolatedBookDistances(
                     Aircraft);
-
         }
 
         /// <summary>
@@ -287,36 +307,14 @@ namespace Airborn.web.Models
             PerformanceCalculationResultForRunway result =
                 new PerformanceCalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
 
-            PerformanceCalculationLogItem takeoffAdjustmentsLogger = new PerformanceCalculationLogItem(
-                $"Making takeoff adjustments for runway {runway.Runway_Name}");
+            CalculateTakeoffPerformanceForRunway(runway, runwayLogger, result);
+            CalculateLandingPerformanceForRunway(runway, runwayLogger, result);
 
-            runwayLogger.SubItems.Add(takeoffAdjustmentsLogger);
+            return result;
+        }
 
-            PerformanceCalculationLogItem takeoffGroundRollLogger = new PerformanceCalculationLogItem(
-                $"Making takeoff ground roll adjustments for runway {runway.Runway_Name}");
-
-            takeoffAdjustmentsLogger.SubItems.Add(takeoffGroundRollLogger);
-
-            result.Takeoff_GroundRoll =
-                Aircraft.MakeTakeoffAdjustments
-                (
-                    result,
-                    IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value,
-                    takeoffGroundRollLogger
-                );
-
-            PerformanceCalculationLogItem takeoff50FtClearanceLogger = new PerformanceCalculationLogItem(
-                $"Making takeoff 50 ft clearance adjustments for runway {runway.Runway_Name}");
-
-            takeoffAdjustmentsLogger.SubItems.Add(takeoff50FtClearanceLogger);
-
-            result.Takeoff_50FtClearance = Aircraft.MakeTakeoffAdjustments
-                (
-                    result,
-                    IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value,
-                    takeoff50FtClearanceLogger
-                );
-
+        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
+        {
             PerformanceCalculationLogItem landingAdjustmentsLogger = new PerformanceCalculationLogItem(
                 $"Making landing adjustments for runway {runway.Runway_Name}");
 
@@ -345,9 +343,39 @@ namespace Airborn.web.Models
                     IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value,
                     landing50FtClearanceLogger
                 );
-
-            return result;
         }
 
+        private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
+        {
+            PerformanceCalculationLogItem takeoffAdjustmentsLogger = new PerformanceCalculationLogItem(
+                            $"Making takeoff adjustments for runway {runway.Runway_Name}");
+
+            runwayLogger.SubItems.Add(takeoffAdjustmentsLogger);
+
+            PerformanceCalculationLogItem takeoffGroundRollLogger = new PerformanceCalculationLogItem(
+                $"Making takeoff ground roll adjustments for runway {runway.Runway_Name}");
+
+            takeoffAdjustmentsLogger.SubItems.Add(takeoffGroundRollLogger);
+
+            result.Takeoff_GroundRoll =
+                Aircraft.MakeTakeoffAdjustments
+                (
+                    result,
+                    IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value,
+                    takeoffGroundRollLogger
+                );
+
+            PerformanceCalculationLogItem takeoff50FtClearanceLogger = new PerformanceCalculationLogItem(
+                $"Making takeoff 50 ft clearance adjustments for runway {runway.Runway_Name}");
+
+            takeoffAdjustmentsLogger.SubItems.Add(takeoff50FtClearanceLogger);
+
+            result.Takeoff_50FtClearance = Aircraft.MakeTakeoffAdjustments
+                (
+                    result,
+                    IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value,
+                    takeoff50FtClearanceLogger
+                );
+        }
     }
 }
