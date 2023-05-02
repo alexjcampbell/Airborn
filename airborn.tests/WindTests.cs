@@ -11,8 +11,10 @@ namespace Airborn.Tests
         [TestMethod]
         public void TestAngularDifference_WindLeftOfRunway()
         {
-            Wind wind = Wind.FromMagnetic(310, 10);
-            Runway runway = Runway.FromMagnetic(010);
+            int magneticVariation = 0;
+
+            Wind wind = Wind.FromMagnetic(310, magneticVariation);
+            Runway runway = Runway.FromMagnetic(10, magneticVariation);
 
             Assert.AreEqual(-60, CalculationUtilities.SmallestAngularDifference(10, 310));
 
@@ -21,7 +23,18 @@ namespace Airborn.Tests
         [TestMethod]
         public void TestAngularDifference_WindRightOfRunway()
         {
-            Assert.AreEqual(20, CalculationUtilities.SmallestAngularDifference(350, 10));
+            int magneticVariation = 0;
+
+            Wind wind = Wind.FromMagnetic(010, magneticVariation);
+            Runway runway = Runway.FromMagnetic(310, magneticVariation);
+
+            decimal expected = -60;
+
+            Assert.AreEqual(expected,
+                CalculationUtilities.SmallestAngularDifference(
+                    wind.Direction.DirectionMagnetic,
+                    runway.RunwayHeading.DirectionMagnetic)
+                );
         }
 
         [TestMethod]
@@ -30,7 +43,9 @@ namespace Airborn.Tests
             int runwayHeading = 0;
             int windDirection = 0;
 
-            Assert.AreEqual(0, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
+            decimal expected = 0;
+
+            Assert.AreEqual(expected, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
 
         }
 
@@ -44,7 +59,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_WindGreaterThan180()
+        public void TestAngularDifference_WindGreaterThan180Degrees()
         {
             int runwayHeading = 160;
             int windDirection = 10;
@@ -67,7 +82,10 @@ namespace Airborn.Tests
             int runwayHeading = 10;
             int windDirection = 350;
 
-            Assert.AreEqual(-20, CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection));
+            decimal difference = CalculationUtilities.SmallestAngularDifference(runwayHeading, windDirection);
+            decimal expected = -20;
+
+            Assert.AreEqual(expected, difference);
         }
 
     }

@@ -262,11 +262,11 @@ namespace Airborn.web.Models
             if (AltimeterSettingType == Models.AltimeterSettingType.HG)
             {
 
-                PerformanceCalculator.QNH = CalculationUtilities.InchesOfMercuryToMillibars(AltimeterSetting.Value);
+                PerformanceCalculator.AltimeterSettingInMb = CalculationUtilities.InchesOfMercuryToMillibars(AltimeterSetting.Value);
             }
             else if (AltimeterSettingType == Models.AltimeterSettingType.MB)
             {
-                PerformanceCalculator.QNH = (int)AltimeterSetting.Value;
+                PerformanceCalculator.AltimeterSettingInMb = (int)AltimeterSetting.Value;
             }
             else
             {

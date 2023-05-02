@@ -104,14 +104,13 @@ namespace Airborn.web.Models
             JsonFile jsonFileLowerWeight = new JsonFile(fullPathLowerWeight);
             JsonFile jsonFileHigherWeight = new JsonFile(fullPathHigherWeight);
 
-            AircraftLowerWeight = aircraft.GetLowerWeight();
-            AircraftHigherWeight = aircraft.GetHigherWeight();
-
             PopulateFromJson(aircraft, jsonFileLowerWeight, jsonFileHigherWeight);
         }
 
         public void PopulateFromJson(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight)
         {
+            AircraftLowerWeight = aircraft.GetLowerWeight();
+            AircraftHigherWeight = aircraft.GetHigherWeight();
 
             foreach (var profile in jsonFileLowerWeight.TakeoffProfiles)
             {

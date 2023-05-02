@@ -36,7 +36,35 @@ namespace Airborn.web.Models
 
         }
 
+        public PerformanceCalculator(
+            Aircraft aircraft,
+            Airport airport,
+            Wind wind,
+            decimal aircraftWeight,
+            JsonFile jsonFile)
+        {
+            Aircraft = aircraft;
+            Airport = airport;
+            _wind = wind;
+            AircraftWeight = aircraftWeight;
+            JsonFile = jsonFile;
+        }
+
+        /// <summary>
+        /// The path to the JSON file that contains the performance data for the aircraft,
+        /// used by the UI.
+        /// </summary>
         public string JsonPath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The actual JSON file that contains the performance data for the aircraft,
+        /// used by unit tests
+        /// </summary>
+        public JsonFile JsonFile
         {
             get;
             set;
@@ -98,7 +126,7 @@ namespace Airborn.web.Models
         }
 
 
-        public decimal QNH
+        public decimal AltimeterSettingInMb
         {
             get;
             set;
@@ -110,7 +138,7 @@ namespace Airborn.web.Models
             {
 
                 return Distance.FromFeet(
-                    CalculationUtilities.PressureAltitudeAtFieldElevation(QNH, Airport.FieldElevation)
+                    CalculationUtilities.PressureAltitudeAtFieldElevation(AltimeterSettingInMb, Airport.FieldElevation)
                     );
 
             }
@@ -134,9 +162,13 @@ namespace Airborn.web.Models
         {
             get
             {
-                return
-                Distance.FromFeet(
-                    CalculationUtilities.DensityAltitudeAtAirport(TemperatureCelcius, ISATemperature, PressureAltitude.TotalFeet));
+                return Distance.FromFeet(
+                    CalculationUtilities.DensityAltitudeAtAirport(
+                        TemperatureCelcius,
+                        ISATemperature,
+                        PressureAltitude.TotalFeet
+                        )
+                    );
 
             }
         }
@@ -145,7 +177,9 @@ namespace Airborn.web.Models
         {
             get
             {
-                return CalculationUtilities.ISATemperatureForPressureAltitude(PressureAltitude.TotalFeet);
+                return CalculationUtilities.ISATemperatureForPressureAltitude(
+                    PressureAltitude.TotalFeet
+                    );
             }
         }
 
@@ -156,10 +190,27 @@ namespace Airborn.web.Models
         }
 
         // notes to return to the UI about the calculations (e.g. that pressure altitude is < 0 so we're using 0)
-        public List<string> Notes = new List<string>();
+        private List<string> _notes = new List<string>();
 
-        public InterpolatedPerformanceData IntepolatedTakeoffPerformanceData;
-        public InterpolatedPerformanceData IntepolatedLandingPerformanceData;
+        public List<string> Notes
+        {
+            get
+            {
+                return _notes;
+            }
+        }
+
+        public InterpolatedPerformanceData IntepolatedTakeoffPerformanceData
+        {
+            get;
+            private set;
+        }
+
+        public InterpolatedPerformanceData IntepolatedLandingPerformanceData
+        {
+            get;
+            private set;
+        }
 
         private PerformanceCalculationLogger _logger = new PerformanceCalculationLogger();
 
@@ -236,8 +287,22 @@ namespace Airborn.web.Models
             BookPerformanceDataList bookPerformanceDataList =
                 new BookPerformanceDataList(Aircraft.GetLowerWeight(), Aircraft.GetHigherWeight());
 
-            // populate the list of book performance data from the JSON file
-            bookPerformanceDataList.PopulateFromJsonStringPath(Aircraft, JsonPath);
+
+            if (JsonFile != null) // only used for unit testing
+            {
+                // populate the list of book performance data from the JSON file provided
+                bookPerformanceDataList.PopulateFromJson(Aircraft, JsonFile, JsonFile);
+            }
+            else if (JsonPath != null)
+            {
+                // populate the list of book performance data by reading the JSON file
+                bookPerformanceDataList.PopulateFromJsonStringPath(Aircraft, JsonPath);
+            }
+            else
+            {
+                throw new ArgumentNullException("JsonPath and JsonFile cannot both be null");
+            }
+
 
             PerformanceCalculationLogItem firstItem = new PerformanceCalculationLogItem(
                 $"Looking for aircraft performance data in these JSON files:");

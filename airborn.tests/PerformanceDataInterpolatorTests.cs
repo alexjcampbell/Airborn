@@ -10,11 +10,9 @@ namespace Airborn.Tests
     public class PerformanceDataInterpolatorTests
     {
 
-        const AircraftType _defaultAircraftType = AircraftType.SR22_G2;
-
         private static BookPerformanceDataList SetupTestPerformanceData()
         {
-            return SetupTestPerformanceData(AircraftType.SR22_G2);
+            return SetupTestPerformanceData(UtilitiesForTesting.Default_AircraftType);
         }
 
         private static BookPerformanceDataList SetupTestPerformanceData(AircraftType aircraftType)
@@ -22,6 +20,25 @@ namespace Airborn.Tests
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
 
             return BookPerformanceDataTestSetup.GenerateSampleData(aircraftType);
+        }
+
+        private static PeformanceDataInterpolator GetPerformanceInterpolator(
+       Scenario scenario,
+       Distance actualPressureAltitude,
+       decimal actualTemperature,
+       decimal actualWeight
+       )
+        {
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
+
+            return new PeformanceDataInterpolator(
+                scenario,
+                actualPressureAltitude,
+                actualTemperature,
+                actualWeight,
+                performanceDataList,
+                new PerformanceCalculationLogItem("")
+            );
         }
 
         private static PeformanceDataInterpolator GetPerformanceInterpolator(
@@ -43,25 +60,20 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsZeroAndTemperatureEqualsZero()
+        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsZeroAndTemperatureEqualsZero_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
             decimal actualTemperature = 0;
             decimal actualWeight = 3000;
-            AircraftType aircraftType = AircraftType.SR22_G2;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
@@ -72,25 +84,20 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsLowerBound()
+        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsLowerBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1000);
             decimal actualTemperature = 20;
             decimal actualWeight = 3000;
-            AircraftType aircraftType = AircraftType.SR22_G2;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
@@ -101,26 +108,20 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsUpperBound()
+        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsUpperBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
-            AircraftType aircraftType = AircraftType.SR22_G2;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
+                actualWeight
+                );
 
-            );
-
-            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(aircraftType);
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
 
             InterpolatedPerformanceData interpolatedPerformanceData =
                 interpolator.GetInterpolatedBookDistances(aircraft);
@@ -132,28 +133,24 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyBottomOfRange()
+        public void TestInterpolateByPressureAltitudeOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 Distance.FromFeet(0), // pressure altitude
                 actualTemperature,
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1000), // distance ground roll
                 Distance.FromFeet(20000) // distance to clear 50 ft
             );
@@ -162,7 +159,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 Distance.FromFeet(1000), // pressure altitude
                 actualTemperature,
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // distance ground roll
                 Distance.FromFeet(40000) // distance to clear 50 ft
             );
@@ -170,7 +167,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitudeOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
 
@@ -179,28 +176,26 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyMidRange()
+        public void TestInterpolateByPressureAltitudeOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 Distance.FromFeet(1000), // actual pressure altitude
                 actualTemperature, // actual temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1000), // weight
                 Distance.FromFeet(2000) // distance to clear 50 ft
             );
@@ -209,7 +204,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 Distance.FromFeet(2000), // actual pressure altitude
                 actualTemperature, // actual temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // weight
                 Distance.FromFeet(4000) // distance to clear 50 ft
             );
@@ -217,7 +212,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitudeOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
 
@@ -227,28 +222,24 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyTopOfRange()
+        public void TestInterpolateByPressureAltitudeOnlyTopOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 Distance.FromFeet(1000), // pressure altitude
                 10, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1500), // ground roll
                 Distance.FromFeet(20000) // distance to clear 50ft
             );
@@ -257,7 +248,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 Distance.FromFeet(2000), // pressure altitude
                 10, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // ground roll
                 Distance.FromFeet(40000) // distance to clear 50ft
             );
@@ -265,7 +256,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitudeOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
 
@@ -274,28 +265,24 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByTemperatureOnlyBottomOfRange()
+        public void TestInterpolateByTemperatureOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 10;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 10, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1000), // ground roll
                 Distance.FromFeet(2000) // to clear 50ft obstacle
             );
@@ -304,7 +291,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 20, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // ground roll
                 Distance.FromFeet(4000) // to clear 50ft obstacle
             );
@@ -312,7 +299,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperatureOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
             // we're at 20 degrees C, so we should get the 20 degrees C data
@@ -323,28 +310,24 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByTemperatureOnlyMidRange()
+        public void TestInterpolateByTemperatureOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 15;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 10, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1000), // ground roll
                 Distance.FromFeet(2000) // to clear 50ft obstacle
             );
@@ -353,7 +336,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 20, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // ground roll
                 Distance.FromFeet(4000) // to clear 50ft obstacle
             );
@@ -361,7 +344,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperatureOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
             // we're at 25 degrees C, so we should get the 25 degrees C data
@@ -372,31 +355,25 @@ namespace Airborn.Tests
         }
 
 
-
-
         [TestMethod]
-        public void TestInterpolateByTemperatureWhenAtUpperTemperatureRange()
+        public void TestInterpolateByTemperatureWhenAtUpperTemperatureRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
-
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
+                actualWeight
+                );
 
             BookPerformanceData d1 = new BookPerformanceData(
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 10, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(1000), // ground roll
                 Distance.FromFeet(2000) // to clear 50ft obstacle
             );
@@ -405,7 +382,7 @@ namespace Airborn.Tests
                 Scenario.Takeoff,
                 actualPressureAltitude, // pressure altitude
                 20, // temperature
-                actualAircraftWeight,
+                actualWeight,
                 Distance.FromFeet(3000), // ground roll
                 Distance.FromFeet(4000) // to clear 50ft obstacle
             );
@@ -413,7 +390,7 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperatureOnly(
                 d1,
                 d2,
-                actualAircraftWeight
+                actualWeight
             );
 
             // we're at 25 degrees C, so we should get the 25 degrees C data
@@ -425,71 +402,70 @@ namespace Airborn.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestInterpolateByPressureAltitudeOutOfRange()
+        public void TestInterpolateByPressureAltitudeOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(-1000);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
-            PeformanceDataInterpolator interpolator = new PeformanceDataInterpolator(
+            PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList,
-                new PerformanceCalculationLogItem("")
-            );
-
+                actualWeight
+                );
 
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByPressureAltitude(
                 performanceDataList[0],
                 performanceDataList[1],
                 performanceDataList[3],
                 performanceDataList[4],
-                actualAircraftWeight
+                actualWeight
             );
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestInterpolateByTemperatureOutOfRange()
+        public void TestInterpolateByTemperature_WhenOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = -20;
-            decimal actualAircraftWeight = 3000;
+            decimal actualWeight = 3000;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(AircraftType.C172_SP);
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(UtilitiesForTesting.Default_AircraftType);
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
                 actualPressureAltitude,
                 actualTemperature,
-                actualAircraftWeight,
-                performanceDataList);
+                actualWeight
+                );
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
                 InterpolatedPerformanceData interpolatedPerformanceData = interpolator.InterpolateByTemperatureOnly(
                     performanceDataList[0],
                     performanceDataList[1],
-                    actualAircraftWeight
+                    actualWeight
                 );
             });
         }
 
         [TestMethod]
-        public void TestTakeoffDistancesAreHigherWhenWeightIncreases()
+        public void TestWhenWeightIncreases_TakeoffDistancesAreHigher()
         {
-            AircraftType aircraftType = AircraftType.C172_SP;
 
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 2400;
+            decimal actualAircraftWeight = 2900;
+
+            Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
+
             Scenario scenario = Scenario.Takeoff;
 
-            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(aircraftType);
+            BookPerformanceDataList performanceDataList = SetupTestPerformanceData(UtilitiesForTesting.Default_AircraftType);
 
             PeformanceDataInterpolator interpolatorLower = GetPerformanceInterpolator(
                 scenario,
@@ -500,9 +476,9 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData lowerData =
                 interpolatorLower.GetInterpolatedBookDistances(
-                    Aircraft.GetAircraftFromAircraftType(aircraftType));
+                    aircraft);
 
-            actualAircraftWeight = 2550;
+            actualAircraftWeight = 3400;
 
             PeformanceDataInterpolator interpolatorUpper = GetPerformanceInterpolator(
                 scenario,
@@ -513,7 +489,7 @@ namespace Airborn.Tests
 
             InterpolatedPerformanceData upperData =
                 interpolatorUpper.GetInterpolatedBookDistances(
-                    Aircraft.GetAircraftFromAircraftType(aircraftType));
+                    aircraft);
 
             Assert.IsTrue(upperData.DistanceGroundRoll.Value.TotalFeet > lowerData.DistanceGroundRoll.Value.TotalFeet);
             Assert.IsTrue(upperData.DistanceToClear50Ft.Value.TotalFeet > lowerData.DistanceToClear50Ft.Value.TotalFeet);

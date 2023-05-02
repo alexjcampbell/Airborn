@@ -7,49 +7,178 @@ namespace Airborn.Tests
     public class DirectionTests
     {
         [TestMethod]
-        public void TestTrueToMagnetic_Minus20()
+        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt350_Is330()
         {
             int directionDegrees = 350;
             int magneticVariation = -20;
 
+            int expected = 330;
+
             Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
-            Assert.AreEqual(330, direction.DirectionMagnetic);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
 
-            directionDegrees = 10;
-            direction = Direction.FromTrue(directionDegrees, magneticVariation);
-            Assert.AreEqual(350, direction.DirectionMagnetic);
-
-            directionDegrees = 0;
-            direction = Direction.FromTrue(directionDegrees, magneticVariation);
-            Assert.AreEqual(340, direction.DirectionMagnetic);
-
-            directionDegrees = 0;
-            // a heading of 360 is the same as 0, but this should return 0
-            direction = Direction.FromTrue(directionDegrees, magneticVariation);
-            Assert.AreEqual(340, direction.DirectionMagnetic);
-            
         }
 
         [TestMethod]
-        public void TestMagneticToTrue()
+        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt10_Is350()
         {
-            Direction direction = Direction.FromMagnetic(350, -20);
-            Assert.AreEqual(010, direction.DirectionTrue);
+            int directionDegrees = 10;
+            int magneticVariation = -20;
 
-            direction = Direction.FromMagnetic(010, 20);
-            Assert.AreEqual(350, direction.DirectionTrue);
+            int expected = 350;
 
-            direction = Direction.FromMagnetic(340, 10);
-            Assert.AreEqual(330, direction.DirectionTrue);
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
 
-            direction = Direction.FromMagnetic(0, 10);
-            Assert.AreEqual(350, direction.DirectionTrue);
+        }
 
-            direction = Direction.FromMagnetic(360, 10);
-            Assert.AreEqual(350, direction.DirectionTrue);
+        [TestMethod]
+        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAtZero_Is340()
+        {
+            int directionDegrees = 0;
+            int magneticVariation = -20;
 
-            direction = Direction.FromMagnetic(360, -10);
-            Assert.AreEqual(10, direction.DirectionTrue);            
+            int expected = 340;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
+
+        }
+
+        [TestMethod]
+        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt180_Is160()
+        {
+            int directionDegrees = 180;
+            int magneticVariation = -20;
+
+            int expected = 160;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
+
+        }
+
+        [TestMethod]
+        public void TestTruetoMagnetic_MagneticVariation_Zero_NoChange_Is180()
+        {
+            int directionDegrees = 180;
+            int magneticVariation = 0;
+
+            int expected = 180;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
+        }
+
+        [TestMethod]
+        public void TestTrueToMagnetic_MagneticVariation_Plus20_StartingAt350_Is010()
+        {
+            int directionDegrees = 350;
+            int magneticVariation = 20;
+
+            int expected = 010;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
+
+        }
+
+        [TestMethod]
+        public void TestTrueToMagnetic_MagneticVariation_Plus20_StartingAt10_Is30()
+        {
+            int directionDegrees = 10;
+            int magneticVariation = 20;
+
+            int expected = 30;
+
+            Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionMagnetic);
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt350_Is10()
+        {
+            int directionDegrees = 350;
+            int magneticVariation = -20;
+
+            int expected = 010;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt10_Is30()
+        {
+            int directionDegrees = 10;
+            int magneticVariation = -20;
+
+            int expected = 030;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAtZero_Is20()
+        {
+            int directionDegrees = 0;
+            int magneticVariation = -20;
+
+            int expected = 020;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt180_Is200()
+        {
+            int directionDegrees = 180;
+            int magneticVariation = -20;
+
+            int expected = 200;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Zero_NoChange_Is180()
+        {
+            int directionDegrees = 180;
+            int magneticVariation = 0;
+
+            int expected = 180;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Plus20_StartingAt350_Is330()
+        {
+            int directionDegrees = 350;
+            int magneticVariation = 20;
+
+            int expected = 330;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void TestMagneticToTrue_MagneticVariation_Plus20_StartingAt10_Is350()
+        {
+            int directionDegrees = 10;
+            int magneticVariation = 20;
+
+            int expected = 350;
+
+            Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
+            Assert.AreEqual(expected, direction.DirectionTrue);
         }
 
     }
