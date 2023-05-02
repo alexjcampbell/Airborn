@@ -9,7 +9,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestAngularDifference_WindLeftOfRunway()
+        public void TestAngularDifference_WindLeftOfRunway_IsCorrect()
         {
             int magneticVariation = 0;
 
@@ -21,7 +21,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_WindRightOfRunway()
+        public void TestAngularDifference_WindRightOfRunway_IsCorrect()
         {
             int magneticVariation = 0;
 
@@ -38,7 +38,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_NoDifference()
+        public void TestAngularDifference_NoDifference_ReturnsNoDifference()
         {
             int runwayHeading = 0;
             int windDirection = 0;
@@ -50,7 +50,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_180DegreeDifference()
+        public void TestAngularDifference_180DegreeDifference_ReturnsMinus180()
         {
             int runwayHeading = 180;
             int windDirection = 0;
@@ -59,7 +59,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_WindGreaterThan180Degrees()
+        public void TestAngularDifference_WindGreaterThan180Degrees_IsCorrect()
         {
             int runwayHeading = 160;
             int windDirection = 10;
@@ -68,7 +68,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_NearNorthButWest()
+        public void TestAngularDifference_NearNorthButWest_IsCorrect()
         {
             int runwayHeading = 350;
             int windDirection = 10;
@@ -77,7 +77,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestAngularDifference_NearNorthButEast()
+        public void TestAngularDifference_NearNorthButEast_IsCorrect()
         {
             int runwayHeading = 10;
             int windDirection = 350;
