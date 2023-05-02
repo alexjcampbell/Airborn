@@ -46,6 +46,8 @@ namespace Airborn.web.Models
                     return AircraftType.SR22_G2;
                 case "SR22T_G5":
                     return AircraftType.SR22T_G5;
+                case "SR22T_G6":
+                    return AircraftType.SR22T_G6;
                 case "C172_SP":
                     return AircraftType.C172_SP;
                 default:
@@ -63,6 +65,8 @@ namespace Airborn.web.Models
                     return new SR22_G2();
                 case AircraftType.SR22T_G5:
                     return new SR22T_G5();
+                case AircraftType.SR22T_G6:
+                    return new SR22T_G6();                    
                 case AircraftType.C172_SP:
                     return new C172_SP();
                 default:
