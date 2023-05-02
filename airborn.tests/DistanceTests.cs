@@ -22,7 +22,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFormatToStringAsFt()
+        public void TestFormatToStringAsFt_ReturnsFormattedInFeet()
         {
             Distance distance = Distance.FromFeet(1000);
             Assert.AreEqual("1,000 ft", distance.ToString());

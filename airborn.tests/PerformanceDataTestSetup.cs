@@ -18,8 +18,6 @@ namespace Airborn.Tests
 
         public const int AircraftWeightInterval = 50;
 
-        public const AircraftType DefaultAircraftType = AircraftType.SR22_G2;
-
         public static BookPerformanceDataList GenerateSampleData(AircraftType aircraftType)
         {
             int minimumAircraftWeight = Aircraft.GetAircraftFromAircraftType(aircraftType).GetLowerWeight();

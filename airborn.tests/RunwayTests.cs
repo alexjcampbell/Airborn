@@ -7,17 +7,6 @@ namespace Airborn.Tests
     [TestClass]
     public class RunwayTests
     {
-        [TestMethod]
-        public void LandingDistanceIncludesDisplacedThreshold()
-        {
-            Runway runway = new Runway("28");
-
-            // regrettably, yes, these are stored as text in the database
-            runway.RunwayLength = "5000";
-            runway.DisplacedThresholdFt = "1000";
-
-            Assert.AreEqual(4000, runway.LandingAvailableLength.TotalFeet);
-        }
 
         [TestMethod]
         public void TestRunwayAtSedonaIs1point77()
@@ -75,6 +64,72 @@ namespace Airborn.Tests
             double runwayLength = -10;
 
             Runway.CalculateSlope(elevation1, elevation2, runwayLength);
+        }
+
+        [TestMethod]
+        public void GetOppositeRunway_ReturnsCorrectOppositeRunways()
+        {
+            Assert.AreEqual("18R", Runway.GetOppositeRunway("36L"));
+            Assert.AreEqual("9L", Runway.GetOppositeRunway("27R"));
+            Assert.AreEqual("27C", Runway.GetOppositeRunway("09C"));
+        }
+
+        [TestMethod]
+        public void RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10R()
+        {
+            Runway runway = new Runway("10R");
+            Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10()
+        {
+            Runway runway = new Runway("10");
+            Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
+        }
+
+        [TestMethod]
+        public void RunwayLengthFriendly_ReturnsCorrectRunwayLengthAndWidthInformation()
+        {
+            Runway runway = new Runway
+            {
+                RunwayLength = "10000",
+                RunwayWidth = "150"
+            };
+            Assert.AreEqual("10,000 ft x 150 ft", runway.RunwayLengthFriendly);
+        }
+
+        [TestMethod]
+        public void RunwayLengthFriendly_ReturnsUnknown_WhenRunwayLengthIsNotAvailable()
+        {
+            Runway runway = new Runway
+            {
+                RunwayLength = "",
+                RunwayWidth = "150"
+            };
+            Assert.AreEqual("Unknown", runway.RunwayLengthFriendly);
+        }
+
+        [TestMethod]
+        public void TakeAvailableLength_DoesNotIncludeDisplacedThreshold()
+        {
+            Runway runway = new Runway
+            {
+                RunwayLength = "10000",
+                DisplacedThresholdFt = "1000"
+            };
+            Assert.AreEqual(10000, runway.RunwayLengthConverted);
+        }
+
+        [TestMethod]
+        public void LandingAvailableLength_ReturnsCorrectLength_WhenOnlyRunwayLengthIsAvailable()
+        {
+            Runway runway = new Runway
+            {
+                RunwayLength = "10000",
+                DisplacedThresholdFt = "1000"
+            };
+            Assert.AreEqual(9000, runway.LandingAvailableLength.TotalFeet);
         }
     }
 }

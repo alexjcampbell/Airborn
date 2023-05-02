@@ -27,33 +27,6 @@ namespace Airborn.Tests
         private ILogger<HomeController> _doesntDoMuch =
             new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
 
-        // Default values for the default runway
-        const string _default_AirportIdentifier = "KJFK";
-        const int _default_Runway_Id = 1;
-        const string _default_RunwayWidth = "150";
-        const string _default_RunwayLength = "10000";
-        const string _default_Runway_Name = "22R";
-
-        const int _default_Runway_Heading = 220;
-
-        // Default values for the airport
-        const int _default_FieldElevation = 0;
-
-        // Default values for the model
-        const AircraftType _default_AircraftType = AircraftType.SR22_G2;
-        const AltimeterSettingType _default_AltimeterSettingType = AltimeterSettingType.MB;
-        const int _default_Temperature = 15;
-        const TemperatureType _default_TemperatureType = TemperatureType.C;
-        const int _default_WindDirectionMagnetic = 220;
-        const int _default_WindStrength = 10;
-        const int _default_TemperatureCelcius = 12;
-        const decimal _default_QNH = 1013.25m;
-        const double _default_AircraftWeight = 3000;
-
-        const double _defaultRunwayElevation = 0;
-
-        List<Runway> TestRunways = new List<Runway>();
-        List<Airport> TestAirports = new List<Airport>();
 
         HomeController _controller;
         CalculatePageModel _model;
@@ -67,84 +40,30 @@ namespace Airborn.Tests
                 .Returns("Hosting:UnitTestEnvironment")
                 ;
 
-            var airportDbContext = new Mock<AirportDbContext>();
+            AirportDbContext dbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
-
-            var runwayDbSet = new Mock<DbSet<Runway>>();
-            airportDbContext.Setup(o => o.Runways).Returns(() => runwayDbSet.Object);
-
-            SetupTestRunway(_default_Runway_Id, _default_Runway_Heading, _default_Runway_Name);
-            SetupTestRunway(2, 230, "23L");
-            SetupTestRunway(3, 50, "5R");
-            SetupTestRunway(4, 160, "16");
-            SetupTestRunway(5, 340, "34");
-            SetupTestRunway(6, 180, "18");
-            SetupTestRunway(7, 360, "36");
-            SetupTestRunway(8, 90, "9L");
-            SetupTestRunway(9, 270, "27R");
-            SetupTestRunway(10, 40, "4L");
-
-            // Set up the DbSet as an IQueryable so it can be enumerated.
-            var queryableRunways = TestRunways.AsQueryable();
-            runwayDbSet.As<IQueryable<Runway>>().Setup(m => m.Provider).Returns(queryableRunways.Provider);
-            runwayDbSet.As<IQueryable<Runway>>().Setup(m => m.Expression).Returns(queryableRunways.Expression);
-            runwayDbSet.As<IQueryable<Runway>>().Setup(m => m.ElementType).Returns(queryableRunways.ElementType);
-            runwayDbSet.As<IQueryable<Runway>>().Setup(m => m.GetEnumerator()).Returns(() => queryableRunways.GetEnumerator());
-
-            var airportDbSet = new Mock<DbSet<Airport>>();
-            airportDbContext.Setup(o => o.Airports).Returns(() => airportDbSet.Object);
-
-            var testAirports = new List<Airport>(){
-                new Airport()
-            };
-
-            testAirports[0].Ident = _default_AirportIdentifier;
-            testAirports[0].FieldElevation = _default_FieldElevation;
-
-            // Set up the DbSet as an IQueryable so it can be enumerated.
-            var queryableAirports = testAirports.AsQueryable();
-            airportDbSet.As<IQueryable<Airport>>().Setup(m => m.Provider).Returns(queryableAirports.Provider);
-            airportDbSet.As<IQueryable<Airport>>().Setup(m => m.Expression).Returns(queryableAirports.Expression);
-            airportDbSet.As<IQueryable<Airport>>().Setup(m => m.ElementType).Returns(queryableAirports.ElementType);
-            airportDbSet.As<IQueryable<Airport>>().Setup(m => m.GetEnumerator()).Returns(() => queryableAirports.GetEnumerator());
-
-
-            _controller = new HomeController(_doesntDoMuch, mockEnvironment.Object, airportDbContext.Object);
+            _controller = new HomeController(_doesntDoMuch, mockEnvironment.Object, dbContext);
         }
 
-        private void SetupTestRunway(int runwayId, int runwayHeading, string runwayName)
-        {
-            Runway runway = new Runway(_default_Runway_Name);
-
-            runway.Airport_Ident = _default_AirportIdentifier;
-            runway.Runway_Id = runwayId;
-            runway.RunwayWidth = _default_RunwayWidth;
-            runway.RunwayLength = _default_RunwayLength;
-            runway.Runway_Name = runwayName;
-            runway.ElevationFt = _defaultRunwayElevation.ToString();
-
-            TestRunways.Add(runway);
-
-        }
 
         private void InitializeModel()
         {
             _model = new CalculatePageModel();
 
-            _model.AircraftType = _default_AircraftType;
-            _model.AltimeterSetting = _default_QNH;
-            _model.AltimeterSettingType = _default_AltimeterSettingType;
-            _model.AirportIdentifier = _default_AirportIdentifier;
-            _model.Temperature = _default_Temperature;
-            _model.TemperatureType = _default_TemperatureType;
-            _model.WindDirectionMagnetic = _default_WindDirectionMagnetic;
-            _model.WindStrength = _default_WindStrength;
-            _model.AircraftWeight = (int)_default_AircraftWeight;
+            _model.AircraftType = UtilitiesForTesting.Default_AircraftType;
+            _model.AltimeterSetting = UtilitiesForTesting.Default_QNH;
+            _model.AltimeterSettingType = UtilitiesForTesting.Default_AltimeterSettingType;
+            _model.AirportIdentifier = UtilitiesForTesting.Default_AirportIdentifier;
+            _model.Temperature = UtilitiesForTesting.Default_Temperature;
+            _model.TemperatureType = UtilitiesForTesting.Default_TemperatureType;
+            _model.WindDirectionMagnetic = UtilitiesForTesting.Default_WindDirectionMagnetic;
+            _model.WindStrength = UtilitiesForTesting.Default_WindStrength;
+            _model.AircraftWeight = (int)UtilitiesForTesting.Default_AircraftWeight;
             _model.RootPath = "../../Debug/net6.0/SR22_G2_3400.json";
         }
 
         [TestMethod]
-        public void TestDirectHeadwindHasNoCrosswindComponent()
+        public void TestDirectHeadwind_HasNoCrosswindComponent()
         {
             InitializeController();
             InitializeModel();
@@ -158,7 +77,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestDirectTailwindHasNoCrosswindComponent()
+        public void TestDirectTailwind_HasNoCrosswindComponent()
         {
             InitializeController();
             InitializeModel();
@@ -172,7 +91,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCrosswindComponentIsCorrect()
+        public void TestCrosswindComponent_IsCorrect()
         {
             InitializeController();
             InitializeModel();
@@ -186,7 +105,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCrosswindComponentIsCorrectForOppositeWind()
+        public void TestCrosswindComponent_IsCorrectForOppositeWind()
         {
             InitializeController();
             InitializeModel();
@@ -200,7 +119,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitudeEqualsFieldAltitudeWhenStandardPressureMb()
+        public void TestPressureAltitude_EqualsFieldAltitudeWhenStandardPressureMb()
         {
             InitializeController();
             InitializeModel();
@@ -218,7 +137,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitudeEqualsFieldAltitudeWhenStandardPressureHg()
+        public void TestPressureAltitude_EqualsFieldAltitudeWhenStandardPressureHg()
         {
             InitializeController();
             InitializeModel();
@@ -240,7 +159,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitudeIsCorrectWhenAltimeterSettingIsLowerThanStandard()
+        public void TestPressureAltitude_IsCorrectWhenAltimeterSettingIsLowerThanStandard()
         {
             InitializeController();
             InitializeModel();
@@ -251,13 +170,13 @@ namespace Airborn.Tests
             var result = _controller.Calculate(_model);
 
             // lower pressure means higher altitude, at a rate of ~90 feet per inch of mercury
-            decimal expectedPressureAltitude = _default_FieldElevation + 92.4522894637524m;
+            decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation + 92.4522894637524m;
 
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
         }
 
         [TestMethod]
-        public void TestPressureAltitudeIsCorrectWhenAltimeterSettingIsHigherThanStandard()
+        public void TestPressureAltitude_IsCorrectWhenAltimeterSettingIsHigherThanStandard()
         {
             InitializeController();
             InitializeModel();
@@ -268,13 +187,13 @@ namespace Airborn.Tests
             var result = _controller.Calculate(_model);
 
             // higher pressure means lower altitude, at a rate of ~90 feet per inch of mercury
-            decimal expectedPressureAltitude = _default_FieldElevation - 92.4522894130836m;
+            decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation - 92.4522894130836m;
 
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
         }
 
         [TestMethod]
-        public void TestReturnResultsEvenWhenPressureAltitudeIsNegative()
+        public void TestReturnResults_EvenWhenPressureAltitudeIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -300,7 +219,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitudeShouldOnlyOverrideToZeroWhenPressureAltitudeIsNegative()
+        public void TestPressureAltitude_ShouldOnlyOverrideToZeroWhenPressureAltitudeIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -318,7 +237,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestReturnResultsEvenWhenTemperatureIsNegative()
+        public void TestReturnResults_EvenWhenTemperatureIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -340,7 +259,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostHeadwindAreFirst()
+        public void TestRunwaysWithMostHeadwind_AreFirst()
         {
             InitializeController();
             InitializeModel();
@@ -378,7 +297,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostTailwindAreLast()
+        public void TestRunwaysWithMostTailwind_AreLast()
         {
             InitializeController();
             InitializeModel();
@@ -395,7 +314,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostCrosswindAreInMiddle()
+        public void TestRunwaysWithMostCrosswind_AreInMiddle()
         {
             InitializeController();
             InitializeModel();
@@ -413,7 +332,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestIsBestWindTrueWhenRunwayIsMostAlignedWithWind()
+        public void TestIsBestWindTrueWhenRunway_IsMostAlignedWithWind()
         {
             InitializeController();
             InitializeModel();
@@ -424,7 +343,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestIsBestWindFalseWhenRunwayIsNotMostAlignedWithWind()
+        public void TestIsBestWindFalseWhenRunway_IsNotMostAlignedWithWind()
         {
             InitializeController();
             InitializeModel();
@@ -435,7 +354,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTakeoffGroundRollDistanceIsGreaterWhenAircraftWeightIncreases()
+        public void TestTakeoffGroundRollDistance_IsGreaterWhenAircraftWeightIncreases()
         {
             InitializeController();
             InitializeModel();
@@ -457,7 +376,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestLandingGroundRollDistanceIsSameWhenAircraftWeightChanges()
+        public void TestLandingGroundRollDistance_IsSameWhenAircraftWeightChanges()
         {
             // Initialize the controller and model
             InitializeController();
