@@ -59,7 +59,7 @@ namespace Airborn.Tests
             _model.WindDirectionMagnetic = UtilitiesForTesting.Default_WindDirectionMagnetic;
             _model.WindStrength = UtilitiesForTesting.Default_WindStrength;
             _model.AircraftWeight = (int)UtilitiesForTesting.Default_AircraftWeight;
-            _model.RootPath = "../../Debug/net6.0/SR22_G2_3400.json";
+            _model.RootPath = "../../Debug/net7.0/SR22_G2_3400.json";
         }
 
         [TestMethod]
