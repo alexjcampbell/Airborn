@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
     /// <summary>
     /// Represents a list of BookPerformanceData objects for a given aircraft weight

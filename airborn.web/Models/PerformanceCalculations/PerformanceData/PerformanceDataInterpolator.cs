@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
 
 
@@ -277,10 +277,10 @@ namespace Airborn.web.Models
 
 
         public InterpolatedPerformanceData InterpolateByPressureAltitude(
-            PerformanceData lowerPressureAltitudePerformanceData,
-            PerformanceData upperPresssureAltitudePerformanceData,
-            PerformanceData lowerTemperaturePerformanceData,
-            PerformanceData upperTemperaturePerformanceData,
+            PerformanceDataBase lowerPressureAltitudePerformanceData,
+            PerformanceDataBase upperPresssureAltitudePerformanceData,
+            PerformanceDataBase lowerTemperaturePerformanceData,
+            PerformanceDataBase upperTemperaturePerformanceData,
             decimal weight)
         {
             // first interpolate by pressure altitude
@@ -302,7 +302,7 @@ namespace Airborn.web.Models
                 );
         }
 
-        public InterpolatedPerformanceData InterpolateByPressureAltitudeOnly(PerformanceData lowerPressureAltitudePerformanceData, PerformanceData upperPressureAltitudePerformanceData, decimal weight)
+        public InterpolatedPerformanceData InterpolateByPressureAltitudeOnly(PerformanceDataBase lowerPressureAltitudePerformanceData, PerformanceDataBase upperPressureAltitudePerformanceData, decimal weight)
         {
             InterpolatedPerformanceData interpolatedPerformanceDataByPressureAltitude = new InterpolatedPerformanceData(
                 this.Scenario,
@@ -380,8 +380,8 @@ namespace Airborn.web.Models
         }
 
         public InterpolatedPerformanceData InterpolateByTemperatureOnly(
-            PerformanceData lowerTemperaturePerformanceData,
-            PerformanceData upperTemperaturePerformanceData,
+            PerformanceDataBase lowerTemperaturePerformanceData,
+            PerformanceDataBase upperTemperaturePerformanceData,
             decimal weight)
         {
 
@@ -459,8 +459,8 @@ namespace Airborn.web.Models
         }
 
         public InterpolatedPerformanceData InterpolateByAircraftWeight(
-             PerformanceData lowerWeightPerformanceData,
-             PerformanceData upperWeightPerformanceData,
+             PerformanceDataBase lowerWeightPerformanceData,
+             PerformanceDataBase upperWeightPerformanceData,
              decimal weight)
         {
 

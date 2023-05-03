@@ -3,8 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text.RegularExpressions;
-
+using Airborn.web.Models.PerformanceData;
 
 namespace Airborn.web.Models
 {

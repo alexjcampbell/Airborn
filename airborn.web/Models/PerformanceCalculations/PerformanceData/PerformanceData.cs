@@ -7,9 +7,9 @@ namespace Airborn.web.Models
     /// intended to provide the foundation for the two concrete classes BookPerformanceData and 
     /// InterpolatedPerformanceData
     /// </summary>
-    public abstract class PerformanceData
+    public abstract class PerformanceDataBase
     {
-        private PerformanceData()
+        private PerformanceDataBase()
         {
         }
 
@@ -23,7 +23,7 @@ namespace Airborn.web.Models
         /// <param name="pressureAltitude">The pressure altitude at the airport</param>
         /// <param name="temperature">The temperature at the airport</param>
         /// <param name="aircraftWeight">The weight of the aircraft</param>
-        public PerformanceData(
+        public PerformanceDataBase(
             Scenario scenario,
             Distance pressureAltitude,
             decimal temperature,
@@ -44,7 +44,7 @@ namespace Airborn.web.Models
         /// <param name="aircraftWeight">The weight of the aircraft</param>
         /// <param name="groundRoll">(optional) The groundroll distance from the POH</param>
         /// <param name="distanceToClear50Ft">(optional) The distance to clear a 50' obstacle from the POH</param>
-        public PerformanceData(
+        public PerformanceDataBase(
             Scenario scenario,
             Distance pressureAltitude,
             decimal temperature,

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Airborn.web.Models;
 using System.Collections.Generic;
-using Moq;
+using Airborn.web.Models;
+using Airborn.web.Models.PerformanceData;
 
 namespace Airborn.Tests
 {
@@ -147,7 +147,7 @@ namespace Airborn.Tests
             decimal aircraftWeight = 3000;
             Scenario scenario = Scenario.Takeoff;
 
-            PerformanceData bookDistances = new BookPerformanceData(
+            PerformanceDataBase bookDistances = new BookPerformanceData(
                 scenario,
                 pressureAltitude,
                 temperature,

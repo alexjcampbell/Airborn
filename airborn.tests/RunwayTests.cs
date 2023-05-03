@@ -8,6 +8,61 @@ namespace Airborn.Tests
     public class RunwayTests
     {
 
+
+        [TestMethod]
+        public void Test_GetRunwayHeading_10R_Returns100()
+        {
+            Runway runway = new Runway("10R");
+            Direction expectedHeading = new Direction(100, 0);
+
+            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+        }
+
+        [TestMethod]
+        public void GetRunwayHeading_28_Returns280()
+        {
+            Runway runway = new Runway("28");
+            Direction expectedHeading = new Direction(280, 0);
+
+            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+        }
+
+        [TestMethod]
+        public void GetRunwayHeading_1C_Returns10()
+        {
+            Runway runway = new Runway("1C");
+            Direction expectedHeading = new Direction(10, 0);
+
+            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+        }
+
+
+        [TestMethod]
+        public void GetRunwayHeading_01C_Returns10()
+        {
+            Runway runway = new Runway("01C");
+            Direction expectedHeading = new Direction(10, 0);
+
+            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+        }
+
+        [TestMethod]
+        public void GetRunwayHeading_36R_Returns360()
+        {
+            Runway runway = new Runway("36R");
+            Direction expectedHeading = new Direction(360, 0);
+
+            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void GetRunwayHeading_InvalidRunwayName_ThrowsFormatException()
+        {
+            Runway runway = new Runway("INVALID");
+            _ = runway.RunwayHeading;
+        }
+
         [TestMethod]
         public void Test_RunwayAtSedona_Is1point77()
         {

@@ -6,7 +6,7 @@ namespace Airborn.web.Models
     /// Represents an interpolated groundroll distance and distance to clear a 50' obstacle
     /// for a given pressure altitude, temperature, and aircraft weight
     /// </summary>
-    public class InterpolatedPerformanceData : PerformanceData
+    public class InterpolatedPerformanceData : PerformanceDataBase
     {
 
         /// <summary>

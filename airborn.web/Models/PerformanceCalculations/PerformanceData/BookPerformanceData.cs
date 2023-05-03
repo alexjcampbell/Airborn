@@ -7,7 +7,7 @@ namespace Airborn.web.Models
     /// from the POH ("the book") for a given pressure altitude, temperature, and aircraft
     /// weight
     /// </summary>
-    public class BookPerformanceData : PerformanceData
+    public class BookPerformanceData : PerformanceDataBase
     {
         /// <summary>
         /// Represents a groundroll distance and a distance to clear a 50' obstacle

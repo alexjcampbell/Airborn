@@ -1,5 +1,6 @@
 using System;
 using Airborn.web.Models;
+using Airborn.web.Models.PerformanceData;
 
 namespace Airborn.Tests
 {
