@@ -146,11 +146,11 @@ namespace Airborn.web.Models
         [Display(Name = "Density Altitude")]
         [Editable(false)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
-        public decimal? DensityAltitude
+        public Distance? DensityAltitude
         {
             get
             {
-                return PerformanceCalculator?.DensityAltitude.TotalFeet;
+                return PerformanceCalculator?.DensityAltitude;
             }
         }
 
@@ -158,22 +158,22 @@ namespace Airborn.web.Models
         [Display(Name = "Pressure Altitude")]
         [Editable(false)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
-        public decimal? PressureAltitude
+        public Distance? PressureAltitude
         {
             get
             {
-                return PerformanceCalculator?.PressureAltitude.TotalFeet;
+                return PerformanceCalculator?.PressureAltitude;
             }
         }
 
         [Display(Name = "Field Elevation")]
         [Editable(false)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0}")]
-        public decimal? FieldElevation
+        public Distance? FieldElevation
         {
             get
             {
-                return Airport?.FieldElevation;
+                return Airport?.FieldElevationAsDistance;
             }
         }
 

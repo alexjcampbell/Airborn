@@ -22,6 +22,14 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        public Distance FieldElevationAsDistance
+        {
+            get
+            {
+                return Distance.FromFeet(FieldElevation.Value);
+            }
+        }
+
         public string Type
         {
             get; set;

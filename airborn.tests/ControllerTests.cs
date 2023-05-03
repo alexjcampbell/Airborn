@@ -133,7 +133,7 @@ namespace Airborn.Tests
             // so field elevation should equal pressure altitude
             // but due to rounding errors, pressure altitude doesn't quite equal zero ft (sea level)
             double expectedPressureAltitude = 6.825f;
-            Assert.AreEqual(expectedPressureAltitude, (double)_model.PressureAltitude, 0.1f);
+            Assert.AreEqual(expectedPressureAltitude, (double)_model.PressureAltitude.Value.TotalFeet, 0.1f);
         }
 
         [TestMethod]
@@ -152,9 +152,9 @@ namespace Airborn.Tests
             // Altimeter setting of 29.92 is standard pressure at sea level, so field elevation
             // should equal pressure altitude. However, rounding errors mean pressure altitude doesn't 
             // quite equal zero ft (sea level) as you'd expect
-            Assert.AreEqual(expectedPressureAltitude,
-            (double)
-                _model.PressureAltitude,
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                (double)_model.PressureAltitude.Value.TotalFeet,
                 0.1f);
         }
 
@@ -172,7 +172,7 @@ namespace Airborn.Tests
             // lower pressure means higher altitude, at a rate of ~90 feet per inch of mercury
             decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation + 92.4522894637524m;
 
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude.Value.TotalFeet);
         }
 
         [TestMethod]
@@ -189,7 +189,7 @@ namespace Airborn.Tests
             // higher pressure means lower altitude, at a rate of ~90 feet per inch of mercury
             decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation - 92.4522894130836m;
 
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude);
+            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude.Value.TotalFeet);
         }
 
         [TestMethod]
@@ -203,7 +203,7 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            Assert.IsTrue(_model.PressureAltitude < 0);
+            Assert.IsTrue(_model.PressureAltitude.Value.TotalFeet < 0);
 
             Assert.IsTrue(_model.PressureAltitudeAlwaysPositiveOrZero == 0);
 
@@ -231,7 +231,7 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            Assert.IsTrue(_model.PressureAltitude > 0);
+            Assert.IsTrue(_model.PressureAltitude.Value.TotalFeet > 0);
 
             Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitudeAlwaysPositiveOrZero);
         }

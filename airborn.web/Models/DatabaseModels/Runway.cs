@@ -161,7 +161,7 @@ namespace Airborn.web.Models
             get
             {
 
-                return LandingAvailableLength.TotalFeet.ToString("#,##0") + " ft x" + RunwayWidth + " ft";
+                return LandingAvailableLength.TotalFeet.ToString("#,##0") + " ft x " + RunwayWidth + " ft";
             }
         }
 
