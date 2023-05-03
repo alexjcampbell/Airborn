@@ -290,10 +290,17 @@ namespace Airborn.web.Models.PerformanceData
                     upperPresssureAltitudePerformanceData,
                     weight);
 
-            lowerTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
-            lowerTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
-            upperTemperaturePerformanceData.DistanceGroundRoll = interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
-            upperTemperaturePerformanceData.DistanceToClear50Ft = interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
+            lowerTemperaturePerformanceData.DistanceGroundRoll =
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
+
+            lowerTemperaturePerformanceData.DistanceToClear50Ft =
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
+
+            upperTemperaturePerformanceData.DistanceGroundRoll =
+                interpolatedPerformanceDataByPressureAltitude.DistanceGroundRoll;
+
+            upperTemperaturePerformanceData.DistanceToClear50Ft =
+                interpolatedPerformanceDataByPressureAltitude.DistanceToClear50Ft;
 
             return InterpolateByTemperatureOnly(
                 lowerTemperaturePerformanceData,

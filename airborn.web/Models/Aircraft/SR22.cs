@@ -74,19 +74,19 @@ namespace Airborn.web.Models
 
         public Distance CalculateAdjustedGroundRollDistanceForTakeoff(double groundRollDistance, double slope, double pressureAltitude)
         {
-            double adjustmentFactor;
+            double adjustmentFactor = 0;
 
-            if (pressureAltitude <= 0)
+            if (pressureAltitude <= 0 && slope > 0)
             {
-                adjustmentFactor = slope > 0 ? 0.22 : -0.07;
+                adjustmentFactor = 0.22; // only provide the worst case adjustment, for uphill takeoffs
             }
-            else if (pressureAltitude <= 5000)
+            else if (pressureAltitude <= 5000 && slope > 0)
             {
-                adjustmentFactor = slope > 0 ? 0.3 : -0.1;
+                adjustmentFactor = 0.3;
             }
-            else
+            else if (slope > 0)
             {
-                adjustmentFactor = slope > 0 ? 0.43 : -0.14;
+                adjustmentFactor = 0.43;
             }
 
             double adjustment = Math.Abs(slope) * adjustmentFactor * groundRollDistance;
