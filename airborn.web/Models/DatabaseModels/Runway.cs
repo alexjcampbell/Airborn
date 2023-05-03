@@ -193,7 +193,7 @@ namespace Airborn.web.Models
         }
 
         [NotMapped]
-        public decimal? Slope
+        public double? Slope
         {
             get; set;
         }

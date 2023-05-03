@@ -5,7 +5,7 @@ namespace Airborn.web.Models
     public class NoPerformanceDataFoundException : Exception
     {
 
-        public NoPerformanceDataFoundException(decimal pressureAltitude, decimal temperature, decimal weight)
+        public NoPerformanceDataFoundException(double pressureAltitude, double temperature, double weight)
         : base(string.Format("No performance data found for pressure altitude {0}, temperature {1}, and weight {2}", pressureAltitude, temperature, weight))
         {
             PressureAltitude = pressureAltitude;
@@ -13,17 +13,17 @@ namespace Airborn.web.Models
             Weight = weight;
         }
 
-        public decimal PressureAltitude
+        public double PressureAltitude
         {
             get;
             private set;
         }
-        public decimal Temperature
+        public double Temperature
         {
             get;
             private set;
         }
-        public decimal Weight
+        public double Weight
         {
             get;
             private set;

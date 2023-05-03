@@ -1,6 +1,6 @@
 using System;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
     /// <summary>Represents the groundroll distance and the distance to clear a 50' obstacle
     /// for a given pressure altitude and temperature. This is an abstract class because it's only 
@@ -26,8 +26,8 @@ namespace Airborn.web.Models
         public PerformanceDataBase(
             Scenario scenario,
             Distance pressureAltitude,
-            decimal temperature,
-            decimal aircraftWeight
+            double temperature,
+            double aircraftWeight
             ) : this(scenario, pressureAltitude, temperature, aircraftWeight, null, null)
         {
         }
@@ -47,8 +47,8 @@ namespace Airborn.web.Models
         public PerformanceDataBase(
             Scenario scenario,
             Distance pressureAltitude,
-            decimal temperature,
-            decimal aircraftWeight,
+            double temperature,
+            double aircraftWeight,
             Distance? groundRoll,
             Distance? distanceToClear50Ft)
         {
@@ -68,7 +68,7 @@ namespace Airborn.web.Models
             private set;
         }
 
-        public decimal Temperature
+        public double Temperature
         {
             get;
             private set;
@@ -86,7 +86,7 @@ namespace Airborn.web.Models
             set;
         }
 
-        public decimal AircraftWeight
+        public double AircraftWeight
         {
             get;
             set;

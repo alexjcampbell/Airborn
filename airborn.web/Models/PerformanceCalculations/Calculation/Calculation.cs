@@ -24,7 +24,7 @@ namespace Airborn.web.Models
             Aircraft aircraft,
             Airport airport,
             Wind wind,
-            decimal aircraftWeight,
+            double aircraftWeight,
             string path)
         {
             Aircraft = aircraft;
@@ -39,7 +39,7 @@ namespace Airborn.web.Models
             Aircraft aircraft,
             Airport airport,
             Wind wind,
-            decimal aircraftWeight,
+            double aircraftWeight,
             JsonFile jsonFile)
         {
             Aircraft = aircraft;
@@ -110,13 +110,13 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal TemperatureCelcius
+        public double TemperatureCelcius
         {
             get;
             set;
         }
 
-        public decimal TemperatureCelciusAlwaysPositiveOrZero
+        public double TemperatureCelciusAlwaysPositiveOrZero
         {
             get
             {
@@ -125,7 +125,7 @@ namespace Airborn.web.Models
         }
 
 
-        public decimal AltimeterSettingInMb
+        public double AltimeterSettingInMb
         {
             get;
             set;
@@ -151,7 +151,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal AircraftWeight
+        public double AircraftWeight
         {
             get;
             set;
@@ -172,7 +172,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal ISATemperature
+        public double ISATemperature
         {
             get
             {
@@ -273,7 +273,7 @@ namespace Airborn.web.Models
 
                     if (runway.ElevationFt.HasValue && oppositeRunway.ElevationFt.HasValue && runway.RunwayLength.HasValue)
                     {
-                        runway.Slope = (decimal)Runway.CalculateSlope(
+                        runway.Slope = (double)Runway.CalculateSlope(
                             runway.ElevationFt.Value,
                             oppositeRunway.ElevationFt.Value,
                             (double)runway.RunwayLength.Value);

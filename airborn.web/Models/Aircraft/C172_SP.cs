@@ -15,24 +15,24 @@ namespace Airborn.web.Models
             PerformanceCalculationLogItem logItem
             )
         {
-            decimal adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
+            double adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
 
             if (result.HeadwindComponent > 0)
             {
 
                 // subtract 10% for each 9 knots of headwind
-                adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 9) * 0.1m));
+                adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
 
                 logItem.Add("Subtracting 10% for each 9 knots of headwind");
                 logItem.Add("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " knots");
                 logItem.Add("Unadjusted takeoff distance: " + unadjustedTakeoffDistance.TotalFeet.ToString("#,##0.00") + " ft");
-                logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1m).ToString("#,##0.00"));
+                logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
                 logItem.Add("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
             }
             else if (result.HeadwindComponent < 0) // negative headwind is a tailwind
             {
                 // add 10% for each 2 knots of tailwind up to 10 knots
-                decimal adjustment = (result.HeadwindComponent / 2) * 0.1m;
+                double adjustment = (result.HeadwindComponent / 2) * 0.1f;
 
                 // make the adjustment
                 adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - adjustment);
@@ -54,23 +54,23 @@ namespace Airborn.web.Models
             PerformanceCalculationLogItem logItem
             )
         {
-            decimal adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
+            double adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
 
             if (result.HeadwindComponent > 0)
             {
                 // subtract 10% for each 9 knots of headwind
-                adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 9) * 0.1m));
+                adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
 
                 logItem.Add("Subtracting 10% for each 9 knots of headwind");
                 logItem.Add("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " kts");
                 logItem.Add("Unadjusted landing distance: " + unadjustedLandingDistance.TotalFeet.ToString("#,##0.00") + " ft");
-                logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1m).ToString("#,##0.00"));
+                logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
                 logItem.Add("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00"));
             }
             else if (result.HeadwindComponent < 0)
             {
                 // add 10% for each 2 knots of tailwind up to 10 knots
-                decimal adjustment = (result.HeadwindComponent / 2) * 0.1m;
+                double adjustment = (result.HeadwindComponent / 2) * 0.1f;
 
                 // make the adjustment
                 adjustedLandingDistance = adjustedLandingDistance * (1 - adjustment);

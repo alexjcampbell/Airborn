@@ -45,17 +45,17 @@ namespace Airborn.web.Models.PerformanceData
             }
         }
 
-        public BookPerformanceData FindTakeoffBookDistance(Distance pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindTakeoffBookDistance(Distance pressureAltitude, double temperature, double weight)
         {
             return FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, weight);
         }
 
-        public BookPerformanceData FindLandingBookDistance(Distance pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindLandingBookDistance(Distance pressureAltitude, double temperature, double weight)
         {
             return FindBookDistance(Scenario.Landing, pressureAltitude, temperature, weight);
         }
 
-        public BookPerformanceData FindBookDistance(Scenario scenario, Distance pressureAltitude, decimal temperature, decimal weight)
+        public BookPerformanceData FindBookDistance(Scenario scenario, Distance pressureAltitude, double temperature, double weight)
         {
 
             if (temperature < 0)
@@ -133,7 +133,7 @@ namespace Airborn.web.Models.PerformanceData
         private void PopulatePerformanceDataListFromJsonProfile(
             Scenario scenario,
             JsonPerformanceProfile profile,
-            decimal weight)
+            double weight)
         {
             for (int i = 0; i < profile.GroundRoll.Count; i++)
             {

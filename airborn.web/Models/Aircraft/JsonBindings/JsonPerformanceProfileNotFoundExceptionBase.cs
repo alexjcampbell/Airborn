@@ -14,7 +14,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        public decimal PressureAltitude
+        public double PressureAltitude
         {
             get; set;
         }

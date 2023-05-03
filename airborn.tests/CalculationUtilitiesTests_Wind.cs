@@ -42,7 +42,7 @@ namespace Airborn.Tests
         public void Test_DegreesToRadians_ZeroDegrees_EqualsZeroRadians()
         {
             int numberOfDegrees = 0;
-            decimal expectedRadians = 0;
+            double expectedRadians = 0;
 
             Assert.AreEqual(CalculationUtilities.DegreesToRadians(numberOfDegrees), expectedRadians);
         }
@@ -51,11 +51,12 @@ namespace Airborn.Tests
         public void Test_DegreesToRadians_45Degrees_EqualsOneQuarterOfPi()
         {
             int numberOfDegrees = 45;
-            decimal expectedRadians = 0.7853981633974475000000000010m;
+            double expectedRadians = 0.78f;
 
             Assert.AreEqual(
                 expectedRadians,
-                CalculationUtilities.DegreesToRadians(numberOfDegrees)
+                CalculationUtilities.DegreesToRadians(numberOfDegrees),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -63,11 +64,12 @@ namespace Airborn.Tests
         public void Test_DegreesToRadians_180Degrees_EqualsPi()
         {
             int numberOfDegrees = 180;
-            decimal expectedRadians = 3.1415926535897900000000000040m; // Pi
+            double expectedRadians = 3.14f; // Pi
 
             Assert.AreEqual(
                 expectedRadians,
-                CalculationUtilities.DegreesToRadians(numberOfDegrees)
+                CalculationUtilities.DegreesToRadians(numberOfDegrees),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -75,9 +77,13 @@ namespace Airborn.Tests
         public void Test_DegreesToRadians_360Degrees_EqualsTwoPi()
         {
             int numberOfDegrees = 360;
-            decimal expectedRadians = 6.2831853071795800000000000080m; // Pi * 2
+            double expectedRadians = 6.28f; // Pi * 2
 
-            Assert.AreEqual(expectedRadians, CalculationUtilities.DegreesToRadians(numberOfDegrees));
+            Assert.AreEqual(
+                expectedRadians,
+                CalculationUtilities.DegreesToRadians(numberOfDegrees),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -89,7 +95,8 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedHeadwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -102,7 +109,8 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedHeadwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -111,11 +119,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 45;
-            decimal expectedHeadwind = 10.6066017177982m;
+            double expectedHeadwind = 10.60f;
 
             Assert.AreEqual(
                 expectedHeadwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -124,11 +133,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 90;
-            decimal expectedHeadwind = 0m;
+            double expectedHeadwind = 0f;
 
             Assert.AreEqual(
                 expectedHeadwind,
-                Math.Round(CalculationUtilities.HeadwindComponent(windSpeed, windDirection), 0)
+                Math.Round(CalculationUtilities.HeadwindComponent(windSpeed, windDirection), 0),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -137,11 +147,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 135;
-            decimal expectedTailwind = -10.6066017177982m;
+            double expectedTailwind = -10.60f;
 
             Assert.AreEqual(
                 expectedTailwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -150,11 +161,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 180;
-            decimal expectedTailwind = -15m;
+            double expectedTailwind = -15f;
 
             Assert.AreEqual(
                 expectedTailwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -163,11 +175,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 225;
-            decimal expectedTailwind = -10.6066017177983m;
+            double expectedTailwind = -10.60f;
 
             Assert.AreEqual(
                 expectedTailwind,
-                CalculationUtilities.HeadwindComponent(windSpeed, windDirection)
+                CalculationUtilities.HeadwindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -176,11 +189,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 270;
-            decimal expectedHeadwind = 0m;
+            double expectedHeadwind = 0f;
 
             Assert.AreEqual(
                 expectedHeadwind,
-                Math.Round(CalculationUtilities.HeadwindComponent(windSpeed, windDirection), 0)
+                Math.Round(CalculationUtilities.HeadwindComponent(windSpeed, windDirection), 0),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -189,11 +203,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 0;
             int windDirection = 0;
-            decimal expectedCrosswind = 0m;
+            double expectedCrosswind = 0f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -202,11 +217,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 0;
-            decimal expectedCrosswind = 0m;
+            double expectedCrosswind = 0f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -215,11 +231,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 45;
-            decimal expectedCrosswind = 10.6066017177982m;
+            double expectedCrosswind = 10.60f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -228,11 +245,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 90;
-            decimal expectedCrosswind = 15m;
+            double expectedCrosswind = 15f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -241,11 +259,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 135;
-            decimal expectedCrosswind = 10.6066017177982m;
+            double expectedCrosswind = 10.60f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -254,11 +273,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 180;
-            decimal expectedCrosswind = 0m;
+            double expectedCrosswind = 0f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                Math.Round(CalculationUtilities.CrosswindComponent(windSpeed, windDirection))
+                Math.Round(CalculationUtilities.CrosswindComponent(windSpeed, windDirection)),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -267,11 +287,12 @@ namespace Airborn.Tests
         {
             int windSpeed = 15;
             int windDirection = 225;
-            decimal expectedCrosswind = -10.6066017177982m;
+            double expectedCrosswind = -10.60f;
 
             Assert.AreEqual(
                 expectedCrosswind,
-                CalculationUtilities.CrosswindComponent(windSpeed, windDirection)
+                CalculationUtilities.CrosswindComponent(windSpeed, windDirection),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -280,11 +301,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 0;
-            decimal expectedDifference = 0;
+            double expectedDifference = 0;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -293,11 +315,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 45;
-            decimal expectedDifference = 45;
+            double expectedDifference = 45;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -306,11 +329,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 90;
-            decimal expectedDifference = 90;
+            double expectedDifference = 90;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -319,11 +343,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 135;
-            decimal expectedDifference = 135;
+            double expectedDifference = 135;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -332,11 +357,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 180;
-            decimal expectedDifference = -180;
+            double expectedDifference = -180;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -345,11 +371,12 @@ namespace Airborn.Tests
         {
             int runwayHeading = 0;
             int windHeading = 225;
-            decimal expectedDifference = -135;
+            double expectedDifference = -135;
 
             Assert.AreEqual(
                 expectedDifference,
-                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading)
+                CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(runwayHeading, windHeading),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
     }

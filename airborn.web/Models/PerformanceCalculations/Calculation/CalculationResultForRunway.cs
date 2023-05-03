@@ -59,7 +59,7 @@ namespace Airborn.web.Models
         }
 
 
-        public decimal HeadwindComponent
+        public double HeadwindComponent
         {
             get
             {
@@ -70,7 +70,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal CrosswindComponent
+        public double CrosswindComponent
         {
             get
             {
@@ -81,7 +81,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal WindRunwayAngularDifferenceMagnetic
+        public double WindRunwayAngularDifferenceMagnetic
         {
             get
             {

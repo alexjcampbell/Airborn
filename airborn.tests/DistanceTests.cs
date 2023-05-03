@@ -11,20 +11,34 @@ namespace Airborn.Tests
         {
             Distance distance = Distance.FromMeters(1000);
 
-            Assert.AreEqual(1, distance.TotalKilometers);
+            double expectedKm = 1;
+
+            Assert.AreEqual(
+                expectedKm,
+                distance.TotalKilometers,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
         public void Test_FeetPerKilometer_Is3280()
         {
             Distance distance = Distance.FromKilometers(1);
-            Assert.AreEqual(3280.8398950131233595800524934m, distance.TotalFeet);
+
+            double expectedFeet = 3280.83f;
+
+            Assert.AreEqual(
+                expectedFeet,
+                distance.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
         public void Test_FormatToStringAsFt_ReturnsFormattedInFeet()
         {
             Distance distance = Distance.FromFeet(1000);
+
             Assert.AreEqual("1,000 ft", distance.ToString());
         }
 

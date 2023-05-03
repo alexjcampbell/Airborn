@@ -76,7 +76,7 @@ namespace Airborn.Tests
             Assert.AreEqual(
                 expectedGroundRoll_0,
                 (double)bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
-                UtilitiesForTesting.MinimumPrecisisionForDistanceComparison
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
 
         }
@@ -95,7 +95,7 @@ namespace Airborn.Tests
             Assert.AreEqual(
                 expectedDistance,
                 (double)bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft.Value.TotalFeet,
-                UtilitiesForTesting.MinimumPrecisisionForDistanceComparison
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
@@ -112,7 +112,7 @@ namespace Airborn.Tests
             Assert.AreEqual(
                 expectedGroundRoll_0,
                 (double)bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
-                UtilitiesForTesting.MinimumPrecisisionForDistanceComparison
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
 
         }
@@ -131,7 +131,7 @@ namespace Airborn.Tests
             Assert.AreEqual(
                 expectedDistance,
                 (double)bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft.Value.TotalFeet,
-                UtilitiesForTesting.MinimumPrecisisionForDistanceComparison)
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison)
                 ;
 
         }
@@ -140,11 +140,11 @@ namespace Airborn.Tests
         public void Test_BookDistancesSetup()
         {
 
-            decimal temperature = 10;
+            double temperature = 10;
             Distance pressureAltitude = Distance.FromFeet(1000);
             Distance groundRoll = Distance.FromFeet(100);
             Distance distanceToClear50Ft = Distance.FromFeet(120);
-            decimal aircraftWeight = 3000;
+            double aircraftWeight = 3000;
             Scenario scenario = Scenario.Takeoff;
 
             PerformanceDataBase bookDistances = new BookPerformanceData(
@@ -226,8 +226,8 @@ namespace Airborn.Tests
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
             Distance pressureAltitude = Distance.FromFeet(0);
-            decimal temperature = 10;
-            decimal aircraftWeight = 2900;
+            double temperature = 10;
+            double aircraftWeight = 2900;
 
 
             var takeoffBookDistance = bookNumbersList.FindBookDistance(Scenario.Takeoff, pressureAltitude, temperature, aircraftWeight);

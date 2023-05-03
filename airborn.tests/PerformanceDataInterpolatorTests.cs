@@ -26,8 +26,8 @@ namespace Airborn.Tests
         private static PeformanceDataInterpolator GetPerformanceInterpolator(
        Scenario scenario,
        Distance actualPressureAltitude,
-       decimal actualTemperature,
-       decimal actualWeight
+       double actualTemperature,
+       double actualWeight
        )
         {
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
@@ -45,8 +45,8 @@ namespace Airborn.Tests
         private static PeformanceDataInterpolator GetPerformanceInterpolator(
             Scenario scenario,
             Distance actualPressureAltitude,
-            decimal actualTemperature,
-            decimal actualWeight,
+            double actualTemperature,
+            double actualWeight,
             BookPerformanceDataList performanceDataList)
         {
             return new PeformanceDataInterpolator(
@@ -64,8 +64,8 @@ namespace Airborn.Tests
         public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsZeroAndTemperatureEqualsZero_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
-            decimal actualTemperature = 0;
-            decimal actualWeight = 3000;
+            double actualTemperature = 0;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -79,17 +79,29 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
 
-            Assert.AreEqual(300, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(360, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            double expectedGroundRoll = 300;
 
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 360;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
         public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsLowerBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1000);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -103,8 +115,21 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData = interpolator.GetInterpolatedBookDistances(
                 aircraft);
 
-            Assert.AreEqual(1320, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(1584, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            double expectedGroundRoll = 1320;
+
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 1584;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
 
         }
 
@@ -112,8 +137,8 @@ namespace Airborn.Tests
         public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsUpperBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -127,8 +152,21 @@ namespace Airborn.Tests
             InterpolatedPerformanceData interpolatedPerformanceData =
                 interpolator.GetInterpolatedBookDistances(aircraft);
 
-            Assert.AreEqual(2320, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(2784, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            double expectedGroundRoll = 2320;
+
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 2784;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
 
         }
 
@@ -137,8 +175,8 @@ namespace Airborn.Tests
         public void Test_InterpolateByPressureAltitudeOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -171,17 +209,29 @@ namespace Airborn.Tests
                 actualWeight
             );
 
+            double expectedGroundRoll = 1000;
 
-            Assert.AreEqual(1000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(20000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 20000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
         public void Test_InterpolateByPressureAltitudeOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -216,9 +266,21 @@ namespace Airborn.Tests
                 actualWeight
             );
 
+            double expectedGroundRoll = 2000;
 
-            Assert.AreEqual(2000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(3000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 3000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
 
@@ -226,8 +288,8 @@ namespace Airborn.Tests
         public void Test_InterpolateByPressureAltitudeOnlyTopOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -260,17 +322,30 @@ namespace Airborn.Tests
                 actualWeight
             );
 
+            double expectedGroundRoll = 3000;
 
-            Assert.AreEqual(3000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(40000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 40000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
         }
 
         [TestMethod]
         public void Test_InterpolateByTemperatureOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
-            decimal actualTemperature = 10;
-            decimal actualWeight = 3000;
+            double actualTemperature = 10;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -303,19 +378,29 @@ namespace Airborn.Tests
                 actualWeight
             );
 
-            // we're at 20 degrees C, so we should get the 20 degrees C data
-            // which is 200ft ground roll and 240ft to clear 50ft obstacle
-            // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(1000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(2000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+            double expectedGroundRoll = 1000;
+
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 2000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
         public void Test_InterpolateByTemperatureOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
-            decimal actualTemperature = 15;
-            decimal actualWeight = 3000;
+            double actualTemperature = 15;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -348,11 +433,22 @@ namespace Airborn.Tests
                 actualWeight
             );
 
-            // we're at 25 degrees C, so we should get the 25 degrees C data
-            // which is 250ft ground roll and 300ft to clear 50ft obstacle
-            // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(2000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(3000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+
+            double expectedGroundRoll = 2000;
+
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 3000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
 
@@ -360,8 +456,8 @@ namespace Airborn.Tests
         public void Test_InterpolateByTemperatureWhenAtUpperTemperatureRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             PeformanceDataInterpolator interpolator = GetPerformanceInterpolator(
                 Scenario.Takeoff,
@@ -394,11 +490,23 @@ namespace Airborn.Tests
                 actualWeight
             );
 
-            // we're at 25 degrees C, so we should get the 25 degrees C data
-            // which is 250ft ground roll and 300ft to clear 50ft obstacle
-            // the data is interpolated between the 20 degrees C and 30 degrees C data
-            Assert.AreEqual(3000, interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet);
-            Assert.AreEqual(4000, interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet);
+
+            double expectedGroundRoll = 3000;
+
+            Assert.AreEqual(
+                expectedGroundRoll,
+                interpolatedPerformanceData.DistanceGroundRoll.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedDistanceToClear50Ft = 4000;
+
+            Assert.AreEqual(
+                expectedDistanceToClear50Ft,
+                interpolatedPerformanceData.DistanceToClear50Ft.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
         }
 
         [TestMethod]
@@ -406,8 +514,8 @@ namespace Airborn.Tests
         public void Test_InterpolateByPressureAltitudeOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(-1000);
-            decimal actualTemperature = 20;
-            decimal actualWeight = 3000;
+            double actualTemperature = 20;
+            double actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();
 
@@ -432,8 +540,8 @@ namespace Airborn.Tests
         public void Test_InterpolateByTemperature_WhenOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
-            decimal actualTemperature = -20;
-            decimal actualWeight = 3000;
+            double actualTemperature = -20;
+            double actualWeight = 3000;
 
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData(UtilitiesForTesting.Default_AircraftType);
 
@@ -459,8 +567,8 @@ namespace Airborn.Tests
         {
 
             Distance actualPressureAltitude = Distance.FromFeet(2000);
-            decimal actualTemperature = 20;
-            decimal actualAircraftWeight = 2900;
+            double actualTemperature = 20;
+            double actualAircraftWeight = 2900;
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
 

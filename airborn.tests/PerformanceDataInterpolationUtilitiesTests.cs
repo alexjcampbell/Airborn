@@ -12,7 +12,15 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_CalculateInterpolationFactor_AtZero_ReturnsZero()
         {
-            Assert.AreEqual(0, PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(0, 0, 10));
+            // 0 is at the lower bound between 0 and 10, so interpolation factor should be 0
+
+            double expected = 0;
+
+            Assert.AreEqual(
+                expected,
+                PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(0, 0, 10),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -20,7 +28,14 @@ namespace Airborn.Tests
         {
 
             // 10 is at the lower bound between 10 and 20, so interpolation factor should be 0
-            Assert.AreEqual(0, PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(10, 10, 20));
+
+            double expected = 0;
+
+            Assert.AreEqual(
+                expected,
+                PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(10, 10, 20),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -28,7 +43,14 @@ namespace Airborn.Tests
         {
 
             // 15 is halfway between 10 and 20, so interpolation factor should be 0.5
-            Assert.AreEqual(0.5m, PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(15, 10, 20));
+
+            double expected = 0.5f;
+
+            Assert.AreEqual(
+                expected,
+                PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(15, 10, 20),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
 
         }
 
@@ -37,7 +59,14 @@ namespace Airborn.Tests
         {
 
             // 20 is at the upper bound between 10 and 20, so interpolation factor should be 1
-            Assert.AreEqual(1, PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(20, 10, 20));
+
+            double expected = 1;
+
+            Assert.AreEqual(
+                expected,
+                PerformanceDataInterpolationUtilities.CalculateInterpolationFactor(20, 10, 20),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
 
         }
 

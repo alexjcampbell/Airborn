@@ -1,6 +1,6 @@
 using System;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
     public static class PerformanceDataInterpolationUtilities
     {
@@ -10,7 +10,7 @@ namespace Airborn.web.Models
         /// If you give it a value of 5 and the lower and upper bounds are 0 and 10,
         /// it will return 0.5
         /// </summary>
-        public static decimal CalculateInterpolationFactor(decimal value, decimal lowerBound, decimal upperBound)
+        public static double CalculateInterpolationFactor(double value, double lowerBound, double upperBound)
         {
             // if the value is the same as the lower bound, there's no interpolation to be done here, so return 0
             if (value == lowerBound) { return 0; }
@@ -20,7 +20,7 @@ namespace Airborn.web.Models
             if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
             if (value > upperBound) { throw new ArgumentOutOfRangeException(); }
 
-            decimal interpolationFactor = (decimal)(value - lowerBound) / (decimal)(upperBound - lowerBound);
+            double interpolationFactor = (double)(value - lowerBound) / (double)(upperBound - lowerBound);
 
             return interpolationFactor;
         }
@@ -31,7 +31,7 @@ namespace Airborn.web.Models
         /// </summary>
         /// <param name="value">The value to interpolate</param>
         /// <param name="desiredInterval">The interval to use for interpolation</param>
-        public static decimal GetLowerBoundForInterpolation(decimal value, decimal desiredInterval)
+        public static double GetLowerBoundForInterpolation(double value, double desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
@@ -50,13 +50,13 @@ namespace Airborn.web.Models
         /// </summary>
         /// <param name="value">The value to interpolate</param>
         /// <param name="desiredInterval">The interval to use for interpolation</param>
-        public static decimal GetUpperBoundForInterpolation(decimal value, decimal desiredInterval)
+        public static double GetUpperBoundForInterpolation(double value, double desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
 
-            decimal lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
-            decimal upperBound = lowerBound + desiredInterval;
+            double lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
+            double upperBound = lowerBound + desiredInterval;
 
             return upperBound;
         }
@@ -67,13 +67,13 @@ namespace Airborn.web.Models
         /// </summary>
         /// <param name="value">The value to interpolate</param>
         /// <param name="desiredInterval">The interval to use for interpolation</param>
-        public static (decimal, decimal) GetUpperAndLowBoundsForInterpolation(decimal value, decimal desiredInterval)
+        public static (double, double) GetUpperAndLowBoundsForInterpolation(double value, double desiredInterval)
         {
             if (desiredInterval <= 0) { throw new ArgumentOutOfRangeException(); }
             if (value < 0) { throw new ArgumentOutOfRangeException(); }
 
-            decimal lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
-            decimal upperBound = GetUpperBoundForInterpolation(value, desiredInterval);
+            double lowerBound = GetLowerBoundForInterpolation(value, desiredInterval);
+            double upperBound = GetUpperBoundForInterpolation(value, desiredInterval);
 
             return (lowerBound, upperBound);
         }
@@ -85,7 +85,7 @@ namespace Airborn.web.Models
         /// <param name="upperValue">The higher of two values to interpolate beteeen (e.g. landing distance of 440 for a pressure altitude of 1000)</param>
         /// <param name="valueForInterpolation">The value to interpolate by (e.g. actual pressure altitude is 1500)</param>z
         /// <param name="desiredInterval"> The interval at which values is provided in the underlying data (e.g. for pressure altitude, always 1000)</param>
-        public static decimal Interpolate(decimal lowerValue, decimal upperValue, decimal valueForInterpolation, int desiredInterval)
+        public static double Interpolate(double lowerValue, double upperValue, double valueForInterpolation, int desiredInterval)
         {
 
             if (valueForInterpolation < 0)
@@ -106,12 +106,12 @@ namespace Airborn.web.Models
                 throw new ArgumentOutOfRangeException();
             }
 
-            decimal lowerbound = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
-            decimal upperBound = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
+            double lowerbound = GetLowerBoundForInterpolation(valueForInterpolation, desiredInterval);
+            double upperBound = GetUpperBoundForInterpolation(valueForInterpolation, desiredInterval);
 
-            decimal interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerbound, upperBound);
+            double interpolationFactor = CalculateInterpolationFactor(valueForInterpolation, lowerbound, upperBound);
 
-            decimal interpolatedValue =
+            double interpolatedValue =
                 (upperValue - lowerValue)
                 *
                 interpolationFactor
@@ -125,7 +125,7 @@ namespace Airborn.web.Models
         /// Interpolates between two distances based on the weight interpolation factor
         /// i.e. if the weight interpolation factor is 0.5, it will return the average of the two distances
         /// </summary>
-        public static decimal InterpolateDistanceByWeight(decimal weightInterpolationFactor, decimal distance_LowerWeight, decimal distance_HigherWeight)
+        public static double InterpolateDistanceByWeight(double weightInterpolationFactor, double distance_LowerWeight, double distance_HigherWeight)
         {
             if (weightInterpolationFactor < 0) { throw new ArgumentOutOfRangeException(weightInterpolationFactor.ToString()); }
             if (weightInterpolationFactor > 1) { throw new ArgumentOutOfRangeException(weightInterpolationFactor.ToString()); }

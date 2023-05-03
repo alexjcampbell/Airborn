@@ -1,6 +1,6 @@
 using System;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
     /// <summary>
     /// Represents an interpolated groundroll distance and distance to clear a 50' obstacle
@@ -20,8 +20,8 @@ namespace Airborn.web.Models
         public InterpolatedPerformanceData(
             Scenario scenario,
             Distance pressureAltitude,
-            decimal temperature,
-            decimal weight)
+            double temperature,
+            double weight)
             : base(
                 scenario,
                 pressureAltitude,

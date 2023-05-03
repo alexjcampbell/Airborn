@@ -11,36 +11,39 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_InchesToMillibars_29Point92InchesOfMercury_Equals1013Millibars()
         {
-            decimal inchesOfMercury = 29.92m;
-            decimal expectedMillibars = 1013.25m;
+            double inchesOfMercury = 29.92f;
+            double expectedMillibars = 1013.25f;
 
             Assert.AreEqual(
-                Math.Round(expectedMillibars, 2),
-                Math.Round(CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury), 2)
+                expectedMillibars,
+                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
         [TestMethod]
         public void Test_InchesToMillibars_30Point00InchesOfMercury_Equals1015Millibars()
         {
-            decimal inchesOfMercury = 30m;
-            decimal expectedMillibars = 1015.9592245980m;
+            double inchesOfMercury = 30f;
+            double expectedMillibars = 1015.9592245980f;
 
             Assert.AreEqual(
                 expectedMillibars,
-                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury)
+                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
 
         [TestMethod]
         public void Test_InchesToMillibars_30Point92InchesOfMercury_Equals1047Millibars()
         {
-            decimal inchesOfMercury = 30.92m;
-            decimal expectedMillibars = 1047.115307485672m;
+            double inchesOfMercury = 30.92f;
+            double expectedMillibars = 1047.115307485672f;
 
             Assert.AreEqual(
                 expectedMillibars,
-                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury)
+                CalculationUtilities.InchesOfMercuryToMillibars(inchesOfMercury),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
     }

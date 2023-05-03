@@ -25,7 +25,7 @@ namespace Airborn.Tests
                 Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType),
                 _airport,
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
-                (decimal)UtilitiesForTesting.Default_AircraftWeight,
+                (double)UtilitiesForTesting.Default_AircraftWeight,
                 jsonFile
                 );
 
@@ -52,8 +52,21 @@ namespace Airborn.Tests
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
-            Assert.AreEqual(0, result.CrosswindComponent);
-            Assert.AreEqual(10, result.HeadwindComponent);
+            double expectedCrosswindComponent = 0;
+
+            Assert.AreEqual(
+                expectedCrosswindComponent,
+                result.CrosswindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedHeadwindComponent = 10;
+
+            Assert.AreEqual(
+                expectedHeadwindComponent,
+                result.HeadwindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -66,8 +79,22 @@ namespace Airborn.Tests
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
-            Assert.AreEqual(-10, result.CrosswindComponent);
-            Assert.AreEqual(0, (int)result.HeadwindComponent);
+            double expectedCrosswindComponent = -10;
+
+            Assert.AreEqual(
+                expectedCrosswindComponent,
+                result.CrosswindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+
+            double expectedHeadwindComponent = 0;
+
+            Assert.AreEqual(
+                expectedHeadwindComponent,
+                result.HeadwindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -82,8 +109,21 @@ namespace Airborn.Tests
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
-            Assert.AreEqual(-6.42787609686539m, result.CrosswindComponent);
-            Assert.AreEqual(7.66044443118978m, result.HeadwindComponent);
+            double expectedCrosswindComponent = -6.42f;
+
+            Assert.AreEqual(
+                expectedCrosswindComponent,
+                result.CrosswindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+
+            double expectedHeadwindComponent = 7.66f;
+
+            Assert.AreEqual(
+                expectedHeadwindComponent,
+                result.HeadwindComponent,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -95,11 +135,11 @@ namespace Airborn.Tests
             calculator.Airport.FieldElevation = 1500;
             calculator.AltimeterSettingInMb = 1013;
 
-            double expectedPressureAltitude = 1506.825f;
+            double expectedPressureAltitude = 1506.82f;
 
             Assert.AreEqual(
                 expectedPressureAltitude,
-                (double)calculator.PressureAltitude.TotalFeet,
+                calculator.PressureAltitude.TotalFeet,
                 0.01f);
         }
 
@@ -108,6 +148,7 @@ namespace Airborn.Tests
         {
             Calculation calculator = GetCalculator(0, 10);
             calculator.TemperatureCelcius = -5;
+
             Assert.IsTrue(calculator.TemperatureCelciusAlwaysPositiveOrZero >= 0);
         }
 
@@ -117,6 +158,7 @@ namespace Airborn.Tests
             Calculation calculator = GetCalculator(0, 10);
             calculator.AltimeterSettingInMb = 1040;
             calculator.Airport.FieldElevation = 0;
+
             Assert.IsTrue(calculator.PressureAltitudeAlwaysPositiveOrZero.TotalFeet >= 0);
         }
 

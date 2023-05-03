@@ -14,9 +14,9 @@ namespace Airborn.web.Models
 
         }
 
-        public decimal AltimeterSetting { get; }
+        public double AltimeterSetting { get; }
 
-        public string GetErrorMessage(decimal minimum, decimal maximum, AltimeterSettingType type) =>
+        public string GetErrorMessage(double minimum, double maximum, AltimeterSettingType type) =>
             $"{AltimeterSetting} is not a valid altimeter setting. It must be between {minimum} and {maximum} for {type}.";
 
         protected override ValidationResult IsValid(
@@ -27,13 +27,13 @@ namespace Airborn.web.Models
             {
                 return new ValidationResult("Altimeter setting is required.");
             }
-            var altimeterSetting = ((decimal)value!);
+            var altimeterSetting = ((double)value!);
 
-            decimal minimumHG = 28.0m;
-            decimal maximumHG = 31.0m;
+            double minimumHG = 28.0f;
+            double maximumHG = 31.0f;
 
-            decimal minimumMB = 950m;
-            decimal maximumMB = 1050m;
+            double minimumMB = 950f;
+            double maximumMB = 1050f;
 
             if (pageModel.AltimeterSettingType.Value == AltimeterSettingType.HG &&
                 (altimeterSetting < minimumHG || altimeterSetting > maximumHG))

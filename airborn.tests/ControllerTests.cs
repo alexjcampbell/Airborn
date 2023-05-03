@@ -71,9 +71,13 @@ namespace Airborn.Tests
             var result = _controller.Calculate(_model);
 
             _model.WindDirectionMagnetic = 220;
-            int expectedCrosswind = 0;
+            double expectedCrosswind = 0;
 
-            Assert.AreEqual(_model.Results[0].CrosswindComponent, expectedCrosswind);
+            Assert.AreEqual(
+                _model.Results[0].CrosswindComponent.Value,
+                expectedCrosswind,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -87,7 +91,11 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedCrosswind, Math.Round(_model.Results[0].CrosswindComponent.Value));
+            Assert.AreEqual(
+                expectedCrosswind,
+                _model.Results[0].CrosswindComponent.Value,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -97,11 +105,15 @@ namespace Airborn.Tests
             InitializeModel();
 
             _model.WindDirectionMagnetic = 90;
-            decimal expectedCrosswind = -7.6604444311898m;
+            double expectedCrosswind = -7.66f;
 
             var result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedCrosswind, _model.Results[0].CrosswindComponent);
+            Assert.AreEqual(
+                expectedCrosswind,
+                _model.Results[0].CrosswindComponent.Value,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -111,11 +123,15 @@ namespace Airborn.Tests
             InitializeModel();
 
             _model.WindDirectionMagnetic = 270;
-            decimal expectedCrosswind = 7.66044443118978m;
+            double expectedCrosswind = 7.66f;
 
             var result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedCrosswind, _model.Results[0].CrosswindComponent);
+            Assert.AreEqual(
+                expectedCrosswind,
+                _model.Results[0].CrosswindComponent.Value,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -124,7 +140,7 @@ namespace Airborn.Tests
             InitializeController();
             InitializeModel();
 
-            _model.AltimeterSetting = 1013.25m;
+            _model.AltimeterSetting = 1013.25f;
             _model.AltimeterSettingType = AltimeterSettingType.MB;
 
             var result = _controller.Calculate(_model);
@@ -133,7 +149,12 @@ namespace Airborn.Tests
             // so field elevation should equal pressure altitude
             // but due to rounding errors, pressure altitude doesn't quite equal zero ft (sea level)
             double expectedPressureAltitude = 6.825f;
-            Assert.AreEqual(expectedPressureAltitude, (double)_model.PressureAltitude.Value.TotalFeet, 0.1f);
+
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                _model.PressureAltitude.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -142,7 +163,7 @@ namespace Airborn.Tests
             InitializeController();
             InitializeModel();
 
-            _model.AltimeterSetting = 29.92m;
+            _model.AltimeterSetting = 29.92f;
             _model.AltimeterSettingType = AltimeterSettingType.HG;
 
             var result = _controller.Calculate(_model);
@@ -154,8 +175,9 @@ namespace Airborn.Tests
             // quite equal zero ft (sea level) as you'd expect
             Assert.AreEqual(
                 expectedPressureAltitude,
-                (double)_model.PressureAltitude.Value.TotalFeet,
-                0.1f);
+                _model.PressureAltitude.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -164,15 +186,19 @@ namespace Airborn.Tests
             InitializeController();
             InitializeModel();
 
-            _model.AltimeterSetting = 29.82m;
+            _model.AltimeterSetting = 29.82f;
             _model.AltimeterSettingType = AltimeterSettingType.HG;
 
             var result = _controller.Calculate(_model);
 
             // lower pressure means higher altitude, at a rate of ~90 feet per inch of mercury
-            decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation + 92.4522894637524m;
+            double expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation + 92.4522894637524f;
 
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude.Value.TotalFeet);
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                _model.PressureAltitude.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -181,15 +207,19 @@ namespace Airborn.Tests
             InitializeController();
             InitializeModel();
 
-            _model.AltimeterSetting = 30.02m;
+            _model.AltimeterSetting = 30.02f;
             _model.AltimeterSettingType = AltimeterSettingType.HG;
 
             var result = _controller.Calculate(_model);
 
             // higher pressure means lower altitude, at a rate of ~90 feet per inch of mercury
-            decimal expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation - 92.4522894130836m;
+            double expectedPressureAltitude = UtilitiesForTesting.Default_FieldElevation - 92.4522894130836f;
 
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitude.Value.TotalFeet);
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                _model.PressureAltitude.Value.TotalFeet,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -227,13 +257,17 @@ namespace Airborn.Tests
             _model.AltimeterSetting = 1000;
             _model.AltimeterSettingType = AltimeterSettingType.MB;
 
-            decimal expectedPressureAltitude = 361.725m;
+            double expectedPressureAltitude = 361.72f;
 
             var result = _controller.Calculate(_model);
 
             Assert.IsTrue(_model.PressureAltitude.Value.TotalFeet > 0);
 
-            Assert.AreEqual(expectedPressureAltitude, _model.PressureAltitudeAlwaysPositiveOrZero);
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                _model.PressureAltitudeAlwaysPositiveOrZero.Value,
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
         }
 
         [TestMethod]
@@ -363,14 +397,14 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            decimal? takeoffGroundRollDistanceLowerWeight = _model.Results[0].Takeoff_GroundRoll;
+            double? takeoffGroundRollDistanceLowerWeight = _model.Results[0].Takeoff_GroundRoll;
 
             InitializeModel();
 
             _model.AircraftWeight = 3400;
 
             result = _controller.Calculate(_model);
-            decimal? takeoffGroundRollDistanceHigherWeight = _model.Results[0].Takeoff_GroundRoll;
+            double? takeoffGroundRollDistanceHigherWeight = _model.Results[0].Takeoff_GroundRoll;
 
             Assert.IsTrue(takeoffGroundRollDistanceHigherWeight > takeoffGroundRollDistanceLowerWeight);
         }
@@ -389,7 +423,7 @@ namespace Airborn.Tests
             var result = _controller.Calculate(_model);
 
             // Get the takeoff ground roll distance at the lower weight
-            decimal? landingGroundRollDistanceLowerWeight = _model.Results[0].Landing_GroundRoll;
+            double? landingGroundRollDistanceLowerWeight = _model.Results[0].Landing_GroundRoll;
 
             // Reinitialize the model
             InitializeModel();
@@ -401,7 +435,7 @@ namespace Airborn.Tests
             result = _controller.Calculate(_model);
 
             // Get the takeoff ground roll distance at the higher weight
-            decimal? landingGroundRollDistanceHigherWeight = _model.Results[0].Landing_GroundRoll;
+            double? landingGroundRollDistanceHigherWeight = _model.Results[0].Landing_GroundRoll;
 
             // Assert that the takeoff ground roll distance at the higher weight is equal to the takeoff ground roll distance at the lower weight
             Assert.IsTrue(landingGroundRollDistanceHigherWeight == landingGroundRollDistanceLowerWeight);

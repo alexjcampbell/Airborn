@@ -126,7 +126,7 @@ namespace Airborn.web.Models
         [Required(ErrorMessage = "Altimeter setting is required.")]
         [Display(Name = "Altimeter Setting")]
         [AltimeterSetting]
-        public decimal? AltimeterSetting
+        public double? AltimeterSetting
         {
             get; set;
         }
@@ -177,7 +177,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public decimal? PressureAltitudeAlwaysPositiveOrZero
+        public double? PressureAltitudeAlwaysPositiveOrZero
         {
             get
             {

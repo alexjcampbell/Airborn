@@ -1,6 +1,6 @@
 using System;
 
-namespace Airborn.web.Models
+namespace Airborn.web.Models.PerformanceData
 {
     /// <summary>
     /// Represents a groundroll distance and a distance to clear a 50' obstacle
@@ -23,8 +23,8 @@ namespace Airborn.web.Models
         public BookPerformanceData(
             Scenario scenario,
             Distance pressureAltitude,
-            decimal temperature,
-            decimal aircraftWeight,
+            double temperature,
+            double aircraftWeight,
             Distance groundRoll,
             Distance distanceToClear50Ft)
             :

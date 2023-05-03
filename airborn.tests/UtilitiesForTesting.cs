@@ -30,18 +30,18 @@ namespace Airborn.web.Models
         public const AircraftType Default_AircraftType = AircraftType.SR22_G2;
         public const AltimeterSettingType Default_AltimeterSettingType = AltimeterSettingType.MB;
 
-        public const decimal Default_QNH = 1013.25m;
+        public const double Default_QNH = 1013.25f;
 
         public const int Default_Temperature = 15;
         public const TemperatureType Default_TemperatureType = TemperatureType.C;
         public const int Default_WindDirectionMagnetic = 220;
         public const int Default_WindStrength = 10;
         public const int Default_TemperatureCelcius = 12;
-        public const decimal Default_AircraftWeight = 3000;
+        public const double Default_AircraftWeight = 3000;
 
-        public const decimal Default_RunwayElevation = 0;
+        public const double Default_RunwayElevation = 0;
 
-        public const double MinimumPrecisisionForDistanceComparison = 0.01d;
+        public const double MinimumPrecisisionForDoubleComparison = 0.01d;
 
         public static AirportDbContext GetMockAirportDbContextForTesting()
         {

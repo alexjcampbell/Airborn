@@ -14,9 +14,9 @@ namespace Airborn.web.Models
 
         }
 
-        public decimal AircraftWeight { get; }
+        public double AircraftWeight { get; }
 
-        public string GetErrorMessage(decimal minimum, decimal maximum, string type) =>
+        public string GetErrorMessage(double minimum, double maximum, string type) =>
             $"{AircraftWeight} lbs is not a valid weight. It must be between {minimum} lbs and {maximum} lbs for {type}.";
 
         protected override ValidationResult IsValid(
@@ -31,8 +31,8 @@ namespace Airborn.web.Models
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(pageModel.AircraftType);
 
-            decimal minimum = aircraft.GetLowerWeight();
-            decimal maximum = aircraft.GetHigherWeight();
+            double minimum = aircraft.GetLowerWeight();
+            double maximum = aircraft.GetHigherWeight();
 
             if ((aircraftWeight < minimum || aircraftWeight > maximum))
             {

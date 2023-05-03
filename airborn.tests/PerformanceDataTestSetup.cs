@@ -32,8 +32,8 @@ namespace Airborn.Tests
                 {
                     for (int weight = minimumAircraftWeight; weight <= maximumAircraftWeight; weight += AircraftWeightInterval)
                     {
-                        Distance groundRoll = Distance.FromFeet(pressure + temperature + (0.1m * weight));
-                        Distance distanceToClear50Ft = Distance.FromFeet(groundRoll.TotalFeet * 1.2m);
+                        Distance groundRoll = Distance.FromFeet(pressure + temperature + (0.1f * weight));
+                        Distance distanceToClear50Ft = Distance.FromFeet(groundRoll.TotalFeet * 1.2f);
 
                         BookPerformanceData takeoffData = new BookPerformanceData(
                                 Scenario.Takeoff,
@@ -51,8 +51,8 @@ namespace Airborn.Tests
                                 Distance.FromFeet(pressure),
                                 temperature,
                                 weight,
-                                Distance.FromFeet(groundRoll.TotalFeet * 1.1m),
-                                Distance.FromFeet(distanceToClear50Ft.TotalFeet * 1.1m)
+                                Distance.FromFeet(groundRoll.TotalFeet * 1.1f),
+                                Distance.FromFeet(distanceToClear50Ft.TotalFeet * 1.1f)
                                 );
 
                         sampleData.Add(landingData);
