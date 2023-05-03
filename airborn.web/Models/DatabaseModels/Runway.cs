@@ -134,6 +134,22 @@ namespace Airborn.web.Models
         }
 
         [NotMapped]
+        public string DisplacedThreshold_Formatted
+        {
+            get
+            {
+                if (DisplacedThresholdConverted != null)
+                {
+                    return DisplacedThresholdConverted?.ToString("#,##0") + " ft";
+                }
+                else
+                {
+                    return "Unknown";
+                }
+            }
+        }
+
+        [NotMapped]
         public string RunwayLengthFriendly
         {
             get
@@ -178,6 +194,16 @@ namespace Airborn.web.Models
                 {
                     return new Distance(0);
                 }
+            }
+        }
+
+        [NotMapped]
+        public string LandingAvailableLength_Formatted
+        {
+            get
+            {
+
+                return LandingAvailableLength.TotalFeet.ToString("#,##0") + " ft x" + RunwayWidth + " ft";
             }
         }
 

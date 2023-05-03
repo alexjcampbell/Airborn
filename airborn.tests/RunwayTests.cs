@@ -126,10 +126,33 @@ namespace Airborn.Tests
         {
             Runway runway = new Runway
             {
+                RunwayLength = "9000",
+                DisplacedThresholdFt = "1000"
+            };
+            Assert.AreEqual(9000, runway.LandingAvailableLength.TotalFeet);
+        }
+
+        [TestMethod]
+        public void Test_LandingAvailableLength_WhenBothRunwayLengthAndDisplacedThresholdAreAvailable_ReturnsCorrectLength_()
+        {
+            Runway runway = new Runway
+            {
                 RunwayLength = "10000",
                 DisplacedThresholdFt = "1000"
             };
             Assert.AreEqual(9000, runway.LandingAvailableLength.TotalFeet);
         }
+
+        [TestMethod]
+        public void Test_WhenOnlyRunwayLengthAvailable_LandingLengthAvailableEqualsRunwayLength()
+        {
+            Runway runway = new Runway
+            {
+                RunwayLength = "10000",
+                DisplacedThresholdFt = ""
+            };
+            Assert.AreEqual(1000, runway.LandingAvailableLength.TotalFeet);
+        }
+
     }
 }
