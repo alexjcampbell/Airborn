@@ -62,7 +62,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string CrosswindComponentText
+        private string CrosswindComponent_RightOrLeft
         {
             get
             {
@@ -78,7 +78,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string CrosswindComponentOutput
+        public string CrosswindComponent_Formatted
         {
             get
             {
@@ -90,7 +90,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string HeadwindComponentText
+        private string HeadwindComponent_TailwindWhenNegative
         {
             get
             {
@@ -133,7 +133,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string HeadwindComponentOutput
+        public string HeadwindComponent_Formatted
         {
             get
             {
@@ -145,11 +145,11 @@ namespace Airborn.web.Models
             }
         }
 
-        public string WindFormatted
+        public string Wind_Formatted
         {
             get
             {
-                return HeadwindComponentOutput + HeadwindComponentText + ", " + CrosswindComponentOutput + CrosswindComponentText;
+                return HeadwindComponent_Formatted + HeadwindComponent_TailwindWhenNegative + ", " + CrosswindComponent_Formatted + CrosswindComponent_RightOrLeft;
 
             }
         }
@@ -323,7 +323,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public string Slope_Friendly
+        public string Slope_Formatted
         {
             get
             {
