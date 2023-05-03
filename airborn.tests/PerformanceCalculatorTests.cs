@@ -38,7 +38,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_CrosswindComponent_NoCrosswind_IsZero()
+        public void Test_PerformanceCalculator_CrosswindComponent_NoCrosswind_IsZero()
         {
 
             int windDirection = 160;
@@ -57,7 +57,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_CrosswindComponent_DirectCrosswind_EqualsTotalWind()
+        public void Test_PerformanceCalculator_CrosswindComponent_DirectCrosswind_EqualsTotalWind()
         {
             Wind wind = Wind.FromMagnetic(90, 10);
             Runway runway = Runway.FromMagnetic(180);
@@ -71,7 +71,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_CrosswindComponent_40DegreeCrosswind_IsCorrect()
+        public void Test_PerformanceCalculator_CrosswindComponent_40DegreeCrosswind_IsCorrect()
         {
 
             Wind wind = Wind.FromMagnetic(0, 10);
@@ -87,7 +87,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_PressureAltitudeAt1500ElevationISAPressure_Is1500()
+        public void Test_PerformanceCalculator_PressureAltitudeAt1500ElevationISAPressure_Is1500()
         {
             PerformanceCalculator calculator = GetCalculator(0, 10);
 
@@ -104,7 +104,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TemperatureCelciusAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
+        public void Test_PerformanceCalculator_TemperatureCelciusAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
         {
             PerformanceCalculator calculator = GetCalculator(0, 10);
             calculator.TemperatureCelcius = -5;
@@ -112,7 +112,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void PressureAltitudeAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
+        public void Test_PerformanceCalculator_PressureAltitudeAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
         {
             PerformanceCalculator calculator = GetCalculator(0, 10);
             calculator.AltimeterSettingInMb = 1040;
@@ -121,7 +121,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Calculate_PopulatesResults()
+        public void Test_PerformanceCalculator_PopulatesResults()
         {
             var airportDbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
             JsonFile jsonFile = UtilitiesForTesting.GetMockJsonPerformanceFilesForTesting()[0];
@@ -138,7 +138,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Calculate_WhenTemperatureOrPressureAltitudeIsNegative_ShouldPopulateNotes()
+        public void Test_PerformanceCalculator_WhenTemperatureOrPressureAltitudeIsNegative_ShouldPopulateNotes()
         {
             var airportDbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
             JsonFile jsonFile = UtilitiesForTesting.GetMockJsonPerformanceFilesForTesting()[0];
@@ -160,6 +160,8 @@ namespace Airborn.Tests
             StringAssert.Contains(calculator.Notes[1], "Temperature is negative");
 
         }
+
+
 
 
 

@@ -28,7 +28,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileHasMoreThanOneResult()
+        public void Test_JsonFileHasMoreThanOneResult()
         {
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
 
@@ -39,7 +39,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileHasMoreThanOneTakeoffResult()
+        public void Test_JsonFileHasMoreThanOneTakeoffResult()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -51,7 +51,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileHasMoreThanOneLandingResult()
+        public void Test_JsonFileHasMoreThanOneLandingResult()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -63,7 +63,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileTakeoffProfilesGroundRollIsWhatWeExpect()
+        public void Test_JsonFileTakeoffProfilesGroundRollIsWhatWeExpect()
         {
             Setup();
 
@@ -82,7 +82,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileTakeoffProfiles50FtIsWhatWeExpect()
+        public void Test_JsonFileTakeoffProfiles50FtIsWhatWeExpect()
         {
             Setup();
 
@@ -100,7 +100,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileLandingProfilesGroundRollIsWhatWeExpect()
+        public void Test_JsonFileLandingProfilesGroundRollIsWhatWeExpect()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -118,7 +118,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestJsonFileLandingProfiles50FtIsWhatWeExpect()
+        public void Test_JsonFileLandingProfiles50FtIsWhatWeExpect()
         {
             Setup();
 
@@ -137,7 +137,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestBookDistancesSetup()
+        public void Test_BookDistancesSetup()
         {
 
             decimal temperature = 10;
@@ -164,7 +164,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestGetTakeoffBookDistancesOnlyReturnsTakeoffResults()
+        public void Test_GetTakeoffBookDistancesOnlyReturnsTakeoffResults()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -182,7 +182,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestGetLandingBookDistancesOnlyReturnsLandingResults()
+        public void Test_GetLandingBookDistancesOnlyReturnsLandingResults()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -200,7 +200,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestGetBookDistancesReturnsCorrectNumberOfResults()
+        public void Test_GetBookDistancesReturnsCorrectNumberOfResults()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);
@@ -215,7 +215,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFindBookDistancesReturnsCorrectResult()
+        public void Test_FindBookDistancesReturnsCorrectResult()
         {
 
             var bookNumbersList = new BookPerformanceDataList(_aircraftLowerWeight, _aircraftHigherWeight);

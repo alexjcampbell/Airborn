@@ -60,7 +60,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsZeroAndTemperatureEqualsZero_ReturnsCorrectResults()
+        public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsZeroAndTemperatureEqualsZero_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
             decimal actualTemperature = 0;
@@ -84,7 +84,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsLowerBound_ReturnsCorrectResults()
+        public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsLowerBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1000);
             decimal actualTemperature = 20;
@@ -108,7 +108,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolatePerformanceDataActualPressureAltitudeEqualsUpperBound_ReturnsCorrectResults()
+        public void Test_InterpolatePerformanceDataActualPressureAltitudeEqualsUpperBound_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 20;
@@ -133,7 +133,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyBottomOfRange_ReturnsCorrectResults()
+        public void Test_InterpolateByPressureAltitudeOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(0);
             decimal actualTemperature = 20;
@@ -176,7 +176,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyMidRange_ReturnsCorrectResults()
+        public void Test_InterpolateByPressureAltitudeOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 20;
@@ -222,7 +222,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolateByPressureAltitudeOnlyTopOfRange_ReturnsCorrectResults()
+        public void Test_InterpolateByPressureAltitudeOnlyTopOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 20;
@@ -265,7 +265,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByTemperatureOnlyBottomOfRange_ReturnsCorrectResults()
+        public void Test_InterpolateByTemperatureOnlyBottomOfRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = 10;
@@ -310,7 +310,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInterpolateByTemperatureOnlyMidRange_ReturnsCorrectResults()
+        public void Test_InterpolateByTemperatureOnlyMidRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 15;
@@ -356,7 +356,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestInterpolateByTemperatureWhenAtUpperTemperatureRange_ReturnsCorrectResults()
+        public void Test_InterpolateByTemperatureWhenAtUpperTemperatureRange_ReturnsCorrectResults()
         {
             Distance actualPressureAltitude = Distance.FromFeet(1500);
             decimal actualTemperature = 20;
@@ -402,7 +402,7 @@ namespace Airborn.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestInterpolateByPressureAltitudeOutOfRange_ThrowsArgumentOutOfRangeException()
+        public void Test_InterpolateByPressureAltitudeOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(-1000);
             decimal actualTemperature = 20;
@@ -428,7 +428,7 @@ namespace Airborn.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestInterpolateByTemperature_WhenOutOfRange_ThrowsArgumentOutOfRangeException()
+        public void Test_InterpolateByTemperature_WhenOutOfRange_ThrowsArgumentOutOfRangeException()
         {
             Distance actualPressureAltitude = Distance.FromFeet(2000);
             decimal actualTemperature = -20;
@@ -454,7 +454,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestWhenWeightIncreases_TakeoffDistancesAreHigher()
+        public void Test_WhenWeightIncreases_TakeoffDistancesAreHigher()
         {
 
             Distance actualPressureAltitude = Distance.FromFeet(2000);

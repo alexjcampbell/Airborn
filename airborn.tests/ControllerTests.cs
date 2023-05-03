@@ -77,7 +77,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestDirectTailwind_HasNoCrosswindComponent()
+        public void Test_DirectTailwind_HasNoCrosswindComponent()
         {
             InitializeController();
             InitializeModel();
@@ -91,7 +91,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCrosswindComponent_IsCorrect()
+        public void Test_CrosswindComponent_IsCorrect()
         {
             InitializeController();
             InitializeModel();
@@ -105,7 +105,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCrosswindComponent_IsCorrectForOppositeWind()
+        public void Test_CrosswindComponent_IsCorrectForOppositeWind()
         {
             InitializeController();
             InitializeModel();
@@ -119,7 +119,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitude_EqualsFieldAltitudeWhenStandardPressureMb()
+        public void Test_PressureAltitude_EqualsFieldAltitudeWhenStandardPressureMb()
         {
             InitializeController();
             InitializeModel();
@@ -137,7 +137,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitude_EqualsFieldAltitudeWhenStandardPressureHg()
+        public void Test_PressureAltitude_EqualsFieldAltitudeWhenStandardPressureHg()
         {
             InitializeController();
             InitializeModel();
@@ -159,7 +159,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitude_IsCorrectWhenAltimeterSettingIsLowerThanStandard()
+        public void Test_PressureAltitude_IsCorrectWhenAltimeterSettingIsLowerThanStandard()
         {
             InitializeController();
             InitializeModel();
@@ -176,7 +176,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitude_IsCorrectWhenAltimeterSettingIsHigherThanStandard()
+        public void Test_PressureAltitude_IsCorrectWhenAltimeterSettingIsHigherThanStandard()
         {
             InitializeController();
             InitializeModel();
@@ -193,7 +193,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestReturnResults_EvenWhenPressureAltitudeIsNegative()
+        public void Test_ReturnResults_EvenWhenPressureAltitudeIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -219,7 +219,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestPressureAltitude_ShouldOnlyOverrideToZeroWhenPressureAltitudeIsNegative()
+        public void Test_PressureAltitude_ShouldOnlyOverrideToZeroWhenPressureAltitudeIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -237,7 +237,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestReturnResults_EvenWhenTemperatureIsNegative()
+        public void Test_ReturnResults_EvenWhenTemperatureIsNegative()
         {
             InitializeController();
             InitializeModel();
@@ -259,7 +259,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostHeadwind_AreFirst()
+        public void Test_RunwaysWithMostHeadwind_AreFirst()
         {
             InitializeController();
             InitializeModel();
@@ -297,7 +297,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostTailwind_AreLast()
+        public void Test_RunwaysWithMostTailwind_AreLast()
         {
             InitializeController();
             InitializeModel();
@@ -314,7 +314,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunwaysWithMostCrosswind_AreInMiddle()
+        public void Test_RunwaysWithMostCrosswind_AreInMiddle()
         {
             InitializeController();
             InitializeModel();
@@ -332,7 +332,7 @@ namespace Airborn.Tests
 
 
         [TestMethod]
-        public void TestIsBestWindTrueWhenRunway_IsMostAlignedWithWind()
+        public void Test_IsBestWindTrueWhenRunway_IsMostAlignedWithWind()
         {
             InitializeController();
             InitializeModel();
@@ -343,7 +343,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestIsBestWindFalseWhenRunway_IsNotMostAlignedWithWind()
+        public void Test_IsBestWindFalseWhenRunway_IsNotMostAlignedWithWind()
         {
             InitializeController();
             InitializeModel();
@@ -354,7 +354,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTakeoffGroundRollDistance_IsGreaterWhenAircraftWeightIncreases()
+        public void Test_TakeoffGroundRollDistance_IsGreaterWhenAircraftWeightIncreases()
         {
             InitializeController();
             InitializeModel();
@@ -376,7 +376,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestLandingGroundRollDistance_IsSameWhenAircraftWeightChanges()
+        public void Test_LandingGroundRollDistance_IsSameWhenAircraftWeightChanges()
         {
             // Initialize the controller and model
             InitializeController();

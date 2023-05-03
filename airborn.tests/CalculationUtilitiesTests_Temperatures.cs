@@ -9,7 +9,7 @@ namespace Airborn.Tests
     {
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_ZeroDegreesFahrenheit_EqualsMinus17Point()
+        public void Test_FahrenheitToCelcius_ZeroDegreesFahrenheit_EqualsMinus17Point()
         {
             int numberOfDegreesFahrenheit = 0;
             decimal expectedDegreesCelcius = -17.777777777777777777777777778m;
@@ -21,7 +21,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_32DegreesFahrenheit_EqualsZeroDegreesCelcius()
+        public void Test_FahrenheitToCelcius_32DegreesFahrenheit_EqualsZeroDegreesCelcius()
         {
             int numberOfDegreesFahrenheit = 32;
             decimal expectedDegreesCelcius = 0m;
@@ -33,7 +33,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_50DegreesFahrenheit_Equals10DegreesCelcius()
+        public void Test_FahrenheitToCelcius_50DegreesFahrenheit_Equals10DegreesCelcius()
         {
             int numberOfDegreesFahrenheit = 50;
             decimal expectedDegreesCelcius = 10m;
@@ -45,7 +45,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestFahrenheitToCelcius_100DegreesFahrenheit_Equals37ishDegreesCelcius()
+        public void Test_FahrenheitToCelcius_100DegreesFahrenheit_Equals37ishDegreesCelcius()
         {
             int numberOfDegreesFahrenheit = 100;
             decimal expectedDegreesCelcius = 37.777777777777777777777777778m;
@@ -56,7 +56,7 @@ namespace Airborn.Tests
                 );
         }
 
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_0ft_Equals15C()
+        public void Test_CalculateISATemperatureCelciusForPressureAltitude_0ft_Equals15C()
         {
             int pressureAltitude = 0;
             decimal expectedTemperature = 15m;
@@ -68,7 +68,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_1000ft_Equals13C()
+        public void Test_CalculateISATemperatureCelciusForPressureAltitude_1000ft_Equals13C()
         {
             int pressureAltitude = 1000;
             decimal expectedTemperature = 13;
@@ -80,7 +80,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestCalculateISATemperatureCelciusForPressureAltitude_10000ft_Equals_Minus1C()
+        public void Test_CalculateISATemperatureCelciusForPressureAltitude_10000ft_Equals_Minus1C()
         {
             // lapse rate is 2 degrees per 1000ft = 20 degrees per 10000ft
             // ISA temperature at sea level is 15 degrees celcius
@@ -95,7 +95,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestDensityAltitudeAtSeaLevel_AtISAMinus2Degrees_IsCorrect()
+        public void Test_DensityAltitudeAtSeaLevel_AtISAMinus2Degrees_IsCorrect()
         {
             decimal temperature = 13;
             decimal expectedDensityAltitude = -240;

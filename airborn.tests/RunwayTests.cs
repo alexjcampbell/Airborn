@@ -9,7 +9,7 @@ namespace Airborn.Tests
     {
 
         [TestMethod]
-        public void TestRunwayAtSedonaIs1point77()
+        public void Test_RunwayAtSedona_Is1point77()
         {
             double elevation1 = 4736;
             double elevation2 = 4827;
@@ -21,7 +21,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestRunway21IsMinus1point77()
+        public void Test_Runway21_IsMinus1point77()
         {
             double elevation1 = 4827;
             double elevation2 = 4736;
@@ -33,7 +33,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestSameElevationHasNoSlope()
+        public void Test_SameElevation_HasNoSlope()
         {
             double elevation1 = 5000;
             double elevation2 = 5000;
@@ -46,7 +46,7 @@ namespace Airborn.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void TestZeroLengthThrowsArgumentException()
+        public void Test_CalculateSlopeWithZeroRunwayLength_ThrowsArgumentException()
         {
             double elevation1 = 0;
             double elevation2 = 100;
@@ -57,7 +57,7 @@ namespace Airborn.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void TestNegativeLengthThrowsArgumentExpection()
+        public void Test_CalculateSlopeWithNegativeLengthThrowsArgumentExpection()
         {
             double elevation1 = 0;
             double elevation2 = 100;
@@ -67,7 +67,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void GetOppositeRunway_ReturnsCorrectOppositeRunways()
+        public void Test_GetOppositeRunway_ReturnsCorrectOppositeRunways()
         {
             Assert.AreEqual("18R", Runway.GetOppositeRunway("36L"));
             Assert.AreEqual("9L", Runway.GetOppositeRunway("27R"));
@@ -75,21 +75,21 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10R()
+        public void Test_RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10R()
         {
             Runway runway = new Runway("10R");
             Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
         }
 
         [TestMethod]
-        public void RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10()
+        public void Test_RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10()
         {
             Runway runway = new Runway("10");
             Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
         }
 
         [TestMethod]
-        public void RunwayLengthFriendly_ReturnsCorrectRunwayLengthAndWidthInformation()
+        public void Test_RunwayLengthFriendly_ReturnsCorrectRunwayLengthAndWidthInformation()
         {
             Runway runway = new Runway
             {
@@ -100,7 +100,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void RunwayLengthFriendly_ReturnsUnknown_WhenRunwayLengthIsNotAvailable()
+        public void Test_RunwayLengthFriendly_ReturnsUnknown_WhenRunwayLengthIsNotAvailable()
         {
             Runway runway = new Runway
             {
@@ -111,7 +111,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TakeAvailableLength_DoesNotIncludeDisplacedThreshold()
+        public void Test_TakeoffAvailableLength_DoesNotIncludeDisplacedThreshold()
         {
             Runway runway = new Runway
             {
@@ -122,7 +122,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void LandingAvailableLength_ReturnsCorrectLength_WhenOnlyRunwayLengthIsAvailable()
+        public void Test_LandingAvailableLength_ReturnsCorrectLength_WhenOnlyRunwayLengthIsAvailable()
         {
             Runway runway = new Runway
             {

@@ -9,7 +9,7 @@ namespace Airborn.Tests
     {
 
         [TestMethod]
-        public void TestInchesToMillibars_29Point92InchesOfMercury_Equals1013Millibars()
+        public void Test_InchesToMillibars_29Point92InchesOfMercury_Equals1013Millibars()
         {
             decimal inchesOfMercury = 29.92m;
             decimal expectedMillibars = 1013.25m;
@@ -21,7 +21,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInchesToMillibars_30Point00InchesOfMercury_Equals1015Millibars()
+        public void Test_InchesToMillibars_30Point00InchesOfMercury_Equals1015Millibars()
         {
             decimal inchesOfMercury = 30m;
             decimal expectedMillibars = 1015.9592245980m;
@@ -33,7 +33,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestInchesToMillibars_30Point92InchesOfMercury_Equals1047Millibars()
+        public void Test_InchesToMillibars_30Point92InchesOfMercury_Equals1047Millibars()
         {
             decimal inchesOfMercury = 30.92m;
             decimal expectedMillibars = 1047.115307485672m;

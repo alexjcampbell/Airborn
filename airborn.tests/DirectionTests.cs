@@ -7,7 +7,7 @@ namespace Airborn.Tests
     public class DirectionTests
     {
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt350_Is330()
+        public void Test_TrueToMagnetic_MagneticVariation_Minus20_StartingAt350_Is330()
         {
             int directionDegrees = 350;
             int magneticVariation = -20;
@@ -20,7 +20,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt10_Is350()
+        public void Test_TrueToMagnetic_MagneticVariation_Minus20_StartingAt10_Is350()
         {
             int directionDegrees = 10;
             int magneticVariation = -20;
@@ -33,7 +33,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAtZero_Is340()
+        public void Test_TrueToMagnetic_MagneticVariation_Minus20_StartingAtZero_Is340()
         {
             int directionDegrees = 0;
             int magneticVariation = -20;
@@ -46,7 +46,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Minus20_StartingAt180_Is160()
+        public void Test_TrueToMagnetic_MagneticVariation_Minus20_StartingAt180_Is160()
         {
             int directionDegrees = 180;
             int magneticVariation = -20;
@@ -59,7 +59,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTruetoMagnetic_MagneticVariation_Zero_NoChange_Is180()
+        public void Test_TruetoMagnetic_MagneticVariation_Zero_NoChange_Is180()
         {
             int directionDegrees = 180;
             int magneticVariation = 0;
@@ -71,7 +71,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Plus20_StartingAt350_Is010()
+        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt350_Is010()
         {
             int directionDegrees = 350;
             int magneticVariation = 20;
@@ -84,7 +84,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestTrueToMagnetic_MagneticVariation_Plus20_StartingAt10_Is30()
+        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt10_Is30()
         {
             int directionDegrees = 10;
             int magneticVariation = 20;
@@ -96,7 +96,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt350_Is10()
+        public void Test_MagneticToTrue_MagneticVariation_Minus20_StartingAt350_Is10()
         {
             int directionDegrees = 350;
             int magneticVariation = -20;
@@ -108,7 +108,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt10_Is30()
+        public void Test_MagneticToTrue_MagneticVariation_Minus20_StartingAt10_Is30()
         {
             int directionDegrees = 10;
             int magneticVariation = -20;
@@ -121,7 +121,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAtZero_Is20()
+        public void Test_MagneticToTrue_MagneticVariation_Minus20_StartingAtZero_Is20()
         {
             int directionDegrees = 0;
             int magneticVariation = -20;
@@ -133,7 +133,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Minus20_StartingAt180_Is200()
+        public void Test_MagneticToTrue_MagneticVariation_Minus20_StartingAt180_Is200()
         {
             int directionDegrees = 180;
             int magneticVariation = -20;
@@ -146,7 +146,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Zero_NoChange_Is180()
+        public void Test_MagneticToTrue_MagneticVariation_Zero_NoChange_Is180()
         {
             int directionDegrees = 180;
             int magneticVariation = 0;
@@ -158,7 +158,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Plus20_StartingAt350_Is330()
+        public void Test_MagneticToTrue_MagneticVariation_Plus20_StartingAt350_Is330()
         {
             int directionDegrees = 350;
             int magneticVariation = 20;
@@ -170,7 +170,7 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void TestMagneticToTrue_MagneticVariation_Plus20_StartingAt10_Is350()
+        public void Test_MagneticToTrue_MagneticVariation_Plus20_StartingAt10_Is350()
         {
             int directionDegrees = 10;
             int magneticVariation = 20;
