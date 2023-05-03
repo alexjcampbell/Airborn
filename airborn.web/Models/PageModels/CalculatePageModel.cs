@@ -22,7 +22,7 @@ namespace Airborn.web.Models
             Results = new List<CalculationResultPageModel>();
         }
 
-        private PerformanceCalculator PerformanceCalculator
+        private Calculation PerformanceCalculator
         {
             get;
             set;
@@ -208,7 +208,7 @@ namespace Airborn.web.Models
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(AircraftType);
 
-            PerformanceCalculator = new PerformanceCalculator(
+            PerformanceCalculator = new Calculation(
                 aircraft,
                 Airport,
                 wind,
@@ -222,7 +222,7 @@ namespace Airborn.web.Models
 
             PerformanceCalculator.Calculate(db);
 
-            foreach (PerformanceCalculationResultForRunway result in PerformanceCalculator.Results)
+            foreach (CalculationResultForRunway result in PerformanceCalculator.Results)
             {
                 CalculationResultPageModel pageModelResult =
                     new CalculationResultPageModel(result, result.Runway);

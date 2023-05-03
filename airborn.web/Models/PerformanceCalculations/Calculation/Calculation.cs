@@ -13,15 +13,15 @@ namespace Airborn.web.Models
     /// This class is responsible for calculating the performance of a given aircraft at a 
     /// given airport in a given set of conditions.
     /// </summary>
-    public class PerformanceCalculator
+    public class Calculation
     {
 
-        private PerformanceCalculator()
+        private Calculation()
         {
         }
 
 
-        public PerformanceCalculator(
+        public Calculation(
             Aircraft aircraft,
             Airport airport,
             Wind wind,
@@ -36,7 +36,7 @@ namespace Airborn.web.Models
 
         }
 
-        public PerformanceCalculator(
+        public Calculation(
             Aircraft aircraft,
             Airport airport,
             Wind wind,
@@ -91,9 +91,9 @@ namespace Airborn.web.Models
 
         }
 
-        private List<PerformanceCalculationResultForRunway> _results = new List<PerformanceCalculationResultForRunway>();
+        private List<CalculationResultForRunway> _results = new List<CalculationResultForRunway>();
 
-        public List<PerformanceCalculationResultForRunway> Results
+        public List<CalculationResultForRunway> Results
         {
             get
             {
@@ -239,7 +239,7 @@ namespace Airborn.web.Models
 
             PopulateInterpolatedPerformanceData();
 
-            List<PerformanceCalculationResultForRunway> results = new List<PerformanceCalculationResultForRunway>();
+            List<CalculationResultForRunway> results = new List<CalculationResultForRunway>();
 
             foreach (Runway runway in
                 db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
@@ -368,13 +368,13 @@ namespace Airborn.web.Models
         /// <summary>
         /// Takes the book numbers and adjusts them for the given runway and wind conditions
         /// </summary>
-        private PerformanceCalculationResultForRunway CalculatePerformanceForRunway(Runway runway)
+        private CalculationResultForRunway CalculatePerformanceForRunway(Runway runway)
         {
             PerformanceCalculationLogItem runwayLogger =
                 new PerformanceCalculationLogItem($"Calculating performance for runway {runway.Runway_Name}");
 
-            PerformanceCalculationResultForRunway result =
-                new PerformanceCalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
+            CalculationResultForRunway result =
+                new CalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
 
             CalculateTakeoffPerformanceForRunway(runway, runwayLogger, result);
             CalculateLandingPerformanceForRunway(runway, runwayLogger, result);
@@ -383,10 +383,10 @@ namespace Airborn.web.Models
         }
 
 
-        private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
+        private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, CalculationResultForRunway result)
         {
             PerformanceCalculationLogItem takeoffAdjustmentsLogger = new PerformanceCalculationLogItem(
-                            $"Making takeoff adjustments for runway {runway.Runway_Name}");
+                $"Making takeoff adjustments for runway {runway.Runway_Name}");
 
             runwayLogger.SubItems.Add(takeoffAdjustmentsLogger);
 
@@ -416,7 +416,7 @@ namespace Airborn.web.Models
                 );
         }
 
-        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, PerformanceCalculationResultForRunway result)
+        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, CalculationResultForRunway result)
         {
             PerformanceCalculationLogItem landingAdjustmentsLogger = new PerformanceCalculationLogItem(
                 $"Making landing adjustments for runway {runway.Runway_Name}");

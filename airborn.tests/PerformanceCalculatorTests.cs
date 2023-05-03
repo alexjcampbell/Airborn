@@ -13,15 +13,15 @@ namespace Airborn.Tests
 
         private Airport _airport = new Airport { Ident = UtilitiesForTesting.Default_AirportIdentifier };
 
-        private PerformanceCalculator GetCalculator(int windDirectionMagnetic, int windStrength)
+        private Calculation GetCalculator(int windDirectionMagnetic, int windStrength)
         {
             return GetCalculator(windDirectionMagnetic, windStrength, UtilitiesForTesting.GetMockJsonPerformanceFilesForTesting()[0]);
         }
 
-        private PerformanceCalculator GetCalculator(int windDirectionMagnetic, int windStrength, JsonFile jsonFile)
+        private Calculation GetCalculator(int windDirectionMagnetic, int windStrength, JsonFile jsonFile)
         {
 
-            PerformanceCalculator calculator = new PerformanceCalculator(
+            Calculation calculator = new Calculation(
                 Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType),
                 _airport,
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
@@ -48,7 +48,7 @@ namespace Airborn.Tests
             Wind wind = Wind.FromMagnetic(windDirection, windStrength);
             Runway runway = Runway.FromMagnetic(runwayHeading);
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            CalculationResultForRunway result = new CalculationResultForRunway(
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
@@ -62,7 +62,7 @@ namespace Airborn.Tests
             Wind wind = Wind.FromMagnetic(90, 10);
             Runway runway = Runway.FromMagnetic(180);
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            CalculationResultForRunway result = new CalculationResultForRunway(
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
@@ -78,7 +78,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(40);
 
 
-            PerformanceCalculationResultForRunway result = new PerformanceCalculationResultForRunway(
+            CalculationResultForRunway result = new CalculationResultForRunway(
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
             );
 
@@ -89,7 +89,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_PerformanceCalculator_PressureAltitudeAt1500ElevationISAPressure_Is1500()
         {
-            PerformanceCalculator calculator = GetCalculator(0, 10);
+            Calculation calculator = GetCalculator(0, 10);
 
             calculator.TemperatureCelcius = 11;
             calculator.Airport.FieldElevation = 1500;
@@ -106,7 +106,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_PerformanceCalculator_TemperatureCelciusAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
         {
-            PerformanceCalculator calculator = GetCalculator(0, 10);
+            Calculation calculator = GetCalculator(0, 10);
             calculator.TemperatureCelcius = -5;
             Assert.IsTrue(calculator.TemperatureCelciusAlwaysPositiveOrZero >= 0);
         }
@@ -114,7 +114,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_PerformanceCalculator_PressureAltitudeAlwaysPositiveOrZero_ShouldReturnNonNegativeValue()
         {
-            PerformanceCalculator calculator = GetCalculator(0, 10);
+            Calculation calculator = GetCalculator(0, 10);
             calculator.AltimeterSettingInMb = 1040;
             calculator.Airport.FieldElevation = 0;
             Assert.IsTrue(calculator.PressureAltitudeAlwaysPositiveOrZero.TotalFeet >= 0);

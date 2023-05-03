@@ -6,15 +6,15 @@ namespace Airborn.web.Models
     /// <summary>
     /// This class is responsible for storing the results of a performance calculation for a given runway
     /// </summary>
-    public class PerformanceCalculationResultForRunway
+    public class CalculationResultForRunway
     {
 
-        private PerformanceCalculationResultForRunway()
+        private CalculationResultForRunway()
         {
 
         }
 
-        public PerformanceCalculationResultForRunway(Runway runway, Wind wind, PerformanceCalculationLogItem logItem, Distance pressureAltitude)
+        public CalculationResultForRunway(Runway runway, Wind wind, PerformanceCalculationLogItem logItem, Distance pressureAltitude)
         {
             Runway = runway;
             Wind = wind;

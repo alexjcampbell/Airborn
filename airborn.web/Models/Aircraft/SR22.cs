@@ -11,7 +11,7 @@ namespace Airborn.web.Models
 
 
         public override Distance MakeTakeoffAdjustments(
-            PerformanceCalculationResultForRunway result,
+            CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
             PerformanceCalculationLogItem logItem)
         {
@@ -96,7 +96,7 @@ namespace Airborn.web.Models
         }
 
         public override Distance MakeLandingAdjustments(
-            PerformanceCalculationResultForRunway result,
+            CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
             PerformanceCalculationLogItem logItem)
         {

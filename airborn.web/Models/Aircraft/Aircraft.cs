@@ -19,12 +19,12 @@ namespace Airborn.web.Models
         // the implementing aircraft class must implement the POH rules for adjusting
         // the performance data for wind, slope, surface etc
         public abstract Distance MakeTakeoffAdjustments(
-            PerformanceCalculationResultForRunway result,
+            CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
             PerformanceCalculationLogItem logItem
             );
         public abstract Distance MakeLandingAdjustments(
-            PerformanceCalculationResultForRunway result,
+            CalculationResultForRunway result,
             Distance unadjustedlandingDistance,
             PerformanceCalculationLogItem logItem
             );
@@ -66,7 +66,7 @@ namespace Airborn.web.Models
                 case AircraftType.SR22T_G5:
                     return new SR22T_G5();
                 case AircraftType.SR22T_G6:
-                    return new SR22T_G6();                    
+                    return new SR22T_G6();
                 case AircraftType.C172_SP:
                     return new C172_SP();
                 default:
