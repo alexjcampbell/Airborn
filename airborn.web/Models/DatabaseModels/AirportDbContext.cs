@@ -69,7 +69,7 @@ namespace Airborn.web.Models
             DateTime start = DateTime.Now;
 
             var airportIdentifiers = (from airport in Airports
-                                      where EF.Functions.Like(airport.Ident, term + "%")
+                                      where EF.Functions.Like(airport.Ident, "%" + term + "%")
                                       select new
                                       {
                                           label = airport.Ident,
