@@ -25,7 +25,7 @@ namespace Airborn.Tests
         public void Test_InchesToMillibars_30Point00InchesOfMercury_Equals1015Millibars()
         {
             double inchesOfMercury = 30f;
-            double expectedMillibars = 1015.9592245980f;
+            double expectedMillibars = 1015.95f;
 
             Assert.AreEqual(
                 expectedMillibars,
@@ -38,7 +38,7 @@ namespace Airborn.Tests
         public void Test_InchesToMillibars_30Point92InchesOfMercury_Equals1047Millibars()
         {
             double inchesOfMercury = 30.92f;
-            double expectedMillibars = 1047.115307485672f;
+            double expectedMillibars = 1047.11f;
 
             Assert.AreEqual(
                 expectedMillibars,

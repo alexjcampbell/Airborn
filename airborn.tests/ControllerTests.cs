@@ -281,12 +281,11 @@ namespace Airborn.Tests
 
             var result = _controller.Calculate(_model);
 
-            // 1040 hPa will result in a negative pressure altitude, but the POH doesn't provide performance
-            // information for negative pressure altitudes - so, in the PerformanceCalcator we treat negative
-            // pressure altitudes as zero. We test if that this working by checking to see that there are 
-            // performance results being returned (if our override of negative pressure altitudes to zero
-            // wasn't working, it would return no results because it wouldn't find any in the JSON for like -
-            // 400 ft pressure altitudes)
+            // the POH doesn't provide performance information for negative temperatures - so, in the
+            // PerformanceCalcator we treat negative temperatures as zero. We test if that this working
+            // by checking to see that there are performance results being returned (if our override of
+            // negative temperatures to zero wasn't working, it would return no results because it
+            // wouldn't find any in the JSON for like -10C temperatures)
             Assert.IsTrue(_model.Results.Count > 0);
 
             Assert.IsTrue(_model.Notes.Find(p => p.Contains("Temperature is negative")) != null);

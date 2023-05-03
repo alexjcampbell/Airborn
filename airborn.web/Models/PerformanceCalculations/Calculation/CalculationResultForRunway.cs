@@ -58,7 +58,6 @@ namespace Airborn.web.Models
             set;
         }
 
-
         public double HeadwindComponent
         {
             get

@@ -51,7 +51,7 @@ namespace Airborn.Tests
         public void Test_FahrenheitToCelcius_100DegreesFahrenheit_Equals37ishDegreesCelcius()
         {
             int numberOfDegreesFahrenheit = 100;
-            double expectedDegreesCelcius = 37.777777777777777777777777778f;
+            double expectedDegreesCelcius = 37.77f;
 
             Assert.AreEqual(
                 expectedDegreesCelcius,

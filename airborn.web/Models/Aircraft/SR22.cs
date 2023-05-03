@@ -18,6 +18,7 @@ namespace Airborn.web.Models
 
             double adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
 
+            // adjust for headwind
             if (result.HeadwindComponent > 0)
             {
 

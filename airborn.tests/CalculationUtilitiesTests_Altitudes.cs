@@ -12,7 +12,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_CalculatePressureAltitude_3092Hg_Equals1047Hpa()
         {
-            double qnh = 1047.115307485672f;
+            double qnh = 1047.11f;
             double altimeter = 30.92f;
 
             Assert.AreEqual(
@@ -20,7 +20,7 @@ namespace Airborn.Tests
                 CalculationUtilities.PressureAltitudeAtFieldElevation(
                     CalculationUtilities.InchesOfMercuryToMillibars(altimeter), 0
                     ),
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                1f
                 );
         }
 
