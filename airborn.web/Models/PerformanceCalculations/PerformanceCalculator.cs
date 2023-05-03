@@ -138,7 +138,7 @@ namespace Airborn.web.Models
             {
 
                 return Distance.FromFeet(
-                    CalculationUtilities.PressureAltitudeAtFieldElevation(AltimeterSettingInMb, Airport.FieldElevation)
+                    CalculationUtilities.PressureAltitudeAtFieldElevation(AltimeterSettingInMb, Airport.FieldElevation.Value)
                     );
 
             }
@@ -266,14 +266,18 @@ namespace Airborn.web.Models
                 else
                 {
                     // determine the opposite runway
-                    Runway oppositeRunway = db.Runways.Where(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)).First<Runway>();
+                    Runway oppositeRunway = db.Runways.Where(
+                            r => r.Airport_Ident == Airport.Ident.ToUpper()
+                            &&
+                            r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)
+                        ).First<Runway>();
 
-                    if (runway.ElevationFt_Converted.HasValue && oppositeRunway.ElevationFt_Converted.HasValue && runway.RunwayLengthConverted.HasValue)
+                    if (runway.ElevationFt.HasValue && oppositeRunway.ElevationFt.HasValue && runway.RunwayLength.HasValue)
                     {
                         runway.Slope = (decimal)Runway.CalculateSlope(
-                            runway.ElevationFt_Converted.Value,
-                            oppositeRunway.ElevationFt_Converted.Value,
-                            (double)runway.RunwayLengthConverted.Value);
+                            runway.ElevationFt.Value,
+                            oppositeRunway.ElevationFt.Value,
+                            (double)runway.RunwayLength.Value);
                     }
                 }
             }

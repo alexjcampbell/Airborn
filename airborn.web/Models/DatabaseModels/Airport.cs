@@ -17,16 +17,18 @@ namespace Airborn.web.Models
         }
 
         [Column("Elevation_Ft")]
-        public int FieldElevation
+        public int? FieldElevation
         {
             get; set;
         }
 
-        public string Type {
+        public string Type
+        {
             get; set;
         }
 
-        public string Name {
+        public string Name
+        {
             get; set;
         }
 

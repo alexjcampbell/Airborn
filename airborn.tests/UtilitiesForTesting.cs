@@ -19,8 +19,8 @@ namespace Airborn.web.Models
 
         public const string Default_AirportIdentifier = "KJFK";
         public const int Default_Runway_Id = 1;
-        public const string Default_RunwayWidth = "150";
-        public const string Default_RunwayLength = "10000";
+        public const int Default_RunwayWidth = 150;
+        public const int Default_RunwayLength = 10000;
         public const string Default_Runway_Name = "22R";
 
         public const int Default_Runway_Heading = 220;
@@ -37,9 +37,9 @@ namespace Airborn.web.Models
         public const int Default_WindDirectionMagnetic = 220;
         public const int Default_WindStrength = 10;
         public const int Default_TemperatureCelcius = 12;
-        public const double Default_AircraftWeight = 3000;
+        public const decimal Default_AircraftWeight = 3000;
 
-        public const double Default_RunwayElevation = 0;
+        public const decimal Default_RunwayElevation = 0;
 
         public const double MinimumPrecisisionForDistanceComparison = 0.01d;
 
@@ -103,7 +103,7 @@ namespace Airborn.web.Models
             runway.RunwayWidth = Default_RunwayWidth;
             runway.RunwayLength = Default_RunwayLength;
             runway.Runway_Name = runwayName;
-            runway.ElevationFt = Default_RunwayElevation.ToString();
+            runway.ElevationFt = (int)Default_RunwayElevation;
 
             TestRunways.Add(runway);
 

@@ -278,7 +278,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Takeoff_GroundRoll / Runway.RunwayLengthConverted;
+                return Takeoff_GroundRoll / Runway.RunwayLength;
             }
         }
 
@@ -294,7 +294,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Takeoff_50FtClearance / Runway.RunwayLengthConverted;
+                return Takeoff_50FtClearance / Runway.RunwayLength;
             }
         }
 

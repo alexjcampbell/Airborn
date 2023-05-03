@@ -40,13 +40,13 @@ namespace Airborn.web.Models
 
 
         [Column("Length_Ft")]
-        public string RunwayLength
+        public int? RunwayLength
         {
             get; set;
         }
 
         [Column("Width_Ft")]
-        public string RunwayWidth
+        public int? RunwayWidth
         {
             get; set;
         }
@@ -64,23 +64,9 @@ namespace Airborn.web.Models
         }
 
         [Column("Elevation_Ft")]
-        public string ElevationFt
+        public int? ElevationFt
         {
             get; set;
-        }
-
-        [NotMapped]
-        public int? ElevationFt_Converted
-        {
-            get
-            {
-                if (ElevationFt == null || ElevationFt.Length == 0)
-                {
-                    return null;
-                }
-
-                return int.Parse(ElevationFt);
-            }
         }
 
         [NotMapped]
@@ -100,37 +86,9 @@ namespace Airborn.web.Models
         }
 
         [Column("Displaced_Threshold_Ft")]
-        public string DisplacedThresholdFt
+        public int? DisplacedThresholdFt
         {
             get; set;
-        }
-
-        [NotMapped]
-        public decimal? RunwayLengthConverted
-        {
-            get
-            {
-                if (RunwayLength.Length > 0)
-                {
-                    return Convert.ToDecimal(RunwayLength);
-                }
-                return null;
-
-            }
-        }
-
-        [NotMapped]
-        public decimal? DisplacedThresholdConverted
-        {
-            get
-            {
-                if (DisplacedThresholdFt.Length > 0)
-                {
-                    return Convert.ToDecimal(DisplacedThresholdFt);
-                }
-                return null;
-
-            }
         }
 
         [NotMapped]
@@ -138,9 +96,9 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (DisplacedThresholdConverted != null)
+                if (DisplacedThresholdFt.HasValue)
                 {
-                    return DisplacedThresholdConverted?.ToString("#,##0") + " ft";
+                    return DisplacedThresholdFt?.ToString("#,##0") + " ft";
                 }
                 else
                 {
@@ -156,15 +114,15 @@ namespace Airborn.web.Models
             {
                 string runwayInformation;
 
-                if (RunwayLength.Length > 0)
+                if (RunwayLength.HasValue)
                 {
-                    if (RunwayWidth.Length > 0)
+                    if (RunwayWidth.HasValue)
                     {
-                        runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft x " + RunwayWidth + " ft";
+                        runwayInformation = RunwayLength?.ToString("#,##0") + " ft x " + RunwayWidth + " ft";
                     }
                     else
                     {
-                        runwayInformation = RunwayLengthConverted?.ToString("#,##0") + " ft";
+                        runwayInformation = RunwayLength?.ToString("#,##0") + " ft";
                     }
                 }
                 else
@@ -182,13 +140,13 @@ namespace Airborn.web.Models
         {
             get
             {
-                if (RunwayLengthConverted != null && DisplacedThresholdConverted != null)
+                if (RunwayLength.HasValue && DisplacedThresholdFt.HasValue)
                 {
-                    return Distance.FromFeet(RunwayLengthConverted.Value - DisplacedThresholdConverted.Value);
+                    return Distance.FromFeet(RunwayLength.Value - DisplacedThresholdFt.Value);
                 }
-                else if (RunwayLengthConverted != null)
+                else if (RunwayLength != null)
                 {
-                    return Distance.FromFeet(RunwayLengthConverted.Value);
+                    return Distance.FromFeet(RunwayLength.Value);
                 }
                 else
                 {
