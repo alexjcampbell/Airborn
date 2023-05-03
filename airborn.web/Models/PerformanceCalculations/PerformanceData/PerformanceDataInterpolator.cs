@@ -266,7 +266,7 @@ namespace Airborn.web.Models.PerformanceData
                 temperature,
                 weight);
 
-            PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"Found book data for: Aircraft weight {weight}, pressure altitude {pressureAltitude}, temperature {temperature}");
+            PerformanceCalculationLogItem item = new PerformanceCalculationLogItem($"Found book data for: Aircraft weight {weight} lbs, pressure altitude {pressureAltitude} ft, temperature {temperature} °C");
             foundBookDataLogItem.SubItems.Add(item);
 
             item.Add($"Ground roll: {bookData.DistanceGroundRoll} ft");
