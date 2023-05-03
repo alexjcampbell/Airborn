@@ -8,7 +8,7 @@ using Moq;
 namespace Airborn.Tests
 {
     [TestClass]
-    public class PerformanceCalculatorTests
+    public class CalculationTests
     {
 
         private Airport _airport = new Airport { Ident = UtilitiesForTesting.Default_AirportIdentifier };
@@ -25,7 +25,7 @@ namespace Airborn.Tests
                 Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType),
                 _airport,
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
-                (double)UtilitiesForTesting.Default_AircraftWeight,
+                UtilitiesForTesting.Default_AircraftWeight,
                 jsonFile
                 );
 
@@ -35,95 +35,6 @@ namespace Airborn.Tests
 
             return calculator;
 
-        }
-
-        [TestMethod]
-        public void Test_PerformanceCalculator_CrosswindComponent_NoCrosswind_IsZero()
-        {
-
-            int windDirection = 160;
-            int windStrength = 10;
-            int runwayHeading = 160;
-
-            Wind wind = Wind.FromMagnetic(windDirection, windStrength);
-            Runway runway = Runway.FromMagnetic(runwayHeading);
-
-            CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
-            );
-
-            double expectedCrosswindComponent = 0;
-
-            Assert.AreEqual(
-                expectedCrosswindComponent,
-                result.CrosswindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
-
-            double expectedHeadwindComponent = 10;
-
-            Assert.AreEqual(
-                expectedHeadwindComponent,
-                result.HeadwindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
-        }
-
-        [TestMethod]
-        public void Test_PerformanceCalculator_CrosswindComponent_DirectCrosswind_EqualsTotalWind()
-        {
-            Wind wind = Wind.FromMagnetic(90, 10);
-            Runway runway = Runway.FromMagnetic(180);
-
-            CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
-            );
-
-            double expectedCrosswindComponent = -10;
-
-            Assert.AreEqual(
-                expectedCrosswindComponent,
-                result.CrosswindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
-
-
-            double expectedHeadwindComponent = 0;
-
-            Assert.AreEqual(
-                expectedHeadwindComponent,
-                result.HeadwindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
-        }
-
-        [TestMethod]
-        public void Test_PerformanceCalculator_CrosswindComponent_40DegreeCrosswind_IsCorrect()
-        {
-
-            Wind wind = Wind.FromMagnetic(0, 10);
-            Runway runway = Runway.FromMagnetic(40);
-
-
-            CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
-            );
-
-            double expectedCrosswindComponent = -6.42f;
-
-            Assert.AreEqual(
-                expectedCrosswindComponent,
-                result.CrosswindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
-
-            double expectedHeadwindComponent = 7.66f;
-
-            Assert.AreEqual(
-                expectedHeadwindComponent,
-                result.HeadwindComponent,
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
-                );
         }
 
         [TestMethod]

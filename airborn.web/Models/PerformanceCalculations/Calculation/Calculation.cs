@@ -273,10 +273,10 @@ namespace Airborn.web.Models
 
                     if (runway.ElevationFt.HasValue && oppositeRunway.ElevationFt.HasValue && runway.RunwayLength.HasValue)
                     {
-                        runway.Slope = (double)Runway.CalculateSlope(
+                        runway.Slope = Runway.CalculateSlope(
                             runway.ElevationFt.Value,
                             oppositeRunway.ElevationFt.Value,
-                            (double)runway.RunwayLength.Value);
+                            runway.RunwayLength.Value);
                     }
                 }
             }

@@ -24,10 +24,10 @@ namespace Airborn.Tests
         }
 
         private static PeformanceDataInterpolator GetPerformanceInterpolator(
-       Scenario scenario,
-       Distance actualPressureAltitude,
-       double actualTemperature,
-       double actualWeight
+            Scenario scenario,
+            Distance actualPressureAltitude,
+            double actualTemperature,
+            double actualWeight
        )
         {
             BookPerformanceDataList performanceDataList = SetupTestPerformanceData();

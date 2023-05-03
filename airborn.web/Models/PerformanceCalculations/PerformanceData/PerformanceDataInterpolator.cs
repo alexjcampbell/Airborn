@@ -531,7 +531,7 @@ namespace Airborn.web.Models.PerformanceData
 
             // interpolaton factor is the percentage distance that the given weight is between the lowest
             // and highest possible weight for the aircraft
-            double weightInterpolationFactor = (weight - lowerWeight) / (double)(higherWeight - lowerWeight);
+            double weightInterpolationFactor = (weight - lowerWeight) / (higherWeight - lowerWeight);
 
             return weightInterpolationFactor;
         }

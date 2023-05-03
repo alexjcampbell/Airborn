@@ -19,7 +19,7 @@ namespace Airborn.web.Models
         public CalculatePageModel()
         {
             Runways = new List<Runway>();
-            Results = new List<CalculationResultPageModel>();
+            Results = new List<CalculationResultForRunwayPageModel>();
         }
 
         private Calculation PerformanceCalculator
@@ -34,13 +34,13 @@ namespace Airborn.web.Models
             set;
         }
 
-        public List<CalculationResultPageModel> Results
+        public List<CalculationResultForRunwayPageModel> Results
         {
             get;
             private set;
         }
 
-        public List<CalculationResultPageModel> ResultsSortedByHeadwind
+        public List<CalculationResultForRunwayPageModel> ResultsSortedByHeadwind
         {
             get
             {
@@ -224,8 +224,8 @@ namespace Airborn.web.Models
 
             foreach (CalculationResultForRunway result in PerformanceCalculator.Results)
             {
-                CalculationResultPageModel pageModelResult =
-                    new CalculationResultPageModel(result, result.Runway);
+                CalculationResultForRunwayPageModel pageModelResult =
+                    new CalculationResultForRunwayPageModel(result, result.Runway);
 
                 Results.Add(pageModelResult);
             }
@@ -241,7 +241,7 @@ namespace Airborn.web.Models
         /// </summary>
         private void SetIsBestWindIfRunwayIsMostIntoWind()
         {
-            foreach (CalculationResultPageModel result in Results)
+            foreach (CalculationResultForRunwayPageModel result in Results)
             {
                 if (this.ResultsSortedByHeadwind.First().HeadwindComponent == result.HeadwindComponent)
                 {

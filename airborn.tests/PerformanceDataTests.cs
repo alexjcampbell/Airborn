@@ -75,7 +75,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedGroundRoll_0,
-                (double)bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
+                bookNumbersList.TakeoffPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
 
@@ -94,7 +94,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDistance,
-                (double)bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft.Value.TotalFeet,
+                bookNumbersList.TakeoffPerformanceData[4].DistanceToClear50Ft.Value.TotalFeet,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
@@ -111,7 +111,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedGroundRoll_0,
-                (double)bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
+                bookNumbersList.LandingPerformanceData[0].DistanceGroundRoll.Value.TotalFeet,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
 
@@ -130,7 +130,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expectedDistance,
-                (double)bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft.Value.TotalFeet,
+                bookNumbersList.LandingPerformanceData[0].DistanceToClear50Ft.Value.TotalFeet,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison)
                 ;
 

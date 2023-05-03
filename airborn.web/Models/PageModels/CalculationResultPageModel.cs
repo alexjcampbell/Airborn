@@ -8,13 +8,13 @@ namespace Airborn.web.Models
     /// <summary>
     /// The model for each runway's calculation result, which is displayed on the Calculate page
     /// </summary>
-    public class CalculationResultPageModel
+    public class CalculationResultForRunwayPageModel
     {
-        private CalculationResultPageModel()
+        private CalculationResultForRunwayPageModel()
         {
         }
 
-        public CalculationResultPageModel(CalculationResultForRunway result, Runway runway)
+        public CalculationResultForRunwayPageModel(CalculationResultForRunway result, Runway runway)
         {
             Result = result;
             Runway = runway;

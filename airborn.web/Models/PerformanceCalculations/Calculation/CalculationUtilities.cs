@@ -55,7 +55,7 @@ namespace Airborn.web.Models
             // so, x degrees = (pi / 180) * x radians
             // or, in this case , x radians = (180 / pi) * x degrees
 
-            double radians = ((double)Math.PI / 180) * degrees;
+            double radians = (Math.PI / 180) * degrees;
             return radians;
         }
 
@@ -104,8 +104,8 @@ namespace Airborn.web.Models
         {
             // headwind component = wind strength * cos(the angular difference between the runway and the wind)
 
-            return (double)(
-                windStrength * Math.Cos((double)DegreesToRadians(windRunwayAngularDifferenceMagnetic))
+            return (
+                windStrength * Math.Cos(DegreesToRadians(windRunwayAngularDifferenceMagnetic))
             );
         }
 
@@ -121,7 +121,7 @@ namespace Airborn.web.Models
 
             return Convert.ToDouble(
                  windStrength * Math.Sin(
-                    (double)CalculationUtilities.DegreesToRadians(windRunwayAngularDifferenceMagnetic)
+                    CalculationUtilities.DegreesToRadians(windRunwayAngularDifferenceMagnetic)
                     )
             );
         }

@@ -20,7 +20,7 @@ namespace Airborn.web.Models.PerformanceData
             if (value < lowerBound) { throw new ArgumentOutOfRangeException(); }
             if (value > upperBound) { throw new ArgumentOutOfRangeException(); }
 
-            double interpolationFactor = (double)(value - lowerBound) / (double)(upperBound - lowerBound);
+            double interpolationFactor = (value - lowerBound) / (upperBound - lowerBound);
 
             return interpolationFactor;
         }
