@@ -214,15 +214,20 @@ namespace Airborn.Controllers
 
         public JsonResult AutocompleteAirportIdentifier(string term)
         {
-
             term = term?.ToUpper();
             return Json(_dbContext.SearchForAirportsByIdentifier(term));
-
         }
 
         public JsonResult GetAirportInformation(string airportIdentifier)
         {
             return Json(_dbContext.GetAirport(airportIdentifier));
+        }
+
+        public string GetAircraftMaxGrossWeight(string aircraftType)
+        {
+            return Aircraft.GetAircraftFromAircraftType(
+                    Enum.Parse<AircraftType>(aircraftType)
+                ).GetHigherWeight().ToString();
         }
 
     }

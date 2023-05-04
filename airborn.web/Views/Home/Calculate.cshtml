@@ -54,7 +54,22 @@
                         source: '/Home/AutocompleteAirportIdentifier',
                         minLength: 2
                     });
-                });
+                    $('#AircraftType').on('change', function () {
+                        var aircraftType = $(this).val();
+
+                        $.ajax({
+                            url: '/Home/GetAircraftMaxGrossWeight',
+                            data: { aircraftType: aircraftType },
+                            type: 'GET',
+                            success: function (data) {
+                                $('#AircraftWeight').val(data);
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(error);
+                            }
+                        });
+                    });
+                });           
             </script>
         }
         <div class="col-sm-3">
@@ -68,7 +83,8 @@
         </div>
         <div class="col-sm-3">
             <div class="form-floating">
-                <input asp-for="AircraftWeight" class="form-control" maxlength="4" placeholder="Aircraft weight" />
+                <input asp-for="AircraftWeight" class="form-control" maxlength="4" placeholder="Aircraft weight"
+                    value="3400" />
                 <label for="AircraftWeight">Aircraft weight (lbs)</label>
                 <div class="invalid-feedback" style="display:block;">
                     <span asp-validation-for="AircraftWeight" class="text-danger"></span>
