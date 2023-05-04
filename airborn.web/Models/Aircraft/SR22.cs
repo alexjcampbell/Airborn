@@ -103,22 +103,26 @@ namespace Airborn.web.Models
             logItem.Add("Runway slope: " + slope.ToString("0.00") + " %");
             logItem.Add("Runway slope adjustment factor: " + (slope * 0.1f).ToString("0.00"));
 
-            double adjustmentFactor = 0;
+            // the POH says we should decrease landing distance for downslopes, but the slope information
+            // we have is only an average, and some runways are weird and convex so instead we just don't
+            // decrease landing distance for downslopes
+
+            double slopeAdjustmentFactor = 0;
 
             if (pressureAltitude <= 0 && slope > 0)
             {
-                adjustmentFactor = 0.22; // only provide the worst case adjustment, for uphill takeoffs
+                slopeAdjustmentFactor = 0.22; // only provide the worst case adjustment, for uphill takeoffs
             }
             else if (pressureAltitude <= 5000 && slope > 0)
             {
-                adjustmentFactor = 0.3;
+                slopeAdjustmentFactor = 0.3;
             }
             else if (slope > 0)
             {
-                adjustmentFactor = 0.43;
+                slopeAdjustmentFactor = 0.43;
             }
 
-            double adjustment = Math.Abs(slope) * adjustmentFactor * groundRollDistance;
+            double adjustment = Math.Abs(slope) * slopeAdjustmentFactor * groundRollDistance;
             double adjustedGroundRollDistance = groundRollDistance + adjustment;
 
             return Distance.FromFeet(adjustedGroundRollDistance);
@@ -238,25 +242,29 @@ namespace Airborn.web.Models
             double altitude,
             PerformanceCalculationLogItem logItem)
         {
-            // Determine the adjustment factor based on the given altitude and whether the slope is positive (upslope) or negative (downslope)
+            // tetermine the adjustment factor based on the given altitude and whether the slope is positive (upslope) or negative (downslope)
             double adjustmentFactor;
+
+            // the POH says we should decrease landing distance for downslopes, but the slope information
+            // we have is only an average, and some runways are weird and convex so instead we just don't
+            // decrease landing distance for downslopes
 
             if (altitude > 0)
             {
-                adjustmentFactor = slope > 0 ? 0.22 : -0.07;
+                adjustmentFactor = slope > 0 ? 0.22 : 0;  // don't decrease landing distance for downslope runways
 
                 logItem.Add("Slope adjustment factor (altitude >=0, <5,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
             }
             else if (altitude <= 5000)
             {
-                adjustmentFactor = slope > 0 ? 0.3 : -0.1;
+                adjustmentFactor = slope > 0 ? 0.3 : 0;  // don't decrease landing distance for downslope runways
 
                 logItem.Add("Slope adjustment factor (altitude >= 5,000, < 10,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
 
             }
             else
             {
-                adjustmentFactor = slope > 0 ? 0.43 : -0.14;
+                adjustmentFactor = slope > 0 ? 0.43 : 0; // don't decrease landing distance for downslope runways
 
                 logItem.Add("Slope adjustment factor (altitude >= 10,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
             }
