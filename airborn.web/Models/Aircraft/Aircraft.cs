@@ -21,12 +21,14 @@ namespace Airborn.web.Models
         public abstract Distance MakeTakeoffAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOptions
             );
         public abstract Distance MakeLandingAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedlandingDistance,
-            PerformanceCalculationLogItem logItem
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOptions
             );
 
         public abstract string JsonFileName_LowerWeight();
@@ -34,6 +36,8 @@ namespace Airborn.web.Models
 
         public abstract int GetLowerWeight();
         public abstract int GetHigherWeight();
+
+        public abstract bool HasAirconOption();
 
         public abstract string GetAircraftTypeString();
 

@@ -13,7 +13,9 @@ namespace Airborn.web.Models
         public override Distance MakeTakeoffAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem)
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOption
+            )
         {
 
             double adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
@@ -47,12 +49,19 @@ namespace Airborn.web.Models
                 logItem.Add("Adding 15% for grass runway");
             }
 
+            if (airconOption == AirconOptions.Aircon)
+            {
+                // todo: this should be ground roll +100, 50' distance +150
+                adjustedTakeoffDistance = adjustedTakeoffDistance + 150;
+                logItem.Add("Adding 150 ft to takeoff roll for air conditioning on");
+            }
+
             logItem.Add("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
 
             return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        private static double CalculateAdjustedTakeoffDistanceForHeadwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
+        private double CalculateAdjustedTakeoffDistanceForHeadwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
         {
             // subtract 10% for each 12 knots of headwind
             adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 12) * 0.1f));
@@ -64,7 +73,7 @@ namespace Airborn.web.Models
             return adjustedTakeoffDistance;
         }
 
-        private static double CalculateAdjustedTakeoffDistanceForTailwind(
+        private double CalculateAdjustedTakeoffDistanceForTailwind(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
             PerformanceCalculationLogItem logItem,
@@ -131,7 +140,9 @@ namespace Airborn.web.Models
         public override Distance MakeLandingAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
-            PerformanceCalculationLogItem logItem)
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOption
+            )
         {
             double adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
 
@@ -277,6 +288,11 @@ namespace Airborn.web.Models
 
             // Return the adjusted ground roll distance
             return Distance.FromFeet(adjustedGroundRollDistance);
+        }
+
+        public override bool HasAirconOption()
+        {
+            return true;
         }
 
     }

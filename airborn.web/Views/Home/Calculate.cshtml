@@ -92,6 +92,16 @@
             </div>
         </div>
 
+        <div class="col-sm-3">
+            <div class="form-floating">
+
+                <select asp-for="AirconOption" asp-items="Html.GetEnumSelectList<AirconOptions>()" class="form-select">
+                </select>
+                <label for="AirconOption">Aircon</label>
+                <span asp-validation-for="AirconOption" class="text-danger"></span>
+            </div>
+        </div>
+
     </div>
 
     <br />

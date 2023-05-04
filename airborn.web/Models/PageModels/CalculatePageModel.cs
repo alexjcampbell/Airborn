@@ -92,6 +92,11 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        public AirconOptions AirconOption
+        {
+            get; set;
+        }
+
         public Airport Airport
         {
             get;
@@ -219,6 +224,8 @@ namespace Airborn.web.Models
 
             SetTemperatureBasedOnDegreesForC();
             SetAltimeterSettingBasedOnMborHg();
+
+            PerformanceCalculator.AirconOption = AirconOption;
 
             PerformanceCalculator.Calculate(db);
 

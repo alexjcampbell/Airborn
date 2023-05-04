@@ -56,4 +56,12 @@ namespace Airborn.web.Models
         Grass,
         Unknown
     }
+
+    public enum AirconOptions
+    {
+        [Display(Name = "Aircon off")]
+        NoAircon,
+        [Display(Name = "Aircon on")]
+        Aircon
+    }
 }

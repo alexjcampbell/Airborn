@@ -12,7 +12,8 @@ namespace Airborn.web.Models
         public override Distance MakeTakeoffAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOption
             )
         {
             double adjustedTakeoffDistance = unadjustedTakeoffDistance.TotalFeet;
@@ -36,7 +37,7 @@ namespace Airborn.web.Models
             return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        private static double CalculateAdjustedTakeoffDistanceForHeadwind(
+        private double CalculateAdjustedTakeoffDistanceForHeadwind(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
             PerformanceCalculationLogItem logItem,
@@ -55,7 +56,7 @@ namespace Airborn.web.Models
         }
 
 
-        private static double CalculateAdjustedTakeoffDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
+        private double CalculateAdjustedTakeoffDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
         {
             // add 10% for each 2 knots of tailwind up to 10 knots
             double adjustment = (result.HeadwindComponent / 2) * 0.1f;
@@ -75,7 +76,8 @@ namespace Airborn.web.Models
         public override Distance MakeLandingAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
-            PerformanceCalculationLogItem logItem
+            PerformanceCalculationLogItem logItem,
+            AirconOptions airconOption
             )
         {
             double adjustedLandingDistance = unadjustedLandingDistance.TotalFeet;
@@ -101,7 +103,7 @@ namespace Airborn.web.Models
         }
 
 
-        private static double CalculateAdjustedLandingDistanceForHeadwind(
+        private double CalculateAdjustedLandingDistanceForHeadwind(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
             PerformanceCalculationLogItem logItem,
@@ -119,7 +121,7 @@ namespace Airborn.web.Models
             return adjustedLandingDistance;
         }
 
-        private static double CalculateAdjustedLandingDistanceForTailwind(
+        private double CalculateAdjustedLandingDistanceForTailwind(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
             PerformanceCalculationLogItem logItem,
@@ -159,6 +161,11 @@ namespace Airborn.web.Models
         public override int GetHigherWeight()
         {
             return 2550;
+        }
+
+        public override bool HasAirconOption()
+        {
+            return false;
         }
 
         public override string GetAircraftTypeString()

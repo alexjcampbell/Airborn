@@ -188,6 +188,12 @@ namespace Airborn.web.Models
             private set;
         }
 
+        public AirconOptions AirconOption
+        {
+            get;
+            set;
+        }
+
         // notes to return to the UI about the calculations (e.g. that pressure altitude is < 0 so we're using 0)
         private List<string> _notes = new List<string>();
 
@@ -399,7 +405,8 @@ namespace Airborn.web.Models
                 (
                     result,
                     IntepolatedTakeoffPerformanceData.DistanceGroundRoll.Value,
-                    takeoffGroundRollLogger
+                    takeoffGroundRollLogger,
+                    AirconOption
                 );
 
             PerformanceCalculationLogItem takeoff50FtClearanceLogger = new PerformanceCalculationLogItem(
@@ -411,7 +418,8 @@ namespace Airborn.web.Models
                 (
                     result,
                     IntepolatedTakeoffPerformanceData.DistanceToClear50Ft.Value,
-                    takeoff50FtClearanceLogger
+                    takeoff50FtClearanceLogger,
+                    AirconOption
                 );
         }
 
@@ -431,7 +439,8 @@ namespace Airborn.web.Models
                 (
                     result,
                     IntepolatedLandingPerformanceData.DistanceGroundRoll.Value,
-                    landingGroundRollLogger
+                    landingGroundRollLogger,
+                    AirconOption
                 );
 
             PerformanceCalculationLogItem landing50FtClearanceLogger = new PerformanceCalculationLogItem(
@@ -443,7 +452,8 @@ namespace Airborn.web.Models
                 (
                     result,
                     IntepolatedLandingPerformanceData.DistanceToClear50Ft.Value,
-                    landing50FtClearanceLogger
+                    landing50FtClearanceLogger,
+                    AirconOption
                 );
         }
 
