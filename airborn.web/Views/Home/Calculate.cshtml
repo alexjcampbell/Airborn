@@ -68,6 +68,24 @@
                                 console.log(error);
                             }
                         });
+                        $.ajax({
+                            url: '/Home/IsAirconditioned',
+                            data: { aircraftType: aircraftType },
+                            type: 'GET',
+                            success: function (data) {
+                                if (data == true) {
+                                    $('#AirconOption').val(1);
+                                    $('#AirconOption').prop('disabled', false);
+                                }
+                                else {
+                                    $('#AirconOption').val(0);
+                                    $('#AirconOption').prop('disabled', true);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(error);
+                            }
+                        });
                     });
                 });           
             </script>

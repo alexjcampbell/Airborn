@@ -230,5 +230,12 @@ namespace Airborn.Controllers
                 ).GetHigherWeight().ToString();
         }
 
+        public bool IsAirconditioned(string aircraftType)
+        {
+            return Aircraft.GetAircraftFromAircraftType(
+                    Enum.Parse<AircraftType>(aircraftType)
+                ).HasAirconOption();
+        }
+
     }
 }
