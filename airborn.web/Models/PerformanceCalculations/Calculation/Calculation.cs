@@ -241,7 +241,7 @@ namespace Airborn.web.Models
             List<CalculationResultForRunway> results = new List<CalculationResultForRunway>();
 
             foreach (Runway runway in
-                db.Runways.Where(runway => runway.Airport_Ident == Airport.Ident.ToUpper()).ToList<Runway>())
+                db.GetRunwaysForAirport(Airport.Ident.ToUpper()))
             {
                 Runways.Add(runway);
 

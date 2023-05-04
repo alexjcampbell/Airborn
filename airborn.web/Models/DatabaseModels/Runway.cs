@@ -57,32 +57,26 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Column("Surface_Friendly")]
-        public string Surface_Friendly
+        [NotMapped]
+        public RunwaySurface Surface
         {
-            get; set;
+            get
+            {
+                if (SurfaceText?.Length > 0)
+                {
+                    return ParseRunwaySurface(SurfaceText);
+                }
+                else
+                {
+                    return RunwaySurface.Unknown;
+                }
+            }
         }
 
         [Column("Elevation_Ft")]
         public int? ElevationFt
         {
             get; set;
-        }
-
-        [NotMapped]
-        public string Surface_Friendly_Output
-        {
-            get
-            {
-                if (Surface_Friendly?.Length > 0)
-                {
-                    return Surface_Friendly;
-                }
-                else
-                {
-                    return "Unknown";
-                }
-            }
         }
 
         [Column("Displaced_Threshold_Ft")]
@@ -291,6 +285,21 @@ namespace Airborn.web.Models
             double slope = (elevationDifference / distance) * 100;
 
             return slope;
+        }
+
+        public static RunwaySurface ParseRunwaySurface(string code)
+        {
+            code = code.Trim().ToUpperInvariant();
+
+            return code switch
+            {
+                "CON" or "CONCRETE" or "PEM" or "ASP" or "ASPHALT" or "ASPH" or
+                "ASPH-G" or "ASPH-CONC-F" or "ASPH-F" or "CONC-G" or "CONC-F" or
+                "GVL"
+                    => RunwaySurface.Paved,
+                "TURF-G" or "GRS" or "GRASS" or "GRASSED BROWN CLAY" or "TURF" => RunwaySurface.Grass,
+                _ => RunwaySurface.Unknown,
+            };
         }
     }
 }

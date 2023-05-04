@@ -105,7 +105,9 @@ namespace Airborn.web.Models
             // headwind component = wind strength * cos(the angular difference between the runway and the wind)
 
             return (
-                windStrength * Math.Cos(DegreesToRadians(windRunwayAngularDifferenceMagnetic))
+                windStrength * Math.Cos(
+                    DegreesToRadians(windRunwayAngularDifferenceMagnetic)
+                    )
             );
         }
 

@@ -19,12 +19,6 @@ namespace Airborn.web.Models
         MB
     }
 
-    public enum RunwaySurface
-    {
-        Paved,
-        DryGrass
-    }
-
     public enum AircraftType
     {
         [Display(Name = "Cirrus SR22 G2")]
@@ -35,7 +29,7 @@ namespace Airborn.web.Models
 
 
         [Display(Name = "Cirrus SR22T G6")]
-        SR22T_G6,        
+        SR22T_G6,
 
         [Display(Name = "Cessna 172SP")]
         C172_SP
@@ -54,5 +48,12 @@ namespace Airborn.web.Models
         Takeoff_50FtClearance,
         Landing_GroundRoll,
         Landing_50FtClearance
+    }
+
+    public enum RunwaySurface
+    {
+        Paved,
+        Grass,
+        Unknown
     }
 }

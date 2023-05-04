@@ -41,6 +41,12 @@ namespace Airborn.web.Models
                 ;
             }
 
+            if (result.Runway.Surface == RunwaySurface.Grass)
+            {
+                adjustedTakeoffDistance = adjustedTakeoffDistance * 1.15f;
+                logItem.Add("Adding 15% for grass runway");
+            }
+
             logItem.Add("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
 
             return Distance.FromFeet(adjustedTakeoffDistance);
@@ -58,7 +64,12 @@ namespace Airborn.web.Models
             return adjustedTakeoffDistance;
         }
 
-        private static double CalculateAdjustedTakeoffDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
+        private static double CalculateAdjustedTakeoffDistanceForTailwind(
+            CalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedTakeoffDistance
+            )
         {
             // add 10% for each 2 knots of tailwind up to 10 knots
             double adjustment = (result.HeadwindComponent / 2) * 0.1f;
@@ -81,7 +92,12 @@ namespace Airborn.web.Models
             return adjustedTakeoffDistance;
         }
 
-        private Distance CalculateAdjustedTakeoffDistanceForForSlope(double groundRollDistance, double slope, double pressureAltitude, PerformanceCalculationLogItem logItem)
+        private Distance CalculateAdjustedTakeoffDistanceForForSlope(
+            double groundRollDistance,
+            double slope,
+            double pressureAltitude,
+            PerformanceCalculationLogItem logItem
+            )
         {
 
             logItem.Add("Runway slope: " + slope.ToString("0.00") + " %");
@@ -130,12 +146,23 @@ namespace Airborn.web.Models
                 adjustedLandingDistance = CalculateAdjustedLandingDistanceForSlope(result, logItem, adjustedLandingDistance);
             }
 
+            if (result.Runway.Surface == RunwaySurface.Grass)
+            {
+                adjustedLandingDistance = adjustedLandingDistance * 1.20f;
+                logItem.Add("Adding 20% for dry grass runway");
+            }
+
             logItem.Add("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00") + " ft");
 
             return Distance.FromFeet(adjustedLandingDistance);
         }
 
-        private static double CalculateAdjustedLandingDistanceForHeadwind(CalculationResultForRunway result, Distance unadjustedLandingDistance, PerformanceCalculationLogItem logItem, double adjustedLandingDistance)
+        private static double CalculateAdjustedLandingDistanceForHeadwind(
+            CalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedLandingDistance
+            )
         {
             // subtract 10% for each 13 knots of headwind
             adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 13) * 0.1f));
@@ -147,7 +174,12 @@ namespace Airborn.web.Models
             return adjustedLandingDistance;
         }
 
-        private static double CalculateAdjustedLandingDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedLandingDistance, PerformanceCalculationLogItem logItem, double adjustedLandingDistance)
+        private static double CalculateAdjustedLandingDistanceForTailwind(
+            CalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedLandingDistance
+            )
         {
             // negative headwinds are tailwinds
 
@@ -171,7 +203,11 @@ namespace Airborn.web.Models
             return adjustedLandingDistance;
         }
 
-        private static double CalculateAdjustedLandingDistanceForSlope(CalculationResultForRunway result, PerformanceCalculationLogItem logItem, double adjustedLandingDistance)
+        private static double CalculateAdjustedLandingDistanceForSlope(
+            CalculationResultForRunway result,
+            PerformanceCalculationLogItem logItem,
+            double adjustedLandingDistance
+            )
         {
             logItem.Add("Runway slope: " + result.Runway.Slope.Value.ToString("0.00") + " %");
             logItem.Add("Runway slope adjustment factor: " + (result.Runway.Slope.Value * 0.1f).ToString("0.00"));

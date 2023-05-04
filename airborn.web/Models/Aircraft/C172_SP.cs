@@ -24,13 +24,24 @@ namespace Airborn.web.Models
             else if (result.HeadwindComponent < 0) // negative headwind is a tailwind
             {
                 adjustedTakeoffDistance = CalculateAdjustedTakeoffDistanceForTailwind(result, unadjustedTakeoffDistance, logItem, adjustedTakeoffDistance);
+            }
 
+            if (result.Runway.Surface == RunwaySurface.Grass)
+            {
+                adjustedTakeoffDistance = adjustedTakeoffDistance * 1.15f;
+
+                logItem.Add("Adding 15% for grass runway");
             }
 
             return Distance.FromFeet(adjustedTakeoffDistance);
         }
 
-        private static double CalculateAdjustedTakeoffDistanceForHeadwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
+        private static double CalculateAdjustedTakeoffDistanceForHeadwind(
+            CalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedTakeoffDistance
+            )
         {
             // subtract 10% for each 9 knots of headwind
             adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
@@ -79,11 +90,23 @@ namespace Airborn.web.Models
 
             }
 
+            if (result.Runway.Surface == RunwaySurface.Grass)
+            {
+                adjustedLandingDistance = adjustedLandingDistance * 1.45f;
+
+                logItem.Add("Adding 45% for grass runway");
+            }
+
             return Distance.FromFeet(adjustedLandingDistance);
         }
 
 
-        private static double CalculateAdjustedLandingDistanceForHeadwind(CalculationResultForRunway result, Distance unadjustedLandingDistance, PerformanceCalculationLogItem logItem, double adjustedLandingDistance)
+        private static double CalculateAdjustedLandingDistanceForHeadwind(
+            CalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedLandingDistance
+            )
         {
             // subtract 10% for each 9 knots of headwind
             adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
@@ -96,7 +119,12 @@ namespace Airborn.web.Models
             return adjustedLandingDistance;
         }
 
-        private static double CalculateAdjustedLandingDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedLandingDistance, PerformanceCalculationLogItem logItem, double adjustedLandingDistance)
+        private static double CalculateAdjustedLandingDistanceForTailwind(
+            CalculationResultForRunway result,
+            Distance unadjustedLandingDistance,
+            PerformanceCalculationLogItem logItem,
+            double adjustedLandingDistance
+            )
         {
             // add 10% for each 2 knots of tailwind up to 10 knots
             double adjustment = (result.HeadwindComponent / 2) * 0.1f;

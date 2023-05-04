@@ -37,7 +37,13 @@ namespace Airborn.web.Models
             // because otherwise EF will throw a NullReferenceException if no Airport_Ident
             // is set on a row
             return Runways.Where<Runway>
-                (r => r.Airport_Ident != null && r.Airport_Ident.StartsWith(airportIdentifer.ToUpper())
+                (
+                        r => r.Airport_Ident != null
+                        &&
+                        r.Airport_Ident.StartsWith(airportIdentifer.ToUpper())
+                        &&
+                        (!r.Runway_Name.StartsWith("H") // remove helipadss
+                        )
                 ).ToList<Runway>();
         }
 
