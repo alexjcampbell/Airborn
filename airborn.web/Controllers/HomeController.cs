@@ -41,6 +41,8 @@ namespace Airborn.Controllers
         {
             ReadCookies();
 
+            PageModel.AircraftWeight = 3400;
+
             return View(PageModel);
         }
 
