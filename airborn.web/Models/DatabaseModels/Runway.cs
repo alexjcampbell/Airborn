@@ -243,6 +243,8 @@ namespace Airborn.web.Models
 
             string oppositeRunway = oppositeNumber.ToString();
 
+            letter = char.ToUpper(letter);
+
             if (hasLetter)
             {
                 switch (letter)

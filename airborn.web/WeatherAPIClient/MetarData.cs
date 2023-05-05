@@ -16,7 +16,14 @@ namespace Airborn.web.Models
         {
             get
             {
-                return WindDirection + (float)AirportDbContext.GetAirport(StationId).MagneticVariation.GetValueOrDefault();
+                int windDirectionMagnetic =
+                    Direction.ConvertTrueToMagnetic(
+                        (int)WindDirection,
+                        (int)AirportDbContext.GetAirport(StationId).MagneticVariation.GetValueOrDefault()
+                        );
+
+                return
+                    windDirectionMagnetic;
             }
         }
 

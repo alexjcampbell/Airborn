@@ -102,7 +102,7 @@ namespace Airborn.web.Models
         /// We compute the magnetic direction from a true direction by adding the magnetic variation
         /// from the true direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
-        private static int ConvertMagneticToTrue(int directionMagnetic, int? magneticVariation)
+        public static int ConvertMagneticToTrue(int directionMagnetic, int? magneticVariation)
         {
 
             if (magneticVariation.HasValue)
@@ -121,7 +121,7 @@ namespace Airborn.web.Models
         /// We compute the true direction from a magnetic direction by subtracting the magnetic variation
         /// to the magnetic direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
-        private static int ConvertTrueToMagnetic(int directionTrue, int? magneticVariation)
+        public static int ConvertTrueToMagnetic(int directionTrue, int? magneticVariation)
         {
 
             if (magneticVariation.HasValue)
@@ -141,7 +141,7 @@ namespace Airborn.web.Models
         /// e.g. a direction of 10 degrees magnetic with magnetic variation of 20 degrees west results in
         /// a direction of -10. To fix this, we add 360
         /// </summary>
-        private static int ReturnPositiveDirectionIfNegative(int direction)
+        public static int ReturnPositiveDirectionIfNegative(int direction)
         {
             if (direction < 0)
             {
