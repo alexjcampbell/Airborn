@@ -210,36 +210,82 @@ namespace Airborn.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Error");
+
+            myActivity?.SetTag("RequestId", Activity.Current?.Id ?? HttpContext.TraceIdentifier);
+            myActivity?.SetTag("Headers", HttpContext.Request.Headers);
+
             return View(new ErrorPageModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public JsonResult AutocompleteAirportIdentifier(string term)
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to AutocompleteAirportIdentifier");
+
+            myActivity?.SetTag("AirportIdentifier", term);
+
             term = term?.ToUpper();
             return Json(_dbContext.SearchForAirportsByIdentifier(term));
         }
 
         public JsonResult GetAirportInformation(string airportIdentifier)
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to GetAirportInformation");
+
+            myActivity?.SetTag("AirportIdentifier", airportIdentifier);
+
             return Json(_dbContext.GetAirport(airportIdentifier));
         }
 
         public string GetAircraftMaxGrossWeight(string aircraftType)
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to GetAircraftMaxGrossWeight");
+
+            myActivity?.SetTag("AircraftType", aircraftType);
+
+            AircraftType aircraftTypeEnum;
+
+            if (Enum.TryParse(aircraftType, out aircraftTypeEnum))
+            {
+                myActivity?.SetTag("AircraftTypeEnum", aircraftTypeEnum.ToString());
+            }
+            else
+            {
+                myActivity?.SetTag("AircraftTypeEnum", "Unknown: " + aircraftType);
+            }
+
             return Aircraft.GetAircraftFromAircraftType(
-                    Enum.Parse<AircraftType>(aircraftType)
+                    aircraftTypeEnum
                 ).GetHigherWeight().ToString();
         }
 
         public bool IsAirconditioned(string aircraftType)
         {
-            return Aircraft.GetAircraftFromAircraftType(
-                    Enum.Parse<AircraftType>(aircraftType)
-                ).HasAirconOption();
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to IsAirconditioned");
+
+            myActivity?.SetTag("AircraftType", aircraftType);
+
+            AircraftType aircraftTypeEnum;
+
+            if (Enum.TryParse(aircraftType, out aircraftTypeEnum))
+            {
+                myActivity?.SetTag("AircraftTypeEnum", aircraftTypeEnum.ToString());
+            }
+            else
+            {
+                myActivity?.SetTag("AircraftTypeEnum", "Unknown: " + aircraftType);
+            }
+
+            return Aircraft.GetAircraftFromAircraftType(aircraftTypeEnum).HasAirconOption();
         }
 
         public async Task<IActionResult> GetMetarForAirport(string airportCode)
         {
+
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to GetMetarForAirport");
+
+            myActivity?.SetTag("AirportCode", airportCode);
+
             if (string.IsNullOrWhiteSpace(airportCode))
             {
                 return BadRequest("Invalid airport code");
