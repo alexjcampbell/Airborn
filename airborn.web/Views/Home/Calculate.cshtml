@@ -87,7 +87,48 @@
                             }
                         });
                     });
-                });           
+                });
+                $(function () {
+                    // Attach a click event listener to the GetMetarButton
+                    $("#GetMetarButton").click(function (event) {
+                        event.preventDefault(); // Prevent the form from being posted
+
+                        var airportCode = $("#AirportIdentifier").val(); // Read the airport code from the AirportIdentifier field
+
+                        $.ajax({
+                            url: "/Home/GetMetarForAirport",
+                            type: "GET",
+                            data: { airportCode: airportCode },
+                            success: function (data) {
+                                // Read the fields from the JSON response and do something with them
+                                var stationId = data.stationId;
+                                var observationTime = data.observationTime;
+                                var temperature = data.temperature;
+                                var windSpeed = data.windSpeed;
+                                var windDirection = data.windDirection; // Added wind direction
+                                var windDirectionMagnetic = data.windDirectionMagnetic; // Added wind direction
+                                var altimeterSetting = data.altimeterSetting; // Added altimeter
+
+                                // Set the textboxes and dropdowns with the METAR data
+                                $("#Temperature").val(temperature.toFixed(0));
+                                $("#TemperatureType option:first").prop("selected", true);
+                                $("#WindStrength").val(windSpeed);
+                                $("#WindDirectionMagnetic").val(windDirectionMagnetic);
+                                $("#AltimeterSetting").val(altimeterSetting.toFixed(2));
+
+                                $("#AltimeterSettingType option:first").prop("selected", true);
+
+                                console.log("Latest METAR for " + stationId + ": temperature " + temperature + "°C, wind speed " + windSpeed + " knots, wind direction magnetic " + windDirectionMagnetic + " degrees, wind direction true " + windDirection + "  altimeter " + altimeterSetting + " inHg");
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log("Error: " + textStatus + " - " + errorThrown);
+                                if (jqXHR.status === 400) {
+                                    alert(jqXHR.responseText);
+                                }
+                            }
+                        });
+                    });
+                });   
             </script>
         }
         <div class="col-sm-3">
@@ -123,8 +164,14 @@
     </div>
 
     <br />
-    <div>
-        <h6>The weather</h6>
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <h6>The weather&nbsp;&nbsp;
+                <button id="GetMetarButton" class="btn-sm btn-outline-info">Get METAR (US only)</button>
+            </h6>
+
+        </div>
+
     </div>
     <div class="form-group row">
         <div class="col-sm-3">
@@ -146,37 +193,39 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-2">
-            <div class="form-floating">
-                <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="3" />
-                <label asp-for="Temperature">Temperature</label>
+        <div class="col-sm-3">
+
+
+            <div class="input-group">
+                <div style="width: 80%" class="form-floating">
+                    <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="3" />
+                    <label asp-for="Temperature">Temperature</label>
+                </div>
+
+                <select style="width: 20%" asp-for="TemperatureType"
+                    asp-items="Html.GetEnumSelectList<TemperatureType>()" class="form-control">
+                </select>
+
                 <div class="invalid-feedback" style="display:block;">
                     <span asp-validation-for="Temperature" class="text-danger"></span>
                 </div>
             </div>
         </div>
-        <div class="col-sm-1">
-            <div class="form-floating">
-                <select style="width:auto;" asp-for="TemperatureType"
-                    asp-items="Html.GetEnumSelectList<TemperatureType>()" class="form-control" class="form-control">
-                </select>
-            </div>
-        </div>
 
-        <div class="col-sm-2">
-            <div class="form-floating">
-                <input asp-for="AltimeterSetting" class="form-control" maxlength="5" placeholder="Altimeter setting" />
-                <label asp-for="AltimeterSetting">Altimeter setting</label>
-                <div class="invalid-feedback" style="display:block;">
-                    <span asp-validation-for="AltimeterSetting" class="text-danger"></span>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <div class="form-floating">
+                    <input asp-for="AltimeterSetting" class="form-control" maxlength="5"
+                        placeholder="Altimeter setting" />
+                    <label asp-for="AltimeterSetting">Altimeter setting</label>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-1">
-            <div class="form-floating">
                 <select style="width:auto;" asp-for="AltimeterSettingType"
                     asp-items="Html.GetEnumSelectList<AltimeterSettingType>()" class="form-control">
                 </select>
+
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="AltimeterSetting" class="text-danger"></span>
+                </div>
             </div>
         </div>
     </div>

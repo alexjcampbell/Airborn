@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Airborn.web.Models;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Airborn.Controllers
 {
@@ -237,5 +238,67 @@ namespace Airborn.Controllers
                 ).HasAirconOption();
         }
 
+        public async Task<IActionResult> GetMetarForAirport(string airportCode)
+        {
+            if (string.IsNullOrWhiteSpace(airportCode))
+            {
+                return BadRequest("Invalid airport code");
+            }
+
+            try
+            {
+                var metarData = await new AwcApiClient().GetLatestMetarForAirport(airportCode);
+
+                metarData.AirportDbContext = _dbContext;
+
+                if (metarData != null)
+                {
+                    return Json(new
+                    {
+                        stationId = metarData.StationId,
+                        observationTime = metarData.ObservationTime.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                        temperature = metarData.Temperature,
+                        windSpeed = metarData.WindSpeed,
+                        windDirection = metarData.WindDirection, // Include wind direction in the JSON response
+                        windDirectionMagnetic = metarData.WindDirectionMagnetic, // Include wind direction in the JSON response
+                        altimeterSetting = metarData.AltimeterSetting // Include altimeter in the JSON response
+                    });
+                }
+                else
+                {
+                    return BadRequest($"No METAR data found for airport {airportCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an error response
+                _logger.LogError(ex, "Error retrieving METAR data for airport {AirportCode}", airportCode);
+                return BadRequest("Error retrieving METAR data");
+            }
+        }
+
+        public string GetMagneticVariationForAirports()
+        {
+            FaaDataParser reader = new FaaDataParser();
+            var airports = reader.Parse();
+
+            int count = 0;
+
+            foreach (var airport in airports)
+            {
+                Airport airportFromDb = _dbContext.GetAirport(airport.Key);
+
+                if (airportFromDb != null)
+                {
+                    airportFromDb.MagneticVariation = double.Parse(airport.Value);
+                    _dbContext.Update(airportFromDb);
+
+                    _dbContext.SaveChanges();
+                    count++;
+                }
+            }
+
+            return count.ToString();
+        }
     }
 }

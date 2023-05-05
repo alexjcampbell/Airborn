@@ -40,5 +40,11 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("Magnetic_Variation")]
+        public double? MagneticVariation
+        {
+            get; set;
+        }
+
     }
 }
