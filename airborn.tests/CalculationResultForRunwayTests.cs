@@ -46,7 +46,7 @@ namespace Airborn.Tests
             int runwayHeading = 160;
 
             Wind wind = Wind.FromMagnetic(windDirection, windStrength);
-            Runway runway = Runway.FromMagnetic(runwayHeading);
+            Runway runway = Runway.FromMagnetic(new Airport(), runwayHeading);
 
             CalculationResultForRunway result = new CalculationResultForRunway(
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
@@ -73,7 +73,7 @@ namespace Airborn.Tests
         public void Test_PerformanceCalculator_CrosswindComponent_DirectCrosswind_EqualsTotalWind()
         {
             Wind wind = Wind.FromMagnetic(90, 10);
-            Runway runway = Runway.FromMagnetic(180);
+            Runway runway = Runway.FromMagnetic(new Airport(), 180);
 
             CalculationResultForRunway result = new CalculationResultForRunway(
                 runway, wind, new PerformanceCalculationLogItem(""), new Distance()
@@ -102,7 +102,7 @@ namespace Airborn.Tests
         {
 
             Wind wind = Wind.FromMagnetic(0, 10);
-            Runway runway = Runway.FromMagnetic(40);
+            Runway runway = Runway.FromMagnetic(new Airport(), 40);
 
 
             CalculationResultForRunway result = new CalculationResultForRunway(

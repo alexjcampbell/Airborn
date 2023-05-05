@@ -249,6 +249,9 @@ namespace Airborn.web.Models
             foreach (Runway runway in
                 db.GetRunwaysForAirport(Airport.Ident.ToUpper()))
             {
+
+                runway.Airport = Airport;
+
                 Runways.Add(runway);
 
                 GetRunwaySlope(db, runway);

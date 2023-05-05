@@ -9,18 +9,29 @@ namespace Airborn.web.Models
     public class Runway
     {
 
-        public Runway()
+        private Runway()
         {
         }
 
-        public Runway(string runwayName)
+        public Runway(Airport airport)
+        {
+            Airport = airport;
+        }
+
+        public Runway(Airport airport, string runwayName) : this(airport)
         {
             Runway_Name = runwayName;
         }
 
-        public Runway(Direction runwayHeading)
+        public Runway(Airport airport, Direction runwayHeading) : this(airport)
         {
             _runwayHeading = runwayHeading;
+        }
+
+        [NotMapped]
+        public Airport Airport
+        {
+            get; set;
         }
 
         public int Runway_Id
@@ -81,6 +92,12 @@ namespace Airborn.web.Models
 
         [Column("Displaced_Threshold_Ft")]
         public int? DisplacedThresholdFt
+        {
+            get; set;
+        }
+
+        [Column("heading_degT")]
+        public double? HeadingDegreesTrue
         {
             get; set;
         }
@@ -249,14 +266,14 @@ namespace Airborn.web.Models
             return oppositeRunway;
         }
 
-        public static Runway FromMagnetic(int magneticHeading)
+        public static Runway FromMagnetic(Airport airport, int magneticHeading)
         {
-            return new Runway(Direction.FromMagnetic(magneticHeading));
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading));
         }
 
-        public static Runway FromMagnetic(int magneticHeading, int magneticVariation)
+        public static Runway FromMagnetic(Airport airport, int magneticHeading, int magneticVariation)
         {
-            return new Runway(Direction.FromMagnetic(magneticHeading, magneticVariation));
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading, magneticVariation));
         }
 
         /// <summary>
@@ -264,14 +281,22 @@ namespace Airborn.web.Models
         /// </summary>
         private static Direction GetRunwayHeading(Runway runway)
         {
-            // RunwayIdentifer could be like 10R or 28L so we use a regex to get only the first two characters
-            string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
+            if (runway.Airport != null && runway.Airport.MagneticVariation.HasValue)
+            {
+                return Direction.FromTrue(runway.HeadingDegreesTrue.Value, runway.Airport.MagneticVariation.Value);
+            }
+            else
+            {
+                // RunwayIdentifer could be like 10R or 28L so we use a regex to get only the first two characters
+                string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
 
-            // runway heading is the runway name (e.g. 10 or 28) multiplied by 10
-            return new Direction(
-                    int.Parse(runwayName) * 10,
-                    0
-                    );
+                // runway heading is the runway name (e.g. 10 or 28) multiplied by 10
+                return new Direction(
+                        int.Parse(runwayName) * 10,
+                        0
+                        );
+            }
+
         }
 
         public static double CalculateSlope(double startingElevation, double endingElevation, double distance)

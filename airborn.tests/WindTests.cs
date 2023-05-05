@@ -14,7 +14,7 @@ namespace Airborn.Tests
             int magneticVariation = 0;
 
             Wind wind = Wind.FromMagnetic(310, magneticVariation);
-            Runway runway = Runway.FromMagnetic(10, magneticVariation);
+            Runway runway = Runway.FromMagnetic(new Airport(), 10, magneticVariation);
 
             double expected = -60;
 
@@ -32,7 +32,7 @@ namespace Airborn.Tests
             int magneticVariation = 0;
 
             Wind wind = Wind.FromMagnetic(010, magneticVariation);
-            Runway runway = Runway.FromMagnetic(310, magneticVariation);
+            Runway runway = Runway.FromMagnetic(new Airport(), 310, magneticVariation);
 
             double expected = -60;
 

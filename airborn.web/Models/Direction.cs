@@ -63,7 +63,12 @@ namespace Airborn.web.Models
         public static Direction FromTrue(int directionTrue, int magneticVariation)
         {
             return new Direction(directionTrue, magneticVariation);
-        }        
+        }
+
+        public static Direction FromTrue(double directionTrue, double magneticVariation)
+        {
+            return new Direction((int)directionTrue, (int)magneticVariation);
+        }
 
         public override bool Equals(object obj)
         {
@@ -94,7 +99,7 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// We compute the magnetic direction from a true direction by subtracting the magnetic variation
+        /// We compute the magnetic direction from a true direction by adding the magnetic variation
         /// from the true direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
         private static int ConvertMagneticToTrue(int directionMagnetic, int? magneticVariation)
@@ -102,7 +107,7 @@ namespace Airborn.web.Models
 
             if (magneticVariation.HasValue)
             {
-                directionMagnetic -= magneticVariation.Value;
+                directionMagnetic += magneticVariation.Value;
             }
 
             // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
@@ -113,7 +118,7 @@ namespace Airborn.web.Models
         }
 
         /// <summary>
-        /// We compute the true direction from a magnetic direction by adding the magnetic variation
+        /// We compute the true direction from a magnetic direction by subtracting the magnetic variation
         /// to the magnetic direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
         private static int ConvertTrueToMagnetic(int directionTrue, int? magneticVariation)
@@ -121,7 +126,7 @@ namespace Airborn.web.Models
 
             if (magneticVariation.HasValue)
             {
-                directionTrue += magneticVariation.Value;
+                directionTrue -= magneticVariation.Value;
             }
 
             // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
