@@ -81,12 +81,12 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt350_Is10()
+        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt350_Is330()
         {
             double directionDegrees = 350;
             double magneticVariation = 20;
 
-            double expected = 10;
+            double expected = 330;
 
             Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
 
@@ -99,12 +99,12 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt10_Is30()
+        public void Test_TrueToMagnetic_MagneticVariation_Plus20_StartingAt10_Is350()
         {
             double directionDegrees = 10;
             double magneticVariation = 20;
 
-            double expected = 30;
+            double expected = 350;
 
             Direction direction = Direction.FromTrue(directionDegrees, magneticVariation);
 
@@ -127,7 +127,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
         }
@@ -144,7 +144,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
 
@@ -162,7 +162,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
         }
@@ -179,7 +179,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
 
@@ -197,7 +197,7 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
         }
@@ -214,24 +214,24 @@ namespace Airborn.Tests
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
         }
 
         [TestMethod]
-        public void Test_MagneticToTrue_MagneticVariation_Plus20_StartingAt10_Is350()
+        public void Test_MagneticToTrue_MagneticVariation_Plus20_StartingAt10_Is30()
         {
             double directionDegrees = 10;
             double magneticVariation = 20;
 
-            double expected = 350;
+            double expected = 30;
 
             Direction direction = Direction.FromMagnetic(directionDegrees, magneticVariation);
 
             Assert.AreEqual(
                 expected,
-                direction.DirectionMagnetic,
+                direction.DirectionTrue,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
             );
         }
