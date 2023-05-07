@@ -206,7 +206,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return RunwayHeading.DirectionMagnetic.ToString() + " °M";
+                return RunwayHeading.DirectionMagnetic.ToString("#") + " °M";
             }
         }
 
