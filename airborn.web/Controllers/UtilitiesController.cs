@@ -56,8 +56,14 @@ namespace Airborn.Controllers
             */
         }
 
+        /*
+
         public async Task<IActionResult> GetMagneticVariationForNonUSAirports()
         {
+            throw new NotImplementedException();
+
+
+
             GeomagClient client = new GeomagClient();
 
             List<MagVarResult> updates = new List<MagVarResult>();
@@ -92,7 +98,10 @@ namespace Airborn.Controllers
             }
 
             return Json(updates);
-        }
+
+     
+    }
+           */
 
         public class MagVarResult
         {
