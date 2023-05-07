@@ -1,0 +1,106 @@
+@model Airborn.web.Models.PaginatedList<Airborn.web.Models.Airport>
+
+
+@{
+    ViewData["Title"] = "All airports | Airborn.co";
+}
+
+<br />
+
+<div class="jumbotron">
+    <h4 class="display-4"><b><i>All airports</i></b></h4>
+</div>
+
+@*
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+*@
+
+<br />
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Ident</a>
+
+            </th>
+            <th>
+                FieldElevation (ft)
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Magnetic variation
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FieldElevation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MagneticVariation)
+            </td>
+            <td>
+                @*
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                *@
+                @Html.ActionLink("Details", "Details", new { id=item.Id })
+                @*
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

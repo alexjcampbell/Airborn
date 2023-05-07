@@ -7,7 +7,7 @@ using Airborn.web.Models;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Airborn.Controllers
+namespace Airborn.web.Controllers
 {
     public class HomeController : Controller
     {
