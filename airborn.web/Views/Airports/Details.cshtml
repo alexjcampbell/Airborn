@@ -69,8 +69,17 @@
                 Runway Length
             </th>
             <th>
+                Displaced threshold
+            </th>            
+            <th>
                 Runway Heading
             </th>
+            <th>
+                Slope
+            </th>
+            <th>
+                Surface
+            </th>            
         </tr>
     </thead>
     <tbody>
@@ -80,11 +89,20 @@
                 @Html.DisplayFor(modelItem => item.Runway_Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RunwayLengthFriendly)
+                @Html.DisplayFor(modelItem => item.RunwayLengthFriendly) ft
             </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplacedThreshold_Formatted)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RunwayHeadingMagneticConverted)
             </td>                        
+            <td>
+                @Html.DisplayFor(modelItem => item.Slope)
+            </td>                                    
+            <td>
+                @Html.DisplayFor(modelItem => item.Surface)
+            </td>
         </tr>
 }
     </tbody>

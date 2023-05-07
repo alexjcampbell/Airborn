@@ -8,7 +8,6 @@ using Airborn.web.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Airborn.web.Models;
 
 namespace Airborn.web.Controllers
 {
