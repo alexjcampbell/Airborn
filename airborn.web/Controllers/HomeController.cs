@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Xml.Linq;
 
-namespace Airborn.Controllers
+namespace Airborn.web.Controllers
 {
     public class HomeController : Controller
     {

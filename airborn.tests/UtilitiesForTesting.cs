@@ -10,7 +10,7 @@ using Airborn.web.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.ComponentModel.DataAnnotations;
-using Airborn.Controllers;
+using Airborn.web.Controllers;
 
 namespace Airborn.web.Models
 {

@@ -254,41 +254,10 @@ namespace Airborn.web.Models
 
                 Runways.Add(runway);
 
-                GetRunwaySlope(db, runway);
-
                 // calculate the performance for this runway and aircraft
                 Results.Add(CalculatePerformanceForRunway(runway));
             }
 
-        }
-
-        private void GetRunwaySlope(AirportDbContext db, Runway runway)
-        {
-            if (runway.RunwayLength != null)
-            {
-                if (db.Runways.Count(r => r.Airport_Ident == Airport.Ident.ToUpper() && r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)) == 0)
-                {
-                    // if there is no opposite runway, we can't calculate the slope
-                    runway.Slope = null;
-                }
-                else
-                {
-                    // determine the opposite runway
-                    Runway oppositeRunway = db.Runways.Where(
-                            r => r.Airport_Ident == Airport.Ident.ToUpper()
-                            &&
-                            r.Runway_Name == Runway.GetOppositeRunway(runway.Runway_Name)
-                        ).First<Runway>();
-
-                    if (runway.ElevationFt.HasValue && oppositeRunway.ElevationFt.HasValue && runway.RunwayLength.HasValue)
-                    {
-                        runway.Slope = Runway.CalculateSlope(
-                            runway.ElevationFt.Value,
-                            oppositeRunway.ElevationFt.Value,
-                            runway.RunwayLength.Value);
-                    }
-                }
-            }
         }
 
         /// <summary>

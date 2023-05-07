@@ -24,14 +24,26 @@
 
 <body>
 
-    <header>
 
 
-    </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
 
         <main role="main" class="pb-3">
+
+    <ul class="nav nav-tabs">
+
+        <li class="nav-item">
+            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Calculate" ? "nav-link active" : "nav-link")" aria-current="page" asp-controller="Home" asp-action="Calculate">Calculate</a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Airports" ? "nav-link active" : "nav-link")" asp-controller="Airports" asp-action="Index">Airports</a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "nav-link active" : "nav-link")" asp-controller="Home" asp-action="About">About Airborn</a>
+        </li>
+    </ul>
+
             @RenderBody()
         </main>
     </div>
@@ -40,7 +52,8 @@
         <div class="container">
 
             &copy; 2021 - Airborn.co - this site is for entertainment purposes only and all use is subject to the <a
-                asp-area="" asp-controller="Home" asp-action="Terms">Terms & Conditions</a>
+                asp-controller="Home" asp-action="Terms">Terms & Conditions</a> and <a asp-controller="Home"
+                asp-action="Privacy">Privacy Policy</a>.
         </div>
     </footer>
 
