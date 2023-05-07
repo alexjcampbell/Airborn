@@ -69,6 +69,11 @@ namespace Airborn.web.Models
 
         }
 
+        public List<Airport> GetAirports()
+        {
+            return Airports.ToList<Airport>();
+        }
+
         public List<KeyValuePair<string, string>> SearchForAirportsByIdentifier(string term)
         {
 

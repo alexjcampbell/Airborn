@@ -40,6 +40,16 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        public double? Latitude_Deg
+        {
+            get; set;
+        }
+
+        public double? Longitude_Deg
+        {
+            get; set;
+        }
+
         [Column("Magnetic_Variation")]
         public double? MagneticVariation
         {

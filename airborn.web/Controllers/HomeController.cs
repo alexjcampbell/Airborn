@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Airborn.web.Models;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.Xml.Linq;
 
 namespace Airborn.Controllers
 {
@@ -347,6 +351,58 @@ namespace Airborn.Controllers
             }
 
             return count.ToString();
+        }
+
+        public async Task<IActionResult> GetMagneticVariationForNonUSAirports()
+        {
+            GeomagClient client = new GeomagClient();
+
+            List<MagVarResult> updates = new List<MagVarResult>();
+
+            List<Airport> airports = _dbContext.GetAirports().Where(a => a.MagneticVariation == null).ToList();
+
+            foreach (var airport in airports)
+            {
+                if (
+                    (airport.MagneticVariation.HasValue && airport.MagneticVariation != 0)
+                )
+                {
+                    continue;
+                }
+                {
+                    double? result = await
+                        client.GetGeomagDataAsync(airport.Latitude_Deg.Value, airport.Longitude_Deg.Value, airport.FieldElevation.Value, DateTime.Now);
+
+                    MagVarResult magVarResult = new MagVarResult
+                    {
+                        AirportIdent = airport.Ident,
+                        Latitude = airport.Latitude_Deg.Value,
+                        Longitude = airport.Longitude_Deg.Value,
+                        FieldElevation = airport.FieldElevation.Value,
+                        MagneticVariation = result
+                    };
+
+                    airport.MagneticVariation = result;
+                    _dbContext.SaveChanges();
+                    updates.Add(magVarResult);
+                }
+            }
+
+            return Json(updates);
+        }
+
+        public class MagVarResult
+        {
+            public string AirportIdent { get; set; }
+            public double? MagneticVariation { get; set; }
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            public double FieldElevation { get; set; }
+
+            public override string ToString()
+            {
+                return $"{AirportIdent} {Latitude} {Longitude} {FieldElevation} {MagneticVariation}";
+            }
         }
     }
 }
