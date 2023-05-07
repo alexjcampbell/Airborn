@@ -1,12 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace Airborn.web.Models
 {
     [Table("airports")]
     public class Airport
     {
-        public string Id
+        public int Id
         {
             get; set;
         }
@@ -42,6 +43,11 @@ namespace Airborn.web.Models
 
         [Column("Magnetic_Variation")]
         public double? MagneticVariation
+        {
+            get; set;
+        }
+
+        public List<Runway> Runways
         {
             get; set;
         }

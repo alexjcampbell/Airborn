@@ -57,3 +57,35 @@
     <a asp-action="Index">Back to List</a>
 </div>
 *@
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Runway Name
+            </th>
+            <th>
+                Runway Length
+            </th>
+            <th>
+                Runway Heading
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Runways) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Runway_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunwayLengthFriendly)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.RunwayHeadingMagneticConverted)
+            </td>                        
+        </tr>
+}
+    </tbody>
+</table>

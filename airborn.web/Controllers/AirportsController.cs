@@ -68,7 +68,9 @@ namespace Airborn.web.Controllers
         // GET: Airports/Details/5
         public ActionResult Details(int id)
         {
-            Airport airport = _dbContext.Airports.Where(a => a.Id == id.ToString()).FirstOrDefault();
+            Airport airport = _dbContext.Airports.Where(a => a.Id == id).FirstOrDefault();
+
+            airport.Runways = _dbContext.Runways.Where(r => r.AirportRef == airport.Id).ToList();
 
             return View(airport);
         }
@@ -78,7 +80,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
-            return View();
+            //return View();
         }
 
         // POST: Airports/Create
@@ -87,6 +89,8 @@ namespace Airborn.web.Controllers
         public ActionResult Create(IFormCollection collection)
         {
             throw new NotImplementedException();
+
+            /*
 
             try
             {
@@ -98,6 +102,8 @@ namespace Airborn.web.Controllers
             {
                 return View();
             }
+
+            */
         }
 
         // GET: Airports/Edit/5
@@ -105,7 +111,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
-            return View();
+            // return View();
         }
 
         // POST: Airports/Edit/5
@@ -115,6 +121,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
+            /*
             try
             {
                 // TODO: Add update logic here
@@ -125,6 +132,7 @@ namespace Airborn.web.Controllers
             {
                 return View();
             }
+            */
         }
 
         // GET: Airports/Delete/5
@@ -132,7 +140,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
-            return View();
+             // return View();
         }
 
         // POST: Airports/Delete/5
@@ -142,7 +150,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
-            try
+            /*           try
             {
                 // TODO: Add delete logic here
 
@@ -152,6 +160,8 @@ namespace Airborn.web.Controllers
             {
                 return View();
             }
-        }
+            
+        */       
+         }
     }
 }

@@ -39,6 +39,13 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("Airport_Ref")]
+
+        public int AirportRef
+        {
+            get; set;
+        }
+
         public string Airport_Ident
         {
             get; set;

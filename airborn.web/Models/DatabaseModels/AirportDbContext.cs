@@ -28,6 +28,15 @@ namespace Airborn.web.Models
             modelBuilder.Entity<Runway>()
                 .HasKey(r => r.Runway_Id)
                 .HasName("Runway_Id");
+
+            modelBuilder.Entity<Airport>()
+                .HasKey(a => a.Id)
+                .HasName("Id");                
+
+            modelBuilder.Entity<Airport>()
+                .HasMany(a => a.Runways)
+                .WithOne(r => r.Airport)
+                .HasForeignKey(r => r.AirportRef);
         }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)
