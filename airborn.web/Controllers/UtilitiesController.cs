@@ -15,12 +15,12 @@ namespace Airborn.Controllers
 {
     public class UtilitiesController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<UtilitiesController> _logger;
         private readonly AirportDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public UtilitiesController(ILogger<HomeController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
+        public UtilitiesController(ILogger<UtilitiesController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
         {
             _logger = logger;
             _env = env;
