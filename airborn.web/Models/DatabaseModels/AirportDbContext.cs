@@ -31,7 +31,7 @@ namespace Airborn.web.Models
 
             modelBuilder.Entity<Airport>()
                 .HasKey(a => a.Id)
-                .HasName("Id");                
+                .HasName("Id");
 
             modelBuilder.Entity<Airport>()
                 .HasMany(a => a.Runways)
@@ -51,7 +51,7 @@ namespace Airborn.web.Models
                         &&
                         r.Airport_Ident.StartsWith(airportIdentifer.ToUpper())
                         &&
-                        (!r.Runway_Name.StartsWith("H") // remove helipadss
+                        (!r.Runway_Name.StartsWith("H") // remove helipads
                         )
                 ).ToList<Runway>();
         }
@@ -73,6 +73,8 @@ namespace Airborn.web.Models
             Airport airport = Airports.Single<Airport>(
                 a => a.Ident.Equals(airportIdentifier.ToUpper())
                 );
+
+            airport.Runways = GetRunwaysForAirport(airportIdentifier);
 
             return airport;
 

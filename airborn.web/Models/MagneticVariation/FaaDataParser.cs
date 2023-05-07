@@ -60,11 +60,24 @@ namespace Airborn.web.Models
                 string airportIdentifier = airportHeliportTimeSlice.Element(aixm + "locationIndicatorICAO").Value;
                 string magneticVariation = airportHeliportTimeSlice.Element(aixm + "magneticVariation").Value;
 
+                // Check if the magnetic variation contains 'E' or 'W'
+                if (magneticVariation.Contains('E'))
+                {
+                    magneticVariation = magneticVariation.Replace('E', ' ');
+                    decimal magVarDecimal = decimal.Parse(magneticVariation);
+                    magVarDecimal *= -1;
+                    magneticVariation = magVarDecimal.ToString() + "E";
+                }
+                else if (magneticVariation.Contains('W'))
+                {
+                    magneticVariation = magneticVariation.Replace('W', ' ');
+                }
+
                 airportData[airportIdentifier] = magneticVariation;
             }
 
             return airportData;
-
         }
+
     }
 }

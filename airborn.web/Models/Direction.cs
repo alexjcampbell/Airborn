@@ -4,24 +4,24 @@ namespace Airborn.web.Models
 {
     public struct Direction : IEquatable<Direction>, IComparable<Direction>
     {
-        private readonly int _directionTrue;
+        private readonly double _directionTrue;
 
-        private readonly int? _magneticVariation;
+        private readonly double? _magneticVariation;
 
-        public Direction(int directionTrue)
+        public Direction(double directionTrue)
         {
             this._directionTrue = directionTrue;
         }
 
 
-        public Direction(int directionTrue, int magneticVariation)
+        public Direction(double directionTrue, double magneticVariation)
         {
             this._directionTrue = directionTrue;
             this._magneticVariation = magneticVariation;
         }
 
 
-        public int DirectionTrue
+        public double DirectionTrue
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public int DirectionMagnetic
+        public double DirectionMagnetic
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public int? MagneticVariation
+        public double? MagneticVariation
         {
             get
             {
@@ -45,29 +45,24 @@ namespace Airborn.web.Models
             }
         }
 
-        public static Direction FromMagnetic(int directionMagnetic)
+        public static Direction FromMagnetic(double directionMagnetic)
         {
             return new Direction(ConvertMagneticToTrue(directionMagnetic, null));
         }
 
-        public static Direction FromMagnetic(int directionMagnetic, int magneticVariation)
+        public static Direction FromMagnetic(double directionMagnetic, double magneticVariation)
         {
             return new Direction(ConvertMagneticToTrue(directionMagnetic, magneticVariation), magneticVariation);
         }
 
-        public static Direction FromTrue(int directionTrue)
+        public static Direction FromTrue(double directionTrue)
         {
             return new Direction(directionTrue);
         }
 
-        public static Direction FromTrue(int directionTrue, int magneticVariation)
-        {
-            return new Direction(directionTrue, magneticVariation);
-        }
-
         public static Direction FromTrue(double directionTrue, double magneticVariation)
         {
-            return new Direction((int)directionTrue, (int)magneticVariation);
+            return new Direction(directionTrue, magneticVariation);
         }
 
         public override bool Equals(object obj)
@@ -102,37 +97,63 @@ namespace Airborn.web.Models
         /// We compute the magnetic direction from a true direction by adding the magnetic variation
         /// from the true direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
-        public static int ConvertMagneticToTrue(int directionMagnetic, int? magneticVariation)
+        public static double ConvertMagneticToTrue(double magHeading, double? magneticVariation)
         {
-
-            if (magneticVariation.HasValue)
+            if (!magneticVariation.HasValue)
             {
-                directionMagnetic += magneticVariation.Value;
+                return magHeading;
             }
 
-            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
-            int directionTrue = directionMagnetic % 360;
+            double magneticDirection = magHeading - magneticVariation.Value;
 
-            return ReturnPositiveDirectionIfNegative(directionTrue);
+            if (magneticDirection < 0)
+            {
+                magneticDirection += 360;
+            }
+            else if (magneticDirection > 360)
+            {
+                magneticDirection -= 360;
+            }
 
+            return magneticDirection;
         }
 
         /// <summary>
         /// We compute the true direction from a magnetic direction by subtracting the magnetic variation
         /// to the magnetic direction. (Magnetic variation will be positive if east, negative if west)
         /// </summary>
-        public static int ConvertTrueToMagnetic(int directionTrue, int? magneticVariation)
+        public static double ConvertTrueToMagnetic(double trueHeading, double? magneticVariation)
         {
-
-            if (magneticVariation.HasValue)
+            if (!magneticVariation.HasValue)
             {
-                directionTrue -= magneticVariation.Value;
+                return trueHeading;
             }
 
-            // modulo by 360 to make sure that we never end up with directions greater than 360 degrees
-            int directionMagnetic = directionTrue % 360;
+            double magneticDirection = trueHeading;
 
-            return ReturnPositiveDirectionIfNegative(directionMagnetic);
+            if (magneticVariation > 0)
+            {
+                magneticDirection = trueHeading - magneticVariation.Value;
+            }
+            else if (magneticVariation < 0)
+            {
+                magneticDirection = trueHeading + magneticVariation.Value;
+            }
+            else
+            {
+                magneticDirection = trueHeading;
+            }
+
+            if (magneticDirection < 0)
+            {
+                magneticDirection += 360;
+            }
+            else if (magneticDirection > 360)
+            {
+                magneticDirection -= 360;
+            }
+
+            return magneticDirection;
 
         }
 

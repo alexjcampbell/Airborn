@@ -7,54 +7,55 @@
 <br />
 
 <div class="jumbotron">
-    <h4 class="display-4"><b><i>@Html.DisplayFor(model => model.Ident): @Html.DisplayFor(model => model.Name)</i></b></h4>
-    </div>
+    <h4 class="display-4"><b><i>@Html.DisplayFor(model => model.Ident): @Html.DisplayFor(model => model.Name)</i></b>
+    </h4>
+</div>
 
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ident)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ident)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FieldElevation)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FieldElevation)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Type)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Type)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MagneticVariation)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MagneticVariation)
         </dd>
     </dl>
 </div>
 @*
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+<a asp-action="Index">Back to List</a>
 </div>
 *@
 
@@ -70,40 +71,47 @@
             </th>
             <th>
                 Displaced threshold
-            </th>            
+            </th>
             <th>
-                Runway Heading
+                Runway Heading (Degrees True)
+            </th>
+            <th>
+                Runway Heading (Degrees Magnetic)
             </th>
             <th>
                 Slope
             </th>
             <th>
                 Surface
-            </th>            
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Runways) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Runway_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RunwayLengthFriendly) ft
-            </td>            
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplacedThreshold_Formatted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RunwayHeadingMagneticConverted)
-            </td>                        
-            <td>
-                @Html.DisplayFor(modelItem => item.Slope)
-            </td>                                    
-            <td>
-                @Html.DisplayFor(modelItem => item.Surface)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Runways)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Runway_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunwayLengthFriendly) ft
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplacedThreshold_Formatted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HeadingDegreesTrue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunwayHeadingMagneticConverted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slope)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surface)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

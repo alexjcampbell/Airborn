@@ -72,6 +72,7 @@ namespace Airborn.web.Models
         public Airport Airport
         {
             get;
+            private set;
         }
 
         public AircraftType AircraftType
@@ -245,6 +246,8 @@ namespace Airborn.web.Models
             PopulateInterpolatedPerformanceData();
 
             List<CalculationResultForRunway> results = new List<CalculationResultForRunway>();
+
+            Airport = db.GetAirport(Airport.Ident.ToUpper());
 
             foreach (Runway runway in
                 db.GetRunwaysForAirport(Airport.Ident.ToUpper()))

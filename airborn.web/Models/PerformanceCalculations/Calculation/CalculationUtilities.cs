@@ -14,7 +14,7 @@ namespace Airborn.web.Models
         /// If you give it 0 and 90, it will return you 90
         /// If you give it 0 and 270, it will return you -90
         /// </summary>
-        public static double SmallestAngularDifference(int angle1, int angle2)
+        public static double SmallestAngularDifference(double angle1, double angle2)
         {
             // the smallest angular difference between two angles is the difference between the two angles
             // modulo 360, minus 180
@@ -38,7 +38,7 @@ namespace Airborn.web.Models
         /// </summary>
         /// <param name="runwayHeading">The heading of the runway</param>
         /// <param name="windDirection">The direction of the wind</param>
-        public static double AngularDifferenceBetweenRunwayAndWind(int runwayHeading, int windDirection)
+        public static double AngularDifferenceBetweenRunwayAndWind(double runwayHeading, double windDirection)
         {
             // the angular difference between the runway and the wind is the smallest angular difference between the two
             return SmallestAngularDifference(runwayHeading, windDirection);

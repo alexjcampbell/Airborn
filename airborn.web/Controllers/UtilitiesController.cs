@@ -27,11 +27,12 @@ namespace Airborn.Controllers
             _dbContext = dbContext;
         }
 
-        public string GetMagneticVariationForAirports()
+        public string GetMagneticVariationForUSAirports()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
-            /*
+            /**/
+
             FaaDataParser reader = new FaaDataParser();
             var airports = reader.Parse();
 
@@ -39,7 +40,17 @@ namespace Airborn.Controllers
 
             foreach (var airport in airports)
             {
-                Airport airportFromDb = _dbContext.GetAirport(airport.Key);
+                Airport airportFromDb;
+
+                try
+                {
+                    airportFromDb = _dbContext.GetAirport(airport.Key);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return null;
+                }
 
                 if (airportFromDb != null)
                 {
@@ -52,8 +63,6 @@ namespace Airborn.Controllers
             }
 
             return count.ToString();
-
-            */
         }
 
         /*

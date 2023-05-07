@@ -233,7 +233,7 @@ namespace Airborn.web.Models
         {
             if (RunwayLength != null)
             {
-                var oppositeRunway = Airport.Runways.Find(r => r.Runway_Name == GetOppositeRunway(Runway_Name) && r.Airport_Ident == Airport.Ident.ToUpper());
+                var oppositeRunway = Airport.Runways.Find(r => r.Runway_Name == GetOppositeRunway(Runway_Name) && r.Airport.Ident == Airport.Ident.ToUpper());
 
                 if (oppositeRunway == null || oppositeRunway.ElevationFt == null)
                 {
@@ -255,124 +255,124 @@ namespace Airborn.web.Models
         }
 
 
-    /// <summary>
-    /// Gets the opposite runway for a given runway
-    /// </summary>
-    public static string GetOppositeRunway(string runway)
-    {
-        if (string.IsNullOrEmpty(runway))
+        /// <summary>
+        /// Gets the opposite runway for a given runway
+        /// </summary>
+        public static string GetOppositeRunway(string runway)
         {
-            throw new ArgumentException("Runway cannot be null or empty.");
-        }
-
-        bool hasLetter = false;
-        char letter = ' ';
-        string runwayNumber = runway;
-
-        if (char.IsLetter(runway[runway.Length - 1]))
-        {
-            hasLetter = true;
-            letter = runway[runway.Length - 1];
-            runwayNumber = runway.Substring(0, runway.Length - 1);
-        }
-
-        if (!int.TryParse(runwayNumber, out int number))
-        {
-            throw new ArgumentException("Invalid runway number format.");
-        }
-
-        int oppositeNumber = (number + 18) % 36;
-        if (oppositeNumber == 0)
-        {
-            oppositeNumber = 36;
-        }
-
-        string oppositeRunway = oppositeNumber.ToString();
-
-        letter = char.ToUpper(letter);
-
-        if (hasLetter)
-        {
-            switch (letter)
+            if (string.IsNullOrEmpty(runway))
             {
-                case 'L':
-                    letter = 'R';
-                    break;
-                case 'R':
-                    letter = 'L';
-                    break;
-                case 'C':
-                    // Keep the letter 'C' for the opposite runway
-                    break;
-                default:
-                    throw new ArgumentException("Invalid runway letter. Only L, R, and C are allowed.");
+                throw new ArgumentException("Runway cannot be null or empty.");
             }
 
-            oppositeRunway += letter;
+            bool hasLetter = false;
+            char letter = ' ';
+            string runwayNumber = runway;
+
+            if (char.IsLetter(runway[runway.Length - 1]))
+            {
+                hasLetter = true;
+                letter = runway[runway.Length - 1];
+                runwayNumber = runway.Substring(0, runway.Length - 1);
+            }
+
+            if (!int.TryParse(runwayNumber, out int number))
+            {
+                throw new ArgumentException("Invalid runway number format.");
+            }
+
+            int oppositeNumber = (number + 18) % 36;
+            if (oppositeNumber == 0)
+            {
+                oppositeNumber = 36;
+            }
+
+            string oppositeRunway = oppositeNumber.ToString();
+
+            letter = char.ToUpper(letter);
+
+            if (hasLetter)
+            {
+                switch (letter)
+                {
+                    case 'L':
+                        letter = 'R';
+                        break;
+                    case 'R':
+                        letter = 'L';
+                        break;
+                    case 'C':
+                        // Keep the letter 'C' for the opposite runway
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid runway letter. Only L, R, and C are allowed.");
+                }
+
+                oppositeRunway += letter;
+            }
+
+            return oppositeRunway;
         }
 
-        return oppositeRunway;
-    }
-
-    public static Runway FromMagnetic(Airport airport, int magneticHeading)
-    {
-        return new Runway(airport, Direction.FromMagnetic(magneticHeading));
-    }
-
-    public static Runway FromMagnetic(Airport airport, int magneticHeading, int magneticVariation)
-    {
-        return new Runway(airport, Direction.FromMagnetic(magneticHeading, magneticVariation));
-    }
-
-    /// <summary>
-    /// Sets the calculator's runway heading for a given runway
-    /// </summary>
-    private static Direction GetRunwayHeading(Runway runway)
-    {
-        if (runway.Airport != null && runway.Airport.MagneticVariation.HasValue)
+        public static Runway FromMagnetic(Airport airport, int magneticHeading)
         {
-            return Direction.FromTrue(runway.HeadingDegreesTrue.Value, runway.Airport.MagneticVariation.Value);
-        }
-        else
-        {
-            // RunwayIdentifer could be like 10R or 28L so we use a regex to get only the first two characters
-            string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
-
-            // runway heading is the runway name (e.g. 10 or 28) multiplied by 10
-            return new Direction(
-                    int.Parse(runwayName) * 10,
-                    0
-                    );
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading));
         }
 
-    }
-
-    public static double CalculateSlope(double startingElevation, double endingElevation, double distance)
-    {
-        if (distance <= 0)
+        public static Runway FromMagnetic(Airport airport, int magneticHeading, int magneticVariation)
         {
-            throw new ArgumentException("Runway length must be greater than zero.");
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading, magneticVariation));
         }
 
-        double elevationDifference = endingElevation - startingElevation;
-        double slope = (elevationDifference / distance) * 100;
-
-        return slope;
-    }
-
-    public static RunwaySurface ParseRunwaySurface(string code)
-    {
-        code = code.Trim().ToUpperInvariant();
-
-        return code switch
+        /// <summary>
+        /// Sets the calculator's runway heading for a given runway
+        /// </summary>
+        private static Direction GetRunwayHeading(Runway runway)
         {
-            "CON" or "CONCRETE" or "PEM" or "ASP" or "ASPHALT" or "ASPH" or
-            "ASPH-G" or "ASPH-CONC-F" or "ASPH-F" or "CONC-G" or "CONC-F" or
-            "GVL"
-                => RunwaySurface.Paved,
-            "TURF-G" or "GRS" or "GRASS" or "GRASSED BROWN CLAY" or "TURF" => RunwaySurface.Grass,
-            _ => RunwaySurface.Unknown,
-        };
+            if (runway.Airport != null && runway.Airport.MagneticVariation.HasValue)
+            {
+                return Direction.FromTrue(runway.HeadingDegreesTrue.Value, runway.Airport.MagneticVariation.Value);
+            }
+            else
+            {
+                // RunwayIdentifer could be like 10R or 28L so we use a regex to get only the first two characters
+                string runwayName = Regex.Replace(runway.Runway_Name, @"\D+", "");
+
+                // runway heading is the runway name (e.g. 10 or 28) multiplied by 10
+                return new Direction(
+                        int.Parse(runwayName) * 10,
+                        0
+                        );
+            }
+
+        }
+
+        public static double CalculateSlope(double startingElevation, double endingElevation, double distance)
+        {
+            if (distance <= 0)
+            {
+                throw new ArgumentException("Runway length must be greater than zero.");
+            }
+
+            double elevationDifference = endingElevation - startingElevation;
+            double slope = (elevationDifference / distance) * 100;
+
+            return slope;
+        }
+
+        public static RunwaySurface ParseRunwaySurface(string code)
+        {
+            code = code.Trim().ToUpperInvariant();
+
+            return code switch
+            {
+                "CON" or "CONCRETE" or "PEM" or "ASP" or "ASPHALT" or "ASPH" or
+                "ASPH-G" or "ASPH-CONC-F" or "ASPH-F" or "CONC-G" or "CONC-F" or
+                "GVL"
+                    => RunwaySurface.Paved,
+                "TURF-G" or "GRS" or "GRASS" or "GRASSED BROWN CLAY" or "TURF" => RunwaySurface.Grass,
+                _ => RunwaySurface.Unknown,
+            };
+        }
     }
-}
 }
