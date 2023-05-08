@@ -5,7 +5,6 @@
     ViewData["Title"] = "Airborn.co | A free takeoff and landing distance calculator for SR22, SR22T, and Cessna 172";
 }
 
-
 <br />
 <div class="row align-items-md-stretch">
     <div class="col-md-12">
@@ -90,13 +89,8 @@
                             }
                         });
                     });
-                });
-                $(function () {
-                    // Attach a click event listener to the GetMetarButton
-                    $("#GetMetarButton").click(function (event) {
-                        event.preventDefault(); // Prevent the form from being posted
-
-                        var airportCode = $("#AirportIdentifier").val(); // Read the airport code from the AirportIdentifier field
+                    $('#AirportIdentifier').on('change', function () {
+                        var airportCode = $(this).val();
 
                         $.ajax({
                             url: "/Home/GetMetarForAirport",
@@ -105,12 +99,11 @@
                             success: function (data) {
                                 // Read the fields from the JSON response and do something with them
                                 var stationId = data.stationId;
-                                var observationTime = data.observationTime;
                                 var temperature = data.temperature;
                                 var windSpeed = data.windSpeed;
-                                var windDirection = data.windDirection; // Added wind direction
-                                var windDirectionMagnetic = data.windDirectionMagnetic; // Added wind direction
-                                var altimeterSetting = data.altimeterSetting; // Added altimeter
+                                var windDirection = data.windDirection;
+                                var windDirectionMagnetic = data.windDirectionMagnetic;
+                                var altimeterSetting = data.altimeterSetting;
 
                                 // Set the textboxes and dropdowns with the METAR data
                                 $("#Temperature").val(temperature.toFixed(0));
@@ -118,14 +111,16 @@
                                 $("#WindStrength").val(windSpeed.toFixed(0));
                                 $("#WindDirectionMagnetic").val(windDirectionMagnetic.toFixed(0));
                                 $("#AltimeterSetting").val(altimeterSetting.toFixed(2));
-
                                 $("#AltimeterSettingType option:first").prop("selected", true);
 
-                                $('#METARContainer')
-                                    .removeClass('d-none');
-
-                                $('#METARContainer')
-                                    .text("Latest METAR for " + stationId + ": temperature " + temperature + "°C, wind speed " + windSpeed + " knots, wind direction magnetic " + windDirectionMagnetic + " degrees, wind direction true " + windDirection + ",  altimeter " + altimeterSetting.toFixed(2) + " inHg");
+                                // Set the text and show the toast
+                                $('#StationId').text(stationId);
+                                $('#TemperatureToast').text(temperature.toFixed(0));
+                                $('#WindSpeedToast').text(windSpeed.toFixed(0));
+                                $('#WindDirectionMagneticToast').text(windDirectionMagnetic.toFixed(0));
+                                $('#WindDirectionTrueToast').text(windDirection);
+                                $('#AltimeterSettingToast').text(altimeterSetting.toFixed(2));
+                                $('#METARToast').toast('show');
 
                                 console.log("Latest METAR for " + stationId + ": temperature " + temperature + "°C, wind speed " + windSpeed + " knots, wind direction magnetic " + windDirectionMagnetic + " degrees, wind direction true " + windDirection + ",  altimeter " + altimeterSetting.toFixed(2) + " inHg");
                             },
@@ -137,7 +132,8 @@
                             }
                         });
                     });
-                });   
+                });
+                ;   
             </script>
         }
         <div class="col-sm-3">
@@ -174,16 +170,24 @@
     <br />
     <div class="form-group row">
         <div class="col-sm-3">
-            <h6>The weather&nbsp;&nbsp;
-                <button id="GetMetarButton" class="btn-sm btn-outline-info">Get METAR</button>
+            <h6>The weather
             </h6>
         </div>
     </div>
-    <div id="METARContainer" class="form-group row d-none alert alert-info">
-        <div class="col-sm-12">>
-            <strong>METAR:</strong> <span id="METAR"></span>
+
+    <div class="toast position-absolute top-0 end-0 align-items-center text-white bg-info border-0 g-3" role="alert"
+        aria-live="assertive" aria-atomic="true" id="METARToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                Latest METAR for <span id="StationId"></span>: temperature <span id="TemperatureToast"></span>°C, wind
+                speed <span id="WindSpeedToast"></span> knots, wind direction magnetic <span
+                    id="WindDirectionMagneticToast"></span> degrees, wind direction true <span
+                    id="WindDirectionTrueToast"></span>, altimeter <span id="AltimeterSettingToast"></span> inHg
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
+
     <div class="form-group row">
         <div class="col-sm-3">
             <div class="form-floating">
