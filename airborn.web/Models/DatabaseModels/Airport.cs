@@ -7,7 +7,7 @@ namespace Airborn.web.Models
     [Table("airports")]
     public class Airport
     {
-        public int Id
+        public int Airport_Id
         {
             get; set;
         }

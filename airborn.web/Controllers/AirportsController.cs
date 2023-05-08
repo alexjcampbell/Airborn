@@ -46,7 +46,7 @@ namespace Airborn.web.Controllers
                                     || s.Name.Contains(searchString.ToUpper()));
             }
 
-            switch(sortOrder)
+            switch (sortOrder)
             {
                 case "Ident":
                     airports = airports.OrderBy(a => a.Name);
@@ -67,9 +67,9 @@ namespace Airborn.web.Controllers
         // GET: Airports/Details/5
         public ActionResult Details(int id)
         {
-            Airport airport = _dbContext.Airports.Where(a => a.Id == id).FirstOrDefault();
+            Airport airport = _dbContext.Airports.Where(a => a.Airport_Id == id).FirstOrDefault();
 
-            airport.Runways = _dbContext.Runways.Where(r => r.AirportRef == airport.Id).ToList();
+            airport.Runways = _dbContext.Runways.Where(r => r.Airport_Id == airport.Airport_Id).ToList();
 
             return View(airport);
         }
@@ -139,7 +139,7 @@ namespace Airborn.web.Controllers
         {
             throw new NotImplementedException();
 
-             // return View();
+            // return View();
         }
 
         // POST: Airports/Delete/5
@@ -160,7 +160,7 @@ namespace Airborn.web.Controllers
                 return View();
             }
             
-        */       
-         }
+        */
+        }
     }
 }

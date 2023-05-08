@@ -13,7 +13,7 @@
 
 @*
 <p>
-    <a asp-action="Create">Create New</a>
+<a asp-action="Create">Create New</a>
 </p>
 *@
 
@@ -22,7 +22,7 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            Find by airport code: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
             <input type="submit" value="Search" class="btn btn-default" /> |
             <a asp-action="Index">Back to Full List</a>
         </p>
@@ -33,10 +33,7 @@
     <thead>
         <tr>
             <th>
-                Id
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Ident</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Airport Code</a>
 
             </th>
             <th>
@@ -55,37 +52,35 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ident)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FieldElevation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MagneticVariation)
-            </td>
-            <td>
-                @*
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FieldElevation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MagneticVariation)
+                </td>
+                <td>
+                    @*
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 *@
-                @Html.ActionLink("Details", "Details", new { id=item.Id })
-                @*
+                    @Html.ActionLink("Details", "Details", new { id=item.Airport_Id })
+                    @*
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
                 *@
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -94,13 +89,9 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Index"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   class="btn btn-default @prevDisabled">
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
     Previous
 </a>
-<a asp-action="Index"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   class="btn btn-default @nextDisabled">
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">
     Next
 </a>

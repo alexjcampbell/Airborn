@@ -30,13 +30,13 @@ namespace Airborn.web.Models
                 .HasName("Runway_Id");
 
             modelBuilder.Entity<Airport>()
-                .HasKey(a => a.Id)
-                .HasName("Id");
+                .HasKey(a => a.Airport_Id)
+                .HasName("Airport_Id");
 
             modelBuilder.Entity<Airport>()
                 .HasMany(a => a.Runways)
                 .WithOne(r => r.Airport)
-                .HasForeignKey(r => r.AirportRef);
+                .HasForeignKey(r => r.Airport_Id);
         }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)
@@ -95,7 +95,7 @@ namespace Airborn.web.Models
                                       select new
                                       {
                                           label = airport.Ident,
-                                          val = airport.Id
+                                          val = airport.Airport_Id
                                       }).AsNoTracking().Take(20);
 
             DateTime end = DateTime.Now;

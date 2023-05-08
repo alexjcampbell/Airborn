@@ -39,9 +39,9 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Column("Airport_Ref")]
+        [Column("fk_Airport_Id")]
 
-        public int AirportRef
+        public int Airport_Id
         {
             get; set;
         }
@@ -231,6 +231,12 @@ namespace Airborn.web.Models
 
         private double? GetRunwaySlope()
         {
+
+            if (Runway_Name.StartsWith("H"))
+            {
+                return null; // don't try to figure out a runway slope for helicopters
+            }
+
             if (RunwayLength != null)
             {
                 var oppositeRunway = Airport.Runways.Find(r => r.Runway_Name == GetOppositeRunway(Runway_Name) && r.Airport.Ident == Airport.Ident.ToUpper());
