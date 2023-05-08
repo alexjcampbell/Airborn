@@ -98,12 +98,19 @@
                             data: { airportCode: airportCode },
                             success: function (data) {
                                 // Read the fields from the JSON response and do something with them
+                                var isError = data.isError;
                                 var stationId = data.stationId;
                                 var temperature = data.temperature;
                                 var windSpeed = data.windSpeed;
                                 var windDirection = data.windDirection;
                                 var windDirectionMagnetic = data.windDirectionMagnetic;
                                 var altimeterSetting = data.altimeterSetting;
+
+                                if (isError) {
+                                    $('#StationIdFailed').text(stationId);
+                                    $('#METARFailedToast').toast('show');
+                                    return;
+                                }
 
                                 // Set the textboxes and dropdowns with the METAR data
                                 $("#Temperature").val(temperature.toFixed(0));
@@ -127,7 +134,9 @@
                             error: function (jqXHR, textStatus, errorThrown) {
                                 console.log("Error: " + textStatus + " - " + errorThrown);
                                 if (jqXHR.status === 400) {
-                                    alert(jqXHR.responseText);
+                                    console.log(jqXHR.responseText);
+                                    $('#StationIdFailed').text(stationId);
+                                    $('#METARFailedToast').toast('show');
                                 }
                             }
                         });
@@ -183,6 +192,17 @@
                 speed <span id="WindSpeedToast"></span> knots, wind direction magnetic <span
                     id="WindDirectionMagneticToast"></span> degrees, wind direction true <span
                     id="WindDirectionTrueToast"></span>, altimeter <span id="AltimeterSettingToast"></span> inHg
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="toast position-absolute top-0 end-0 align-items-center text-white bg-warning border-0 g-3" role="alert"
+        aria-live="assertive" aria-atomic="true" id="METARFailedToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                Couldn't retrieve METAR for <span id="StationIdFailed"></span>,so you'll need to enter the weather
+                manually.
             </div>
             <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>

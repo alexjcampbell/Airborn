@@ -5,6 +5,8 @@ namespace Airborn.web.Models
 
     public class MetarData
     {
+        public bool IsError { get; set; }
+
         public string StationId { get; set; }
         public DateTime ObservationTime { get; set; }
         public float Temperature { get; set; }
@@ -12,10 +14,15 @@ namespace Airborn.web.Models
 
         public float WindDirection { get; set; }
 
-        public float WindDirectionMagnetic
+        public float? WindDirectionMagnetic
         {
             get
             {
+                if (IsError)
+                {
+                    return null;
+                }
+
                 double windDirectionMagnetic =
                     Direction.ConvertTrueToMagnetic(
                         WindDirection,

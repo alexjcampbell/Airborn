@@ -297,38 +297,25 @@ namespace Airborn.web.Controllers
                 return BadRequest("Invalid airport code");
             }
 
-            try
-            {
-                var metarData = await new AwcApiClient().GetLatestMetarForAirport(airportCode);
+            var metarData = await new AwcApiClient().GetLatestMetarForAirport(airportCode);
 
-                metarData.AirportDbContext = _dbContext;
+            metarData.AirportDbContext = _dbContext;
 
-                if (metarData != null)
-                {
-                    return Json(new
-                    {
-                        stationId = metarData.StationId,
-                        observationTime = metarData.ObservationTime.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                        temperature = metarData.Temperature,
-                        windSpeed = metarData.WindSpeed,
-                        windDirection = metarData.WindDirection, // Include wind direction in the JSON response
-                        windDirectionMagnetic = metarData.WindDirectionMagnetic, // Include wind direction in the JSON response
-                        altimeterSetting = metarData.AltimeterSetting // Include altimeter in the JSON response
-                    });
-                }
-                else
-                {
-                    return BadRequest($"No METAR data found for airport {airportCode}");
-                }
-            }
-            catch (Exception ex)
+            return Json(new
             {
-                // Log the exception and return an error response
-                _logger.LogError(ex, "Error retrieving METAR data for airport {AirportCode}", airportCode);
-                return BadRequest("Error retrieving METAR data");
-            }
+                isError = metarData.IsError,
+                stationId = metarData.StationId,
+                observationTime = metarData.ObservationTime.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                temperature = metarData.Temperature,
+                windSpeed = metarData.WindSpeed,
+                windDirection = metarData.WindDirection, // Include wind direction in the JSON response
+                windDirectionMagnetic = metarData.WindDirectionMagnetic, // Include wind direction in the JSON response
+                altimeterSetting = metarData.AltimeterSetting // Include altimeter in the JSON response
+            });
+
         }
 
+        /*
         public string GetMagneticVariationForAirports()
         {
             FaaDataParser reader = new FaaDataParser();
@@ -352,9 +339,14 @@ namespace Airborn.web.Controllers
 
             return count.ToString();
         }
+        */
 
+        /*
         public async Task<IActionResult> GetMagneticVariationForNonUSAirports()
         {
+
+            throw new NotImplementedException();
+            
             GeomagClient client = new GeomagClient();
 
             List<MagVarResult> updates = new List<MagVarResult>();
@@ -388,8 +380,9 @@ namespace Airborn.web.Controllers
                 }
             }
 
-            return Json(updates);
+            return Json(updates);    
         }
+        */
 
         public class MagVarResult
         {
