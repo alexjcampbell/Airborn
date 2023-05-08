@@ -232,9 +232,9 @@ namespace Airborn.web.Models
         private double? GetRunwaySlope()
         {
 
-            if (Runway_Name.StartsWith("H"))
+            if (!String.IsNullOrEmpty(Runway_Name) && Char.IsLetter(Runway_Name[0]))
             {
-                return null; // don't try to figure out a runway slope for helicopters
+                return null; // don't try to figure out a runway slope for helicopters, etc
             }
 
             if (RunwayLength != null)
