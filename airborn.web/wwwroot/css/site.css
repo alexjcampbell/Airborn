@@ -89,3 +89,9 @@ body {
   margin-right: -16px;
   margin-bottom: -11px;
 }
+
+.important-info {
+  background-color: #e9ecef !important;
+  border-color: #007bff !important;
+  color: #495057 !important;
+}

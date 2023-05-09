@@ -408,9 +408,9 @@
 
     @foreach (CalculationResultForRunwayPageModel result in Model?.ResultsSortedByHeadwind)
     {
-        <div class="form-group row">
-            <div class="col-sm-10 p-3">
-                <h6>Runway @result.Runway.Runway_Name
+        <div class="form-group row important-info mb-3">
+            <div class="col-sm-10 p-3 d-flex align-items-center ">
+                <h6 class="mb-0">Runway @result.Runway.Runway_Name
                     @if (result.IsBestWind)
                     {
                         <span class="badge bg-success">(Best wind)</span>
@@ -524,21 +524,23 @@
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Runway.RunwayLengthFriendly" />
-                    <label>&#128747; Available takeoff distance</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Takeoff_Groundroll_Formatted" />
+                    <input class="form-control alert alert-primary" maxlength="10" readonly
+                        value="@result.Takeoff_Groundroll_Formatted" />
                     <label>Takeoff ground roll</label>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Takeoff_50FtClearance_Formatted" />
+                    <input class="form-control alert alert-primary" maxlength="10" readonly
+                        value="@result.Takeoff_50FtClearance_Formatted" />
                     <label>Takeoff distance to clear 50' obstacle</label>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input class="form-control" maxlength="10" readonly value="@result.Runway.RunwayLengthFriendly" />
+                    <label>&#128747; Available takeoff distance</label>
                 </div>
             </div>
 
@@ -557,22 +559,24 @@
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly
-                        value="@result.Runway.LandingAvailableLength_Formatted" />
-                    <label>&#128748; Available landing distance</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Landing_Groundroll_Formatted" />
+                    <input class="form-control alert alert-info" maxlength="10" readonly
+                        value="@result.Landing_Groundroll_Formatted" />
                     <label>Landing ground roll</label>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Landing_50FtClearance_Formatted" />
+                    <input class="form-control  alert alert-info" maxlength="10" readonly
+                        value="@result.Landing_50FtClearance_Formatted" />
                     <label>Landing distance to clear 50' obstacle</label>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input class="form-control" maxlength="10" readonly
+                        value="@result.Runway.LandingAvailableLength_Formatted" />
+                    <label>&#128748; Available landing distance</label>
                 </div>
             </div>
 
