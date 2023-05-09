@@ -40,7 +40,7 @@ namespace Airborn.Tests
                 .Returns("Hosting:UnitTestEnvironment")
                 ;
 
-            AirportDbContext dbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            AirbornDbContext dbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
             _controller = new HomeController(_doesntDoMuch, mockEnvironment.Object, dbContext);
         }

@@ -26,7 +26,7 @@ namespace Airborn.web.Models
                 double windDirectionMagnetic =
                     Direction.ConvertTrueToMagnetic(
                         WindDirection,
-                        AirportDbContext.GetAirport(StationId).MagneticVariation.GetValueOrDefault()
+                        DbContext.GetAirport(StationId).MagneticVariation.GetValueOrDefault()
                         );
 
                 return
@@ -36,7 +36,7 @@ namespace Airborn.web.Models
 
         public float AltimeterSetting { get; set; }
 
-        public AirportDbContext AirportDbContext
+        public AirbornDbContext DbContext
         {
             get;
             set;

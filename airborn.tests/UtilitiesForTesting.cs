@@ -43,14 +43,14 @@ namespace Airborn.web.Models
 
         public const double MinimumPrecisisionForDoubleComparison = 0.01d;
 
-        public static AirportDbContext GetMockAirportDbContextForTesting()
+        public static AirbornDbContext GetMockAirportDbContextForTesting()
         {
 
 
             List<Runway> TestRunways = new List<Runway>();
             List<Airport> TestAirports = new List<Airport>();
 
-            var airportDbContext = new Mock<AirportDbContext>();
+            var airportDbContext = new Mock<AirbornDbContext>();
 
             var runwayDbSet = new Mock<DbSet<Runway>>();
             airportDbContext.Setup(o => o.Runways).Returns(() => runwayDbSet.Object);

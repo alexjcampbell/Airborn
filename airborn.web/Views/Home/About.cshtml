@@ -26,11 +26,43 @@
     if there's an app that can quickly do the work for them, rather than digging through the POH and doing
     multiple interpolations.</p>
 
-<p>This is the v0.2 release, which performs basic takeoff and landing distance calculations for every runway at a given
+<p>This is the v1 release, which performs basic takeoff and landing distance calculations for every runway at a given
     airport, for a given airplane, in a given set of conditions.</p>
-<p>Airport and runway Data is courtesy of the folks at <a href="https://ourairports.com/data/">Our
-        Airports</a>.
-</p>
+
+<h4>How it works</h4>
+
+<ul>
+    <li>We've digitized the data from Pilot's Operating Handbooks on takeoff and landing performance for various
+        airplanes, converting it into JSON format.</li>
+    <li>With Airborn, you'll be asked about your airport, the airplane you're flying, and your takeoff weight.</li>
+    <li>Our system attempts to automatically fetch a METAR to fill in details like wind direction, strength,
+        temperature, and
+        altimeter setting. If this isn't possible, for example, if the airport lacks METARs, you'll be prompted to input
+        these
+        manually.</li>
+    <li>Finally, we calculate takeoff and landing distances for every runway at your airport, accounting for your
+        specific
+        airplane, conditions, and weight. This process involves interpolating the POH data based on temperature,
+        pressure
+        altitude, and aircraft weight.</li>
+</ul>
+
+<h4>Credits</h4>
+
+<ul>
+    <li>The original set of airport and runway Data is courtesy of the folks at <a
+            href="https://ourairports.com/data/">Our
+            Airports.</a>
+    </li>
+    <li>
+        <a href="https://geomag.bgs.ac.uk/operations/uksurvey.html">British Geological Survey</a>, for helping us to
+        calculate magnetic variation at various airports.
+    </li>
+    <li>
+        Thanks <a href="https://www.heroku.com">Heroku</a> for hosting this fairly cost effectively.
+    </li>
+</ul>
+
 <h4>Get in touch</h4>
 <p>For more info, you can get in touch with us at <a href="mailto:info@Airborn.co">info AT
         airborn.co</a></p>

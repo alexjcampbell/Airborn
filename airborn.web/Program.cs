@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Airborn.web.Models;
 using Microsoft.AspNetCore.Routing;
 using OpenTelemetry.Instrumentation.AspNetCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,25 @@ builder.WebHost.UseSentry(o =>
     o.SendDefaultPii = true;
 });
 
-builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
+//builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
+
+builder.Services.AddDbContext<AirbornDbContext>(options =>
+{
+    var env = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    string connectionString;
+
+    if (env != null)
+    {
+        connectionString = AirbornDbContext.ConvertDatabaseUrlToHerokuString(env);
+    }
+    else
+    {
+        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    }
+
+    options.UseNpgsql(connectionString);
+});
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {

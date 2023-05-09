@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.web.Models
 {
-    [Table("Runways")]
+    [Table("runways")]
     public class Runway
     {
 
@@ -34,42 +34,45 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("old_runway_id")]
         public int Runway_Id
         {
             get; set;
         }
 
-        [Column("fk_Airport_Id")]
+        [Column("fk_airport_id")]
 
         public int Airport_Id
         {
             get; set;
         }
 
+        [Column("airport_ident")]
         public string Airport_Ident
         {
             get; set;
         }
 
+        [Column("runway_name")]
         public string Runway_Name
         {
             get; set;
         }
 
 
-        [Column("Length_Ft")]
+        [Column("length_ft")]
         public int? RunwayLength
         {
             get; set;
         }
 
-        [Column("Width_Ft")]
+        [Column("width_ft")]
         public int? RunwayWidth
         {
             get; set;
         }
 
-        [Column("Surface")]
+        [Column("surface")]
         public string SurfaceText
         {
             get; set;
@@ -91,19 +94,19 @@ namespace Airborn.web.Models
             }
         }
 
-        [Column("Elevation_Ft")]
+        [Column("elevation_ft")]
         public int? ElevationFt
         {
             get; set;
         }
 
-        [Column("Displaced_Threshold_Ft")]
+        [Column("displaced_threshold_ft")]
         public int? DisplacedThresholdFt
         {
             get; set;
         }
 
-        [Column("heading_degT")]
+        [Column("heading_degt")]
         public double? HeadingDegreesTrue
         {
             get; set;
@@ -339,7 +342,11 @@ namespace Airborn.web.Models
         /// </summary>
         private static Direction GetRunwayHeading(Runway runway)
         {
-            if (runway.Airport != null && runway.Airport.MagneticVariation.HasValue)
+            if (
+                    runway.Airport != null &&
+                    runway.HeadingDegreesTrue.HasValue &&
+                    runway.Airport.MagneticVariation.HasValue
+                    )
             {
                 return Direction.FromTrue(runway.HeadingDegreesTrue.Value, runway.Airport.MagneticVariation.Value);
             }

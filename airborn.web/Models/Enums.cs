@@ -64,4 +64,23 @@ namespace Airborn.web.Models
         [Display(Name = "Aircon on")]
         Aircon
     }
+
+    public enum AirportType
+    {
+        [Display(Name = "Balloon port")]
+        balloonport,
+        [Display(Name = "Closed")]
+        closed,
+        [Display(Name = "Heliport")]
+        heliport,
+        [Display(Name = "Large airport")]
+        large_airport,
+        [Display(Name = "Medium airport")]
+        medium_airport,
+        [Display(Name = "Seaplane base")]
+        seaplane_base,
+        [Display(Name = "Small airport")]
+        small_airport
+    }
+
 }

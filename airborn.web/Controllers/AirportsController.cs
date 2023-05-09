@@ -16,11 +16,11 @@ namespace Airborn.web.Controllers
 
 
         private readonly ILogger<AirportsController> _logger;
-        private readonly AirportDbContext _dbContext;
+        private readonly AirbornDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public AirportsController(ILogger<AirportsController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
+        public AirportsController(ILogger<AirportsController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
         {
             _logger = logger;
             _env = env;
@@ -32,10 +32,14 @@ namespace Airborn.web.Controllers
         // GET: Airports
         public async Task<IActionResult> Index(string sortOrder, string searchString, int? pageNumber)
         {
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Index");
+            myActivity?.SetTag("SearchString", searchString);
+            myActivity?.SetTag("SortOrder", sortOrder);
+            myActivity?.SetTag("PageNumber", pageNumber);
+
 
             ViewData["IdentSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Ident" : "Ident_Desc";
             ViewData["CurrentFilter"] = searchString;
-
 
             var airports = from a in _dbContext.Airports
                            select a;
@@ -67,9 +71,14 @@ namespace Airborn.web.Controllers
         // GET: Airports/Details/5
         public ActionResult Details(int id)
         {
-            Airport airport = _dbContext.Airports.Where(a => a.Airport_Id == id).FirstOrDefault();
 
-            airport.Runways = _dbContext.Runways.Where(r => r.Airport_Id == airport.Airport_Id).ToList();
+
+            Airport airport = _dbContext.Airports.Include(a => a.Runways).Where(
+                a => a.Airport_Id == id
+                ).FirstOrDefault();
+
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Details/{id}");
+            myActivity?.SetTag("AirportCode", airport.Ident);
 
             return View(airport);
         }

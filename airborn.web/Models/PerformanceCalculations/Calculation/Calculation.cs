@@ -228,7 +228,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public void Calculate(AirportDbContext db)
+        public void Calculate(AirbornDbContext db)
         {
 
             // if the pressure altitude is negative, we'll use zero for the calculations

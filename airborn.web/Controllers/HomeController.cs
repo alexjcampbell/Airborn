@@ -16,7 +16,7 @@ namespace Airborn.web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly AirportDbContext _dbContext;
+        private readonly AirbornDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
@@ -26,7 +26,7 @@ namespace Airborn.web.Controllers
             set;
         }
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
         {
             _logger = logger;
             _env = env;
@@ -299,7 +299,7 @@ namespace Airborn.web.Controllers
 
             var metarData = await new AwcApiClient().GetLatestMetarForAirport(airportCode);
 
-            metarData.AirportDbContext = _dbContext;
+            metarData.DbContext = _dbContext;
 
             return Json(new
             {

@@ -2,20 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Airborn.web.Models
 {
-    public class AAirportDbContext : DbContext, IAirportDbContext
-    {
-        public AAirportDbContext()
-        {
 
+    public class AirbornDbContext : DbContext, IAirportDbContext
+    {
+
+        public AirbornDbContext()
+        {
         }
 
-        public AAirportDbContext(DbContextOptions<AAirportDbContext> options)
-        : base(options)
+        public AirbornDbContext(DbContextOptions<AirbornDbContext> options)
+            : base(options)
         {
-
         }
 
         public virtual DbSet<Airport> Airports { get; set; }
@@ -111,6 +114,24 @@ namespace Airborn.web.Models
 
             return airportIdentifiersList;
 
+        }
+
+        public static string ConvertDatabaseUrlToHerokuString(string databaseUrl)
+        {
+            // Provided by Npgsql, this will convert the Heroku-style Database URL into a format acceptable by Npgsql
+            var databaseUri = new Uri(databaseUrl);
+            var userInfo = databaseUri.UserInfo.Split(':');
+
+            return new NpgsqlConnectionStringBuilder
+            {
+                Host = databaseUri.Host,
+                Port = databaseUri.Port,
+                Database = databaseUri.LocalPath.TrimStart('/'),
+                Username = userInfo[0],
+                Password = userInfo[1],
+                SslMode = SslMode.Require, // Heroku requires SSL
+                TrustServerCertificate = true, // Heroku self-signs its SSL certificates
+            }.ToString();
         }
     }
 }

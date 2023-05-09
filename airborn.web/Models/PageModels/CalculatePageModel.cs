@@ -199,7 +199,7 @@ namespace Airborn.web.Models
         /// Sets up the PerformanceCalculator and calculates the results.
         /// </summary>
         /// <param name="db">The DbContext with the airport and runway number</param>
-        public void Calculate(AirportDbContext db)
+        public void Calculate(AirbornDbContext db)
         {
 
 

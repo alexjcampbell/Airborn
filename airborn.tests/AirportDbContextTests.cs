@@ -11,16 +11,16 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_AirportDbContext_CanCreate()
         {
-            AirportDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            AirbornDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
             Assert.IsNotNull(context);
-            Assert.IsInstanceOfType(context, typeof(AirportDbContext));
+            Assert.IsInstanceOfType(context, typeof(AirbornDbContext));
         }
 
         [TestMethod]
         public void Test_AirportDbContext_CanGetAirports()
         {
-            AirportDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            AirbornDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
             Assert.IsNotNull(context.Airports);
         }
@@ -28,7 +28,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_AirportDbContext_CanGetRunways()
         {
-            AirportDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            AirbornDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
             Assert.IsNotNull(context.Runways);
         }
@@ -36,7 +36,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_GetAirport_ReturnsAirport()
         {
-            AirportDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            AirbornDbContext context = UtilitiesForTesting.GetMockAirportDbContextForTesting();
             Airport airport = context.GetAirport("KJFK");
 
             Assert.IsNotNull(airport);

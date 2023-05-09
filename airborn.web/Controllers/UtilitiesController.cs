@@ -16,22 +16,21 @@ namespace Airborn.Controllers
     public class UtilitiesController : Controller
     {
         private readonly ILogger<UtilitiesController> _logger;
-        private readonly AirportDbContext _dbContext;
+        private readonly AirbornDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public UtilitiesController(ILogger<UtilitiesController> logger, IWebHostEnvironment env, AirportDbContext dbContext)
+        public UtilitiesController(ILogger<UtilitiesController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
         {
             _logger = logger;
             _env = env;
             _dbContext = dbContext;
         }
 
+        /*
+
         public string GetMagneticVariationForUSAirports()
         {
-            //throw new NotImplementedException();
-
-            /**/
 
             FaaDataParser reader = new FaaDataParser();
             var airports = reader.Parse();
@@ -64,6 +63,8 @@ namespace Airborn.Controllers
 
             return count.ToString();
         }
+
+        */
 
         /*
 
@@ -108,7 +109,7 @@ namespace Airborn.Controllers
 
             return Json(updates);
 
-     
+
     }
            */
 
