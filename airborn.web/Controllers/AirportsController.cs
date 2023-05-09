@@ -69,16 +69,16 @@ namespace Airborn.web.Controllers
         }
 
         // GET: Airports/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string ident)
         {
 
 
             Airport airport = _dbContext.Airports.Include(a => a.Runways).Where(
-                a => a.Airport_Id == id
+                a => a.Ident == ident
                 ).FirstOrDefault();
 
-            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Details/{id}");
-            myActivity?.SetTag("AirportCode", airport.Ident);
+            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Details/{ident}");
+            myActivity?.SetTag("AirportCode", ident);
 
             return View(airport);
         }

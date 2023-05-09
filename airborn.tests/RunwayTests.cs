@@ -12,55 +12,57 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_GetRunwayHeading_10R_Returns100()
         {
-            Runway runway = new Runway(new Airport(), "10R");
+            Runway runway = new Runway(new Airport(), new Direction(100, 10), "10R");
             Direction expectedHeading = new Direction(100, 0);
 
-            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+            Assert.AreEqual(expectedHeading, runway.Runway_Heading_Magnetic);
         }
 
         [TestMethod]
-        public void GetRunwayHeading_28_Returns280()
+        public void Test_GetRunwayHeading_28_Returns280()
         {
-            Runway runway = new Runway(new Airport(), "28");
+            Runway runway = new Runway(new Airport(), new Direction(280, 10), "28");
             Direction expectedHeading = new Direction(280, 0);
 
-            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+            Assert.AreEqual(expectedHeading, runway.Runway_Heading_Magnetic);
         }
 
         [TestMethod]
-        public void GetRunwayHeading_1C_Returns10()
+        public void Test_GetRunwayHeading_1C_Returns10()
         {
-            Runway runway = new Runway(new Airport(), "1C");
+            Runway runway = new Runway(new Airport(), new Direction(10, 10), "1C");
             Direction expectedHeading = new Direction(10, 0);
 
-            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+            Assert.AreEqual(expectedHeading, runway.Runway_Heading_Magnetic);
         }
 
 
         [TestMethod]
-        public void GetRunwayHeading_01C_Returns10()
+        public void Test_GetRunwayHeading_01C_Returns10()
         {
-            Runway runway = new Runway(new Airport(), "01C");
+            Runway runway = new Runway(new Airport(), new Direction(10, 10), "01C");
             Direction expectedHeading = new Direction(10, 0);
 
-            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+            Assert.AreEqual(expectedHeading, runway.Runway_Heading_Magnetic);
         }
 
         [TestMethod]
-        public void GetRunwayHeading_36R_Returns360()
+        public void Test_GetRunwayHeading_36R_Returns360()
         {
-            Runway runway = new Runway(new Airport(), "36R");
+            Runway runway = new Runway(new Airport(), new Direction(360, 10), "36R");
             Direction expectedHeading = new Direction(360, 0);
 
-            Assert.AreEqual(expectedHeading, runway.RunwayHeading);
+            Assert.AreEqual(expectedHeading, runway.Runway_Heading_Magnetic);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void GetRunwayHeading_InvalidRunwayName_ThrowsFormatException()
+        public void Test_GetRunwayHeading_InvalidRunwayName_ReturnsNull()
         {
-            Runway runway = new Runway(new Airport(), "INVALID");
-            _ = runway.RunwayHeading;
+            Runway runway = new Runway(new Airport(), new Direction(10, 10), "INVALID");
+
+            var result = runway.GetRunwayHeadingFromRunwayName(runway);
+
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -132,21 +134,21 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10R()
         {
-            Runway runway = new Runway(new Airport(), "10R");
-            Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
+            Runway runway = new Runway(new Airport(), new Direction(100, 10), "10R");
+            Assert.AreEqual(100, runway.Runway_Heading_Magnetic.Value.DirectionTrue);
         }
 
         [TestMethod]
         public void Test_RunwayHeading_ReturnsCorrectRunwayHeading_WhenGiven10()
         {
-            Runway runway = new Runway(new Airport(), "10");
-            Assert.AreEqual(100, runway.RunwayHeading.DirectionTrue);
+            Runway runway = new Runway(new Airport(), new Direction(100, 10), "10");
+            Assert.AreEqual(100, runway.Runway_Heading_Magnetic.Value.DirectionTrue);
         }
 
         [TestMethod]
         public void Test_RunwayLengthFriendly_ReturnsCorrectRunwayLengthAndWidthInformation()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(100, 0), "1C")
             {
                 RunwayLength = 10000,
                 RunwayWidth = 150
@@ -157,7 +159,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_RunwayLengthFriendly_ReturnsUnknown_WhenRunwayLengthIsNotAvailable()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(10, 0), "1C")
             {
                 RunwayLength = null,
                 RunwayWidth = 150
@@ -168,7 +170,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_TakeoffAvailableLength_DoesNotIncludeDisplacedThreshold()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(10, 0), "1C")
             {
                 RunwayLength = 10000,
                 DisplacedThresholdFt = 1000
@@ -179,7 +181,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_LandingAvailableLength_ReturnsCorrectLength_WhenOnlyRunwayLengthIsAvailable()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(10, 0), "1C")
             {
                 RunwayLength = 9000,
                 DisplacedThresholdFt = 1000
@@ -190,7 +192,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_LandingAvailableLength_WhenBothRunwayLengthAndDisplacedThresholdAreAvailable_ReturnsCorrectLength_()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(10, 0), "1C")
             {
                 RunwayLength = 10000,
                 DisplacedThresholdFt = 1000
@@ -201,7 +203,7 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_WhenOnlyRunwayLengthAvailable_LandingLengthAvailableEqualsRunwayLength()
         {
-            Runway runway = new Runway(new Airport())
+            Runway runway = new Runway(new Airport(), new Direction(10, 0), "1C")
             {
                 RunwayLength = 10000,
                 DisplacedThresholdFt = null

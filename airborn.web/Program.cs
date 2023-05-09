@@ -162,6 +162,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Calculate}/{id?}");
 
+app.MapControllerRoute(
+    name: "Airports",
+    pattern: "Airports/Details/{ident}",
+    defaults: new { controller = "Airports", action = "Details" }
+);
+
 app.MapDefaultControllerRoute();
 
 app.Run();

@@ -13,19 +13,15 @@ namespace Airborn.web.Models
         {
         }
 
-        public Runway(Airport airport)
+        private Runway(Airport airport)
         {
             Airport = airport;
         }
 
-        public Runway(Airport airport, string runwayName) : this(airport)
+        public Runway(Airport airport, Direction runwayHeading, string runwayName) : this(airport)
         {
+            Runway_Heading_Magnetic = runwayHeading;
             Runway_Name = runwayName;
-        }
-
-        public Runway(Airport airport, Direction runwayHeading) : this(airport)
-        {
-            _runwayHeading = runwayHeading;
         }
 
         [NotMapped]
@@ -186,30 +182,40 @@ namespace Airborn.web.Models
             }
         }
 
-        private Direction? _runwayHeading;
+        private Direction? _runway_Heading_Magnetic;
 
         [NotMapped]
-        public Direction RunwayHeading
+        public Direction? Runway_Heading_Magnetic
         {
             get
             {
-                if (_runwayHeading.HasValue)
+                if (
+                    _runway_Heading_Magnetic == null
+                    &&
+                    HeadingDegreesTrue.HasValue
+                )
                 {
-                    return _runwayHeading.Value;
+                    return Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
                 }
-                else
-                {
-                    return GetRunwayHeading(this);
-                }
+
+                return _runway_Heading_Magnetic;
+            }
+            private set
+            {
+                _runway_Heading_Magnetic = value;
             }
         }
 
         [NotMapped]
-        public string RunwayHeadingMagneticConverted
+        public string Runway_HeadingMagnetic_Formatted
         {
             get
             {
-                return RunwayHeading.DirectionMagnetic.ToString("#") + " °M";
+                if (!Runway_Heading_Magnetic.HasValue)
+                {
+                    return "Unknown";
+                }
+                return Runway_Heading_Magnetic.Value.DirectionMagnetic.ToString("#") + " °M";
             }
         }
 
@@ -229,6 +235,22 @@ namespace Airborn.web.Models
             private set
             {
                 _slope = value;
+            }
+        }
+
+        [NotMapped]
+        public string Slope_Formatted
+        {
+            get
+            {
+                if (Slope.HasValue)
+                {
+                    return Slope.Value.ToString("0.00%");
+                }
+                else
+                {
+                    return "Unknown";
+                }
             }
         }
 
@@ -327,28 +349,18 @@ namespace Airborn.web.Models
             return oppositeRunway;
         }
 
-        public static Runway FromMagnetic(Airport airport, int magneticHeading)
-        {
-            return new Runway(airport, Direction.FromMagnetic(magneticHeading));
-        }
-
-        public static Runway FromMagnetic(Airport airport, int magneticHeading, int magneticVariation)
-        {
-            return new Runway(airport, Direction.FromMagnetic(magneticHeading, magneticVariation));
-        }
-
         /// <summary>
         /// Sets the calculator's runway heading for a given runway
         /// </summary>
-        private static Direction GetRunwayHeading(Runway runway)
+        public Direction? GetRunwayHeadingFromRunwayName(Runway runway)
         {
-            if (
-                    runway.Airport != null &&
-                    runway.HeadingDegreesTrue.HasValue &&
-                    runway.Airport.MagneticVariation.HasValue
-                    )
+
+            string pattern = @"^\d+([RLC])?$";
+            Regex regex = new Regex(pattern);
+
+            if (!regex.IsMatch(runway.Runway_Name))
             {
-                return Direction.FromTrue(runway.HeadingDegreesTrue.Value, runway.Airport.MagneticVariation.Value);
+                return null;
             }
             else
             {
@@ -390,6 +402,16 @@ namespace Airborn.web.Models
                 "TURF-G" or "GRS" or "GRASS" or "GRASSED BROWN CLAY" or "TURF" => RunwaySurface.Grass,
                 _ => RunwaySurface.Unknown,
             };
+        }
+
+        public static Runway FromMagnetic(Airport airport, int magneticHeading, string runwayName)
+        {
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading), runwayName);
+        }
+
+        public static Runway FromMagnetic(Airport airport, int magneticHeading, int magneticVariation, string runwayName)
+        {
+            return new Runway(airport, Direction.FromMagnetic(magneticHeading, magneticVariation), runwayName);
         }
     }
 }

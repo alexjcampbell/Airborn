@@ -96,7 +96,7 @@ namespace Airborn.web.Models
 
         private static void SetupTestRunway(int runwayId, int runwayHeading, string runwayName, List<Runway> TestRunways)
         {
-            Runway runway = new Runway(new Airport(), Default_Runway_Name);
+            Runway runway = new Runway(new Airport(), new Direction(runwayHeading, 0), Default_Runway_Name);
 
             runway.Airport_Ident = Default_AirportIdentifier;
             runway.Runway_Id = runwayId;

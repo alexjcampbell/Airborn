@@ -74,8 +74,8 @@ namespace Airborn.Tests
             double expectedCrosswind = 0;
 
             Assert.AreEqual(
-                _model.Results[0].CrosswindComponent.Value,
                 expectedCrosswind,
+                _model.Results[0].CrosswindComponent.Value,
                 UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
@@ -303,7 +303,10 @@ namespace Airborn.Tests
 
             int expectedRunwayHeading = 220;
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(
+                expectedRunwayHeading,
+                _model.ResultsSortedByHeadwind[0].Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic
+                );
 
             // we need to reset the model because the controller modifies it in the previous pass
             InitializeModel();
@@ -313,7 +316,7 @@ namespace Airborn.Tests
 
             result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic);
 
 
             // we need to reset the model again because the controller modifies it in the previous pass
@@ -325,7 +328,10 @@ namespace Airborn.Tests
 
             result = _controller.Calculate(_model);
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[0].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(
+                expectedRunwayHeading,
+                _model.ResultsSortedByHeadwind[0].Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic
+                );
 
         }
 
@@ -343,7 +349,10 @@ namespace Airborn.Tests
             // yes, it's expected runway heading is zero
             int expectedRunwayHeading = 40;
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[_model.Results.Count - 1].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(
+                expectedRunwayHeading,
+                _model.ResultsSortedByHeadwind[_model.Results.Count - 1].Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic
+                );
         }
 
         [TestMethod]
@@ -360,7 +369,10 @@ namespace Airborn.Tests
             // yes, it's expected runway heading is zero
             int expectedRunwayHeading = 180;
 
-            Assert.AreEqual(expectedRunwayHeading, _model.ResultsSortedByHeadwind[2].Runway.RunwayHeading.DirectionMagnetic);
+            Assert.AreEqual(
+                expectedRunwayHeading,
+                _model.ResultsSortedByHeadwind[2].Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic
+                );
         }
 
 

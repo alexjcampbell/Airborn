@@ -85,7 +85,7 @@ namespace Airborn.web.Models
             get
             {
                 return CalculationUtilities.AngularDifferenceBetweenRunwayAndWind(
-                      Runway.RunwayHeading.DirectionMagnetic,
+                      Runway.Runway_Heading_Magnetic.Value.DirectionMagnetic,
                     Wind.Direction.DirectionMagnetic
                 );
             }

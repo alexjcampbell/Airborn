@@ -14,7 +14,7 @@ namespace Airborn.Tests
             int magneticVariation = 0;
 
             Wind wind = Wind.FromMagnetic(310, magneticVariation);
-            Runway runway = Runway.FromMagnetic(new Airport(), 10, magneticVariation);
+            Runway runway = Runway.FromMagnetic(new Airport(), 10, magneticVariation, "1C");
 
             double expected = -60;
 
@@ -32,14 +32,14 @@ namespace Airborn.Tests
             int magneticVariation = 0;
 
             Wind wind = Wind.FromMagnetic(010, magneticVariation);
-            Runway runway = Runway.FromMagnetic(new Airport(), 310, magneticVariation);
+            Runway runway = Runway.FromMagnetic(new Airport(), 310, magneticVariation, "1C");
 
             double expected = -60;
 
             Assert.AreEqual(expected,
                 CalculationUtilities.SmallestAngularDifference(
                     wind.Direction.DirectionMagnetic,
-                    runway.RunwayHeading.DirectionMagnetic),
+                    runway.Runway_Heading_Magnetic.Value.DirectionMagnetic),
                     UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
                 );
         }
