@@ -39,3 +39,5 @@ msbuild.wrn
 
 APT_AIXM.xml
 APT_AIXM_Cleaned.xml
+
+airborn.web/appsettings.Development.json

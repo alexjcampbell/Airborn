@@ -266,9 +266,13 @@ namespace Airborn.web.Models
         /// </summary>
         public static string GetOppositeRunway(string runway)
         {
-            if (string.IsNullOrEmpty(runway))
+
+            string pattern = @"^\d+([RC]L|[RC]|[L])?$";
+
+            if (!Regex.IsMatch(runway, pattern))
             {
-                throw new ArgumentException("Runway cannot be null or empty.");
+                Console.WriteLine("Runway number is not valid");
+                return null;
             }
 
             bool hasLetter = false;
