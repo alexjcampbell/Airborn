@@ -31,12 +31,12 @@ namespace Airborn.web.Models
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(pageModel.AircraftType);
 
-            double minimum = aircraft.GetLowerWeight();
-            double maximum = aircraft.GetHigherWeight();
+            double minimum = aircraft.LowestPossibleWeight;
+            double maximum = aircraft.HighestPossibleWeight;
 
             if ((aircraftWeight < minimum || aircraftWeight > maximum))
             {
-                return new ValidationResult(GetErrorMessage(minimum, maximum, aircraft.GetAircraftTypeString()));
+                return new ValidationResult(GetErrorMessage(minimum, maximum, aircraft.AircraftTypeString));
             }
 
             return ValidationResult.Success;

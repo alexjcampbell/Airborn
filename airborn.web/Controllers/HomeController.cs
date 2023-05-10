@@ -124,12 +124,6 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
             myActivity?.SetTag("IsModelValid", ModelState.IsValid.ToString());
 
-            // make sure we have the runways loaded in the model so the dropdown on the page can get them
-            if (model.AirportIdentifier?.Length > 0)
-            {
-                _dbContext.GetRunwaysForAirport(model.AirportIdentifier);
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -262,7 +256,7 @@ namespace Airborn.web.Controllers
 
             return Aircraft.GetAircraftFromAircraftType(
                     aircraftTypeEnum
-                ).GetHigherWeight().ToString();
+                ).HighestPossibleWeight.ToString();
         }
 
         public bool IsAirconditioned(string aircraftType)
@@ -282,7 +276,7 @@ namespace Airborn.web.Controllers
                 myActivity?.SetTag("AircraftTypeEnum", "Unknown: " + aircraftType);
             }
 
-            return Aircraft.GetAircraftFromAircraftType(aircraftTypeEnum).HasAirconOption();
+            return Aircraft.GetAircraftFromAircraftType(aircraftTypeEnum).HasAirconOption;
         }
 
         public async Task<IActionResult> GetMetarForAirport(string airportCode)
@@ -313,89 +307,6 @@ namespace Airborn.web.Controllers
                 altimeterSetting = metarData.AltimeterSetting // Include altimeter in the JSON response
             });
 
-        }
-
-        /*
-        public string GetMagneticVariationForAirports()
-        {
-            FaaDataParser reader = new FaaDataParser();
-            var airports = reader.Parse();
-
-            int count = 0;
-
-            foreach (var airport in airports)
-            {
-                Airport airportFromDb = _dbContext.GetAirport(airport.Key);
-
-                if (airportFromDb != null)
-                {
-                    airportFromDb.MagneticVariation = double.Parse(airport.Value);
-                    _dbContext.Update(airportFromDb);
-
-                    _dbContext.SaveChanges();
-                    count++;
-                }
-            }
-
-            return count.ToString();
-        }
-        */
-
-        /*
-        public async Task<IActionResult> GetMagneticVariationForNonUSAirports()
-        {
-
-            throw new NotImplementedException();
-            
-            GeomagClient client = new GeomagClient();
-
-            List<MagVarResult> updates = new List<MagVarResult>();
-
-            List<Airport> airports = _dbContext.GetAirports().Where(a => a.MagneticVariation == null).ToList();
-
-            foreach (var airport in airports)
-            {
-                if (
-                    (airport.MagneticVariation.HasValue && airport.MagneticVariation != 0)
-                )
-                {
-                    continue;
-                }
-                {
-                    double? result = await
-                        client.GetGeomagDataAsync(airport.Latitude_Deg.Value, airport.Longitude_Deg.Value, airport.FieldElevation.Value, DateTime.Now);
-
-                    MagVarResult magVarResult = new MagVarResult
-                    {
-                        AirportIdent = airport.Ident,
-                        Latitude = airport.Latitude_Deg.Value,
-                        Longitude = airport.Longitude_Deg.Value,
-                        FieldElevation = airport.FieldElevation.Value,
-                        MagneticVariation = result
-                    };
-
-                    airport.MagneticVariation = result;
-                    _dbContext.SaveChanges();
-                    updates.Add(magVarResult);
-                }
-            }
-
-            return Json(updates);    
-        }
-        */
-
-        public class MagVarResult
-        {
-            public string AirportIdent { get; set; }
-            public double? MagneticVariation { get; set; }
-            public double Latitude { get; set; }
-            public double Longitude { get; set; }
-            public double FieldElevation { get; set; }
-
-            public override string ToString()
-            {
-                return $"{AirportIdent} {Latitude} {Longitude} {FieldElevation} {MagneticVariation}";
-            }
         }
     }
 }

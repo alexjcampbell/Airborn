@@ -142,35 +142,69 @@ namespace Airborn.web.Models
             return adjustedLandingDistance;
         }
 
-        public override string JsonFileName_LowerWeight()
+        public override string JsonFileName_LowestWeight
         {
-            return "../Data/C172_SP_2200.json";
+            get
+            {
+                return "../Data/C172_SP_2200.json";
+            }
         }
 
 
-        public override string JsonFileName_HigherWeight()
+        public override string JsonFileName_HighestWeight
         {
-            return "../Data/C172_SP_2550.json";
+            get
+            {
+                return "../Data/C172_SP_2550.json";
+            }
         }
 
-        public override int GetLowerWeight()
+        public override int LowestPossibleWeight
         {
-            return 2200;
+            get
+            {
+                return 2200;
+            }
         }
 
-        public override int GetHigherWeight()
+        public override int HighestPossibleWeight
         {
-            return 2550;
+            get
+            {
+                return 2550;
+            }
         }
 
-        public override bool HasAirconOption()
+        public override int LowestPossibleTemperature
         {
-            return false;
+            get
+            {
+                return 0;
+            }
         }
 
-        public override string GetAircraftTypeString()
+        public override int HighestPossibleTemperature
         {
-            return "Cessna 172SP";
+            get
+            {
+                return 40;
+            }
+        }
+
+        public override bool HasAirconOption
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override string AircraftTypeString
+        {
+            get
+            {
+                return "Cessna 172SP";
+            }
         }
     }
 }

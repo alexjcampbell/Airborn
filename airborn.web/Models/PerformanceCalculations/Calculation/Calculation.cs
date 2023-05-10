@@ -268,7 +268,7 @@ namespace Airborn.web.Models
         private void PopulateInterpolatedPerformanceData()
         {
             BookPerformanceDataList bookPerformanceDataList =
-                new BookPerformanceDataList(Aircraft.GetLowerWeight(), Aircraft.GetHigherWeight());
+                new BookPerformanceDataList(Aircraft.LowestPossibleWeight, Aircraft.HighestPossibleWeight);
 
 
             if (JsonFile != null) // only used for unit testing
@@ -289,8 +289,8 @@ namespace Airborn.web.Models
 
             PerformanceCalculationLogItem firstItem = new PerformanceCalculationLogItem(
                 $"Looking for aircraft performance data in these JSON files:");
-            firstItem.Add($"File: {Aircraft.JsonFileName_LowerWeight()}");
-            firstItem.Add($"File: {Aircraft.JsonFileName_HigherWeight()}");
+            firstItem.Add($"File: {Aircraft.JsonFileName_LowestWeight}");
+            firstItem.Add($"File: {Aircraft.JsonFileName_HighestWeight}");
             _logger.Add(firstItem);
 
 

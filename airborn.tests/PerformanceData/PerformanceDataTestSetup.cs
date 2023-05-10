@@ -21,8 +21,8 @@ namespace Airborn.Tests
 
         public static BookPerformanceDataList GenerateSampleData(AircraftType aircraftType)
         {
-            int minimumAircraftWeight = Aircraft.GetAircraftFromAircraftType(aircraftType).GetLowerWeight();
-            int maximumAircraftWeight = Aircraft.GetAircraftFromAircraftType(aircraftType).GetHigherWeight();
+            int minimumAircraftWeight = Aircraft.GetAircraftFromAircraftType(aircraftType).LowestPossibleWeight;
+            int maximumAircraftWeight = Aircraft.GetAircraftFromAircraftType(aircraftType).HighestPossibleWeight;
 
             BookPerformanceDataList sampleData = new BookPerformanceDataList(minimumAircraftWeight, maximumAircraftWeight);
 

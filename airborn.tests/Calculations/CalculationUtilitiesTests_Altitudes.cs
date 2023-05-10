@@ -8,6 +8,20 @@ namespace Airborn.Tests
     public class CalculationUtilitiesTests_Altitudes
     {
 
+        [TestMethod]
+        public void Test_GetPressureAltitudeAtAirport_0ft_Equals0ft()
+        {
+            int elevation = 0;
+            double qnh = 1013.25f;
+            int expectedPressureAltitude = 0;
+
+            Assert.AreEqual(
+                expectedPressureAltitude,
+                CalculationUtilities.PressureAltitudeAtFieldElevation(qnh, elevation),
+                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                );
+        }
+
 
         [TestMethod]
         public void Test_CalculatePressureAltitude_3092Hg_Equals1047Hpa()
@@ -25,16 +39,17 @@ namespace Airborn.Tests
         }
 
         [TestMethod]
-        public void Test_GetPressureAltitudeAtAirport_0ft_Equals0ft()
+        public void Test_CalculatePressureAltitude_2992Hg_Equals1013Hpa()
         {
-            int elevation = 0;
             double qnh = 1013.25f;
-            int expectedPressureAltitude = 0;
+            double altimeter = 29.92f;
 
             Assert.AreEqual(
-                expectedPressureAltitude,
-                CalculationUtilities.PressureAltitudeAtFieldElevation(qnh, elevation),
-                UtilitiesForTesting.MinimumPrecisisionForDoubleComparison
+                CalculationUtilities.PressureAltitudeAtFieldElevation(qnh, 0),
+                CalculationUtilities.PressureAltitudeAtFieldElevation(
+                    CalculationUtilities.InchesOfMercuryToMillibars(altimeter), 0
+                    ),
+                1f
                 );
         }
 

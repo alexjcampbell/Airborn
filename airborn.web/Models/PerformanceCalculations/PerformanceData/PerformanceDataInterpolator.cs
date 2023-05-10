@@ -153,13 +153,13 @@ namespace Airborn.web.Models.PerformanceData
         {
 
             // get the lower and higher weights for which we have performance data
-            AircraftLowerWeight = aircraft.GetLowerWeight();
-            AircraftHigherWeight = aircraft.GetHigherWeight();
+            AircraftLowerWeight = aircraft.LowestPossibleWeight;
+            AircraftHigherWeight = aircraft.HighestPossibleWeight;
 
             PerformanceCalculationLogItem foundBookDataLogItem = new PerformanceCalculationLogItem("Looking for book data:");
 
             foundBookDataLogItem.Add($"Scenario: {Scenario}");
-            foundBookDataLogItem.Add($"Aircraft: {aircraft.GetAircraftTypeString()}");
+            foundBookDataLogItem.Add($"Aircraft: {aircraft.AircraftTypeString}");
             foundBookDataLogItem.Add($"Actual aircraft weight: {AircraftActualWeight}" + " lbs");
             foundBookDataLogItem.Add($"Actual pressure altitude: {ActualPressureAltitude}");
             foundBookDataLogItem.Add($"Actual temperature: {ActualTemperature}" + " °C");

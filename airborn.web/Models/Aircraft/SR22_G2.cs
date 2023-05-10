@@ -9,29 +9,60 @@ namespace Airborn.web.Models
         {
         }
 
-        public override string JsonFileName_LowerWeight()
+        public override string JsonFileName_LowestWeight
         {
-            return "../Data/SR22_G2_2900.json";
+            get
+            {
+                return "../Data/SR22_G2_2900.json";
+            }
         }
 
-        public override string JsonFileName_HigherWeight()
+        public override string JsonFileName_HighestWeight
         {
-            return "../Data/SR22_G2_3400.json";
+            get
+            {
+                return "../Data/SR22_G2_3400.json";
+            }
         }
 
-        public override int GetLowerWeight()
+        public override int LowestPossibleWeight
         {
-            return 2900;
+            get
+            {
+                return 2900;
+            }
         }
 
-        public override int GetHigherWeight()
+        public override int HighestPossibleWeight
         {
-            return 3400;
+            get
+            {
+                return 3400;
+            }
         }
 
-        public override string GetAircraftTypeString()
+        public override int LowestPossibleTemperature
         {
-            return "Cirrus SR22 G2";
+            get
+            {
+                return 0;
+            }
+        }
+
+        public override int HighestPossibleTemperature
+        {
+            get
+            {
+                return 40;
+            }
+        }
+
+        public override string AircraftTypeString
+        {
+            get
+            {
+                return "Cirrus SR22 G2";
+            }
         }
     }
 }

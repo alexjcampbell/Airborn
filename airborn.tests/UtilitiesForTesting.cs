@@ -118,8 +118,8 @@ namespace Airborn.web.Models
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(Default_AircraftType);
 
-            int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(Default_AircraftType).GetLowerWeight();
-            int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(Default_AircraftType).GetHigherWeight();
+            int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(Default_AircraftType).LowestPossibleWeight;
+            int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(Default_AircraftType).HighestPossibleWeight;
 
             jsonFileLowerWeight.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
             jsonFileLowerWeight.Setup(x => x.LandingProfiles).Returns(new JsonPerformanceProfileList());

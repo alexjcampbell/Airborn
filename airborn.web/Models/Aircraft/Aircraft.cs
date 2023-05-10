@@ -31,15 +31,44 @@ namespace Airborn.web.Models
             AirconOptions airconOptions
             );
 
-        public abstract string JsonFileName_LowerWeight();
-        public abstract string JsonFileName_HigherWeight();
+        public abstract string JsonFileName_LowestWeight
+        {
+            get;
+        }
 
-        public abstract int GetLowerWeight();
-        public abstract int GetHigherWeight();
+        public abstract string JsonFileName_HighestWeight
+        {
+            get;
+        }
 
-        public abstract bool HasAirconOption();
+        public abstract int LowestPossibleWeight
+        {
+            get;
+        }
+        public abstract int HighestPossibleWeight
+        {
+            get;
+        }
 
-        public abstract string GetAircraftTypeString();
+        public abstract int LowestPossibleTemperature
+        {
+            get;
+        }
+
+        public abstract int HighestPossibleTemperature
+        {
+            get;
+        }
+
+        public abstract bool HasAirconOption
+        {
+            get;
+        }
+
+        public abstract string AircraftTypeString
+        {
+            get;
+        }
 
         public static AircraftType GetAircraftTypeFromAircraftTypeString(string aircraftType)
         {
@@ -78,8 +107,5 @@ namespace Airborn.web.Models
             }
 
         }
-
-
-
     }
 }

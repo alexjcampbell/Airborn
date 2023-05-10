@@ -290,9 +290,12 @@ namespace Airborn.web.Models
             return Distance.FromFeet(adjustedGroundRollDistance);
         }
 
-        public override bool HasAirconOption()
+        public override bool HasAirconOption
         {
-            return true;
+            get
+            {
+                return true;
+            }
         }
 
     }

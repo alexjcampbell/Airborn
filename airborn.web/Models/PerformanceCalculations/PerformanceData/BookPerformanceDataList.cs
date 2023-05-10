@@ -98,8 +98,8 @@ namespace Airborn.web.Models.PerformanceData
 
         public void PopulateFromJsonStringPath(Aircraft aircraft, string jsonPath)
         {
-            string fullPathLowerWeight = Path.Combine(jsonPath, aircraft.JsonFileName_LowerWeight());
-            string fullPathHigherWeight = Path.Combine(jsonPath, aircraft.JsonFileName_HigherWeight());
+            string fullPathLowerWeight = Path.Combine(jsonPath, aircraft.JsonFileName_LowestWeight);
+            string fullPathHigherWeight = Path.Combine(jsonPath, aircraft.JsonFileName_HighestWeight);
 
             JsonFile jsonFileLowerWeight = new JsonFile(fullPathLowerWeight);
             JsonFile jsonFileHigherWeight = new JsonFile(fullPathHigherWeight);
@@ -109,8 +109,8 @@ namespace Airborn.web.Models.PerformanceData
 
         public void PopulateFromJson(Aircraft aircraft, JsonFile jsonFileLowerWeight, JsonFile jsonFileHigherWeight)
         {
-            AircraftLowerWeight = aircraft.GetLowerWeight();
-            AircraftHigherWeight = aircraft.GetHigherWeight();
+            AircraftLowerWeight = aircraft.LowestPossibleWeight;
+            AircraftHigherWeight = aircraft.HighestPossibleWeight;
 
             foreach (var profile in jsonFileLowerWeight.TakeoffProfiles)
             {

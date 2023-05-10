@@ -132,7 +132,7 @@ namespace Airborn.web.Models
         [Column("heading_degt")]
         public double? HeadingDegreesTrue
         {
-            get; set;
+            get; private set;
         }
 
         [Display(Name = "Runway Heading (° T)")]

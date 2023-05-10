@@ -12,8 +12,8 @@ namespace Airborn.Tests
         private JsonFile jsonFileLowerWeight;
         private JsonFile jsonFileHigherWeight;
 
-        int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType).GetLowerWeight();
-        int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType).GetHigherWeight();
+        int _aircraftLowerWeight = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType).LowestPossibleWeight;
+        int _aircraftHigherWeight = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType).HighestPossibleWeight;
 
         private Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType);
 
