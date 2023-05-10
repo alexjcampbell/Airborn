@@ -44,8 +44,6 @@ builder.WebHost.UseSentry(o =>
     o.SendDefaultPii = true;
 });
 
-//builder.Services.AddDbContext<AirportDbContext>(options => options.UseSqlite(@"Data Source=airborn.db;").LogTo(message => System.Diagnostics.Trace.WriteLine(message)));
-
 builder.Services.AddDbContext<AirbornDbContext>(options =>
 {
     var env = Environment.GetEnvironmentVariable("DATABASE_URL");

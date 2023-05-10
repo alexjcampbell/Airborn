@@ -126,9 +126,9 @@ namespace Airborn.Tests
         [TestMethod]
         public void Test_GetOppositeRunway_ReturnsCorrectOppositeRunways()
         {
-            Assert.AreEqual("18R", Runway.GetOppositeRunway("36L"));
-            Assert.AreEqual("9L", Runway.GetOppositeRunway("27R"));
-            Assert.AreEqual("27C", Runway.GetOppositeRunway("09C"));
+            Assert.AreEqual("18R", Runway.GetOppositeRunwayName("36L"));
+            Assert.AreEqual("9L", Runway.GetOppositeRunwayName("27R"));
+            Assert.AreEqual("27C", Runway.GetOppositeRunwayName("09C"));
         }
 
         [TestMethod]

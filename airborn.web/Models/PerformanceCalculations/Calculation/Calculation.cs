@@ -249,8 +249,7 @@ namespace Airborn.web.Models
 
             Airport = db.GetAirport(Airport.Ident.ToUpper());
 
-            foreach (Runway runway in
-                db.GetRunwaysForAirport(Airport.Ident.ToUpper()))
+            foreach (Runway runway in Airport.UsableRunways)
             {
 
                 runway.Airport = Airport;

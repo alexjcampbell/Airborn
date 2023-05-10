@@ -296,7 +296,7 @@ namespace Airborn.web.Models
 
             if (RunwayLength != null)
             {
-                var oppositeRunway = Airport.Runways.Find(r => r.Runway_Name == GetOppositeRunway(Runway_Name) && r.Airport.Ident == Airport.Ident.ToUpper());
+                var oppositeRunway = Airport.Runways.Find(r => r.Runway_Name == GetOppositeRunwayName(Runway_Name) && r.Airport.Airport_Id == Airport.Airport_Id);
 
                 if (oppositeRunway == null || oppositeRunway.ElevationFt == null)
                 {
@@ -321,7 +321,7 @@ namespace Airborn.web.Models
         /// <summary>
         /// Gets the opposite runway for a given runway
         /// </summary>
-        public static string GetOppositeRunway(string runway)
+        public static string GetOppositeRunwayName(string runway)
         {
 
             string pattern = @"^\d+([RC]L|[RC]|[L])?$";
