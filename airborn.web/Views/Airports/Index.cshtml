@@ -80,7 +80,7 @@
                     @Html.DisplayFor(modelItem => item.Country_Formatted)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FieldElevation)
+                    @Html.DisplayFor(modelItem => item.FieldElevationAsDistance)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Type_Friendly)
@@ -92,7 +92,7 @@
                     @*
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 *@
-                    @Html.ActionLink("Details", "Details", new { ident=item.Ident })
+                    @Html.ActionLink("Details", "Details", "Airports", new { ident = item.Ident }, null)
                     @*
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
                 *@
