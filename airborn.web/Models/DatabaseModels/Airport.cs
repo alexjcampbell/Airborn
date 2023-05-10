@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Globalization;
 
 namespace Airborn.web.Models
 {
@@ -83,6 +85,39 @@ namespace Airborn.web.Models
         {
             get; set;
         }
+
+        [Display(Name = "Country")]
+        [Column("iso_country")]
+        public string Country
+        {
+            get; set;
+        }
+
+        [Display(Name = "Country")]
+        [NotMapped]
+        public string Country_Formatted
+        {
+            get
+            {
+                if (CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                    .Select(c => new RegionInfo(c.Name))
+                    .Any(r => r.TwoLetterISORegionName == Country))
+                {
+                    RegionInfo region = new RegionInfo(Country);
+                    return region.DisplayName;
+                }
+
+                return null;
+            }
+        }
+
+        [Display(Name = "Location")]
+        [Column("municipality")]
+        public string Location
+        {
+            get; set;
+        }
+
 
         public List<Runway> Runways
         {

@@ -39,6 +39,13 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location),
+            @Html.DisplayFor(model => model.Country_Formatted)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FieldElevation)
         </dt>
