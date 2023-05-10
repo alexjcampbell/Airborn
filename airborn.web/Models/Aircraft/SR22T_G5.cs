@@ -41,6 +41,22 @@ namespace Airborn.web.Models
             }
         }
 
+        public override int LowestPossibleTemperature
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public override int HighestPossibleTemperature
+        {
+            get
+            {
+                return 50;
+            }
+        }
+
         public override string AircraftTypeString
         {
             get
