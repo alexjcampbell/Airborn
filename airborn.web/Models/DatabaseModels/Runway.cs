@@ -1,7 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace Airborn.web.Models
 {
@@ -43,12 +44,14 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Display(Name = "Airport Identifier")]
         [Column("airport_ident")]
         public string Airport_Ident
         {
             get; set;
         }
 
+        [Display(Name = "Ruyway Identifier")]
         [Column("runway_name")]
         public string Runway_Name
         {
@@ -56,24 +59,28 @@ namespace Airborn.web.Models
         }
 
 
+        [Display(Name = "Length (ft)")]
         [Column("length_ft")]
         public int? RunwayLength
         {
             get; set;
         }
 
+        [Display(Name = "Width (ft)")]
         [Column("width_ft")]
         public int? RunwayWidth
         {
             get; set;
         }
 
+        [Display(Name = "Surface")]
         [Column("surface")]
         public string SurfaceText
         {
             get; set;
         }
 
+        [Display(Name = "Surface")]
         [NotMapped]
         public RunwaySurface Surface
         {
@@ -90,24 +97,21 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Runway Elevation (ft)")]
         [Column("elevation_ft")]
         public int? ElevationFt
         {
             get; set;
         }
 
+        [Display(Name = "Displaced Threshold (ft)")]
         [Column("displaced_threshold_ft")]
         public int? DisplacedThresholdFt
         {
             get; set;
         }
 
-        [Column("heading_degt")]
-        public double? HeadingDegreesTrue
-        {
-            get; set;
-        }
-
+        [Display(Name = "Displaced Threshold (ft)")]
         [NotMapped]
         public string DisplacedThreshold_Formatted
         {
@@ -119,11 +123,72 @@ namespace Airborn.web.Models
                 }
                 else
                 {
-                    return "Unknown";
+                    return "";
                 }
             }
         }
 
+        [Display(Name = "Runway Heading (° T)")]
+        [Column("heading_degt")]
+        public double? HeadingDegreesTrue
+        {
+            get; set;
+        }
+
+        [Display(Name = "Runway Heading (° T)")]
+        [NotMapped]
+        public string Runway_HeadingTrue_Formatted
+        {
+            get
+            {
+                if (!HeadingDegreesTrue.HasValue)
+                {
+                    return "Unknown";
+                }
+                return HeadingDegreesTrue.Value.ToString("#") + " °M";
+            }
+        }
+
+        private Direction? _runway_Heading_Magnetic;
+
+        [Display(Name = "Runway Heading (° M)")]
+        [NotMapped]
+        public Direction? Runway_Heading_Magnetic
+        {
+            get
+            {
+                if (
+                    _runway_Heading_Magnetic == null
+                    &&
+                    HeadingDegreesTrue.HasValue
+                )
+                {
+                    return Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
+                }
+
+                return _runway_Heading_Magnetic;
+            }
+            private set
+            {
+                _runway_Heading_Magnetic = value;
+            }
+        }
+
+        [Display(Name = "Runway Heading (° M)")]
+        [NotMapped]
+        public string Runway_HeadingMagnetic_Formatted
+        {
+            get
+            {
+                if (!Runway_Heading_Magnetic.HasValue)
+                {
+                    return "Unknown";
+                }
+                return Runway_Heading_Magnetic.Value.DirectionMagnetic.ToString("#") + " °M";
+            }
+        }
+
+        [Display(Name = "Runway Length (ft)")]
         [NotMapped]
         public string RunwayLengthFriendly
         {
@@ -152,6 +217,7 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Landing Available Length (ft)")]
         [NotMapped]
         public Distance LandingAvailableLength
         {
@@ -172,6 +238,7 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Landing Available Length (ft)")]
         [NotMapped]
         public string LandingAvailableLength_Formatted
         {
@@ -182,45 +249,9 @@ namespace Airborn.web.Models
             }
         }
 
-        private Direction? _runway_Heading_Magnetic;
-
-        [NotMapped]
-        public Direction? Runway_Heading_Magnetic
-        {
-            get
-            {
-                if (
-                    _runway_Heading_Magnetic == null
-                    &&
-                    HeadingDegreesTrue.HasValue
-                )
-                {
-                    return Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
-                }
-
-                return _runway_Heading_Magnetic;
-            }
-            private set
-            {
-                _runway_Heading_Magnetic = value;
-            }
-        }
-
-        [NotMapped]
-        public string Runway_HeadingMagnetic_Formatted
-        {
-            get
-            {
-                if (!Runway_Heading_Magnetic.HasValue)
-                {
-                    return "Unknown";
-                }
-                return Runway_Heading_Magnetic.Value.DirectionMagnetic.ToString("#") + " °M";
-            }
-        }
-
         private double? _slope;
 
+        [Display(Name = "Slope %")]
         [NotMapped]
         public double? Slope
         {
@@ -238,6 +269,7 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Slope %")]
         [NotMapped]
         public string Slope_Formatted
         {
@@ -245,7 +277,7 @@ namespace Airborn.web.Models
             {
                 if (Slope.HasValue)
                 {
-                    return Slope.Value.ToString("0.00%");
+                    return (Slope.Value / 100).ToString("P2");
                 }
                 else
                 {

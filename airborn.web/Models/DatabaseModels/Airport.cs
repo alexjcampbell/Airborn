@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Airborn.web.Models
 {
@@ -13,18 +14,21 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Display(Name = "Airport Identifier")]
         [Column("ident")]
         public string Ident
         {
             get; set;
         }
 
+        [Display(Name = "Field elevation (ft)")]
         [Column("elevation_ft")]
         public int? FieldElevation
         {
             get; set;
         }
 
+        [Display(Name = "Field elevation (ft)")]
         public Distance FieldElevationAsDistance
         {
             get
@@ -33,12 +37,14 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Airport Type")]
         [Column("type")]
         public string Type
         {
             get; set;
         }
 
+        [Display(Name = "Airport Type")]
         [NotMapped]
         public string Type_Friendly
         {
@@ -50,24 +56,28 @@ namespace Airborn.web.Models
             }
         }
 
+        [Display(Name = "Airport Name")]
         [Column("name")]
         public string Name
         {
             get; set;
         }
 
+        [Display(Name = "Latitude")]
         [Column("latitude_deg")]
         public double? Latitude_Deg
         {
             get; set;
         }
 
+        [Display(Name = "Longitude")]
         [Column("longitude_deg")]
         public double? Longitude_Deg
         {
             get; set;
         }
 
+        [Display(Name = "Magnetic Variation")]
         [Column("magnetic_variation")]
         public double? MagneticVariation
         {
