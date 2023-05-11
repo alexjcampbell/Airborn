@@ -8,7 +8,13 @@ namespace Airborn.web.Models
 
         private readonly double? _magneticVariation;
 
-        public Direction(double directionTrue)
+
+        /// <summary>
+        /// Creates a new Direction object from a true direction in degrees
+        /// (used privately because outside of the internals of this class you should never
+        /// specify a true direction without specifying magnetic variation)
+        /// </summary>
+        private Direction(double directionTrue)
         {
             this._directionTrue = directionTrue;
         }

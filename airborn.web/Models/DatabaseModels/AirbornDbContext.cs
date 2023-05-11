@@ -64,6 +64,10 @@ namespace Airborn.web.Models
             {
                 throw new ArgumentOutOfRangeException("Airports database is empty.");
             }
+            if (airportIdentifier == null)
+            {
+                return null;
+            }
 
             if (Airports.Count<Airport>(
                 a => a.Ident.Equals(airportIdentifier.ToUpper())

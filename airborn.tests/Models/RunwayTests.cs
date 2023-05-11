@@ -211,5 +211,25 @@ namespace Airborn.Tests
             Assert.AreEqual(10000, runway.LandingAvailableLength.TotalFeet);
         }
 
+        [TestMethod]
+        public void Test_WhenRunwayHeadingDegTAndRunwayNameAreProvided_ReturnsRunwayHeadingBasedOnRunwayHeadingDegT()
+        {
+            Runway runway = new Runway(new Airport(), new Direction(11, 0), "1C");
+
+            int expectedRunwayHeading = 11;
+
+            Assert.AreEqual(expectedRunwayHeading, runway.Runway_Heading_Magnetic.Value.DirectionMagnetic);
+        }
+
+        [TestMethod]
+        public void Test_WhenOnlyRunwayNameIsProvided_ReturnsRunwayHeadingBasedOnRunwayName()
+        {
+            Runway runway = new Runway(new Airport(), null, "1C");
+
+            int expectedRunwayHeading = 10;
+
+            Assert.AreEqual(expectedRunwayHeading, runway.Runway_Heading_Magnetic.Value.DirectionMagnetic);
+        }
+
     }
 }

@@ -19,9 +19,9 @@ namespace Airborn.web.Models
             Airport = airport;
         }
 
-        public Runway(Airport airport, Direction runwayHeading, string runwayName) : this(airport)
+        public Runway(Airport airport, Direction? runwayHeading, string runwayName) : this(airport)
         {
-            Runway_Heading_Magnetic = runwayHeading;
+            _runway_Heading_Magnetic = runwayHeading;
             Runway_Name = runwayName;
         }
 
@@ -157,6 +157,7 @@ namespace Airborn.web.Models
         {
             get
             {
+                // If we have a true heading, and a magnetic variation, we can calculate the magnetic heading
                 if (
                     _runway_Heading_Magnetic == null
                     &&
@@ -165,6 +166,7 @@ namespace Airborn.web.Models
                 {
                     _runway_Heading_Magnetic = Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
                 }
+                // If we have a runway name, we can try to parse the runway heading from the name
                 else if (_runway_Heading_Magnetic == null
                  && Runway_Name != null)
                 {
@@ -173,10 +175,6 @@ namespace Airborn.web.Models
 
 
                 return _runway_Heading_Magnetic;
-            }
-            private set
-            {
-                _runway_Heading_Magnetic = value;
             }
         }
 
