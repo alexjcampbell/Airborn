@@ -117,14 +117,26 @@ namespace Airborn.web.Models
             set;
         }
 
-        public double TemperatureCelciusAlwaysPositiveOrZero
+        public double TemperatureCelciusAdjustedForBounds
         {
             get
             {
-                return TemperatureCelcius >= 0 ? TemperatureCelcius : 0;
+                if (TemperatureCelcius < 0)
+                {
+                    // if the temperature is below zero, just use zero as that's 
+                    // the lowest temperature we have performance data for
+                    return 0;
+                }
+                else if (TemperatureCelcius > Aircraft.HighestPossibleTemperature)
+                {
+                    return Aircraft.HighestPossibleTemperature;
+                }
+                else
+                {
+                    return TemperatureCelcius;
+                }
             }
         }
-
 
         public double AltimeterSettingInMb
         {
@@ -144,11 +156,24 @@ namespace Airborn.web.Models
             }
         }
 
-        public Distance PressureAltitudeAlwaysPositiveOrZero
+        public Distance PressureAltitudeAdjustedForBounds
         {
             get
             {
-                return PressureAltitude.TotalFeet >= 0 ? PressureAltitude : Distance.FromFeet(0);
+                if (PressureAltitude.TotalFeet < 0)
+                {
+                    // if the pressure altitude is below zero, just use zero as that's 
+                    // the lowest pressure altitude we have performance data for
+                    return Distance.FromFeet(0);
+                }
+                else if (PressureAltitude.TotalFeet > Aircraft.HighestPossiblePressureAltitude)
+                {
+                    return Distance.FromFeet(Aircraft.HighestPossiblePressureAltitude);
+                }
+                else
+                {
+                    return PressureAltitude;
+                }
             }
         }
 
@@ -228,26 +253,36 @@ namespace Airborn.web.Models
             }
         }
 
-        public void Calculate(AirbornDbContext db)
+        public void Calculate(AirbornDbContext dbContext)
         {
 
             // if the pressure altitude is negative, we'll use zero for the calculations
             if (PressureAltitude.TotalFeet < 0)
             {
-                Notes.Add("Pressure altitude is negative. The POH only provides performance data for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
+                Notes.Add("Pressure altitude is negative. The POH provides performance data for positive pressure altitudes, so we'll calculate based on a pressure altitude of 0 ft (sea level). Actual performance should be better than the numbers stated here.");
+            }
+            else if (PressureAltitude.TotalFeet > Aircraft.HighestPossiblePressureAltitude)
+            {
+                Notes.Add($"Pressure altitude is {PressureAltitude.TotalFeet} ft, but POH data only provides performance information for pressure altitudes up to {Aircraft.HighestPossiblePressureAltitude} ft, so we'll calculate based on a pressure altitude of {Aircraft.HighestPossiblePressureAltitude} ft. Actual performance will be worse than the numbers stated here.");
             }
 
             // if the temperature is negative, we'll use zero degrees C for the calculations
             if (TemperatureCelcius < 0)
             {
-                Notes.Add("Temperature is negative. The POH data only provides performance date for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
+                Notes.Add("Temperature is negative. The POH only provides performance data for positive temperatures, so we'll calculate based on a temperature of zero degrees C. Actual performance should be better than the numbers stated here.");
+            }
+            else if (
+                TemperatureCelcius > Aircraft.HighestPossibleTemperature
+                )
+            {
+                Notes.Add($"Temperature is {TemperatureCelcius}, but POH data only provides performance information for temperatures up to {Aircraft.HighestPossibleTemperature} degrees C, so we'll calculate based on a temperature of {Aircraft.HighestPossibleTemperature} degrees C. Actual performance will be worse than the numbers stated here.");
             }
 
             PopulateInterpolatedPerformanceData();
 
             List<CalculationResultForRunway> results = new List<CalculationResultForRunway>();
 
-            Airport = db.GetAirport(Airport.Ident.ToUpper());
+            Airport = dbContext.GetAirport(Airport.Ident.ToUpper());
 
             foreach (Runway runway in Airport.UsableRunways)
             {
@@ -307,8 +342,8 @@ namespace Airborn.web.Models
             // get the book takeoff performance data
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
                 Scenario.Takeoff,
-                PressureAltitudeAlwaysPositiveOrZero,
-                TemperatureCelciusAlwaysPositiveOrZero,
+                PressureAltitudeAdjustedForBounds,
+                TemperatureCelciusAdjustedForBounds,
                 AircraftWeight,
                 bookPerformanceDataList,
                 takeoffLogger);
@@ -329,8 +364,8 @@ namespace Airborn.web.Models
             // get the book landing performance data
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
                 Scenario.Landing,
-                PressureAltitudeAlwaysPositiveOrZero,
-                TemperatureCelciusAlwaysPositiveOrZero,
+                PressureAltitudeAdjustedForBounds,
+                TemperatureCelciusAdjustedForBounds,
                 AircraftWeight,
                 bookPerformanceDataList,
                 landingLogger);
@@ -349,7 +384,7 @@ namespace Airborn.web.Models
                 new PerformanceCalculationLog.LogItem($"Calculating performance for runway {runway.Runway_Name}");
 
             CalculationResultForRunway result =
-                new CalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
+                new CalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAdjustedForBounds);
 
             CalculateTakeoffPerformanceForRunway(runway, runwayLogger, result);
             CalculateLandingPerformanceForRunway(runway, runwayLogger, result);

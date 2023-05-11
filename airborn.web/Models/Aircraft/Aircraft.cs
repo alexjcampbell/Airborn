@@ -60,6 +60,16 @@ namespace Airborn.web.Models
             get;
         }
 
+        public abstract int LowestPossiblePressureAltitude
+        {
+            get;
+        }
+
+        public abstract int HighestPossiblePressureAltitude
+        {
+            get;
+        }
+
         public abstract bool HasAirconOption
         {
             get;

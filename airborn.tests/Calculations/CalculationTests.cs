@@ -20,9 +20,14 @@ namespace Airborn.Tests
 
         private Calculation GetCalculator(int windDirectionMagnetic, int windStrength, JsonFile jsonFile)
         {
+            return GetCalculator(windDirectionMagnetic, windStrength, jsonFile, UtilitiesForTesting.Default_AircraftType);
+        }
+
+        private Calculation GetCalculator(int windDirectionMagnetic, int windStrength, JsonFile jsonFile, AircraftType aircraftType)
+        {
 
             Calculation calculator = new Calculation(
-                Aircraft.GetAircraftFromAircraftType(UtilitiesForTesting.Default_AircraftType),
+                Aircraft.GetAircraftFromAircraftType(aircraftType),
                 _airport,
                 Wind.FromMagnetic(windDirectionMagnetic, windStrength),
                 UtilitiesForTesting.Default_AircraftWeight,
@@ -60,7 +65,7 @@ namespace Airborn.Tests
             Calculation calculator = GetCalculator(0, 10);
             calculator.TemperatureCelcius = -5;
 
-            Assert.IsTrue(calculator.TemperatureCelciusAlwaysPositiveOrZero >= 0);
+            Assert.IsTrue(calculator.TemperatureCelciusAdjustedForBounds >= 0);
         }
 
         [TestMethod]
@@ -70,7 +75,7 @@ namespace Airborn.Tests
             calculator.AltimeterSettingInMb = 1040;
             calculator.Airport.FieldElevation = 0;
 
-            Assert.IsTrue(calculator.PressureAltitudeAlwaysPositiveOrZero.TotalFeet >= 0);
+            Assert.IsTrue(calculator.PressureAltitudeAdjustedForBounds.TotalFeet >= 0);
         }
 
         [TestMethod]
@@ -114,8 +119,53 @@ namespace Airborn.Tests
 
         }
 
+        [TestMethod]
+        public void Test_PerformanceCalculator_WhenTemperatureIsGreaterThanMaximum_ShouldPopulateNotes()
+        {
+            var airportDbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            JsonFile jsonFile = UtilitiesForTesting.GetMockJsonPerformanceFilesForTesting()[0];
 
+            Airport _airport = new Airport { Ident = "KJFK" };
 
+            var calculator = GetCalculator(0, 10, jsonFile, AircraftType.C172_SP);
+
+            calculator.AircraftWeight = 2500;
+            calculator.TemperatureCelcius = 50;
+            calculator.AltimeterSettingInMb = 1040;
+            calculator.Airport.FieldElevation = 1000;
+
+            calculator.Calculate(airportDbContext);
+
+            Assert.IsNotNull(calculator.Notes);
+            Assert.AreEqual(1, calculator.Notes.Count);
+
+            StringAssert.Contains(calculator.Notes[0], "but POH data only provides performance information for temperatures up to");
+
+        }
+
+        [TestMethod]
+        public void Test_PerformanceCalculator_WhenPressureAltitudeIsGreaterThanMaximum_ShouldPopulateNotes()
+        {
+            var airportDbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
+            JsonFile jsonFile = UtilitiesForTesting.GetMockJsonPerformanceFilesForTesting()[0];
+
+            Airport _airport = new Airport { Ident = "KJFK" };
+
+            var calculator = GetCalculator(0, 10, jsonFile, AircraftType.C172_SP);
+
+            calculator.AircraftWeight = 2500;
+            calculator.TemperatureCelcius = 30;
+            calculator.AltimeterSettingInMb = 1040;
+            calculator.Airport.FieldElevation = 11000; // 1000 feet above maximum
+
+            calculator.Calculate(airportDbContext);
+
+            Assert.IsNotNull(calculator.Notes);
+            Assert.AreEqual(1, calculator.Notes.Count);
+
+            StringAssert.Contains(calculator.Notes[0], "but POH data only provides performance information for pressure altitudes up to");
+
+        }
 
 
     }

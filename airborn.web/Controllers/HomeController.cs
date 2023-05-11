@@ -124,51 +124,23 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
             myActivity?.SetTag("IsModelValid", ModelState.IsValid.ToString());
 
+            if (_dbContext.GetAirport(model.AirportIdentifier) == null)
+            {
+                ModelState.AddModelError("AirportIdentifier", "Airport not found.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            try
+            // if we're running this from a Controller test, RootPath will already be set, so don't override it
+            if (model.RootPath == null)
             {
-                // if we're running this from a Controller test, RootPath will already be set, so don't override it
-                if (model.RootPath == null)
-                {
-                    model.RootPath = _env.WebRootPath;
-                }
-                model.Calculate(_dbContext);
+                model.RootPath = _env.WebRootPath;
             }
-            catch (NoPerformanceDataFoundException e)
-            {
-                ModelState.AddModelError(
-                    "AltimeterSetting",
-                    e.Message
-                );
 
-                return View(model);
-            }
-            catch (AircraftWeightOutOfRangeException e)
-            {
-                ModelState.AddModelError(
-                    "AircraftWeight",
-                    String.Format(
-                        $"No performance data found for Weight {model.AircraftWeight}, weight must be between {e.MinWeight} and {e.MaxWeight}"
-                    ))
-                    ;
-
-                return View(model);
-            }
-            catch (AirportNotFoundException e)
-            {
-                ModelState.AddModelError(
-                    "AirportIdentifier",
-                    String.Format(
-                        $"No airport found for '{e.AirportName}'"
-                    )
-                );
-
-                return View(model);
-            }
+            model.Calculate(_dbContext);
 
             myActivity?.SetTag("PerformanceResultsFound", model.Results.Count);
             myActivity?.SetTag("FieldElevation", model.FieldElevation.ToString());

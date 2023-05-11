@@ -163,8 +163,14 @@ namespace Airborn.web.Models
                     HeadingDegreesTrue.HasValue
                 )
                 {
-                    return Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
+                    _runway_Heading_Magnetic = Direction.FromTrue(HeadingDegreesTrue.Value, Airport.MagneticVariation.Value);
                 }
+                else if (_runway_Heading_Magnetic == null
+                 && Runway_Name != null)
+                {
+                    _runway_Heading_Magnetic = GetRunwayHeadingFromRunwayName(this);
+                }
+
 
                 return _runway_Heading_Magnetic;
             }

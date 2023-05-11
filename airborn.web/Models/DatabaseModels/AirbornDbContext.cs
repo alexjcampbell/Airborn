@@ -69,7 +69,7 @@ namespace Airborn.web.Models
                 a => a.Ident.Equals(airportIdentifier.ToUpper())
                 ) == 0)
             {
-                throw new AirportNotFoundException("Airport not found: " + airportIdentifier);
+                return null;
             };
 
             Airport airport = Airports.Single<Airport>(

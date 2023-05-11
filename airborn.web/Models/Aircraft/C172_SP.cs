@@ -195,6 +195,22 @@ namespace Airborn.web.Models
             }
         }
 
+        public override int LowestPossiblePressureAltitude
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public override int HighestPossiblePressureAltitude
+        {
+            get
+            {
+                return 8000;
+            }
+        }
+
         public override bool HasAirconOption
         {
             get

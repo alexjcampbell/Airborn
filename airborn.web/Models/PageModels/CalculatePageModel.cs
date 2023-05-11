@@ -128,16 +128,16 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Required(ErrorMessage = "Altimeter setting is required.")]
-        [Display(Name = "Altimeter Setting")]
-        [AltimeterSetting]
-        public double? AltimeterSetting
+        [Required]
+        public TemperatureType? TemperatureType
         {
             get; set;
         }
 
-        [Required]
-        public TemperatureType? TemperatureType
+        [Required(ErrorMessage = "Altimeter setting is required.")]
+        [Display(Name = "Altimeter Setting")]
+        [AltimeterSetting]
+        public double? AltimeterSetting
         {
             get; set;
         }
@@ -186,7 +186,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return PerformanceCalculator?.PressureAltitudeAlwaysPositiveOrZero.TotalFeet;
+                return PerformanceCalculator?.PressureAltitudeAdjustedForBounds.TotalFeet;
             }
         }
 

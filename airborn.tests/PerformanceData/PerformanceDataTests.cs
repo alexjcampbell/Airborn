@@ -210,8 +210,8 @@ namespace Airborn.Tests
             var takeoffBookDistances = bookNumbersList.TakeoffPerformanceData;
             var landingBookDistances = bookNumbersList.LandingPerformanceData;
 
-            Assert.AreEqual(48, takeoffBookDistances.Count);
-            Assert.AreEqual(48, landingBookDistances.Count);
+            Assert.AreEqual(108, takeoffBookDistances.Count);
+            Assert.AreEqual(108, landingBookDistances.Count);
         }
 
         [TestMethod]

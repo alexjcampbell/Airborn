@@ -126,30 +126,22 @@ namespace Airborn.web.Models
 
             jsonFileLowerWeight.Object.AircraftWeight = _aircraftLowerWeight;
 
-            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(0, "Takeoff"));
-            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(1000, "Takeoff"));
-            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(2000, "Takeoff"));
-            jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(3000, "Takeoff"));
-
-            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(0, "Landing"));
-            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(1000, "Landing"));
-            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(2000, "Landing"));
-            jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(3000, "Landing"));
+            for (int i = 0; i < 9; i++)
+            {
+                jsonFileLowerWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(i * 1000, "Takeoff"));
+                jsonFileLowerWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(i * 1000, "Landing"));
+            }
 
             jsonFileHigherWeight.Setup(x => x.TakeoffProfiles).Returns(new JsonPerformanceProfileList());
             jsonFileHigherWeight.Setup(x => x.LandingProfiles).Returns(new JsonPerformanceProfileList());
 
             jsonFileHigherWeight.Object.AircraftWeight = _aircraftHigherWeight;
 
-            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(0, "Takeoff"));
-            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(1000, "Takeoff"));
-            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(2000, "Takeoff"));
-            jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(3000, "Takeoff"));
-
-            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(0, "Landing"));
-            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(1000, "Landing"));
-            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(2000, "Landing"));
-            jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(3000, "Landing"));
+            for (int i = 0; i < 9; i++)
+            {
+                jsonFileHigherWeight.Object.TakeoffProfiles.Add(PopulateAndReturnJsonProfile(i * 1000, "Takeoff"));
+                jsonFileHigherWeight.Object.LandingProfiles.Add(PopulateAndReturnJsonProfile(i * 1000, "Landing"));
+            }
 
             jsonFiles.Add(jsonFileLowerWeight.Object);
             jsonFiles.Add(jsonFileHigherWeight.Object);
@@ -165,6 +157,7 @@ namespace Airborn.web.Models
             profile.GroundRoll = new JsonPerformanceProfileResultList();
             profile.Clear50FtObstacle = new JsonPerformanceProfileResultList();
 
+            // 0 to 50 deg C
             for (int i = 0; i < 6; i++)
             {
                 JsonPerformanceProfileResult groundRoll = new JsonPerformanceProfileResult();

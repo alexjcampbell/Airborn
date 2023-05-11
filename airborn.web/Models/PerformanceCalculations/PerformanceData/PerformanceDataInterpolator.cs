@@ -229,12 +229,26 @@ namespace Airborn.web.Models.PerformanceData
         private void SetLowerAndUpperPressureAltitudeAndTemperature()
         {
             _lowerPressureAltitude = Distance.FromFeet(
-            PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
-                (int)ActualPressureAltitude.TotalFeet,
-                _pressureAltitudeInterval));
+                PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
+                    (int)ActualPressureAltitude.TotalFeet,
+                    _pressureAltitudeInterval)
+                );
 
-            _upperPressureAltitude = Distance.FromFeet(_lowerPressureAltitude.TotalFeet + _pressureAltitudeInterval);
+            // if the lower pressure altitude is the same as the actual pressure altitude, 
+            // then we don't need to interpolate
+            if (_lowerPressureAltitude.TotalFeet == ActualPressureAltitude.TotalFeet)
+            {
+                _upperPressureAltitude = ActualPressureAltitude;
+            }
+            else
+            {
+                _upperPressureAltitude = Distance.FromFeet(
+                    _lowerPressureAltitude.TotalFeet + _pressureAltitudeInterval
+                    );
+            }
 
+            // if the lower temperature is the same as the actual temperature,
+            // then we don't need to interpolate
             _lowerTemperature = PerformanceDataInterpolationUtilities.GetLowerBoundForInterpolation(
                 (int)ActualTemperature,
                 _temperatureInterval);
