@@ -77,7 +77,8 @@ namespace Airborn.web.Models
             // If we've tried for up to 24 hours and still have no data, return an error
             return new MetarData
             {
-                StationId = "ERROR",
+                StationId = airportCode,
+                IsError = true
             };
         }
     }

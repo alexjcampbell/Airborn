@@ -78,6 +78,15 @@
                                     if (isError) {
                                         $('#StationIdFailed').text(stationId);
                                         $('#METARFailedToast').toast('show');
+
+                                        // Set the textboxes and dropdowns with the METAR data
+                                        $("#Temperature").val("");
+                                        $("#TemperatureType option:first").prop("selected", true);
+                                        $("#WindStrength").val("");
+                                        $("#WindDirectionMagnetic").val("");
+                                        $("#AltimeterSetting").val("");
+                                        $("#AltimeterSettingType option:first").prop("selected", true);
+
                                         return;
                                     }
 
