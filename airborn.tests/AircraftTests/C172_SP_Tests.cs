@@ -12,8 +12,8 @@ namespace Airborn.Tests
         private Runway _runway;
         private Wind _wind;
         private CalculationResultForRunway _result;
-        private PerformanceCalculationLogger _logger;
-        private PerformanceCalculationLogItem _logItem;
+        private PerformanceCalculationLog _logger;
+        private PerformanceCalculationLog.LogItem _logItem;
         private AirconOptions _airconOption;
 
         Distance _unadjustedTakeoffDistance;
@@ -24,8 +24,8 @@ namespace Airborn.Tests
             _c172_sp = new C172_SP();
             _airport = new Airport();
             _runway = new Runway(_airport, Direction.FromTrue(0, 0), "36");
-            _logger = new PerformanceCalculationLogger();
-            _logItem = new PerformanceCalculationLogItem("");
+            _logger = new PerformanceCalculationLog();
+            _logItem = new PerformanceCalculationLog.LogItem("");
             _airconOption = AirconOptions.NoAircon;
             _unadjustedTakeoffDistance = Distance.FromFeet(1000);
 

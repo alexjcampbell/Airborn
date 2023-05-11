@@ -12,7 +12,7 @@ namespace Airborn.web.Models
         public override Distance MakeTakeoffAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             AirconOptions airconOption
             )
         {
@@ -31,7 +31,7 @@ namespace Airborn.web.Models
             {
                 adjustedTakeoffDistance = adjustedTakeoffDistance * 1.15f;
 
-                logItem.Add("Adding 15% for grass runway");
+                logItem.AddSubItem("Adding 15% for grass runway");
             }
 
             return Distance.FromFeet(adjustedTakeoffDistance);
@@ -40,23 +40,27 @@ namespace Airborn.web.Models
         private double CalculateAdjustedTakeoffDistanceForHeadwind(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             double adjustedTakeoffDistance
             )
         {
             // subtract 10% for each 9 knots of headwind
             adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
 
-            logItem.Add("Subtracting 10% for each 9 knots of headwind");
-            logItem.Add("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " knots");
-            logItem.Add("Unadjusted takeoff distance: " + unadjustedTakeoffDistance.TotalFeet.ToString("#,##0.00") + " ft");
-            logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
-            logItem.Add("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Subtracting 10% for each 9 knots of headwind");
+            logItem.AddSubItem("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " knots");
+            logItem.AddSubItem("Unadjusted takeoff distance: " + unadjustedTakeoffDistance.TotalFeet.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
+            logItem.AddSubItem("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
             return adjustedTakeoffDistance;
         }
 
 
-        private double CalculateAdjustedTakeoffDistanceForTailwind(CalculationResultForRunway result, Distance unadjustedTakeoffDistance, PerformanceCalculationLogItem logItem, double adjustedTakeoffDistance)
+        private double CalculateAdjustedTakeoffDistanceForTailwind(
+            CalculationResultForRunway result,
+            Distance unadjustedTakeoffDistance,
+            PerformanceCalculationLog.LogItem logItem,
+            double adjustedTakeoffDistance)
         {
             // add 10% for each 2 knots of tailwind up to 10 knots
             double adjustment = (result.HeadwindComponent / 2) * 0.1f;
@@ -64,11 +68,11 @@ namespace Airborn.web.Models
             // make the adjustment
             adjustedTakeoffDistance = adjustedTakeoffDistance * (1 - adjustment);
 
-            logItem.Add("Adding 10% for each 2 knots of tailwind up to 10 knots");
-            logItem.Add("Tailwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " knots");
-            logItem.Add("Unadjusted takeoff distance: " + unadjustedTakeoffDistance.TotalFeet.ToString("#,##0.00") + " ft");
-            logItem.Add("Adjustment factor (tailwind component / 2 * 10%): " + adjustment.ToString("#,##0.00"));
-            logItem.Add("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adding 10% for each 2 knots of tailwind up to 10 knots");
+            logItem.AddSubItem("Tailwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " knots");
+            logItem.AddSubItem("Unadjusted takeoff distance: " + unadjustedTakeoffDistance.TotalFeet.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adjustment factor (tailwind component / 2 * 10%): " + adjustment.ToString("#,##0.00"));
+            logItem.AddSubItem("Adjusted takeoff distance: " + adjustedTakeoffDistance.ToString("#,##0.00") + " ft");
             return adjustedTakeoffDistance;
         }
 
@@ -76,7 +80,7 @@ namespace Airborn.web.Models
         public override Distance MakeLandingAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             AirconOptions airconOption
             )
         {
@@ -96,7 +100,7 @@ namespace Airborn.web.Models
             {
                 adjustedLandingDistance = adjustedLandingDistance * 1.45f;
 
-                logItem.Add("Adding 45% for grass runway");
+                logItem.AddSubItem("Adding 45% for grass runway");
             }
 
             return Distance.FromFeet(adjustedLandingDistance);
@@ -106,25 +110,25 @@ namespace Airborn.web.Models
         private double CalculateAdjustedLandingDistanceForHeadwind(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             double adjustedLandingDistance
             )
         {
             // subtract 10% for each 9 knots of headwind
             adjustedLandingDistance = adjustedLandingDistance * (1 - ((result.HeadwindComponent / 9) * 0.1f));
 
-            logItem.Add("Subtracting 10% for each 9 knots of headwind");
-            logItem.Add("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " kts");
-            logItem.Add("Unadjusted landing distance: " + unadjustedLandingDistance.TotalFeet.ToString("#,##0.00") + " ft");
-            logItem.Add("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
-            logItem.Add("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00"));
+            logItem.AddSubItem("Subtracting 10% for each 9 knots of headwind");
+            logItem.AddSubItem("Headwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " kts");
+            logItem.AddSubItem("Unadjusted landing distance: " + unadjustedLandingDistance.TotalFeet.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adjustment factor (headwind component / 9 * 10%): " + ((result.HeadwindComponent / 9) * 0.1f).ToString("#,##0.00"));
+            logItem.AddSubItem("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00"));
             return adjustedLandingDistance;
         }
 
         private double CalculateAdjustedLandingDistanceForTailwind(
             CalculationResultForRunway result,
             Distance unadjustedLandingDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             double adjustedLandingDistance
             )
         {
@@ -134,11 +138,11 @@ namespace Airborn.web.Models
             // make the adjustment
             adjustedLandingDistance = adjustedLandingDistance * (1 - adjustment);
 
-            logItem.Add("Adding 10% for each 2 knots of tailwind up to 10 knots");
-            logItem.Add("Tailwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " kts");
-            logItem.Add("Unadjusted landing distance: " + unadjustedLandingDistance.TotalFeet.ToString("#,##0.00") + " ft");
-            logItem.Add("Adjustment factor (tailwind component / 2 * 10%): " + adjustment.ToString("#,##0.00"));
-            logItem.Add("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adding 10% for each 2 knots of tailwind up to 10 knots");
+            logItem.AddSubItem("Tailwind component: " + result.HeadwindComponent.ToString("#,##0.00") + " kts");
+            logItem.AddSubItem("Unadjusted landing distance: " + unadjustedLandingDistance.TotalFeet.ToString("#,##0.00") + " ft");
+            logItem.AddSubItem("Adjustment factor (tailwind component / 2 * 10%): " + adjustment.ToString("#,##0.00"));
+            logItem.AddSubItem("Adjusted landing distance: " + adjustedLandingDistance.ToString("#,##0.00") + " ft");
             return adjustedLandingDistance;
         }
 

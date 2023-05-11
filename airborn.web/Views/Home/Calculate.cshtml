@@ -310,7 +310,7 @@
                             </div>
                             <div class="modal-body">
                                 <ul>
-                                    @foreach (PerformanceCalculationLogItem logline in Model?.Logger)
+                                    @foreach (PerformanceCalculationLog.LogItem logline in Model?.Logger.LogItems)
                                     {
                                         <li>
                                             <h5 class="mb-1">
@@ -318,21 +318,21 @@
                                             </h5>
                                             <ul>
 
-                                                @foreach (PerformanceCalculationLogItem subLogline in logline.SubItems)
+                                                @foreach (PerformanceCalculationLog.LogItem subLogline in logline.SubItems)
                                                 {
                                                     <li>
                                                         <h6 class="mb-1">@subLogline</h6>
 
 
                                                         <ul>
-                                                            @foreach (PerformanceCalculationLogItem subSubLogline in
+                                                            @foreach (PerformanceCalculationLog.LogItem subSubLogline in
                                                            subLogline.SubItems)
                                                             {
                                                                 <li>
                                                                     @subSubLogline
 
                                                                     <ul>
-                                                                        @foreach (PerformanceCalculationLogItem subSubSubLogline in
+                                                                        @foreach (PerformanceCalculationLog.LogItem subSubSubLogline in
                                                                        subSubLogline.SubItems)
                                                                         {
                                                                             <li>
@@ -437,7 +437,7 @@
                             </div>
                             <div class="modal-body">
                                 <ul>
-                                    @foreach (PerformanceCalculationLogItem logline in result.LogItem.SubItems)
+                                    @foreach (PerformanceCalculationLog.LogItem logline in result.LogItem.SubItems)
                                     {
                                         <li>
                                             <h5 class="mb-1">
@@ -445,21 +445,21 @@
                                             </h5>
                                             <ul>
 
-                                                @foreach (PerformanceCalculationLogItem subLogline in logline.SubItems)
+                                                @foreach (PerformanceCalculationLog.LogItem subLogline in logline.SubItems)
                                                 {
                                                     <li>
                                                         <h6 class="mb-1">@subLogline</h6>
 
 
                                                         <ul>
-                                                            @foreach (PerformanceCalculationLogItem subSubLogline in
+                                                            @foreach (PerformanceCalculationLog.LogItem subSubLogline in
                                                            subLogline.SubItems)
                                                             {
                                                                 <li>
                                                                     @subSubLogline
 
                                                                     <ul>
-                                                                        @foreach (PerformanceCalculationLogItem subSubSubLogline in
+                                                                        @foreach (PerformanceCalculationLog.LogItem subSubSubLogline in
                                                                        subSubLogline.SubItems)
                                                                         {
                                                                             <li>

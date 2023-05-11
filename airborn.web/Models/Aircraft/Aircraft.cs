@@ -21,13 +21,13 @@ namespace Airborn.web.Models
         public abstract Distance MakeTakeoffAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedTakeoffDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             AirconOptions airconOptions
             );
         public abstract Distance MakeLandingAdjustments(
             CalculationResultForRunway result,
             Distance unadjustedlandingDistance,
-            PerformanceCalculationLogItem logItem,
+            PerformanceCalculationLog.LogItem logItem,
             AirconOptions airconOptions
             );
 

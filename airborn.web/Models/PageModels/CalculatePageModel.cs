@@ -103,9 +103,9 @@ namespace Airborn.web.Models
             set;
         }
 
-        private PerformanceCalculationLogger _logger = new PerformanceCalculationLogger();
+        private PerformanceCalculationLog _logger = new PerformanceCalculationLog();
 
-        public PerformanceCalculationLogger Logger
+        public PerformanceCalculationLog Logger
         {
             get
             {

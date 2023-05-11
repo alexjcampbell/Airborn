@@ -49,7 +49,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(new Airport(), runwayHeading, "1C");
 
             CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
+                runway, wind, new PerformanceCalculationLog.LogItem(""), new Distance()
             );
 
             double expectedCrosswindComponent = 0;
@@ -76,7 +76,7 @@ namespace Airborn.Tests
             Runway runway = Runway.FromMagnetic(new Airport(), 180, "1C");
 
             CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
+                runway, wind, new PerformanceCalculationLog.LogItem(""), new Distance()
             );
 
             double expectedCrosswindComponent = -10;
@@ -106,7 +106,7 @@ namespace Airborn.Tests
 
 
             CalculationResultForRunway result = new CalculationResultForRunway(
-                runway, wind, new PerformanceCalculationLogItem(""), new Distance()
+                runway, wind, new PerformanceCalculationLog.LogItem(""), new Distance()
             );
 
             double expectedCrosswindComponent = -6.42f;

@@ -306,7 +306,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public PerformanceCalculationLogItem LogItem
+        public PerformanceCalculationLog.LogItem LogItem
         {
             get
             {

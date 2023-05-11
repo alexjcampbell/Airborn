@@ -14,7 +14,7 @@ namespace Airborn.web.Models
 
         }
 
-        public CalculationResultForRunway(Runway runway, Wind wind, PerformanceCalculationLogItem logItem, Distance pressureAltitude)
+        public CalculationResultForRunway(Runway runway, Wind wind, PerformanceCalculationLog.LogItem logItem, Distance pressureAltitude)
         {
             Runway = runway;
             Wind = wind;
@@ -91,7 +91,7 @@ namespace Airborn.web.Models
             }
         }
 
-        public PerformanceCalculationLogItem LogItem
+        public PerformanceCalculationLog.LogItem LogItem
         {
             get;
             set;

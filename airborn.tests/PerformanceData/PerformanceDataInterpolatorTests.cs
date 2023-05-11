@@ -38,7 +38,7 @@ namespace Airborn.Tests
                 actualTemperature,
                 actualWeight,
                 performanceDataList,
-                new PerformanceCalculationLogItem("")
+                new PerformanceCalculationLog.LogItem("")
             );
         }
 
@@ -55,7 +55,7 @@ namespace Airborn.Tests
                 actualTemperature,
                 actualWeight,
                 performanceDataList,
-                new PerformanceCalculationLogItem("")
+                new PerformanceCalculationLog.LogItem("")
             );
         }
 

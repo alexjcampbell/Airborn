@@ -218,9 +218,9 @@ namespace Airborn.web.Models
             private set;
         }
 
-        private PerformanceCalculationLogger _logger = new PerformanceCalculationLogger();
+        private PerformanceCalculationLog _logger = new PerformanceCalculationLog();
 
-        public PerformanceCalculationLogger Logger
+        public PerformanceCalculationLog Logger
         {
             get
             {
@@ -287,12 +287,10 @@ namespace Airborn.web.Models
             }
 
 
-            PerformanceCalculationLogItem firstItem = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem firstItem = _logger.NewItem(
                 $"Looking for aircraft performance data in these JSON files:");
-            firstItem.Add($"File: {Aircraft.JsonFileName_LowestWeight}");
-            firstItem.Add($"File: {Aircraft.JsonFileName_HighestWeight}");
-            _logger.Add(firstItem);
-
+            firstItem.AddSubItem($"File: {Aircraft.JsonFileName_LowestWeight}");
+            firstItem.AddSubItem($"File: {Aircraft.JsonFileName_HighestWeight}");
 
             PopulateInterpolatedTakeoffData(bookPerformanceDataList);
             PopulateInterpolatedLandingData(bookPerformanceDataList);
@@ -302,10 +300,9 @@ namespace Airborn.web.Models
         private void PopulateInterpolatedTakeoffData(BookPerformanceDataList bookPerformanceDataList)
         {
 
-            PerformanceCalculationLogItem takeoffLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem takeoffLogger = _logger.NewItem(
                 "Getting takeoff performance from the POH table and interpolating:"
                 );
-            _logger.Add(takeoffLogger);
 
             // get the book takeoff performance data
             PeformanceDataInterpolator takeoffInterpolator = new PeformanceDataInterpolator(
@@ -325,10 +322,9 @@ namespace Airborn.web.Models
         private void PopulateInterpolatedLandingData(BookPerformanceDataList bookPerformanceDataList)
         {
             // get the book landing performance data
-            PerformanceCalculationLogItem landingLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem landingLogger = _logger.NewItem(
                 "Getting landing performance from the POH table and interpolating:"
                 );
-            _logger.Add(landingLogger);
 
             // get the book landing performance data
             PeformanceDataInterpolator landingInterpolator = new PeformanceDataInterpolator(
@@ -349,8 +345,8 @@ namespace Airborn.web.Models
         /// </summary>
         private CalculationResultForRunway CalculatePerformanceForRunway(Runway runway)
         {
-            PerformanceCalculationLogItem runwayLogger =
-                new PerformanceCalculationLogItem($"Calculating performance for runway {runway.Runway_Name}");
+            PerformanceCalculationLog.LogItem runwayLogger =
+                new PerformanceCalculationLog.LogItem($"Calculating performance for runway {runway.Runway_Name}");
 
             CalculationResultForRunway result =
                 new CalculationResultForRunway(runway, Wind, runwayLogger, PressureAltitudeAlwaysPositiveOrZero);
@@ -362,14 +358,12 @@ namespace Airborn.web.Models
         }
 
 
-        private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, CalculationResultForRunway result)
+        private void CalculateTakeoffPerformanceForRunway(Runway runway, PerformanceCalculationLog.LogItem runwayLogger, CalculationResultForRunway result)
         {
-            PerformanceCalculationLogItem takeoffAdjustmentsLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem takeoffAdjustmentsLogger = runwayLogger.NewItem(
                 $"Making takeoff adjustments for runway {runway.Runway_Name}");
 
-            runwayLogger.SubItems.Add(takeoffAdjustmentsLogger);
-
-            PerformanceCalculationLogItem takeoffGroundRollLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem takeoffGroundRollLogger = new PerformanceCalculationLog.LogItem(
                 $"Making takeoff ground roll adjustments for runway {runway.Runway_Name}");
 
             takeoffAdjustmentsLogger.SubItems.Add(takeoffGroundRollLogger);
@@ -383,7 +377,7 @@ namespace Airborn.web.Models
                     AirconOption
                 );
 
-            PerformanceCalculationLogItem takeoff50FtClearanceLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem takeoff50FtClearanceLogger = new PerformanceCalculationLog.LogItem(
                 $"Making takeoff 50 ft clearance adjustments for runway {runway.Runway_Name}");
 
             takeoffAdjustmentsLogger.SubItems.Add(takeoff50FtClearanceLogger);
@@ -397,14 +391,14 @@ namespace Airborn.web.Models
                 );
         }
 
-        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLogItem runwayLogger, CalculationResultForRunway result)
+        private void CalculateLandingPerformanceForRunway(Runway runway, PerformanceCalculationLog.LogItem runwayLogger, CalculationResultForRunway result)
         {
-            PerformanceCalculationLogItem landingAdjustmentsLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem landingAdjustmentsLogger = new PerformanceCalculationLog.LogItem(
                 $"Making landing adjustments for runway {runway.Runway_Name}");
 
             runwayLogger.SubItems.Add(landingAdjustmentsLogger);
 
-            PerformanceCalculationLogItem landingGroundRollLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem landingGroundRollLogger = new PerformanceCalculationLog.LogItem(
                 $"Making landing ground roll adjustments for runway {runway.Runway_Name}");
 
             landingAdjustmentsLogger.SubItems.Add(landingGroundRollLogger);
@@ -417,7 +411,7 @@ namespace Airborn.web.Models
                     AirconOption
                 );
 
-            PerformanceCalculationLogItem landing50FtClearanceLogger = new PerformanceCalculationLogItem(
+            PerformanceCalculationLog.LogItem landing50FtClearanceLogger = new PerformanceCalculationLog.LogItem(
                 $"Making landing 50 ft clearance adjustments for runway {runway.Runway_Name}");
 
             landingAdjustmentsLogger.SubItems.Add(landing50FtClearanceLogger);
