@@ -124,9 +124,19 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
             myActivity?.SetTag("IsModelValid", ModelState.IsValid.ToString());
 
-            if (_dbContext.GetAirport(model.AirportIdentifier) == null)
+            Airport airport = _dbContext.GetAirport(model.AirportIdentifier);
+
+            if (airport == null)
             {
-                ModelState.AddModelError("AirportIdentifier", "Airport not found.");
+                string errorMessage = $"We can't find airport {model.AirportIdentifier}, so we can't calculate performance for it.";
+                ModelState.AddModelError("AirportIdentifier", errorMessage);
+                myActivity?.SetTag("ValidationErrorMessage", errorMessage);
+            }
+            else if (!airport.FieldElevation.HasValue)
+            {
+                string errorMessage = $"We don't know the field elevation for airport {airport.Ident}, so we can't calculate performance for it.";
+                ModelState.AddModelError("AirportIdentifier", errorMessage);
+                myActivity?.SetTag("ValidationErrorMessage", errorMessage);
             }
 
             if (!ModelState.IsValid)
