@@ -50,7 +50,14 @@
             @Html.DisplayNameFor(model => model.FieldElevation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FieldElevationAsDistance.TotalFeet)
+            @if (@Model.FieldElevation.HasValue)
+            {
+                @:@Html.DisplayFor(model => model.FieldElevation_Formatted)
+            }
+            else
+            {
+                @:N/A
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Type_Friendly)

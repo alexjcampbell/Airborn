@@ -116,12 +116,14 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("AirportIdentifier", model.AirportIdentifier);
             myActivity?.SetTag("AircraftType", model.AircraftType.ToString());
             myActivity?.SetTag("AircraftWeight", model.AircraftWeight.ToString());
+            myActivity?.SetTag("AirconOption", model.AirconOption.ToString());
             myActivity?.SetTag("AltimeterSetting", model.AltimeterSetting.ToString());
             myActivity?.SetTag("AltimeterSettingType", model.AltimeterSettingType.ToString());
             myActivity?.SetTag("Temperature", model.Temperature.ToString());
-            myActivity?.SetTag("WindDirection", model.WindDirectionMagnetic.ToString());
-            myActivity?.SetTag("WindSpeed", model.WindStrength.ToString());
             myActivity?.SetTag("TemperatureType", model.TemperatureType.ToString());
+            myActivity?.SetTag("WindDirection", model.WindDirectionMagnetic.ToString());
+            myActivity?.SetTag("WindStrength", model.WindStrength.ToString());
+
             myActivity?.SetTag("IsModelValid", ModelState.IsValid.ToString());
 
             Airport airport = _dbContext.GetAirport(model.AirportIdentifier);
@@ -259,36 +261,6 @@ namespace Airborn.web.Controllers
             }
 
             return Aircraft.GetAircraftFromAircraftType(aircraftTypeEnum).HasAirconOption;
-        }
-
-        public async Task<IActionResult> GetMetarForAirport(string airportCode)
-        {
-
-            using var myActivity = Telemetry.ActivitySource.StartActivity("GET to GetMetarForAirport");
-
-            myActivity?.SetTag("AirportCode", airportCode);
-
-            if (string.IsNullOrWhiteSpace(airportCode))
-            {
-                return BadRequest("Invalid airport code");
-            }
-
-            var metarData = await new AwcApiClient().GetLatestMetarForAirport(airportCode);
-
-            metarData.DbContext = _dbContext;
-
-            return Json(new
-            {
-                isError = metarData.IsError,
-                stationId = metarData.StationId,
-                observationTime = metarData.ObservationTime.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                temperature = metarData.Temperature,
-                windSpeed = metarData.WindSpeed,
-                windDirection = metarData.WindDirection, // Include wind direction in the JSON response
-                windDirectionMagnetic = metarData.WindDirectionMagnetic, // Include wind direction in the JSON response
-                altimeterSetting = metarData.AltimeterSetting // Include altimeter in the JSON response
-            });
-
         }
     }
 }

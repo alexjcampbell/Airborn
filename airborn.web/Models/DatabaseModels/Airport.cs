@@ -31,11 +31,27 @@ namespace Airborn.web.Models
         }
 
         [Display(Name = "Field elevation (ft)")]
-        public Distance FieldElevationAsDistance
+        [NotMapped]
+        public Distance? FieldElevationAsDistance
         {
             get
             {
                 return Distance.FromFeet(FieldElevation.Value);
+            }
+        }
+
+        [Display(Name = "Field elevation (ft)")]
+        [NotMapped]
+        public string FieldElevation_Formatted
+        {
+            get
+            {
+                if (FieldElevation.HasValue)
+                {
+                    return FieldElevationAsDistance.Value.TotalFeet.ToString("N0") + " ft";
+                }
+
+                return null;
             }
         }
 

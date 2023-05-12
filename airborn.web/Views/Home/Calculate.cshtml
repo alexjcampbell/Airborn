@@ -62,7 +62,7 @@
                             var airportCode = ui.item.value;
 
                             $.ajax({
-                                url: "/Home/GetMetarForAirport",
+                                url: "/Weather/GetMetarForAirport",
                                 type: "GET",
                                 data: { airportCode: airportCode },
                                 success: function (data) {

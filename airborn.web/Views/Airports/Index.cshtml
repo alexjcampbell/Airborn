@@ -80,7 +80,14 @@
                     @Html.DisplayFor(modelItem => item.Country_Formatted)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FieldElevationAsDistance.TotalFeet) ft
+                    @if (item.FieldElevation.HasValue)
+                    {
+                        @:@Html.DisplayFor(modelItem => item.FieldElevation_Formatted)
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Type_Friendly)
