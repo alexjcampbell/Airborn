@@ -93,6 +93,8 @@ namespace Airborn.web.Models
                     return AircraftType.SR22T_G6;
                 case "C172_SP":
                     return AircraftType.C172_SP;
+                case "C182_T":
+                    return AircraftType.C182_T;
                 default:
                     throw new Exception("Unknown aircraft type");
             }
@@ -112,6 +114,8 @@ namespace Airborn.web.Models
                     return new SR22T_G6();
                 case AircraftType.C172_SP:
                     return new C172_SP();
+                case AircraftType.C182_T:
+                    return new C182_T();
                 default:
                     throw new Exception("Unknown aircraft type");
             }

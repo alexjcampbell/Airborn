@@ -1,0 +1,871 @@
+{
+  "ID": "C182_T_2300",
+  "TakeoffProfiles": [
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 0,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 365
+        },
+        {
+          "Temperature": 10,
+          "Distance": 390
+        },
+        {
+          "Temperature": 20,
+          "Distance": 420
+        },
+        {
+          "Temperature": 30,
+          "Distance": 450
+        },
+        {
+          "Temperature": 40,
+          "Distance": 480
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 705
+        },
+        {
+          "Temperature": 10,
+          "Distance": 750
+        },
+        {
+          "Temperature": 20,
+          "Distance": 800
+        },
+        {
+          "Temperature": 30,
+          "Distance": 850
+        },
+        {
+          "Temperature": 40,
+          "Distance": 905
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 1000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 395
+        },
+        {
+          "Temperature": 10,
+          "Distance": 425
+        },
+        {
+          "Temperature": 20,
+          "Distance": 455
+        },
+        {
+          "Temperature": 30,
+          "Distance": 490
+        },
+        {
+          "Temperature": 40,
+          "Distance": 520
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 765
+        },
+        {
+          "Temperature": 10,
+          "Distance": 815
+        },
+        {
+          "Temperature": 20,
+          "Distance": 870
+        },
+        {
+          "Temperature": 30,
+          "Distance": 925
+        },
+        {
+          "Temperature": 40,
+          "Distance": 985
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 2000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 430
+        },
+        {
+          "Temperature": 10,
+          "Distance": 460
+        },
+        {
+          "Temperature": 20,
+          "Distance": 495
+        },
+        {
+          "Temperature": 30,
+          "Distance": 530
+        },
+        {
+          "Temperature": 40,
+          "Distance": 565
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 830
+        },
+        {
+          "Temperature": 10,
+          "Distance": 885
+        },
+        {
+          "Temperature": 20,
+          "Distance": 940
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1005
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1070
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 3000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 470
+        },
+        {
+          "Temperature": 10,
+          "Distance": 505
+        },
+        {
+          "Temperature": 20,
+          "Distance": 540
+        },
+        {
+          "Temperature": 30,
+          "Distance": 580
+        },
+        {
+          "Temperature": 40,
+          "Distance": 620
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 900
+        },
+        {
+          "Temperature": 10,
+          "Distance": 960
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1025
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1090
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1165
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 4000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 510
+        },
+        {
+          "Temperature": 10,
+          "Distance": 550
+        },
+        {
+          "Temperature": 20,
+          "Distance": 590
+        },
+        {
+          "Temperature": 30,
+          "Distance": 630
+        },
+        {
+          "Temperature": 40,
+          "Distance": 675
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 980
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1045
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1115
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1190
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1270
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 5000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 555
+        },
+        {
+          "Temperature": 10,
+          "Distance": 600
+        },
+        {
+          "Temperature": 20,
+          "Distance": 640
+        },
+        {
+          "Temperature": 30,
+          "Distance": 690
+        },
+        {
+          "Temperature": 40,
+          "Distance": 735
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1065
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1140
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1220
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1305
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1390
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 6000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 610
+        },
+        {
+          "Temperature": 10,
+          "Distance": 655
+        },
+        {
+          "Temperature": 20,
+          "Distance": 700
+        },
+        {
+          "Temperature": 30,
+          "Distance": 755
+        },
+        {
+          "Temperature": 40,
+          "Distance": 805
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1165
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1250
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1335
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1430
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1530
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 7000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 665
+        },
+        {
+          "Temperature": 10,
+          "Distance": 715
+        },
+        {
+          "Temperature": 20,
+          "Distance": 770
+        },
+        {
+          "Temperature": 30,
+          "Distance": 825
+        },
+        {
+          "Temperature": 40,
+          "Distance": 885
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1275
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1370
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1470
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1570
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1685
+        }
+      ]
+    },
+    {
+      "Type": "Takeoff",
+      "PressureAltitude": 8000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 730
+        },
+        {
+          "Temperature": 10,
+          "Distance": 785
+        },
+        {
+          "Temperature": 20,
+          "Distance": 845
+        },
+        {
+          "Temperature": 30,
+          "Distance": 905
+        },
+        {
+          "Temperature": 40,
+          "Distance": 970
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1405
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1510
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1620
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1735
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1865
+        }
+      ]
+    }
+  ],
+  "LandingProfiles": [
+    {
+      "Type": "Landing",
+      "PressureAltitude": 0,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 560
+        },
+        {
+          "Temperature": 10,
+          "Distance": 580
+        },
+        {
+          "Temperature": 20,
+          "Distance": 600
+        },
+        {
+          "Temperature": 30,
+          "Distance": 620
+        },
+        {
+          "Temperature": 40,
+          "Distance": 640
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1300
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1335
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1365
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1400
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1435
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 1000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 580
+        },
+        {
+          "Temperature": 10,
+          "Distance": 600
+        },
+        {
+          "Temperature": 20,
+          "Distance": 600
+        },
+        {
+          "Temperature": 30,
+          "Distance": 645
+        },
+        {
+          "Temperature": 40,
+          "Distance": 665
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1265
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1365
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1400
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1440
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1475
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 2000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 600
+        },
+        {
+          "Temperature": 10,
+          "Distance": 625
+        },
+        {
+          "Temperature": 20,
+          "Distance": 645
+        },
+        {
+          "Temperature": 30,
+          "Distance": 670
+        },
+        {
+          "Temperature": 40,
+          "Distance": 690
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1370
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1405
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1440
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1480
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1515
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 3000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 625
+        },
+        {
+          "Temperature": 10,
+          "Distance": 645
+        },
+        {
+          "Temperature": 20,
+          "Distance": 670
+        },
+        {
+          "Temperature": 30,
+          "Distance": 695
+        },
+        {
+          "Temperature": 40,
+          "Distance": 715
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1410
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1445
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1485
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1525
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1560
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 4000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 650
+        },
+        {
+          "Temperature": 10,
+          "Distance": 670
+        },
+        {
+          "Temperature": 20,
+          "Distance": 695
+        },
+        {
+          "Temperature": 30,
+          "Distance": 720
+        },
+        {
+          "Temperature": 40,
+          "Distance": 740
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1450
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1485
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1525
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1565
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1600
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 5000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 670
+        },
+        {
+          "Temperature": 10,
+          "Distance": 695
+        },
+        {
+          "Temperature": 20,
+          "Distance": 720
+        },
+        {
+          "Temperature": 30,
+          "Distance": 745
+        },
+        {
+          "Temperature": 40,
+          "Distance": 770
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1485
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1525
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1565
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1610
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1650
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 6000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 700
+        },
+        {
+          "Temperature": 10,
+          "Distance": 725
+        },
+        {
+          "Temperature": 20,
+          "Distance": 750
+        },
+        {
+          "Temperature": 30,
+          "Distance": 775
+        },
+        {
+          "Temperature": 40,
+          "Distance": 800
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1530
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1575
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1615
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1660
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1700
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 7000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 725
+        },
+        {
+          "Temperature": 10,
+          "Distance": 750
+        },
+        {
+          "Temperature": 20,
+          "Distance": 780
+        },
+        {
+          "Temperature": 30,
+          "Distance": 805
+        },
+        {
+          "Temperature": 40,
+          "Distance": 830
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1575
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1615
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1665
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1710
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1750
+        }
+      ]
+    },
+    {
+      "Type": "Landing",
+      "PressureAltitude": 8000,
+      "GroundRoll": [
+        {
+          "Temperature": 0,
+          "Distance": 755
+        },
+        {
+          "Temperature": 10,
+          "Distance": 780
+        },
+        {
+          "Temperature": 20,
+          "Distance": 810
+        },
+        {
+          "Temperature": 30,
+          "Distance": 835
+        },
+        {
+          "Temperature": 40,
+          "Distance": 865
+        }
+      ],
+      "Clear50FtObstacle": [
+        {
+          "Temperature": 0,
+          "Distance": 1625
+        },
+        {
+          "Temperature": 10,
+          "Distance": 1655
+        },
+        {
+          "Temperature": 20,
+          "Distance": 1715
+        },
+        {
+          "Temperature": 30,
+          "Distance": 1760
+        },
+        {
+          "Temperature": 40,
+          "Distance": 1805
+        }
+      ]
+    }
+  ]
+}

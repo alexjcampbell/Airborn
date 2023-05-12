@@ -27,9 +27,11 @@ namespace Airborn.web.Models
         [Display(Name = "Cirrus SR22T G5")]
         SR22T_G5,
 
-
         [Display(Name = "Cirrus SR22T G6")]
         SR22T_G6,
+
+        [Display(Name = "Cessna 182T")]
+        C182_T,
 
         [Display(Name = "Cessna 172SP")]
         C172_SP
