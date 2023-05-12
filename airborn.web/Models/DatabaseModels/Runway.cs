@@ -123,7 +123,7 @@ namespace Airborn.web.Models
                 }
                 else
                 {
-                    return "";
+                    return "N/A";
                 }
             }
         }

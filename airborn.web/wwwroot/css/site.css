@@ -95,3 +95,7 @@ body {
   border-color: #007bff !important;
   color: #495057 !important;
 }
+
+.text-center {
+  text-align: center;
+}

@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "All aircraft | Airborn.co";
+}
+
+<br />
+
+<div class="row align-items-md-stretch">
+    <div class="col-md-12">
+        <div class="p-4 bg-light border rounded-3">
+            <h2>Welcome to the <b><i>Airborn.co</i></b> Aircraft Database</h2>
+
+            <p class="fs-5">This database contains information from the Pilot's Operating Handbook (POH) about the
+                takeoff and landing performance of the airplanes this app supports.
+                We use this
+                information to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
+                    and landing distances.</a></p>
+            <p class="fs-5">This is for informational purposes only - for real-world flight planning, please use
+                ForeFlight's Performance Plus plan, or do your own calculations.</a></p>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<ul>
+    @foreach (var data in Html.GetEnumSelectList<Airborn.web.Models.AircraftType>())
+    {
+        Airborn.web.Models.AircraftType aircraftType;
+        if (Enum.TryParse<Airborn.web.Models.AircraftType>(data.Value, out aircraftType))
+        {
+            <li>
+                @Html.ActionLink(data.Text, "Details", "Aircraft", new { aircraftType = aircraftType }, null)
+            </li>
+        }
+    }
+</ul>

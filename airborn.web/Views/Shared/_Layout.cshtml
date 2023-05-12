@@ -45,6 +45,8 @@
                                 aria-current="page" asp-controller="Home" asp-action="Calculate">Calculate</a>
                             <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Airports" ? "nav-link active" : "nav-link")"
                                 asp-controller="Airports" asp-action="Index">Airports</a>
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Aircraft" ? "nav-link active" : "nav-link")"
+                                asp-controller="Aircraft" asp-action="Index">Airplanes</a>
                             <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "nav-link active" : "nav-link")"
                                 asp-controller="Home" asp-action="About">About</a>
 

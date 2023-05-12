@@ -1,0 +1,251 @@
+@model Airborn.web.Models.AircraftPageModel
+
+
+@{
+    ViewData["Title"] = "Airborn.co | " + Model.Aircraft.AircraftTypeString;
+}
+
+<br />
+
+<div class="row align-items-md-stretch">
+    <div class="col-md-12">
+        <div class="p-4 bg-light border rounded-3">
+            <h2>@Model.Aircraft.AircraftTypeString</h2>
+
+            <p class="fs-5">This is the performance information for <b>@Model.Aircraft.AircraftTypeString</b> that we
+                use to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
+                    and landing distances.</a></p>
+            <p class="fs-5">This is not an official source: please refer to your country's AIP for actual
+                flight
+                planning.</a></p>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@{
+    var lowerWeightTakeoffData = Model.PerformanceDataList.Where(x => x.AircraftWeight ==
+    Model.PerformanceDataList.AircraftLowerWeight);
+    var higherWeightTakeoffData = Model.PerformanceDataList.Where(x => x.AircraftWeight ==
+    Model.PerformanceDataList.AircraftHigherWeight);
+
+    var pressureAltitudes = Model.PerformanceDataList.TakeoffPerformanceData.Select(x =>
+    x.PressureAltitude.TotalFeet).Distinct();
+    var temperatures = Model.PerformanceDataList.TakeoffPerformanceData.Select(x => x.Temperature).Distinct();
+}
+
+<h1>Takeoff</h1>
+
+<h3>@Model.Aircraft.LowestPossibleWeight lbs</h3>
+
+<table>
+    <thead>
+        <tr class="bg-primary text-white">
+            <th rowspan="2">Pressure Altitude</th>
+            @foreach (var data in temperatures)
+            {
+                <th colspan="2">@data</th>
+            }
+        </tr>
+        <tr class="bg-info text-white">
+            @foreach (var _ in temperatures)
+            {
+                <th>Ground Roll Distance</th>
+                <th>Clear 50' Obstacle Distance</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pressureAltitude in pressureAltitudes)
+        {
+            <tr>
+                <td class="bg-warning text-white">@pressureAltitude</td>
+                @foreach (var temperature in temperatures)
+                {
+                    var groundRollData = Model.PerformanceDataList.TakeoffPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftLowerWeight
+                    );
+                    var obstacleData = Model.PerformanceDataList.TakeoffPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftLowerWeight
+                    );
+
+                    <td>@(groundRollData != null ? groundRollData.DistanceGroundRoll : "-")</td>
+                    <td>@(obstacleData != null ? obstacleData.DistanceToClear50Ft : "-")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+<h3>@Model.Aircraft.HighestPossibleWeight lbs</h3>
+
+<table>
+    <thead>
+        <tr class="bg-primary text-white">
+            <th rowspan="2">Pressure Altitude</th>
+            @foreach (var data in temperatures)
+            {
+                <th colspan="2">@data</th>
+            }
+        </tr>
+        <tr class="bg-info text-white">
+            @foreach (var _ in temperatures)
+            {
+                <th>Ground Roll Distance</th>
+                <th>Clear 50' Obstacle Distance</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pressureAltitude in pressureAltitudes)
+        {
+            <tr>
+                <td class="bg-warning text-white">@pressureAltitude</td>
+                @foreach (var temperature in temperatures)
+                {
+                    var groundRollData = Model.PerformanceDataList.TakeoffPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftHigherWeight
+                    );
+                    var obstacleData = Model.PerformanceDataList.TakeoffPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftHigherWeight
+                    );
+
+                    <td>@(groundRollData != null ? groundRollData.DistanceGroundRoll : "-")</td>
+                    <td>@(obstacleData != null ? obstacleData.DistanceToClear50Ft : "-")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+
+@{
+    var lowerWeightLandingData = Model.PerformanceDataList.Where(x => x.AircraftWeight ==
+    Model.PerformanceDataList.AircraftLowerWeight);
+    var higherWeightLandingData = Model.PerformanceDataList.Where(x => x.AircraftWeight ==
+    Model.PerformanceDataList.AircraftHigherWeight);
+
+    var landingPressureAltitudes = Model.PerformanceDataList.Select(x => x.PressureAltitude.TotalFeet).Distinct();
+    var landingTemperatures = Model.PerformanceDataList.Select(x => x.Temperature).Distinct();
+}
+
+<h1>Landing</h1>
+
+<h3>@Model.Aircraft.LowestPossibleWeight lbs</h3>
+
+<table>
+    <thead>
+        <tr class="bg-primary text-white">
+            <th rowspan="2">Pressure Altitude</th>
+            @foreach (var data in landingTemperatures)
+            {
+                <th colspan="2">@data</th>
+            }
+        </tr>
+        <tr class="bg-info text-white">
+            @foreach (var _ in landingTemperatures)
+            {
+                <th>Ground Roll Distance</th>
+                <th>Clear 50' Obstacle Distance</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pressureAltitude in landingPressureAltitudes)
+        {
+            <tr>
+                <td class="bg-warning text-white">@pressureAltitude</td>
+                @foreach (var temperature in landingTemperatures)
+                {
+                    var groundRollData = Model.PerformanceDataList.LandingPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftLowerWeight
+                    );
+                    var obstacleData = Model.PerformanceDataList.LandingPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftLowerWeight
+                    );
+
+                    <td>@(groundRollData != null ? groundRollData.DistanceGroundRoll : "-")</td>
+                    <td>@(obstacleData != null ? obstacleData.DistanceToClear50Ft : "-")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>@Model.Aircraft.HighestPossibleWeight lbs</h3>
+
+<table>
+    <thead>
+        <tr class="bg-primary text-white">
+            <th rowspan="2">Pressure Altitude</th>
+            @foreach (var data in landingTemperatures)
+            {
+                <th colspan="2">@data</th>
+            }
+        </tr>
+        <tr class="bg-info text-white">
+            @foreach (var _ in landingTemperatures)
+            {
+                <th>Ground Roll Distance</th>
+                <th>Clear 50' Obstacle Distance</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pressureAltitude in landingPressureAltitudes)
+        {
+            <tr>
+                <td class="bg-warning text-white">@pressureAltitude</td>
+                @foreach (var temperature in landingTemperatures)
+                {
+                    var groundRollData = Model.PerformanceDataList.LandingPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftHigherWeight
+                    );
+                    var obstacleData = Model.PerformanceDataList.LandingPerformanceData.FirstOrDefault(d =>
+                    d.PressureAltitude.TotalFeet == pressureAltitude
+                    &&
+                    d.Temperature == temperature
+                    &&
+                    d.AircraftWeight == Model.PerformanceDataList.AircraftHigherWeight
+                    );
+
+                    <td>@(groundRollData != null ? groundRollData.DistanceGroundRoll : "-")</td>
+                    <td>@(obstacleData != null ? obstacleData.DistanceToClear50Ft : "-")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
