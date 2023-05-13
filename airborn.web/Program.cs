@@ -14,7 +14,6 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Logs;
 using Airborn.web.Models;
 using Microsoft.AspNetCore.Identity;
-using airborn.web.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
