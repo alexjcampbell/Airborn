@@ -1,29 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
-using System.Diagnostics.Metrics;
-using Honeycomb.OpenTelemetry;
-using OpenTelemetry;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Exporter.Jaeger;
-using Microsoft.Extensions.DependencyInjection;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Exporter;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Logs;
 using Airborn.web.Models;
-using Microsoft.AspNetCore.Routing;
-using OpenTelemetry.Instrumentation.AspNetCore;
-using System.Configuration;
+using Microsoft.AspNetCore.Identity;
+using airborn.web.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,19 +37,8 @@ builder.WebHost.UseSentry(o =>
 
 builder.Services.AddDbContext<AirbornDbContext>(options =>
 {
-    var env = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-    string connectionString;
-
-    if (env != null)
-    {
-        connectionString = AirbornDbContext.ConvertDatabaseUrlToHerokuString(env);
-    }
-    else
-    {
-        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    }
-
+    var connectionString = DatabaseUtilities.GetConnectionString(builder.Configuration);
     options.UseNpgsql(connectionString);
 });
 

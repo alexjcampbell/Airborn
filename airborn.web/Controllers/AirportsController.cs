@@ -78,7 +78,7 @@ namespace Airborn.web.Controllers
                 ).FirstOrDefault();
 
             using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Details/{ident}");
-            myActivity?.SetTag("AirportCode", ident);
+            myActivity?.SetTag("AirportIdentifier", ident);
 
             return View(airport);
         }
