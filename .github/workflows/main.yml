@@ -26,6 +26,9 @@ jobs:
       - name: Build
         run: dotnet build airborn.web/airborn.web.csproj --no-restore
 
+      - name: Restore dotnet-ef tool
+        run: dotnet tool restore
+
       - name: Set converted connection string
         run: |
           cd airborn.web  # Change to the project root directory
