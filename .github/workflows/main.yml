@@ -32,12 +32,12 @@ jobs:
       - name: Set converted connection string
         run: |
           cd airborn.web  # Change to the project root directory
-          dotnet add package Npgsql --version 5.0.10
+          dotnet add package Npgsql --version 7.0.0
           export CONVERTED_CONNECTION_STRING=$(dotnet run --no-build --no-restore --configuration Release -- Airborn.web.Models.DatabaseUtilities.GetConnectionString)
 
       - name: Run migrations
         run: |
-          cd ../airborn.web  # Change to the project root directory
+          cd airborn.web  # Change to the project root directory
           dotnet ef database update -p airborn.web.csproj -- --connection "$CONVERTED_CONNECTION_STRING"
 
       - name: Build and deploy Docker image
