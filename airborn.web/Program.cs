@@ -128,7 +128,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = services.GetRequiredService<AirbornDbContext>();
-        //db.Database.Migrate();
+        db.Database.Migrate();
     }
     catch (Exception ex)
     {
