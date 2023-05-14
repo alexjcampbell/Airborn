@@ -27,20 +27,40 @@ namespace Airborn.web.Models
 
         public virtual DbSet<Runway> Runways { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<Runway>()
+            base.OnModelCreating(builder); // Must call this first
+
+            builder.Entity<Runway>()
                 .HasKey(r => r.Runway_Id)
-                .HasName("Runway_Id");
+                .HasName("PK_Runway_Id");
 
-            modelBuilder.Entity<Airport>()
+            builder.Entity<Airport>()
                 .HasKey(a => a.Airport_Id)
-                .HasName("Airport_Id");
+                .HasName("PK_Airport_Id");
 
-            modelBuilder.Entity<Airport>()
+            builder.Entity<Airport>()
                 .HasMany(a => a.Runways)
                 .WithOne(r => r.Airport)
-                .HasForeignKey(r => r.Airport_Id);
+                .HasForeignKey(r => r.Airport_Id)
+                .HasConstraintName("FK_Runway_Airport_Id");
+
+            builder.Entity<Airport>()
+                .HasIndex(a => a.Ident)
+                .IsUnique()
+                .HasDatabaseName("IX_Airport_Ident");
+
+            builder.Entity<Airport>()
+                .HasIndex(a => a.Type)
+                .HasDatabaseName("IX_Airport_Type");
+
+            builder.Entity<Runway>()
+                .HasIndex(r => r.Airport_Id)
+                .HasDatabaseName("IX_Runway_Airport_Id");
+
+            builder.Entity<Runway>()
+                .HasIndex(r => r.Runway_Name)
+                .HasDatabaseName("IX_Runway_Runway_Name");
         }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)

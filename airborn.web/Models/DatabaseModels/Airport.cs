@@ -10,11 +10,11 @@ namespace Airborn.web.Models
     [Table("airports")]
     public class Airport
     {
-        [Column("old_airport_id")]
-        public int Airport_Id
-        {
-            get; set;
-        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("airport_id")]
+        public int Airport_Id { get; set; }
 
         [Display(Name = "Airport Identifier")]
         [Column("ident")]
@@ -102,6 +102,27 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Display(Name = "Location")]
+        [Column("municipality")]
+        public string Location
+        {
+            get; set;
+        }
+
+        [Display(Name = "Region")]
+        [Column("iso_region")]
+        public string Region
+        {
+            get; set;
+        }
+
+        [Display(Name = "Continent")]
+        [Column("continent")]
+        public string Continent
+        {
+            get; set;
+        }
+
         [Display(Name = "Country")]
         [Column("iso_country")]
         public string Country
@@ -127,13 +148,54 @@ namespace Airborn.web.Models
             }
         }
 
-        [Display(Name = "Location")]
-        [Column("municipality")]
-        public string Location
+        [Display(Name = "Scheduled Service")]
+        [Column("scheduled_service")]
+        public string ScheduledService
         {
             get; set;
         }
 
+        [Display(Name = "GPS Code")]
+        [Column("gps_code")]
+        public string GPSCode
+        {
+            get; set;
+        }
+
+        [Display(Name = "IATA Code")]
+        [Column("iata_code")]
+        public string IATACode
+        {
+            get; set;
+        }
+
+        [Display(Name = "Local Code")]
+        [Column("local_code")]
+        public string LocalCode
+        {
+            get; set;
+        }
+
+        [Display(Name = "Home Link")]
+        [Column("home_link")]
+        public string HomeLink
+        {
+            get; set;
+        }
+
+        [Display(Name = "Wikipedia Link")]
+        [Column("wikipedia_link")]
+        public string WikipediaLink
+        {
+            get; set;
+        }
+
+        [Display(Name = "Keywords")]
+        [Column("keywords")]
+        public string Keywords
+        {
+            get; set;
+        }
 
         public List<Runway> Runways
         {

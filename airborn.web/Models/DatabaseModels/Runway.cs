@@ -25,13 +25,16 @@ namespace Airborn.web.Models
             Runway_Name = runwayName;
         }
 
-        [NotMapped]
-        public Airport Airport
+        [ForeignKey("Airport_Id")]
+
+        public virtual Airport Airport
         {
             get; set;
         }
 
-        [Column("old_runway_id")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("runway_id")]
         public int Runway_Id
         {
             get; set;
@@ -73,6 +76,34 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Display(Name = "Lighted")]
+        [Column("lighted")]
+        public string Lighted
+        {
+            get; set;
+        }
+
+        [Display(Name = "Closed")]
+        [Column("closed")]
+        public string Closed
+        {
+            get; set;
+        }
+
+        [Display(Name = "Latitude")]
+        [Column("latitude_deg")]
+        public double? Latitude_Deg
+        {
+            get; set;
+        }
+
+        [Display(Name = "Longitude")]
+        [Column("longitude_deg")]
+        public double? Longitude_Deg
+        {
+            get; set;
+        }
+
         [Display(Name = "Surface")]
         [Column("surface")]
         public string SurfaceText
@@ -95,6 +126,13 @@ namespace Airborn.web.Models
                     return RunwaySurface.Unknown;
                 }
             }
+        }
+
+        [Display(Name = "Surface")]
+        [Column("surface_friendly")]
+        public string Surface_Friendly
+        {
+            get; set;
         }
 
         [Display(Name = "Runway Elevation (ft)")]

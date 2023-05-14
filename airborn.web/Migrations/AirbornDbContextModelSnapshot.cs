@@ -26,35 +26,92 @@ namespace airborn.web.Migrations
                 {
                     b.Property<int>("Airport_Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("airport_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Airport_Id"));
 
+                    b.Property<string>("Continent")
+                        .HasColumnType("text")
+                        .HasColumnName("continent");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text")
+                        .HasColumnName("iso_country");
+
                     b.Property<int?>("FieldElevation")
                         .HasColumnType("integer")
-                        .HasColumnName("Elevation_Ft");
+                        .HasColumnName("elevation_ft");
+
+                    b.Property<string>("GPSCode")
+                        .HasColumnType("text")
+                        .HasColumnName("gps_code");
+
+                    b.Property<string>("HomeLink")
+                        .HasColumnType("text")
+                        .HasColumnName("home_link");
+
+                    b.Property<string>("IATACode")
+                        .HasColumnType("text")
+                        .HasColumnName("iata_code");
 
                     b.Property<string>("Ident")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("ident");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("text")
+                        .HasColumnName("keywords");
 
                     b.Property<double?>("Latitude_Deg")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("latitude_deg");
+
+                    b.Property<string>("LocalCode")
+                        .HasColumnType("text")
+                        .HasColumnName("local_code");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text")
+                        .HasColumnName("municipality");
 
                     b.Property<double?>("Longitude_Deg")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("longitude_deg");
 
                     b.Property<double?>("MagneticVariation")
                         .HasColumnType("double precision")
-                        .HasColumnName("Magnetic_Variation");
+                        .HasColumnName("magnetic_variation");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("text")
+                        .HasColumnName("iso_region");
+
+                    b.Property<string>("ScheduledService")
+                        .HasColumnType("text")
+                        .HasColumnName("scheduled_service");
 
                     b.Property<string>("Type")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.Property<string>("WikipediaLink")
+                        .HasColumnType("text")
+                        .HasColumnName("wikipedia_link");
 
                     b.HasKey("Airport_Id")
-                        .HasName("Airport_Id");
+                        .HasName("PK_Airport_Id");
+
+                    b.HasIndex("Ident")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Airport_Ident");
+
+                    b.HasIndex("Type")
+                        .HasDatabaseName("IX_Airport_Type");
 
                     b.ToTable("airports");
                 });
@@ -63,50 +120,77 @@ namespace airborn.web.Migrations
                 {
                     b.Property<int>("Runway_Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("runway_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Runway_Id"));
 
                     b.Property<int>("Airport_Id")
                         .HasColumnType("integer")
-                        .HasColumnName("fk_Airport_Id");
+                        .HasColumnName("fk_airport_id");
 
                     b.Property<string>("Airport_Ident")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("airport_ident");
+
+                    b.Property<string>("Closed")
+                        .HasColumnType("text")
+                        .HasColumnName("closed");
 
                     b.Property<int?>("DisplacedThresholdFt")
                         .HasColumnType("integer")
-                        .HasColumnName("Displaced_Threshold_Ft");
+                        .HasColumnName("displaced_threshold_ft");
 
                     b.Property<int?>("ElevationFt")
                         .HasColumnType("integer")
-                        .HasColumnName("Elevation_Ft");
+                        .HasColumnName("elevation_ft");
 
                     b.Property<double?>("HeadingDegreesTrue")
                         .HasColumnType("double precision")
-                        .HasColumnName("heading_degT");
+                        .HasColumnName("heading_degt");
+
+                    b.Property<double?>("Latitude_Deg")
+                        .HasColumnType("double precision")
+                        .HasColumnName("latitude_deg");
+
+                    b.Property<string>("Lighted")
+                        .HasColumnType("text")
+                        .HasColumnName("lighted");
+
+                    b.Property<double?>("Longitude_Deg")
+                        .HasColumnType("double precision")
+                        .HasColumnName("longitude_deg");
 
                     b.Property<int?>("RunwayLength")
                         .HasColumnType("integer")
-                        .HasColumnName("Length_Ft");
+                        .HasColumnName("length_ft");
 
                     b.Property<int?>("RunwayWidth")
                         .HasColumnType("integer")
-                        .HasColumnName("Width_Ft");
+                        .HasColumnName("width_ft");
 
                     b.Property<string>("Runway_Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("runway_name");
 
                     b.Property<string>("SurfaceText")
                         .HasColumnType("text")
-                        .HasColumnName("Surface");
+                        .HasColumnName("surface");
+
+                    b.Property<string>("Surface_Friendly")
+                        .HasColumnType("text")
+                        .HasColumnName("surface_friendly");
 
                     b.HasKey("Runway_Id")
-                        .HasName("Runway_Id");
+                        .HasName("PK_Runway_Id");
 
-                    b.HasIndex("Airport_Id");
+                    b.HasIndex("Airport_Id")
+                        .HasDatabaseName("IX_Runway_Airport_Id");
 
-                    b.ToTable("Runways");
+                    b.HasIndex("Runway_Name")
+                        .HasDatabaseName("IX_Runway_Runway_Name");
+
+                    b.ToTable("runways");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Runway", b =>
@@ -115,7 +199,8 @@ namespace airborn.web.Migrations
                         .WithMany("Runways")
                         .HasForeignKey("Airport_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Runway_Airport_Id");
 
                     b.Navigation("Airport");
                 });
