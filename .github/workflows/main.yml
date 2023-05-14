@@ -30,9 +30,9 @@ jobs:
         run: dotnet tool restore
 
       - name: Run migrations
-        env:
-          DOTNET_CONNECTION_STRING: ${{ secrets.DOTNET_CONNECTION_STRING }}
-        run: dotnet ef database update --connection "$DOTNET_CONNECTION_STRING"
+        run: |
+          cd airborn.web  # Change to the project root directory
+          dotnet ef database update -p airborn.web.csproj -- --connection "$DOTNET_CONNECTION_STRING"
 
       - name: Build and deploy Docker image
         env:
