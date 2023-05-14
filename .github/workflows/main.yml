@@ -18,7 +18,7 @@ jobs:
           dotnet-version: 7.0.*
 
       - name: Install EF Core Tools
-        run: dotnet tool install --global dotnet-ef
+        run: dotnet tool install --global dotnet-ef --version 7.0.5
 
       - name: Restore dependencies
         run: dotnet restore airborn.web/airborn.web.csproj
