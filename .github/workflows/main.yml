@@ -27,7 +27,7 @@ jobs:
         run: dotnet build airborn.web/airborn.web.csproj --no-restore
 
       - name: Restore dependencies
-        run: dotnet restore airborn.web/airborn.web.csproj
+        run: dotnet tool restore
 
       - name: Run migrations
         env:
