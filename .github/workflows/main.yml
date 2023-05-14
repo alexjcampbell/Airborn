@@ -29,6 +29,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet tool restore
 
+      - name: Set converted connection string
+        run: |
+          dotnet add package Npgsql --version 5.0.10
+          export CONVERTED_CONNECTION_STRING=$(dotnet run --project airborn.web/airborn.web.csproj --no-build --no-restore --configuration Release -- Airborn.web.Models.DatabaseUtilities.GetConnectionString)
+
       - name: Run migrations
         run: |
           cd airborn.web  # Change to the project root directory
