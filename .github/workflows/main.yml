@@ -26,6 +26,9 @@ jobs:
       - name: Build
         run: dotnet build airborn.web/airborn.web.csproj --no-restore
 
+      - name: Restore dependencies
+        run: dotnet restore airborn.web/airborn.web.csproj
+
       - name: Run migrations
         env:
           DOTNET_CONNECTION_STRING: ${{ secrets.DOTNET_CONNECTION_STRING }}
