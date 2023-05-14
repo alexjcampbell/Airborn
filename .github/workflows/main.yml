@@ -26,9 +26,6 @@ jobs:
       - name: Build
         run: dotnet build airborn.web/airborn.web.csproj --no-restore
 
-      - name: Restore dependencies
-        run: dotnet tool restore
-
       - name: Set converted connection string
         run: |
           dotnet add package Npgsql --version 5.0.10
@@ -37,7 +34,7 @@ jobs:
       - name: Run migrations
         run: |
           cd airborn.web  # Change to the project root directory
-          dotnet ef database update -p airborn.web.csproj -- --connection "$DOTNET_CONNECTION_STRING"
+          dotnet ef database update -p airborn.web.csproj -- --connection "$CONVERTED_CONNECTION_STRING"
 
       - name: Build and deploy Docker image
         env:
@@ -47,4 +44,3 @@ jobs:
           docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
           heroku container:push web -a $APP_NAME
           heroku container:release web -a $APP_NAME
-
