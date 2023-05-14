@@ -49,5 +49,8 @@ jobs:
           heroku container:push web -a $APP_NAME
           heroku container:release web -a $APP_NAME
 
-      - name: Run dotnet build separately
-        run: dotnet build airborn.web/airborn.web.csproj
+      - name: Update package versions
+        run: |
+          cd airborn.web  # Change to the project root directory
+          dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 7.0.5
+          dotnet add package Honeycomb.OpenTelemetry.CommonInstrumentations --version 0.27.1-beta
