@@ -21,8 +21,7 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Restore dependencies
-        working-directory: airborn.web
-        run: dotnet restore
+        run: dotnet restore airborn.web/airborn.web.csproj
 
       - name: Build
         run: dotnet build --no-restore
