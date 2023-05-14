@@ -10,12 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Build and deploy the Docker image
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Run migrations
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          APP_NAME: ${{ 'airbornco' }}
+          APP_NAME: 'airbornco'
+          DOTNET_CONNECTION_STRING: ${{ secrets.DOTNET_CONNECTION_STRING }}
         run: |
-          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com        
+          heroku run --app=$APP_NAME "dotnet ef database update --connection $DOTNET_CONNECTION_STRING"
+
+      - name: Build and deploy Docker image
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_NAME: 'airbornco'
+        run: |
+          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
           heroku container:push web -a $APP_NAME
           heroku container:release web -a $APP_NAME
