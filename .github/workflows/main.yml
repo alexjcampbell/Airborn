@@ -29,10 +29,16 @@ jobs:
       - name: Restore dotnet-ef tool
         run: dotnet tool restore
 
-      - name: Set converted connection string
+      - name: Update package versions
         run: |
           cd airborn.web  # Change to the project root directory
           dotnet add package Npgsql --version 7.0.0
+          dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 7.0.0
+
+
+      - name: Set converted connection string
+        run: |
+          cd airborn.web  # Change to the project root directory
           export CONVERTED_CONNECTION_STRING=$(dotnet run --no-build --no-restore --configuration Release -- Airborn.web.Models.DatabaseUtilities.GetConnectionString)
 
       - name: Run migrations
