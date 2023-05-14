@@ -1,5 +1,3 @@
-pg_dump --user postgres -d Airborn -t runways --data-only > runways_inserts.sql
-
 name: HerokuContainer
 
 on:
