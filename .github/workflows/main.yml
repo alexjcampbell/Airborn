@@ -37,7 +37,6 @@ jobs:
 
       - name: Run migrations
         run: |
-          cd airborn.web  # Change to the project root directory
           dotnet ef database update -p airborn.web.csproj -- --connection "$CONVERTED_CONNECTION_STRING"
 
       - name: Build and deploy Docker image
