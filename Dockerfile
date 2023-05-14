@@ -24,6 +24,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY airborn.web/*.json /app/publish/
-COPY ["airborn.web/airborn.db", "/app"]
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet airborn.web.dll
 
