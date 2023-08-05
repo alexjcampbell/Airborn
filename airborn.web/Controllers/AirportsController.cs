@@ -32,6 +32,12 @@ namespace Airborn.web.Controllers
         // GET: Airports
         public async Task<IActionResult> Index(string sortOrder, string searchString, int? pageNumber)
         {
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Index");
             myActivity?.SetTag("SearchString", searchString);
             myActivity?.SetTag("SortOrder", sortOrder);
@@ -79,6 +85,13 @@ namespace Airborn.web.Controllers
 
             using var myActivity = Telemetry.ActivitySource.StartActivity("GET to Airports/Details/{ident}");
             myActivity?.SetTag("AirportIdentifier", ident);
+
+            if (airport == null)
+            {
+                myActivity?.SetTag("AirportIdentifierNotFound", ident);
+
+                return NotFound();
+            }
 
             return View(airport);
         }
