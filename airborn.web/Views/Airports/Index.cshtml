@@ -70,7 +70,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ident)
+                    @Html.ActionLink(item.Ident, "Details", "Airports", new { ident = item.Ident }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
