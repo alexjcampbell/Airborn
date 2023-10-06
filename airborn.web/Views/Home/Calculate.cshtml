@@ -548,14 +548,15 @@
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Runway.RunwayLengthFriendly" />
+                    <input class="form-control alert alert-primary" maxlength="10" readonly
+                        value="@result.Runway.RunwayLengthFriendly" />
                     <label>Available takeoff distance</label>
                 </div>
             </div>
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="N/A" />
+                    <input class="form-control alert alert-primary" maxlength="10" readonly value="N/A" />
                     <label>Displaced threshold</label>
                 </div>
             </div>
@@ -583,7 +584,7 @@
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly
+                    <input class="form-control alert alert-info" maxlength="10" readonly
                         value="@result.Runway.LandingAvailableLength_Formatted" />
                     <label>Available landing distance</label>
                 </div>
@@ -591,7 +592,7 @@
 
             <div class="col-sm-3">
                 <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly
+                    <input class="form-control alert alert-info" maxlength="10" readonly
                         value="@result.Runway.DisplacedThreshold_Formatted" />
                     <label>Displaced threshold</label>
                 </div>
