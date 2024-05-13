@@ -113,6 +113,11 @@ namespace Airborn.web.Models
             return Airports.ToList<Airport>();
         }
 
+        public List<Airport> GetAirportsPaginated(int pageNumber, int pageSize)
+        {
+            return Airports.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList<Airport>();
+        }
+
         public List<KeyValuePair<string, string>> SearchForAirportsByIdentifier(string term)
         {
 

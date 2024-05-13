@@ -25,7 +25,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.airports (
-    new_airport_id integer NOT NULL,
+    airport_id integer NOT NULL,
     old_airport_id integer,
     ident text,
     type text,
@@ -77,7 +77,7 @@ ALTER SEQUENCE public.airports_new_airport_id_seq OWNED BY public.airports.new_a
 --
 
 CREATE TABLE public.runways (
-    new_runway_id integer NOT NULL,
+    runway_id integer NOT NULL,
     old_runway_id integer,
     fk_airport_id integer,
     airport_ident text,
@@ -87,8 +87,8 @@ CREATE TABLE public.runways (
     lighted text,
     closed text,
     runway_name text,
-    latitude_deg text,
-    longitude_deg text,
+    latitude_deg double precision,
+    longitude_deg double precision,
     elevation_ft integer,
     heading_degt numeric,
     displaced_threshold_ft integer,

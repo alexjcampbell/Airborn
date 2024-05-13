@@ -8,6 +8,8 @@ using Airborn.web.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+
 
 namespace Airborn.web.Controllers
 {
@@ -32,7 +34,6 @@ namespace Airborn.web.Controllers
         // GET: Airports
         public async Task<IActionResult> Index(string sortOrder, string searchString, int? pageNumber)
         {
-
             if (pageNumber < 1)
             {
                 pageNumber = 1;
@@ -43,16 +44,27 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("SortOrder", sortOrder);
             myActivity?.SetTag("PageNumber", pageNumber);
 
-
             ViewData["IdentSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Ident" : "Ident_Desc";
             ViewData["CurrentFilter"] = searchString;
 
+            int pageSize = 20;
+
+            var airports = await GetAirports(sortOrder, searchString, pageNumber ?? 1, pageSize);
+
+            return View(airports);
+        }
+
+        private async Task<PaginatedList<Airport>> GetAirports(string sortOrder, string searchString, int pageNumber, int pageSize)
+        {
+
+    
             var airports = from a in _dbContext.Airports
+                           .Include(a => a.Runways)
                            select a;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                airports = airports.Where(s => s.Ident.Contains(searchString.ToUpper())
+                airports = airports.Include(a => a.Runways).Where(s => s.Ident.Contains(searchString.ToUpper())
                                     || s.Name.Contains(searchString.ToUpper()));
             }
 
@@ -69,9 +81,7 @@ namespace Airborn.web.Controllers
                     break;
             }
 
-            int pageSize = 20;
-
-            return View(await PaginatedList<Airport>.CreateAsync(airports.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return await PaginatedList<Airport>.CreateAsync(airports.AsNoTracking(), pageNumber, pageSize);
         }
 
         // GET: Airports/Details/5
