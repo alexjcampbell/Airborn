@@ -13,13 +13,31 @@ using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Logs;
 using Airborn.web.Models;
-using Microsoft.AspNetCore.Identity;
+using Auth0.AspNetCore.Authentication;
+using airborn.web.Support;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+
+// Cookie configuration for HTTP to support cookies with SameSite=None
+// TODO: this wouldn't compile, later let's figure out why
+// builder.Services.ConfigureSameSiteNoneCookies();
+
+// Cookie configuration for HTTPS
+//  builder.Services.Configure<CookiePolicyOptions>(options =>
+//  {
+//     options.MinimumSameSitePolicy = SameSiteMode.None;
+//  });
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? builder.Configuration["Auth0:Domain"];
+    options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID") ?? builder.Configuration["Auth0:ClientId"];
+});
+
+builder.Services.ConfigureSameSiteNoneCookies();
 
 // Add the following line:
 builder.WebHost.UseSentry(o =>
@@ -143,10 +161,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCookiePolicy();
 
+app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -162,3 +181,6 @@ app.MapControllerRoute(
 app.MapDefaultControllerRoute();
 
 app.Run();
+
+
+

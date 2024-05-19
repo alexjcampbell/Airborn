@@ -39,20 +39,31 @@
                         aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Calculate" ? "nav-link active" : "nav-link")"
-                                aria-current="page" asp-controller="Home" asp-action="Calculate">Calculate</a>
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Airports" ? "nav-link active" : "nav-link")"
-                                asp-controller="Airports" asp-action="Index">Airports</a>
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Aircraft" ? "nav-link active" : "nav-link")"
-                                asp-controller="Aircraft" asp-action="Index">Airplanes</a>
-                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "nav-link active" : "nav-link")"
-                                asp-controller="Home" asp-action="About">About</a>
 
-                        </div>
+                <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavAltMarkup">
+                    <div class="navbar-nav mr-auto">
+                        <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Calculate" ? "nav-link active" : "nav-link")"
+                            aria-current="page" asp-controller="Home" asp-action="Calculate">Calculate</a>
+                        <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Airports" ? "nav-link active" : "nav-link")"
+                            asp-controller="Airports" asp-action="Index">Airports</a>
+                        <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Aircraft" ? "nav-link active" : "nav-link")"
+                            asp-controller="Aircraft" asp-action="Index">Airplanes</a>
+                        <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "nav-link active" : "nav-link")"
+                            asp-controller="Home" asp-action="About">About</a>
                     </div>
+                    <ul class="navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-controller="Account" asp-action="Profile" class="nav-link">Hello @User.Identity.Name!</a></li>
+                            <li><a id="qsLogoutBtn" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
+                        }
+                        else
+                        {
+                            <li><a id="qsLoginBtn" asp-controller="Account" asp-action="Login" class="nav-link">Login</a></li>
+                        }
+                    </ul>
                 </div>
+            </div>
             </nav>
 
 

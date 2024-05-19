@@ -9,4 +9,4 @@ services:
       context: .
       dockerfile: airborn.web/Dockerfile
     ports:
-      - 5000
+      - 3000

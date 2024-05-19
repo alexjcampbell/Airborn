@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Xml.Linq;
-using Airborn.web.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airborn.web.Controllers
