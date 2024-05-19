@@ -27,10 +27,17 @@ namespace Airborn.web.Models
 
         public virtual DbSet<Runway> Runways { get; set; }
 
+        public virtual DbSet<Runway> Regions { get; set; }
+
+        public virtual DbSet<Continent> Continents { get; set; }
+
+        public virtual DbSet<Country> Countries { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); // Must call this first
 
+            // primary keys
             builder.Entity<Runway>()
                 .HasKey(r => r.Runway_Id)
                 .HasName("PK_Runway_Id");
@@ -39,6 +46,19 @@ namespace Airborn.web.Models
                 .HasKey(a => a.Airport_Id)
                 .HasName("PK_Airport_Id");
 
+             builder.Entity<Country>()
+                .HasKey(c => c.Country_Id)
+                .HasName("PK_Country_Id");
+
+             builder.Entity<Continent>()
+                .HasKey(c => c.Continent_Id)
+                .HasName("PK_Continent_Id");
+                
+             builder.Entity<Region>()
+                .HasKey(r => r.Region_Id)
+                .HasName("PK_Region_Id");                                
+
+            // foreign keys
             builder.Entity<Airport>()
                 .HasMany(a => a.Runways)
                 .WithOne(r => r.Airport)

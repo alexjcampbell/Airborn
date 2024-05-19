@@ -40,6 +40,12 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("imported_runway_id")]
+        public int ImportedRunway_Id
+        {
+            get; set;
+        }
+
         [Column("fk_airport_id")]
 
         public int Airport_Id

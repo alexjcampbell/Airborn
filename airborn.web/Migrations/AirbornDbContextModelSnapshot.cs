@@ -35,7 +35,7 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("continent");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("CountryCode")
                         .HasColumnType("text")
                         .HasColumnName("iso_country");
 
@@ -58,6 +58,10 @@ namespace airborn.web.Migrations
                     b.Property<string>("Ident")
                         .HasColumnType("text")
                         .HasColumnName("ident");
+
+                    b.Property<int>("ImportedAirport_Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("imported_airport_id");
 
                     b.Property<string>("Keywords")
                         .HasColumnType("text")
@@ -103,6 +107,9 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("wikipedia_link");
 
+                    b.Property<int?>("fk_country_id")
+                        .HasColumnType("integer");
+
                     b.HasKey("Airport_Id")
                         .HasName("PK_Airport_Id");
 
@@ -113,7 +120,114 @@ namespace airborn.web.Migrations
                     b.HasIndex("Type")
                         .HasDatabaseName("IX_Airport_Type");
 
+                    b.HasIndex("fk_country_id");
+
                     b.ToTable("airports");
+                });
+
+            modelBuilder.Entity("Airborn.web.Models.Continent", b =>
+                {
+                    b.Property<int>("Continent_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("continent_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Continent_Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text")
+                        .HasColumnName("Continent Code");
+
+                    b.Property<string>("ContinentName")
+                        .HasColumnType("text")
+                        .HasColumnName("continent_name");
+
+                    b.HasKey("Continent_Id")
+                        .HasName("PK_Continent_Id");
+
+                    b.ToTable("continents");
+                });
+
+            modelBuilder.Entity("Airborn.web.Models.Country", b =>
+                {
+                    b.Property<int>("Country_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("country_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Country_Id"));
+
+                    b.Property<string>("Continent")
+                        .HasColumnType("text")
+                        .HasColumnName("continent");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("text")
+                        .HasColumnName("country_code");
+
+                    b.Property<string>("Ident")
+                        .HasColumnType("text")
+                        .HasColumnName("country_name");
+
+                    b.Property<int>("ImportedCountry_Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("imported_country_id");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("text")
+                        .HasColumnName("keywords");
+
+                    b.Property<string>("WikipediaLink")
+                        .HasColumnType("text")
+                        .HasColumnName("wikipedia_link");
+
+                    b.HasKey("Country_Id")
+                        .HasName("PK_Country_Id");
+
+                    b.ToTable("countries");
+                });
+
+            modelBuilder.Entity("Airborn.web.Models.Region", b =>
+                {
+                    b.Property<int>("Region_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("region_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Region_Id"));
+
+                    b.Property<string>("Continent")
+                        .HasColumnType("text")
+                        .HasColumnName("continent");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("text")
+                        .HasColumnName("iso_country");
+
+                    b.Property<int>("ImportedRegion_ID")
+                        .HasColumnType("integer")
+                        .HasColumnName("imported_region_id");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("text")
+                        .HasColumnName("keywords");
+
+                    b.Property<string>("LocalCode")
+                        .HasColumnType("text")
+                        .HasColumnName("local_code");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("text")
+                        .HasColumnName("region_code");
+
+                    b.Property<string>("WikipediaLink")
+                        .HasColumnType("text")
+                        .HasColumnName("wikipedia_link");
+
+                    b.HasKey("Region_Id")
+                        .HasName("PK_Region_Id");
+
+                    b.ToTable("regions");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Runway", b =>
@@ -148,6 +262,10 @@ namespace airborn.web.Migrations
                     b.Property<double?>("HeadingDegreesTrue")
                         .HasColumnType("double precision")
                         .HasColumnName("heading_degt");
+
+                    b.Property<int>("ImportedRunway_Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("imported_runway_id");
 
                     b.Property<double?>("Latitude_Deg")
                         .HasColumnType("double precision")
@@ -191,6 +309,15 @@ namespace airborn.web.Migrations
                         .HasDatabaseName("IX_Runway_Runway_Name");
 
                     b.ToTable("runways");
+                });
+
+            modelBuilder.Entity("Airborn.web.Models.Airport", b =>
+                {
+                    b.HasOne("Airborn.web.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("fk_country_id");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Runway", b =>

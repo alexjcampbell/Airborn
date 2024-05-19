@@ -16,6 +16,15 @@ namespace Airborn.web.Models
         [Column("airport_id")]
         public int Airport_Id { get; set; }
 
+        [Column("imported_airport_id")]
+        public int ImportedAirport_Id { get; set; }
+
+        [ForeignKey("fk_country_id")]
+        public virtual Country Country
+        {
+            get; set;
+        }
+
         [Display(Name = "Airport Identifier")]
         [Column("ident")]
         public string Ident
@@ -125,7 +134,7 @@ namespace Airborn.web.Models
 
         [Display(Name = "Country")]
         [Column("iso_country")]
-        public string Country
+        public string CountryCode
         {
             get; set;
         }
@@ -138,9 +147,9 @@ namespace Airborn.web.Models
             {
                 if (CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                     .Select(c => new RegionInfo(c.Name))
-                    .Any(r => r.TwoLetterISORegionName == Country))
+                    .Any(r => r.TwoLetterISORegionName == CountryCode))
                 {
-                    RegionInfo region = new RegionInfo(Country);
+                    RegionInfo region = new RegionInfo(CountryCode);
                     return region.DisplayName;
                 }
 
