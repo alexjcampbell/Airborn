@@ -124,10 +124,10 @@ var appResourceBuilder = ResourceBuilder.CreateDefault()
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
-    builder.AddOpenTelemetry(options =>
+    builder.AddOpenTelemetry((OpenTelemetry.Logs.OpenTelemetryLoggerOptions options) =>
     {
         options.SetResourceBuilder(appResourceBuilder);
-        options.AddOtlpExporter(option =>
+        options.AddOtlpExporter((OpenTelemetry.Exporter.OtlpExporterOptions option) =>
         {
             option.Endpoint = new Uri("https://api.honeycomb.io");
             option.Headers = "x-honeycomb-team=" + Environment.GetEnvironmentVariable("HONEYCOMB__APIKEY");
