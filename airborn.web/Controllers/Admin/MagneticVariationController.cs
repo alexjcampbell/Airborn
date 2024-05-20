@@ -10,9 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Airborn.Controllers
+
 {
+    [Authorize(Roles = "AirbornAdmins")]
     public class MagneticVariationController : Controller
     {
         private readonly ILogger<MagneticVariationController> _logger;
