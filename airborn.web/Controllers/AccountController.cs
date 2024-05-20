@@ -22,16 +22,29 @@ namespace SampleMvcApp.Controllers
         }
 
         [Authorize]
-        public async Task Logout()
+        public async Task Logout(string returnUrl = null)
         {
-            var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
-                // Indicate here where Auth0 should redirect the user after a logout.
-                // Note that the resulting absolute Uri must be whitelisted in 
-                .WithRedirectUri(Url.Action("Index", "Home"))
-                .Build();
+            var redirectUri = Url.Action("PostLogoutRedirect", "Account", new { returnUrl = returnUrl });
 
-            await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+                    .WithRedirectUri(redirectUri)
+                    .Build();
+
+                await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public IActionResult PostLogoutRedirect(string returnUrl = null)
+        {       
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [Authorize]
