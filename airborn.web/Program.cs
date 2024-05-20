@@ -15,6 +15,7 @@ using OpenTelemetry.Logs;
 using Airborn.web.Models;
 using Auth0.AspNetCore.Authentication;
 using airborn.web.Support;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,14 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? builder.Configuration["Auth0:Domain"];
     options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID") ?? builder.Configuration["Auth0:ClientId"];
+
+	
+});
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+    options.HttpsPort = 443;
 });
 
 builder.Services.ConfigureSameSiteNoneCookies();
