@@ -41,21 +41,6 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 	
 });
 
-builder.Services.Configure<ForwardedHeadersOptions>(options =>
-{
-    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-    // Only loopback proxies are allowed by default.
-    // Clear that restriction because forwarders are enabled by explicit
-    // configuration.
-    options.KnownNetworks.Clear();
-    options.KnownProxies.Clear();
-});
-
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-    options.HttpsPort = 443;
-});
 
 builder.Services.ConfigureSameSiteNoneCookies();
 
@@ -179,10 +164,21 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
+    
 }
 
+// insane workaround to get around the fact that Heroku only sees http
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
 
-app.UseHttpsRedirection();
+forwardedHeadersOptions.KnownNetworks.Clear(); // Clear the default networks
+forwardedHeadersOptions.KnownProxies.Clear(); // Clear the default proxies
+
+app.UseForwardedHeaders(forwardedHeadersOptions);
+
+
 app.UseStaticFiles();
 app.UseCookiePolicy();
 
