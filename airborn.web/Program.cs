@@ -16,6 +16,7 @@ using Airborn.web.Models;
 using Auth0.AspNetCore.Authentication;
 using airborn.web.Support;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,16 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID") ?? builder.Configuration["Auth0:ClientId"];
 
 	
+});
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Only loopback proxies are allowed by default.
+    // Clear that restriction because forwarders are enabled by explicit
+    // configuration.
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
 });
 
 builder.Services.AddHttpsRedirection(options =>
@@ -170,7 +181,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCookiePolicy();
 
