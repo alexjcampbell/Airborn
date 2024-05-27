@@ -159,8 +159,12 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     try
     {
+        logger.LogInformation("Starting database migration at {date}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        
         var db = services.GetRequiredService<AirbornDbContext>();
         db.Database.Migrate();
+
+        logger.LogInformation("Finished database migration at {date}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
     }
     catch (Exception ex)
     {
