@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace airborn.web.Migrations
 {
     [DbContext(typeof(AirbornDbContext))]
-    [Migration("20240527192925_InitialCreate")]
+    [Migration("20240527193555_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
