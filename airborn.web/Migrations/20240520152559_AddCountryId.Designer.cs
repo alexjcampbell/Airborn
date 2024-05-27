@@ -3,6 +3,7 @@ using System;
 using Airborn.web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace airborn.web.Migrations
 {
     [DbContext(typeof(AirbornDbContext))]
-    partial class AirbornDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520152559_AddCountryId")]
+    partial class AddCountryId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,8 +125,6 @@ namespace airborn.web.Migrations
                     b.HasIndex("Ident")
                         .IsUnique()
                         .HasDatabaseName("IX_Airport_Ident");
-
-                    b.HasIndex("Region_Id");
 
                     b.HasIndex("Type")
                         .HasDatabaseName("IX_Airport_Type");
@@ -373,7 +374,7 @@ namespace airborn.web.Migrations
 
                     b.HasOne("Airborn.web.Models.Region", "Region")
                         .WithMany("Airports")
-                        .HasForeignKey("Region_Id")
+                        .HasForeignKey("Country_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Airport_Region_Id");

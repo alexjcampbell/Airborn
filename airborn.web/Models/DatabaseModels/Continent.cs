@@ -17,8 +17,14 @@ namespace Airborn.web.Models
         public int Continent_Id { get; set; }
 
         [Display(Name = "Continent Code")]
-        [Column("Continent Code")]
+        [Column("continent_code")]
         public string Code
+        {
+            get; set;
+        }
+
+        [Column("last_updated_ts")]
+        public DateTime LastUpdated
         {
             get; set;
         }
@@ -29,6 +35,10 @@ namespace Airborn.web.Models
         {
             get; set;
         }
+
+        public virtual ICollection<Country> Countries { get; set; }
+
+        
 
     }
 }

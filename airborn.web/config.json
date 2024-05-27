@@ -1,5 +1,0 @@
-{
-    "Production": {
-        "SqliteConnectionString": "Data Source=airborn.db"
-    }
-}

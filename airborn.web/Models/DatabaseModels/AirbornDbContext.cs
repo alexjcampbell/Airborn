@@ -27,7 +27,7 @@ namespace Airborn.web.Models
 
         public virtual DbSet<Runway> Runways { get; set; }
 
-        public virtual DbSet<Runway> Regions { get; set; }
+        public virtual DbSet<Region> Regions { get; set; }
 
         public virtual DbSet<Continent> Continents { get; set; }
 
@@ -65,6 +65,31 @@ namespace Airborn.web.Models
                 .HasForeignKey(r => r.Airport_Id)
                 .HasConstraintName("FK_Runway_Airport_Id");
 
+            builder.Entity<Continent>()
+                .HasMany(cc => cc.Countries)
+                .WithOne(co => co.Continent)
+                .HasForeignKey(cc =>cc.Continent_Id)
+                .HasConstraintName("FK_Country_Continent_Id");
+
+            builder.Entity<Country>()
+                .HasMany(c => c.Airports)
+                .WithOne(a => a.Country)
+                .HasForeignKey(a => a.Country_Id)
+                .HasConstraintName("FK_Airport_Country_Id");
+
+            builder.Entity<Country>()
+                .HasMany(c => c.Regions)
+                .WithOne(r => r.Country)
+                .HasForeignKey(a => a.Country_Id)
+                .HasConstraintName("FK_Region_Country_Id");
+
+            builder.Entity<Region>()
+                .HasMany(a => a.Airports)
+                .WithOne(r => r.Region)
+                .HasForeignKey(a => a.Region_Id)
+                .HasConstraintName("FK_Airport_Region_Id");                
+
+            // go fast indices
             builder.Entity<Airport>()
                 .HasIndex(a => a.Ident)
                 .IsUnique()
@@ -81,6 +106,8 @@ namespace Airborn.web.Models
             builder.Entity<Runway>()
                 .HasIndex(r => r.Runway_Name)
                 .HasDatabaseName("IX_Runway_Runway_Name");
+
+                
         }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)

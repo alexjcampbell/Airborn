@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using System.Diagnostics.Contracts;
 
 namespace Airborn.web.Models
 {
@@ -16,21 +17,22 @@ namespace Airborn.web.Models
         [Column("airport_id")]
         public int Airport_Id { get; set; }
 
-        [Column("imported_airport_id")]
-        public int ImportedAirport_Id { get; set; }
-
-        [ForeignKey("fk_country_id")]
-        public virtual Country Country
+        [Column("last_updated_ts")]
+        public DateTime LastUpdated
         {
             get; set;
         }
+
+        [Column("imported_airport_id")]
+        public int ImportedAirport_Id { get; set; }
+
 
         [Display(Name = "Airport Identifier")]
         [Column("ident")]
         public string Ident
         {
             get; set;
-        }
+        }   
 
         [Display(Name = "Field elevation (ft)")]
         [Column("elevation_ft")]
@@ -120,14 +122,18 @@ namespace Airborn.web.Models
 
         [Display(Name = "Region")]
         [Column("iso_region")]
-        public string Region
+        public string RegionCode
         {
             get; set;
         }
 
-        [Display(Name = "Continent")]
-        [Column("continent")]
-        public string Continent
+        [Column("fk_region_id")]
+        public int Region_Id
+        {
+            get; set;
+        }
+        
+        public virtual Region Region
         {
             get; set;
         }
@@ -135,6 +141,14 @@ namespace Airborn.web.Models
         [Display(Name = "Country")]
         [Column("iso_country")]
         public string CountryCode
+        {
+            get; set;
+        }
+
+        [ForeignKey("fk_country_id")]
+        public int Country_Id { get; set; }
+
+        public virtual Country Country
         {
             get; set;
         }

@@ -57,7 +57,7 @@ namespace Airborn.web.Controllers
         private async Task<PaginatedList<Airport>> GetAirports(string sortOrder, string searchString, int pageNumber, int pageSize)
         {
 
-    
+
             var airports = from a in _dbContext.Airports
                            .Include(a => a.Runways)
                            select a;
@@ -194,5 +194,49 @@ namespace Airborn.web.Controllers
             
         */
         }
+
+        // GET: Airports/Continents
+        public IActionResult Continents()
+        {
+            var continents = _dbContext.Continents.Include(c => c.Countries).ToList();
+            return View(continents);
+        }
+
+
+        public IActionResult Continent(int id)
+        {
+            var continent = _dbContext.Continents
+                .Include(c => c.Countries)
+                .FirstOrDefault(c => c.Continent_Id == id);
+
+            if (continent == null)
+            {
+                return NotFound();
+            }
+
+            return View(continent);
+        }
+
+        public IActionResult Countries()
+        {
+            var countries = _dbContext.Countries.Include(c => c.Continent).ToList();
+            return View(countries);
+        }
+
+        public IActionResult Country(int id)
+        {
+            var country = _dbContext.Countries
+                .Include(c => c.Continent)
+                .Include(a => a.Airports)
+                .FirstOrDefault(c => c.Country_Id == id);
+
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            return View(country);
+        }
+
     }
 }

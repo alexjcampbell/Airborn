@@ -54,8 +54,14 @@
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
+
+                            @if (User.IsInRole("AirbornAdmin"))
+                            {
+                                <li><a asp-controller="Import" asp-action="Index" class="nav-link">Admin</a></li>
+                            }
+
                             <li><a asp-controller="Account" asp-action="Profile" class="nav-link">Hello @User.Identity.Name!</a></li>
-                            <li><a id="qsLogoutBtn" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>
+                            <li><a id="qsLogoutBtn" asp-controller="Account" asp-action="Logout" class="nav-link">Logout</a></li>                            
                         }
                         else
                         {

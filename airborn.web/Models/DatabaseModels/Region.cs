@@ -19,6 +19,24 @@ namespace Airborn.web.Models
         [Column("imported_region_id")]
         public int ImportedRegion_ID { get; set; }
 
+        [Column("fk_country_id")]
+        public int Country_Id
+        {
+            get; set;
+        }
+
+        [ForeignKey("fk_country_id")]
+        public virtual Country Country
+        {
+            get; set;
+        }
+
+        [Column("last_updated_ts")]
+        public DateTime LastUpdated
+        {
+            get; set;
+        }
+
         [Display(Name = "Region Code")]
         [Column("region_code")]
         public string RegionCode
@@ -33,9 +51,9 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Display(Name = "Continent")]
-        [Column("continent")]
-        public string Continent
+       [Display(Name = "Name")]
+        [Column("name")]
+        public string Name
         {
             get; set;
         }
@@ -62,5 +80,10 @@ namespace Airborn.web.Models
             get; set;
         }
 
+
+        public List<Airport> Airports
+        {
+            get; set;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Airborn.web.Models
     public class Runway
     {
 
-        private Runway()
+        public Runway()
         {
         }
 
@@ -25,13 +25,6 @@ namespace Airborn.web.Models
             Runway_Name = runwayName;
         }
 
-        [ForeignKey("Airport_Id")]
-
-        public virtual Airport Airport
-        {
-            get; set;
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("runway_id")]
@@ -40,15 +33,30 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Column("imported_runway_id")]
-        public int ImportedRunway_Id
+        [Column("fk_airport_id") ]
+        public int Airport_Id
         {
             get; set;
         }
 
-        [Column("fk_airport_id")]
+        [ForeignKey("fk_airport_id")]
 
-        public int Airport_Id
+        public virtual Airport Airport
+        {
+            get; set;
+        }
+
+        [Column("imported_airport_id")]
+        public int ImportedAirport_ID { get; set; }
+
+        [Column("last_updated_ts")]
+        public DateTime LastUpdated
+        {
+            get; set;
+        }
+
+        [Column("imported_runway_id")]
+        public int ImportedRunway_Id
         {
             get; set;
         }
@@ -176,7 +184,7 @@ namespace Airborn.web.Models
         [Column("heading_degt")]
         public double? HeadingDegreesTrue
         {
-            get; private set;
+            get; set;
         }
 
         [Display(Name = "Runway Heading (° T)")]

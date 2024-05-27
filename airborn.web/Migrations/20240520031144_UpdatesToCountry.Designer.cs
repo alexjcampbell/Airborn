@@ -3,6 +3,7 @@ using System;
 using Airborn.web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace airborn.web.Migrations
 {
     [DbContext(typeof(AirbornDbContext))]
-    partial class AirbornDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520031144_UpdatesToCountry")]
+    partial class UpdatesToCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,12 +34,13 @@ namespace airborn.web.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Airport_Id"));
 
+                    b.Property<string>("Continent")
+                        .HasColumnType("text")
+                        .HasColumnName("continent");
+
                     b.Property<string>("CountryCode")
                         .HasColumnType("text")
                         .HasColumnName("iso_country");
-
-                    b.Property<int>("Country_Id")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("FieldElevation")
                         .HasColumnType("integer")
@@ -66,10 +70,6 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("keywords");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_ts");
-
                     b.Property<double?>("Latitude_Deg")
                         .HasColumnType("double precision")
                         .HasColumnName("latitude_deg");
@@ -94,13 +94,9 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("RegionCode")
+                    b.Property<string>("Region")
                         .HasColumnType("text")
                         .HasColumnName("iso_region");
-
-                    b.Property<int>("Region_Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("fk_region_id");
 
                     b.Property<string>("ScheduledService")
                         .HasColumnType("text")
@@ -114,19 +110,20 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("wikipedia_link");
 
+                    b.Property<int?>("fk_country_id")
+                        .HasColumnType("integer");
+
                     b.HasKey("Airport_Id")
                         .HasName("PK_Airport_Id");
-
-                    b.HasIndex("Country_Id");
 
                     b.HasIndex("Ident")
                         .IsUnique()
                         .HasDatabaseName("IX_Airport_Ident");
 
-                    b.HasIndex("Region_Id");
-
                     b.HasIndex("Type")
                         .HasDatabaseName("IX_Airport_Type");
+
+                    b.HasIndex("fk_country_id");
 
                     b.ToTable("airports");
                 });
@@ -148,10 +145,6 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("continent_name");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_ts");
-
                     b.HasKey("Continent_Id")
                         .HasName("PK_Continent_Id");
 
@@ -169,7 +162,7 @@ namespace airborn.web.Migrations
 
                     b.Property<string>("ContinentCode")
                         .HasColumnType("text")
-                        .HasColumnName("continent_code");
+                        .HasColumnName("continent");
 
                     b.Property<int>("Continent_Id")
                         .HasColumnType("integer");
@@ -189,10 +182,6 @@ namespace airborn.web.Migrations
                     b.Property<string>("Keywords")
                         .HasColumnType("text")
                         .HasColumnName("keywords");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_ts");
 
                     b.Property<string>("WikipediaLink")
                         .HasColumnType("text")
@@ -215,13 +204,13 @@ namespace airborn.web.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Region_Id"));
 
+                    b.Property<string>("Continent")
+                        .HasColumnType("text")
+                        .HasColumnName("continent");
+
                     b.Property<string>("CountryCode")
                         .HasColumnType("text")
                         .HasColumnName("iso_country");
-
-                    b.Property<int>("Country_Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("fk_country_id");
 
                     b.Property<int>("ImportedRegion_ID")
                         .HasColumnType("integer")
@@ -231,17 +220,9 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("keywords");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_ts");
-
                     b.Property<string>("LocalCode")
                         .HasColumnType("text")
                         .HasColumnName("local_code");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
 
                     b.Property<string>("RegionCode")
                         .HasColumnType("text")
@@ -251,19 +232,10 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("wikipedia_link");
 
-                    b.Property<int?>("fk_country_id")
-                        .HasColumnType("integer");
-
                     b.HasKey("Region_Id")
                         .HasName("PK_Region_Id");
 
-                    b.HasIndex("Country_Id");
-
-                    b.ToTable("regions", t =>
-                        {
-                            t.Property("fk_country_id")
-                                .HasColumnName("fk_country_id1");
-                        });
+                    b.ToTable("regions");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Runway", b =>
@@ -299,17 +271,9 @@ namespace airborn.web.Migrations
                         .HasColumnType("double precision")
                         .HasColumnName("heading_degt");
 
-                    b.Property<int>("ImportedAirport_ID")
-                        .HasColumnType("integer")
-                        .HasColumnName("imported_airport_id");
-
                     b.Property<int>("ImportedRunway_Id")
                         .HasColumnType("integer")
                         .HasColumnName("imported_runway_id");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_ts");
 
                     b.Property<double?>("Latitude_Deg")
                         .HasColumnType("double precision")
@@ -343,9 +307,6 @@ namespace airborn.web.Migrations
                         .HasColumnType("text")
                         .HasColumnName("surface_friendly");
 
-                    b.Property<int?>("fk_airport_id")
-                        .HasColumnType("integer");
-
                     b.HasKey("Runway_Id")
                         .HasName("PK_Runway_Id");
 
@@ -355,32 +316,16 @@ namespace airborn.web.Migrations
                     b.HasIndex("Runway_Name")
                         .HasDatabaseName("IX_Runway_Runway_Name");
 
-                    b.ToTable("runways", t =>
-                        {
-                            t.Property("fk_airport_id")
-                                .HasColumnName("fk_airport_id1");
-                        });
+                    b.ToTable("runways");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Airport", b =>
                 {
                     b.HasOne("Airborn.web.Models.Country", "Country")
-                        .WithMany("Airports")
-                        .HasForeignKey("Country_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Airport_Country_Id");
-
-                    b.HasOne("Airborn.web.Models.Region", "Region")
-                        .WithMany("Airports")
-                        .HasForeignKey("Region_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Airport_Region_Id");
+                        .WithMany()
+                        .HasForeignKey("fk_country_id");
 
                     b.Navigation("Country");
-
-                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Country", b =>
@@ -393,18 +338,6 @@ namespace airborn.web.Migrations
                         .HasConstraintName("FK_Country_Continent_Id");
 
                     b.Navigation("Continent");
-                });
-
-            modelBuilder.Entity("Airborn.web.Models.Region", b =>
-                {
-                    b.HasOne("Airborn.web.Models.Country", "Country")
-                        .WithMany("Regions")
-                        .HasForeignKey("Country_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Region_Country_Id");
-
-                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Airborn.web.Models.Runway", b =>
@@ -427,18 +360,6 @@ namespace airborn.web.Migrations
             modelBuilder.Entity("Airborn.web.Models.Continent", b =>
                 {
                     b.Navigation("Countries");
-                });
-
-            modelBuilder.Entity("Airborn.web.Models.Country", b =>
-                {
-                    b.Navigation("Airports");
-
-                    b.Navigation("Regions");
-                });
-
-            modelBuilder.Entity("Airborn.web.Models.Region", b =>
-                {
-                    b.Navigation("Airports");
                 });
 #pragma warning restore 612, 618
         }

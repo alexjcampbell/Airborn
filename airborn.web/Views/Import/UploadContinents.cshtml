@@ -1,0 +1,19 @@
+@{
+    ViewBag.Title = "File Upload";
+}
+
+<h2>File Upload</h2>
+
+<form asp-action="UploadContinents" asp-controller="Import" method="post" enctype="multipart/form-data">
+    <label for="file">Choose file to upload</label>
+    <input type="file" name="file" id="file" />
+    <br /><br />
+    <input type="submit" value="Upload" />
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div>
+        @ViewBag.Message
+    </div>
+}

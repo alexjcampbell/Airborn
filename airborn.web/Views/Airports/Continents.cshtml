@@ -1,0 +1,29 @@
+@model IEnumerable<Airborn.web.Models.Continent>
+
+@{
+    ViewData["Title"] = "Continents";
+}
+
+<h1>Continents</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Countries</th>
+        </tr>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var continent in Model)
+        {
+            <tr>
+                <td><a href="@Url.Action("Continent", "Airports", new { id = continent.Continent_Id })">@continent.ContinentName</a></td>
+                <td>@continent.Code</td>
+                <td>@continent.Countries.Count</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
