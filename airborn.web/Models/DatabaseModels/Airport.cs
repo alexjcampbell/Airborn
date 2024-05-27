@@ -145,7 +145,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [ForeignKey("fk_country_id")]
+        [Column("fk_country_id")]
         public int Country_Id { get; set; }
 
         public virtual Country Country
