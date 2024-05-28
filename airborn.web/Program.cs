@@ -106,10 +106,19 @@ static class StartupExtensions
         builder.Services.AddHangfire(config =>
         {
             var connectionString = DatabaseUtilities.GetConnectionString(builder.Configuration);
-            config.UsePostgreSqlStorage(connectionString); // Configure PostgreSQL storage for Hangfire
+                config.UsePostgreSqlStorage(connectionString, new PostgreSqlStorageOptions
+            {
+                InvisibilityTimeout = TimeSpan.FromMinutes(30),
+                QueuePollInterval = TimeSpan.FromSeconds(15),
+                UseNativeDatabaseTransactions = true,
+            });
         });
 
-        builder.Services.AddHangfireServer();
+        builder.Services.AddHangfireServer(options =>
+        {
+            options.WorkerCount = 1; // Limit to 1 worker for conservative memory usage
+            options.Queues = new[] { "default" }; // Use specific queues if needed
+        });
     }
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
