@@ -81,7 +81,12 @@ namespace Airborn.web.Models.ImportModels
                     var batchSize = 1000;
                     var batch = new List<Airport>(batchSize);
 
-                    _logger.LogInformation("Beginning to import {count} airports", records.Count);
+                    string logLine = $"Beginning to import {records.Count} airports";
+
+                    _logger.LogInformation(logLine);
+
+                    using var myActivity = Telemetry.ActivitySource.StartActivity(logLine);
+                    myActivity?.SetTag("Airports to import:", records.Count);
 
                     var createdCount = 0;
                     var updatedCount = 0;
@@ -134,8 +139,13 @@ namespace Airborn.web.Models.ImportModels
                         dbContext.SaveChanges();
                     }
 
-                    _logger.LogWarning("Finished importing runways: {createdCount} created, {updatedCount} updated", createdCount, updatedCount);
+                    logLine = $"Finished importing airports: created {createdCount} and updated {updatedCount}";
 
+                    _logger.LogInformation(logLine);
+
+                    using var myActivityFinished = Telemetry.ActivitySource.StartActivity(logLine);
+                    myActivityFinished?.SetTag("Airports created:", createdCount);
+                    myActivityFinished?.SetTag("Airports updated:", updatedCount);
 
                     // Log successful execution
                     _logger.LogWarning("AirportImportJob executed successfully.");
