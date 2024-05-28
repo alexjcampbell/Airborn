@@ -47,7 +47,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return Distance.FromFeet(FieldElevation.Value);
+                return FieldElevation.HasValue ? new Distance(FieldElevation.Value) : null;
             }
         }
 
@@ -163,8 +163,16 @@ namespace Airborn.web.Models
                     .Select(c => new RegionInfo(c.Name))
                     .Any(r => r.TwoLetterISORegionName == CountryCode))
                 {
-                    RegionInfo region = new RegionInfo(CountryCode);
-                    return region.DisplayName;
+                    try
+                    {
+                        RegionInfo region = new RegionInfo(CountryCode);
+
+                        return region.EnglishName;
+                    }
+                    catch (ArgumentException)
+                    {
+                        return CountryCode;
+                    }
                 }
 
                 return null;
@@ -231,6 +239,11 @@ namespace Airborn.web.Models
         {
             get
             {
+                if(Runways == null)
+                {
+                    return new List<Runway>();
+                }
+
                 return Runways.FindAll(
                     r => r.Runway_Name != null
                     && (!r.Runway_Name.StartsWith("H")) // remove helipads"

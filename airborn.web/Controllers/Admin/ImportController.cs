@@ -34,21 +34,21 @@ namespace Airborn.web.Controllers
 
         private IWebHostEnvironment _env;
 
-        public ImportController(IBackgroundJobClient backgroundJobClient)
-        {
-            _backgroundJobClient = backgroundJobClient;
-        }
+       public ImportController(
+        IBackgroundJobClient backgroundJobClient,
+        ILogger<ImportController> logger,
+        IWebHostEnvironment env,
+        AirbornDbContext dbContext)
+    {
+        _backgroundJobClient = backgroundJobClient;
+        _logger = logger;
+        _env = env;
+        _dbContext = dbContext;
+    }
 
         public IActionResult Index()
         {
             return View();
-        }
-
-        public ImportController(ILogger<ImportController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
-        {
-            _logger = logger;
-            _env = env;
-            _dbContext = dbContext;
         }
 
         public IActionResult UploadContinents()
