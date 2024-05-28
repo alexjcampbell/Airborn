@@ -15,8 +15,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Auth0.AspNetCore.Authentication;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Airborn.web.Models;
 using Airborn.web.Models.ImportModels;
 using airborn.web.Support;
@@ -100,25 +98,6 @@ static class StartupExtensions
                 .ConfigureResource(resource =>
                     resource.AddService(serviceName, serviceVersion))
         );
-
-        builder.Services.AddTransient<IAirportImportJob, AirportImportJob>(); // Register your job class
-
-        builder.Services.AddHangfire(config =>
-        {
-            var connectionString = DatabaseUtilities.GetConnectionString(builder.Configuration);
-                config.UsePostgreSqlStorage(connectionString, new PostgreSqlStorageOptions
-            {
-                InvisibilityTimeout = TimeSpan.FromMinutes(30),
-                QueuePollInterval = TimeSpan.FromSeconds(15),
-                UseNativeDatabaseTransactions = true,
-            });
-        });
-
-        builder.Services.AddHangfireServer(options =>
-        {
-            options.WorkerCount = 1; // Limit to 1 worker for conservative memory usage
-            options.Queues = new[] { "default" }; // Use specific queues if needed
-        });
     }
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
@@ -198,10 +177,6 @@ static class StartupExtensions
     {
         app.UseStaticFiles();
         app.UseCookiePolicy();
-        app.UseHangfireDashboard("/hangfire", new DashboardOptions
-        {
-            Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
-        });
         app.UseAuthorization();
     }
 
