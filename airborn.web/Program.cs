@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using System.Threading.Tasks;
+using Airborn.web.Models.ImportModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -160,6 +161,9 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
 });
+
+
+builder.Services.AddTransient<IAirportImportJob, AirportImportJob>(); // Register your job class
 
 // Add Hangfire services
 builder.Services.AddHangfire(config =>

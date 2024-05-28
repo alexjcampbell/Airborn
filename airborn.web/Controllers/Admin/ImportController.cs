@@ -18,6 +18,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using Airborn.web.Models.ImportModels;
+using Hangfire;
 
 namespace Airborn.web.Controllers
 {
@@ -25,9 +26,18 @@ namespace Airborn.web.Controllers
     public class ImportController : Controller
     {
         private readonly ILogger<ImportController> _logger;
+
+        private readonly IBackgroundJobClient _backgroundJobClient;
+
         private readonly AirbornDbContext _dbContext;
+        
 
         private IWebHostEnvironment _env;
+
+        public ImportController(IBackgroundJobClient backgroundJobClient)
+        {
+            _backgroundJobClient = backgroundJobClient;
+        }
 
         public IActionResult Index()
         {
@@ -165,9 +175,7 @@ namespace Airborn.web.Controllers
             csv.Context.RegisterClassMap<AirportMap>();
             var records = csv.GetRecords<Airport>().ToList();
 
-            AirportImporter airportImporter = new AirportImporter(_logger);
-
-            Hangfire.BackgroundJob.Enqueue(() => airportImporter.ImportAirports(_dbContext, records));;
+            _backgroundJobClient.Enqueue<IAirportImportJob>(x => x.Execute(records));
 
             return Ok($"Airports import queued successfully to import {records.Count}. Check the logs for progress.");
         }
