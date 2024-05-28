@@ -23,6 +23,13 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("magvar_last_updated_ts")]
+        public DateTime MagneticVariationLastUpdated
+        {
+            get; set;
+        }
+
+
         [Column("imported_airport_id")]
         public int ImportedAirport_Id { get; set; }
 

@@ -16,6 +16,8 @@
                 We use this
                 information to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
                     and landing distances.</a></p>
+
+            <p class="fs-5"><a asp-controller="Airports" asp-action="Continents">View all airports by continent.</a></p>                    
         </div>
     </div>
 </div>
@@ -70,7 +72,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Ident, "Details", "Airports", new { ident = item.Ident }, null)
+                    @Html.ActionLink(item.Ident, "Airport", "Airports", new { ident = item.Ident }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)

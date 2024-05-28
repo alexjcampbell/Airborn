@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Airborn.Controllers
 
 {
-    [Authorize(Roles = "AirbornAdmins")]
+    [Authorize(Roles = "AirbornAdmin")]
     public class MagneticVariationController : Controller
     {
         private readonly ILogger<MagneticVariationController> _logger;
@@ -71,31 +71,32 @@ namespace Airborn.Controllers
 
         */
 
-        /*
-
         public async Task<IActionResult> GetMagneticVariationForNonUSAirports()
         {
-            throw new NotImplementedException();
-
-
-
             GeomagClient client = new GeomagClient();
-
             List<MagVarResult> updates = new List<MagVarResult>();
 
-            List<Airport> airports = _dbContext.GetAirports().Where(a => a.MagneticVariation == null).ToList();
+            // Fetch all relevant airports in one query
+            List<Airport> airports = _dbContext.GetAirports()
+                .Where
+                    (
+                    (a => 
+                        (a.MagneticVariation == null || (a.MagneticVariation.HasValue && a.MagneticVariation == 0))
+                        &&
+                        (a.FieldElevation != null)
+                        )
+                    )
+                .ToList();
 
-            foreach (var airport in airports)
+            int batchSize = 100;
+            int totalBatches = (int)Math.Ceiling((double)airports.Count / batchSize);
+
+            for (int batch = 0; batch < totalBatches; batch++)
             {
-                if (
-                    (airport.MagneticVariation.HasValue && airport.MagneticVariation != 0)
-                )
+                var batchAirports = airports.Skip(batch * batchSize).Take(batchSize).ToList();
+                var tasks = batchAirports.Select(async airport =>
                 {
-                    continue;
-                }
-                {
-                    double? result = await
-                        client.GetGeomagDataAsync(airport.Latitude_Deg.Value, airport.Longitude_Deg.Value, airport.FieldElevation.Value, DateTime.Now);
+                    double? result = await client.GetGeomagDataAsync(airport.Latitude_Deg.Value, airport.Longitude_Deg.Value, airport.FieldElevation.Value, DateTime.Now);
 
                     MagVarResult magVarResult = new MagVarResult
                     {
@@ -107,16 +108,28 @@ namespace Airborn.Controllers
                     };
 
                     airport.MagneticVariation = result;
-                    _dbContext.SaveChanges();
+                    airport.MagneticVariationLastUpdated = DateTime.UtcNow;
                     updates.Add(magVarResult);
-                }
+                }).ToList();
+
+                // Await all the tasks to complete for the current batch
+                await Task.WhenAll(tasks);
+
+                // Batch save changes to the database
+                await _dbContext.SaveChangesAsync();
             }
 
-            return Json(updates);
+            // Create a response object
+            var response = new
+            {
+                Status = "Success",
+                Message = "Magnetic variations updated successfully for non-US airports",
+                UpdatedCount = updates.Count,
+                Updates = updates
+            };
 
-
-    }
-           */
+            return Json(response);
+        }
 
         public class MagVarResult
         {

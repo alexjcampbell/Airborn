@@ -85,7 +85,7 @@ namespace Airborn.web.Controllers
         }
 
         // GET: Airports/Details/5
-        public ActionResult Details(string ident)
+        public ActionResult Airport(string ident)
         {
 
 

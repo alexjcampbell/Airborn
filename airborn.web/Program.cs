@@ -182,14 +182,15 @@ static class StartupExtensions
 
     public static void ConfigureEndpoints(this WebApplication app)
     {
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Calculate}/{id?}");
 
         app.MapControllerRoute(
             name: "Airports",
-            pattern: "Airports/Details/{ident}",
-            defaults: new { controller = "Airports", action = "Details" });
+            pattern: "Airports/Airport/{ident}",
+            defaults: new { controller = "Airports", action = "Airport" });
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Calculate}/{id?}");
 
         app.MapDefaultControllerRoute();
     }

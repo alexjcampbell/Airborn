@@ -10,6 +10,6 @@
 <ul>
     @foreach (var airport in Model.Airports)
     {
-        <li><td><a href="@Url.Action("Detail", "Airports", new { id = airport.Airport_Id })">@airport.Name</a></td></li>
+        <li><td><a href="@Url.Action("Airport", "Airports", new { id = airport.Ident })">@airport.Name</a></td></li>
     }
 </ul>
