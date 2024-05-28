@@ -148,7 +148,7 @@ namespace Airborn.web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UploadAirports(IFormFile file)
+        public IActionResult UploadAirports(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -165,10 +165,11 @@ namespace Airborn.web.Controllers
             csv.Context.RegisterClassMap<AirportMap>();
             var records = csv.GetRecords<Airport>().ToList();
 
-            AirportImporter airportImporter = new AirportImporter();
-            var (createdCount, updatedCount) = await airportImporter.ImportAirports(_dbContext, records);
+            AirportImporter airportImporter = new AirportImporter(_logger);
 
-            return Ok($"Airports imported successfully. {createdCount} created, {updatedCount} updated.");
+            Hangfire.BackgroundJob.Enqueue(() => airportImporter.ImportAirports(_dbContext, records));;
+
+            return Ok($"Airports import queued successfully to import {records.Count}. Check the logs for progress.");
         }
 
         public IActionResult UploadRunways()
@@ -178,7 +179,7 @@ namespace Airborn.web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UploadRunways(IFormFile file)
+        public IActionResult UploadRunways(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -195,10 +196,12 @@ namespace Airborn.web.Controllers
             csv.Context.RegisterClassMap<RunwayMap>();
             var records = csv.GetRecords<RunwayImportPair>().ToList();
 
-            RunwayImporter runwayImporter = new RunwayImporter();
-            var (createdCount, updatedCount) = await runwayImporter.ImportRunways(_dbContext, records);
+            RunwayImporter runwayImporter = new RunwayImporter(_logger);
 
-            return Ok($"Runways imported successfully. {createdCount} created, {updatedCount} updated.");
+            Hangfire.BackgroundJob.Enqueue(() => runwayImporter.ImportRunways(_dbContext, records));
+
+            return Ok($"Runways import queued successfully to import {records.Count}. Check the logs for progress.");
+
         }
 
 

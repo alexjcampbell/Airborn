@@ -17,6 +17,9 @@ using Auth0.AspNetCore.Authentication;
 using airborn.web.Support;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.HttpOverrides;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -151,7 +154,24 @@ using var loggerFactory = LoggerFactory.Create(builder =>
 
 var logger = loggerFactory.CreateLogger<Program>();
 
+
+// Configure Kestrel server options
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
+});
+
+// Add Hangfire services
+builder.Services.AddHangfire(config =>
+{
+    config.UseMemoryStorage(); // Use in-memory storage for simplicity
+});
+builder.Services.AddHangfireServer();
+
+
 var app = builder.Build();
+
+app.UseHangfireDashboard();
 
 // Perform migration
 using (var scope = app.Services.CreateScope())

@@ -87,6 +87,13 @@ namespace Airborn.web.Models.ImportModels
 
     public class RunwayImporter
     {
+        public RunwayImporter(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        private readonly ILogger _logger;
+
         public async Task<(int createdCount, int updatedCount)> ImportRunways(AirbornDbContext _dbContext, List<RunwayImportPair> records)
         {
 
@@ -102,6 +109,7 @@ namespace Airborn.web.Models.ImportModels
             var batchSize = 1000;
             var batch = new List<RunwayImportPair>(batchSize);
 
+            _logger.LogInformation("Beginning to import {count} runways", records.Count);
 
             for (int i = 0; i < records.Count; i += batchSize)
             {
@@ -174,6 +182,8 @@ namespace Airborn.web.Models.ImportModels
                     updatedCount++;
                 }
             }
+
+            _logger.LogInformation("Finished importing runways: {createdCount} created, {updatedCount} updated", createdCount, updatedCount);
 
             return (createdCount, updatedCount);
 
