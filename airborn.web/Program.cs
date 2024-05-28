@@ -198,7 +198,10 @@ static class StartupExtensions
     {
         app.UseStaticFiles();
         app.UseCookiePolicy();
-        app.UseHangfireDashboard(); // Optionally, to use Hangfire Dashboard
+        app.UseHangfireDashboard("/hangfire", new DashboardOptions
+        {
+            Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
+        });
         app.UseAuthorization();
     }
 

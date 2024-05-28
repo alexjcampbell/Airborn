@@ -70,7 +70,7 @@ namespace Airborn.web.Models.ImportModels
                 var dbContext = scope.ServiceProvider.GetRequiredService<AirbornDbContext>();
 
                 // Log starting the job
-                _logger.LogInformation("Starting AirportImportJob execution.");
+                _logger.LogWarning("Starting AirportImportJob execution.");
 
                 try
                 {
@@ -134,11 +134,11 @@ namespace Airborn.web.Models.ImportModels
                         dbContext.SaveChanges();
                     }
 
-                    _logger.LogInformation("Finished importing runways: {createdCount} created, {updatedCount} updated", createdCount, updatedCount);
+                    _logger.LogWarning("Finished importing runways: {createdCount} created, {updatedCount} updated", createdCount, updatedCount);
 
 
                     // Log successful execution
-                    _logger.LogInformation("AirportImportJob executed successfully.");
+                    _logger.LogWarning("AirportImportJob executed successfully.");
                 }
                 catch (Exception ex)
                 {
