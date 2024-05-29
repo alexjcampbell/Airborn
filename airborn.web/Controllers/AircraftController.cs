@@ -41,7 +41,7 @@ namespace Airborn.web.Controllers
             AircraftPageModel model = new AircraftPageModel();
 
             model.Aircraft = Aircraft.GetAircraftFromAircraftType(
-                Aircraft.GetAircraftTypeFromAircraftTypeString(aircraftType)
+                Aircraft.GetAircraftTypeFromAircraftTypeString(aircraftType).Value
                 );
 
             model.PerformanceDataList = new BookPerformanceDataList(model.Aircraft.LowestPossibleWeight, model.Aircraft.HighestPossibleWeight);

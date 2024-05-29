@@ -56,7 +56,7 @@ namespace Airborn.web.Models
 
         [Required(ErrorMessage = "Aircraft Weight is required.")]
         [Display(Name = "Aircraft Weight")]
-        [AircraftWeight]
+        [ValidAircraftWeight]
         public int? AircraftWeight
         {
             get; set;
@@ -87,7 +87,8 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        public AircraftType AircraftType
+        [ValidAircraftType(ErrorMessage = "Aircraft Type is required.")]
+        public string AircraftType
         {
             get; set;
         }
@@ -136,7 +137,7 @@ namespace Airborn.web.Models
 
         [Required(ErrorMessage = "Altimeter setting is required.")]
         [Display(Name = "Altimeter Setting")]
-        [AltimeterSetting]
+        [ValidAltimeterSetting]
         public double? AltimeterSetting
         {
             get; set;

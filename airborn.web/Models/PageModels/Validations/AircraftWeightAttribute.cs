@@ -7,9 +7,9 @@ namespace Airborn.web.Models
 {
 
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class AircraftWeightAttribute : ValidationAttribute
+    public class ValidAircraftWeightAttribute : ValidationAttribute
     {
-        public AircraftWeightAttribute()
+        public ValidAircraftWeightAttribute()
         {
 
         }
@@ -27,6 +27,11 @@ namespace Airborn.web.Models
             {
                 return new ValidationResult("Aircraft weight is required.");
             }
+            if (pageModel.AircraftType == null || pageModel.AircraftType == "")
+            {
+                return ValidationResult.Success;
+            }   
+
             var aircraftWeight = ((int)value!);
 
             Aircraft aircraft = Aircraft.GetAircraftFromAircraftType(pageModel.AircraftType);

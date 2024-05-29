@@ -80,7 +80,7 @@ namespace Airborn.web.Models
             get;
         }
 
-        public static AircraftType GetAircraftTypeFromAircraftTypeString(string aircraftType)
+        public static AircraftType? GetAircraftTypeFromAircraftTypeString(string aircraftType)
         {
 
             switch (aircraftType)
@@ -96,9 +96,14 @@ namespace Airborn.web.Models
                 case "C182_T":
                     return AircraftType.C182_T;
                 default:
-                    throw new Exception("Unknown aircraft type");
+                    return null;
             }
 
+        }
+
+        public static Aircraft GetAircraftFromAircraftType(string aircraftType)
+        {
+            return GetAircraftFromAircraftType(GetAircraftTypeFromAircraftTypeString(aircraftType).Value);
         }
 
         public static Aircraft GetAircraftFromAircraftType(AircraftType aircraftType)

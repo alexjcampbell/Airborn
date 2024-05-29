@@ -50,7 +50,7 @@ namespace Airborn.Tests
         {
             CalculatePageModel model = new CalculatePageModel();
 
-            model.AircraftType = UtilitiesForTesting.Default_AircraftType;
+            model.AircraftType = UtilitiesForTesting.Default_AircraftType.ToString();
             model.AltimeterSetting = UtilitiesForTesting.Default_QNH;
             model.AltimeterSettingType = UtilitiesForTesting.Default_AltimeterSettingType;
             model.AirportIdentifier = UtilitiesForTesting.Default_AirportIdentifier;

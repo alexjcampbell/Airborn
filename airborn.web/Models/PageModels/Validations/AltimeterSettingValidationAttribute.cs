@@ -7,9 +7,9 @@ namespace Airborn.web.Models
 {
 
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class AltimeterSettingAttribute : ValidationAttribute
+    public class ValidAltimeterSettingAttribute : ValidationAttribute
     {
-        public AltimeterSettingAttribute()
+        public ValidAltimeterSettingAttribute()
         {
 
         }

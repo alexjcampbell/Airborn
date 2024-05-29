@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Airborn.web.Controllers
 {
@@ -45,7 +46,7 @@ namespace Airborn.web.Controllers
         {
             ReadCookies();
 
-            PageModel.AircraftWeight = 3400;
+            PageModel.AircraftType = "(-1)";
 
             return View(PageModel);
         }
@@ -102,7 +103,7 @@ namespace Airborn.web.Controllers
 
             if (Request.Cookies["AircraftType"]?.Length > 0)
             {
-                PageModel.AircraftType = Aircraft.GetAircraftTypeFromAircraftTypeString(Request.Cookies["AircraftType"]);
+                PageModel.AircraftType = Aircraft.GetAircraftTypeFromAircraftTypeString(Request.Cookies["AircraftType"]).ToString();
             }
         }
 
