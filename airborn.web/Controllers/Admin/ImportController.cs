@@ -219,7 +219,10 @@ namespace Airborn.web.Controllers
 
             foreach (var region in regions)
             {
-                region.Slug = TextUtilities.ToUrlSlug(region.Name);
+
+                string slug = TextUtilities.ToUrlSlug(region.Name);
+
+                
             }
 
             await _dbContext.SaveChangesAsync();

@@ -185,7 +185,7 @@ static class StartupExtensions
 
         app.MapControllerRoute(
             name: "Airports",
-            pattern: "Airports/Airport/{slug}",
+            pattern: "Airports/Airport/{ident}",
             defaults: new { controller = "Airports", action = "Airport" });
 
         app.MapControllerRoute(

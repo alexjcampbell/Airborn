@@ -53,7 +53,7 @@ namespace Airborn.web.Models
         {
             get
             {
-                return FieldElevation.HasValue ? new Distance(FieldElevation.Value) : null;
+                return FieldElevation.HasValue ? Distance.FromFeet(FieldElevation.Value) : null;
             }
         }
 
