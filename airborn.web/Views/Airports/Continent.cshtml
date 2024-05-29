@@ -6,10 +6,12 @@
 
 <h1>Continent: @Model.ContinentName</h1>
 
+<a href="@Url.Action("Continents", "Airports")">Back to all continents</a>
+
 <h2>Countries:</h2>
 <ul>
     @foreach (var country in Model.Countries)
     {
-        <li><td><a href="@Url.Action("Country", "Airports", new { id = country.Country_Id })">@country.CountryName</a></td></li>
+        <li><td><a href="@Url.Action("Country", "Airports", new { slug = country.Slug })">@country.CountryName</a></td></li>
     }
 </ul>

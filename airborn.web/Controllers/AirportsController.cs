@@ -203,36 +203,47 @@ namespace Airborn.web.Controllers
         }
 
 
-        public IActionResult Continent(int id)
+        public IActionResult Continent(string slug)
         {
             var continent = _dbContext.Continents
                 .Include(c => c.Countries)
-                .FirstOrDefault(c => c.Continent_Id == id);
+                .FirstOrDefault(c => c.Slug == slug);
 
             if (continent == null)
             {
                 return NotFound();
             }
 
+            continent.Countries = continent.Countries.OrderBy(c => c.CountryName).ToList();
+
             return View(continent);
         }
 
         public IActionResult Countries()
         {
-            var countries = _dbContext.Countries.Include(c => c.Continent).ToList();
+            var countries = _dbContext.Countries
+                .Include(c => c.Continent)
+                .OrderBy(a => a.CountryName).ToList()
+                .ToList();
             return View(countries);
         }
 
-        public IActionResult Country(int id)
+        public IActionResult Country(string slug)
         {
             var country = _dbContext.Countries
                 .Include(c => c.Continent)
-                .Include(a => a.Airports)
-                .FirstOrDefault(c => c.Country_Id == id);
+                .Include(a => a.Regions)
+                    .ThenInclude(r => r.Airports) 
+                .FirstOrDefault(c => c.Slug == slug);
 
             if (country == null)
             {
                 return NotFound();
+            }
+
+            foreach (var region in country.Regions)
+            {
+                region.Airports = region.Airports.OrderBy(a => a.Name).ToList();
             }
 
             return View(country);

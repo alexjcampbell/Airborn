@@ -80,6 +80,11 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("slug")]
+        public string Slug
+        {
+            get; set;
+        }
 
         public List<Airport> Airports
         {

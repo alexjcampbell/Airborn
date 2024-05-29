@@ -29,7 +29,6 @@ namespace Airborn.web.Models
             get; set;
         }
 
-
         [Column("imported_airport_id")]
         public int ImportedAirport_Id { get; set; }
 

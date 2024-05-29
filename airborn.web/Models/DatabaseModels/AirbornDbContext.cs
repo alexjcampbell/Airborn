@@ -107,7 +107,15 @@ namespace Airborn.web.Models
                 .HasIndex(r => r.Runway_Name)
                 .HasDatabaseName("IX_Runway_Runway_Name");
 
-                
+            builder.Entity<Country>(entity =>
+            {
+                entity.HasIndex(e => e.Slug).IsUnique();
+            });
+
+            builder.Entity<Continent>(entity =>
+            {
+                entity.HasIndex(e => e.Slug).IsUnique();
+            });           
         }
 
         public List<Runway> GetRunwaysForAirport(string airportIdentifer)

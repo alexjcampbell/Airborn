@@ -6,6 +6,8 @@
 
 <h1>Continents</h1>
 
+<a href="@Url.Action("Index", "Airports")">Back to all airports</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -19,7 +21,7 @@
         @foreach (var continent in Model)
         {
             <tr>
-                <td><a href="@Url.Action("Continent", "Airports", new { id = continent.Continent_Id })">@continent.ContinentName</a></td>
+                <td><a href="@Url.Action("Continent", "Airports", new { slug = continent.Slug })">@continent.ContinentName</a></td>
                 <td>@continent.Code</td>
                 <td>@continent.Countries.Count</td>
 

@@ -196,6 +196,37 @@ namespace Airborn.web.Controllers
             return Ok($"Runways imported successfully. {createdCount} created, {updatedCount} updated.");
         }
 
+        public async Task<IActionResult> AddMissingSlugs()
+        {
+
+            var countries = _dbContext.Countries.ToList();
+
+            foreach (var country in countries)
+            {
+                country.Slug = TextUtilities.ToUrlSlug(country.CountryName);
+            }
+
+
+            var continents = _dbContext.Continents.ToList();
+
+            foreach (var continent in continents)
+            {
+                continent.Slug = TextUtilities.ToUrlSlug(continent.ContinentName);
+            }
+
+
+            var regions = _dbContext.Regions.ToList();
+
+            foreach (var region in regions)
+            {
+                region.Slug = TextUtilities.ToUrlSlug(region.Name);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Slugs updated successfully.");
+        }
+
 
     }
 }

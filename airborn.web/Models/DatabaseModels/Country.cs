@@ -73,6 +73,12 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("slug")]
+        public string Slug
+        {
+            get; set;
+        }
+
         public virtual ICollection<Airport> Airports { get; set; }
 
         public virtual ICollection<Region> Regions { get; set; }

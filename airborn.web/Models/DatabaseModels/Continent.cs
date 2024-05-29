@@ -36,6 +36,12 @@ namespace Airborn.web.Models
             get; set;
         }
 
+        [Column("slug")]
+        public string Slug
+        {
+            get; set;
+        }
+
         public virtual ICollection<Country> Countries { get; set; }
 
         

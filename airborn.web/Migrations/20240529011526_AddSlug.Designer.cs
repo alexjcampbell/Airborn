@@ -3,6 +3,7 @@ using System;
 using Airborn.web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace airborn.web.Migrations
 {
     [DbContext(typeof(AirbornDbContext))]
-    partial class AirbornDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240529011526_AddSlug")]
+    partial class AddSlug
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,6 +284,9 @@ namespace airborn.web.Migrations
                         .HasName("PK_Region_Id");
 
                     b.HasIndex("Country_Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("regions", t =>
                         {

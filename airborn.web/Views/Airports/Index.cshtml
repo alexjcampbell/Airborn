@@ -13,11 +13,11 @@
             <h2>Welcome to the <b><i>Airborn.co</i></b> Airports and Runways Database</h2>
 
             <p class="fs-5">This database contains every airport on earth, as well as information about their runways.
-                We use this
+                You can use this
                 information to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
-                    and landing distances.</a></p>
+                    and landing distances</a> or <a asp-controller="Airports" asp-action="Continents">view all airports.</a></p>
 
-            <p class="fs-5"><a asp-controller="Airports" asp-action="Continents">View all airports by continent.</a></p>                    
+            <p class="fs-5"></p>                    
         </div>
     </div>
 </div>
@@ -104,7 +104,7 @@
                     @*
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 *@
-                    @Html.ActionLink("Details", "Details", "Airports", new { ident = item.Ident }, null)
+                    @Html.ActionLink("Details", "Airport", "Airports", new { ident = item.Ident }, null)
                     @*
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
                 *@
