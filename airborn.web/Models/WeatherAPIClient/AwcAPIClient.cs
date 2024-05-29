@@ -12,7 +12,7 @@ namespace Airborn.web.Models
 
     public class AwcApiClient
     {
-        private const string BaseUrl = "https://aviationweather.gov/adds/dataserver_current/httpparam";
+        private const string BaseUrl = "https://aviationweather.gov/api/data/metar/";
 
 
         public async Task<MetarData> GetLatestMetarForAirport(string airportCode)
