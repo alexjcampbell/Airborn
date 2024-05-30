@@ -57,6 +57,8 @@ namespace Airborn.web.Controllers
 
             var airports = await GetAirports(sortOrder, searchString, pageNumber ?? 1, pageSize);
 
+            ViewData["TotalAirportCount"] = _dbContext.Airports.Count().ToString("N0");
+
             return View(airports);
         }
 

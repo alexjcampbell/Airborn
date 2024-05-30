@@ -97,7 +97,27 @@
 
             @Html.Raw(FormatCoordinate(Model.Latitude_Deg, false)) @Html.Raw(FormatCoordinate(Model.Longitude_Deg, true))
 
-        </dd>        
+        </dd>  
+
+        @if (!string.IsNullOrEmpty(Model.HomeLink))
+        {
+                <dd class="col-sm-2">
+                    <b>Aiport Website</b>
+                </dd>
+                <dt class="col-sm-10">
+                    <a href="@Html.Raw(Model.HomeLink)" target="_blank">Link</a>
+                </dt>
+        }
+        @if (!string.IsNullOrEmpty(Model.WikipediaLink))
+        {
+
+                <dd class="col-sm-2">
+                    <b>Wikipedia Page</b>
+                </dd>
+                <dt class="col-sm-10">
+                    <a href="@Html.Raw(Model.WikipediaLink)" target="_blank">Link</a>
+                </dt>
+        }                   
     </dl>
 </div>
 @*
