@@ -98,6 +98,15 @@ static class StartupExtensions
                 .ConfigureResource(resource =>
                     resource.AddService(serviceName, serviceVersion))
         );
+
+        builder.Services.AddDistributedMemoryCache();
+
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });        
     }
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
