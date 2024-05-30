@@ -60,13 +60,43 @@
             @Html.DisplayNameFor(model => model.MagneticVariation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MagneticVariation)
+            @{
+                string FormatMagneticVariation(double? variation)
+                {
+                    if (!variation.HasValue)
+                    {
+                        return "N/A";
+                    }
+
+                    var direction = variation < 0 ? "W" : "E";
+                    return $"{Math.Abs((decimal)variation)}° {direction}";
+                }
+            }
+
+            @Html.Raw(FormatMagneticVariation(Model.MagneticVariation))
         </dd>
         <dt class="col-sm-2">
-            Latitude & Longitude
+            Coordinates
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Latitude_Deg) @Html.DisplayFor(model => model.Longitude_Deg)
+            @{
+                string FormatCoordinate(double? degree, bool isLongitude)
+                {
+                    if (!degree.HasValue)
+                    {
+                        return "N/A";
+                    }
+
+                    var direction = degree < 0
+                        ? (isLongitude ? "W" : "S")
+                        : (isLongitude ? "E" : "N");
+
+                    return $"{Math.Abs((decimal)degree)}° {direction}";
+                }
+            }
+
+            @Html.Raw(FormatCoordinate(Model.Latitude_Deg, false)) @Html.Raw(FormatCoordinate(Model.Longitude_Deg, true))
+
         </dd>        
     </dl>
 </div>
