@@ -294,12 +294,12 @@
     <br />
 
     <div class="form-group row">
-        <div class="col-sm-3">
-            <button type="submit" style="width: 100%" class="btn btn-primary btn-lg">Calculate Performance</button>
-        </div>
-        <div class="col-sm-9"></div>
+        <div class="col-12 col-md-5"></div>
+        <div class="col-12 col-md-2">
+            <button type="submit" style="width: 100%; padding: 10px 20px;" class="btn-lg btn-primary">Plan Flight</button>
+        </div>        
+        <div class="col-12 col-md-5"></div>        
     </div>
-
 
     @if (Model is not null && Model.Results.Count > 0)
     {
@@ -444,7 +444,7 @@
                         </div>
                         <div class="col-sm-1 p-3">
                             <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                                data-bs-target="#runwayModal_@result.Runway.Runway_Name">Details</button>
+                                data-bs-target="#runwayModal_@result.Runway.Runway_Name">CFI Mode</button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="runwayModal_@result.Runway.Runway_Name" tabindex="-1"
