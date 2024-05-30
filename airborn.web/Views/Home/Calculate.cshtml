@@ -428,187 +428,186 @@
 
     @foreach (CalculationResultForRunwayPageModel result in Model?.ResultsSortedByHeadwind)
     {
-        <div class="form-group row important-info mb-3">
-            <div class="col-sm-10 p-3 d-flex align-items-center ">
-                <h6 class="mb-0">Runway @result.Runway.Runway_Name
-                    @if (result.IsBestWind)
-                    {
-                        <span class="badge bg-success">(Best wind)</span>
-                    }
-                </h6>
-            </div>
-            <div class="col-sm-1 p-3">
-                &nbsp;
-            </div>
-            <div class="col-sm-1 p-3">
+        <details @(result.IsBestWind ? "open" : "")>
+            <summary class="d-flex align-items-center">
+                    <div class="form-group row important-info mb-3 w-100">
+                        <div class="col-sm-10 p-3 d-flex align-items-center">
+                            <h6 class="mb-0">Runway @result.Runway.Runway_Name
+                                @if (result.IsBestWind)
+                                {
+                                    <span class="badge bg-success">(Best wind)</span>
+                                }
+                            </h6>
+                        </div>
+                        <div class="col-sm-1 p-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-1 p-3">
+                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                data-bs-target="#runwayModal_@result.Runway.Runway_Name">Details</button>
 
-                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                    data-bs-target="#runwayModal_@result.Runway.Runway_Name">Details</button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="runwayModal_@result.Runway.Runway_Name" tabindex="-1"
-                    aria-labelledby="runwayCalculationModal_@result.Runway.Runway_Name" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="runwayCalculationModal_@result.Runway.Runway_Name">
-                                    Calculations (advanced)</h3>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    @foreach (PerformanceCalculationLog.LogItem logline in result.LogItem.SubItems)
-                                    {
-                                        <li>
-                                            <h5 class="mb-1">
-                                                @logline
-                                            </h5>
+                            <!-- Modal -->
+                            <div class="modal fade" id="runwayModal_@result.Runway.Runway_Name" tabindex="-1"
+                                aria-labelledby="runwayCalculationModal_@result.Runway.Runway_Name" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="runwayCalculationModal_@result.Runway.Runway_Name">
+                                                Calculations (advanced)</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
                                             <ul>
-
-                                                @foreach (PerformanceCalculationLog.LogItem subLogline in logline.SubItems)
+                                                @foreach (PerformanceCalculationLog.LogItem logline in result.LogItem.SubItems)
                                                 {
                                                     <li>
-                                                        <h6 class="mb-1">@subLogline</h6>
-
-
+                                                        <h5 class="mb-1">
+                                                            @logline
+                                                        </h5>
                                                         <ul>
-                                                            @foreach (PerformanceCalculationLog.LogItem subSubLogline in
-                                                           subLogline.SubItems)
+                                                            @foreach (PerformanceCalculationLog.LogItem subLogline in logline.SubItems)
                                                             {
                                                                 <li>
-                                                                    @subSubLogline
-
+                                                                    <h6 class="mb-1">@subLogline</h6>
                                                                     <ul>
-                                                                        @foreach (PerformanceCalculationLog.LogItem subSubSubLogline in
-                                                                       subSubLogline.SubItems)
+                                                                        @foreach (PerformanceCalculationLog.LogItem subSubLogline in
+                                                                            subLogline.SubItems)
                                                                         {
                                                                             <li>
-                                                                                @subSubSubLogline
+                                                                                @subSubLogline
+                                                                                <ul>
+                                                                                    @foreach (PerformanceCalculationLog.LogItem subSubSubLogline in
+                                                                                        subSubLogline.SubItems)
+                                                                                    {
+                                                                                        <li>
+                                                                                            @subSubSubLogline
+                                                                                        </li>
+                                                                                    }
+                                                                                </ul>
                                                                             </li>
                                                                         }
                                                                     </ul>
                                                                 </li>
                                                             }
                                                         </ul>
+                                                        <hr />
                                                     </li>
                                                 }
                                             </ul>
-                                            <hr />
-                                        </li>
-                                    }
-                                </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+
+                        </div>
+                    </div>
+                </summary>            
+                
+                <div class="form-group row">
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@result.Runway.Surface" />
+                            <label>Runway surface</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@result.Slope_Formatted" />
+                            <label>Slope</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly
+                                value="@result.Runway.Runway_HeadingMagnetic_Formatted" />
+                            <label>Runway heading</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@result.Wind_Formatted" />
+                            <label>Wind</label>
                         </div>
                     </div>
 
+                </div>
+                <br />
 
+                <div class="form-group row">
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@result.Takeoff_Groundroll_Formatted" />
+                            <label>&#128747; Takeoff ground roll</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@result.Takeoff_50FtClearance_Formatted" />
+                            <label>Takeoff distance to clear 50' obstacle</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@result.Runway.RunwayLengthFriendly" />
+                            <label>Available takeoff distance</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly value="N/A" />
+                            <label>Displaced threshold</label>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-        </div>
-        <div class="form-group row">
 
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Runway.Surface" />
-                    <label>Runway surface</label>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Slope_Formatted" />
-                    <label>Slope</label>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly
-                        value="@result.Runway.Runway_HeadingMagnetic_Formatted" />
-                    <label>Runway heading</label>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control" maxlength="10" readonly value="@result.Wind_Formatted" />
-                    <label>Wind</label>
-                </div>
-            </div>
+                <br />
 
-        </div>
-        <br />
+                <div class="form-group row">
 
-        <div class="form-group row">
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@result.Landing_Groundroll_Formatted" />
+                            <label>&#128748; Landing ground roll</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control  alert alert-info" maxlength="10" readonly
+                                value="@result.Landing_50FtClearance_Formatted" />
+                            <label>Landing distance to clear 50' obstacle</label>
+                        </div>
+                    </div>
 
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-primary" maxlength="10" readonly
-                        value="@result.Takeoff_Groundroll_Formatted" />
-                    <label>&#128747; Takeoff ground roll</label>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@result.Runway.LandingAvailableLength_Formatted" />
+                            <label>Available landing distance</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@result.Runway.DisplacedThreshold_Formatted" />
+                            <label>Displaced threshold</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-primary" maxlength="10" readonly
-                        value="@result.Takeoff_50FtClearance_Formatted" />
-                    <label>Takeoff distance to clear 50' obstacle</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-primary" maxlength="10" readonly
-                        value="@result.Runway.RunwayLengthFriendly" />
-                    <label>Available takeoff distance</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-primary" maxlength="10" readonly value="N/A" />
-                    <label>Displaced threshold</label>
-                </div>
-            </div>
-        </div>
-
-
-        <br />
-
-        <div class="form-group row">
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-info" maxlength="10" readonly
-                        value="@result.Landing_Groundroll_Formatted" />
-                    <label>&#128748; Landing ground roll</label>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control  alert alert-info" maxlength="10" readonly
-                        value="@result.Landing_50FtClearance_Formatted" />
-                    <label>Landing distance to clear 50' obstacle</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-info" maxlength="10" readonly
-                        value="@result.Runway.LandingAvailableLength_Formatted" />
-                    <label>Available landing distance</label>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="form-floating">
-                    <input class="form-control alert alert-info" maxlength="10" readonly
-                        value="@result.Runway.DisplacedThreshold_Formatted" />
-                    <label>Displaced threshold</label>
-                </div>
-            </div>
-        </div>
+            </details>
 
         <br />
     }
