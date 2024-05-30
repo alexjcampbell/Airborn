@@ -47,19 +47,19 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Airport Code</a>
             </th>
             <th>
-                @Html.DisplayNameFor(m => m[0].Name)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(m => m[0].Name)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(m => m[0].Location)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(m => m[0].Location)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(m => m[0].FieldElevationAsDistance)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["FieldElevationSortParm"]">@Html.DisplayNameFor(m => m[0].FieldElevationAsDistance)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(m => m[0].Type_Friendly)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">@Html.DisplayNameFor(m => m[0].Type_Friendly)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(m => m[0].MagneticVariation)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["MagneticVariationSortParm"]">@Html.DisplayNameFor(m => m[0].MagneticVariation)</a>
             </th>
             <th>
                 Usable Runways

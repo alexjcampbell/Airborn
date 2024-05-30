@@ -45,6 +45,12 @@ namespace Airborn.web.Controllers
             myActivity?.SetTag("PageNumber", pageNumber);
 
             ViewData["IdentSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Ident" : "Ident_Desc";
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "Name_Desc" : "Name";
+            ViewData["LocationSortParm"] = sortOrder == "Location" ? "Location_Desc" : "Location";
+            ViewData["FieldElevationSortParm"] = sortOrder == "FieldElevation" ? "FieldElevation_Desc" : "FieldElevation";
+            ViewData["TypeSortParm"] = sortOrder == "Type" ? "Type_Desc" : "Type";
+            ViewData["MagneticVariationSortParm"] = sortOrder == "MagneticVariation" ? "MagneticVariation_Desc" : "MagneticVariation";
+
             ViewData["CurrentFilter"] = searchString;
 
             int pageSize = 20;
@@ -71,10 +77,40 @@ namespace Airborn.web.Controllers
             switch (sortOrder)
             {
                 case "Ident":
-                    airports = airports.OrderBy(a => a.Name);
+                    airports = airports.OrderBy(a => a.Ident);
                     break;
                 case "Ident_Desc":
                     airports = airports.OrderByDescending(a => a.Ident);
+                    break;
+                case "Name":
+                    airports = airports.OrderBy(a => a.Name);
+                    break;
+                case "Name_Desc":
+                    airports = airports.OrderByDescending(a => a.Name);
+                    break;
+                case "Location":
+                    airports = airports.OrderBy(a => a.Location);
+                    break;
+                case "Location_Desc":
+                    airports = airports.OrderByDescending(a => a.Location);
+                    break;
+                case "FieldElevation":
+                    airports = airports.OrderBy(a => a.FieldElevation);
+                    break;
+                case "FieldElevation_Desc":
+                    airports = airports.OrderByDescending(a => a.FieldElevation);
+                    break;
+                case "Type":
+                    airports = airports.OrderBy(a => a.Type);
+                    break;
+                case "Type_Desc":
+                    airports = airports.OrderByDescending(a => a.Type);
+                    break;
+                case "MagneticVariation":
+                    airports = airports.OrderBy(a => a.MagneticVariation);
+                    break;
+                case "MagneticVariation_Desc":
+                    airports = airports.OrderByDescending(a => a.MagneticVariation);
                     break;
                 default:
                     airports = airports.OrderBy(a => a.Ident);
@@ -233,7 +269,7 @@ namespace Airborn.web.Controllers
             var country = _dbContext.Countries
                 .Include(c => c.Continent)
                 .Include(a => a.Regions)
-                    .ThenInclude(r => r.Airports) 
+                    .ThenInclude(r => r.Airports)
                 .FirstOrDefault(c => c.Slug == slug);
 
             if (country == null)
