@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",  // Ensure this task is defined in tasks.json
+      "program": "${workspaceFolder}/airborn.web/bin/Debug/net7.0/airborn.web.dll",  // Verify the path
+      "args": [],
+      "cwd": "${workspaceFolder}/airborn.web",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
