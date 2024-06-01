@@ -43,7 +43,7 @@
                 <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavAltMarkup">
                     <div class="navbar-nav mr-auto">
                         <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Calculate" ? "nav-link active" : "nav-link")"
-                            aria-current="page" asp-controller="Home" asp-action="Calculate">Plan flight</a>
+                            aria-current="page" asp-controller="PlanFlight" asp-action="Calculate">Plan flight</a>
                         <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Airports" ? "nav-link active" : "nav-link")"
                             asp-controller="Airports" asp-action="Index">Airports</a>
                         <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Aircraft" ? "nav-link active" : "nav-link")"
