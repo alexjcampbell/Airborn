@@ -1,0 +1,59 @@
+@using Airborn.web.Models
+@model CalculationResultForRunwayPageModel
+
+<!-- Modal -->
+<div class="modal fade" id="runwayModal_@Model.Runway.Runway_Name" tabindex="-1"
+aria-labelledby="runwayCalculationModal_@Model.Runway.Runway_Name" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="runwayCalculationModal_@Model.Runway.Runway_Name">
+                Calculations (advanced)</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                @foreach (PerformanceCalculationLog.LogItem logline in Model.LogItem.SubItems)
+                {
+                    <li>
+                        <h5 class="mb-1">
+                            @logline
+                        </h5>
+                        <ul>
+                            @foreach (PerformanceCalculationLog.LogItem subLogline in logline.SubItems)
+                            {
+                                <li>
+                                    <h6 class="mb-1">@subLogline</h6>
+                                    <ul>
+                                        @foreach (PerformanceCalculationLog.LogItem subSubLogline in
+                                            subLogline.SubItems)
+                                        {
+                                            <li>
+                                                @subSubLogline
+                                                <ul>
+                                                    @foreach (PerformanceCalculationLog.LogItem subSubSubLogline in
+                                                        subSubLogline.SubItems)
+                                                    {
+                                                        <li>
+                                                            @subSubSubLogline
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                        <hr />
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>

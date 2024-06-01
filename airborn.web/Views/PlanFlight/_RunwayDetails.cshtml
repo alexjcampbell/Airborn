@@ -1,0 +1,129 @@
+@using Airborn.web.Models
+@model CalculationResultForRunwayPageModel
+
+<details @(Model.IsBestWind ? "open" : "")>
+            <summary class="d-flex align-items-center">
+                    <div class="form-group row important-info mb-3 w-100">
+                        <div class="col-sm-10 p-3 d-flex align-items-center">
+                            <h6 class="mb-0">Runway @Model.Runway.Runway_Name
+                                @if (Model.IsBestWind)
+                                {
+                                    <span class="badge bg-success">(Best wind)</span>
+                                }
+                            </h6>
+                        </div>
+                        <div class="col-sm-1 p-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-1 p-3">
+                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                data-bs-target="#runwayModal_@Model.Runway.Runway_Name">CFI mode</button>
+
+                                @await Html.PartialAsync("_CFIModeSecondary", Model)
+
+
+                        </div>
+                    </div>
+                </summary>            
+                
+                <div class="form-group row">
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@Model.Runway.Surface" />
+                            <label>Runway surface</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@Model.Slope_Formatted" />
+                            <label>Slope</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly
+                                value="@Model.Runway.Runway_HeadingMagnetic_Formatted" />
+                            <label>Runway heading</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control" maxlength="10" readonly value="@Model.Wind_Formatted" />
+                            <label>Wind</label>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+
+                <div class="form-group row">
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@Model.Takeoff_Groundroll_Formatted" />
+                            <label>&#128747; Takeoff ground roll</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@Model.Takeoff_50FtClearance_Formatted" />
+                            <label>Takeoff distance to clear 50' obstacle</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly
+                                value="@Model.Runway.RunwayLengthFriendly" />
+                            <label>Available takeoff distance</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-primary" maxlength="10" readonly value="N/A" />
+                            <label>Displaced threshold</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <br />
+
+                <div class="form-group row">
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@Model.Landing_Groundroll_Formatted" />
+                            <label>&#128748; Landing ground roll</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control  alert alert-info" maxlength="10" readonly
+                                value="@Model.Landing_50FtClearance_Formatted" />
+                            <label>Landing distance to clear 50' obstacle</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@Model.Runway.LandingAvailableLength_Formatted" />
+                            <label>Available landing distance</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-floating">
+                            <input class="form-control alert alert-info" maxlength="10" readonly
+                                value="@Model.Runway.DisplacedThreshold_Formatted" />
+                            <label>Displaced threshold</label>
+                        </div>
+                    </div>
+                </div>
+            </details>

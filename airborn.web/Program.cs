@@ -209,7 +209,7 @@ static class StartupExtensions
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Calculate}/{id?}");
+            pattern: "{controller=PlanFlight}/{action=Calculate}/{id?}");
 
         app.MapDefaultControllerRoute();
     }

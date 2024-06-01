@@ -23,10 +23,12 @@ namespace Airborn.web.Models
                     return null;
                 }
 
+                Airport airport = DbContext.GetAirport(StationId);
+
                 double windDirectionMagnetic =
                     Direction.ConvertTrueToMagnetic(
                         WindDirection,
-                        DbContext.GetAirport(StationId).MagneticVariation.GetValueOrDefault()
+                        airport.MagneticVariation.GetValueOrDefault()
                         );
 
                 return

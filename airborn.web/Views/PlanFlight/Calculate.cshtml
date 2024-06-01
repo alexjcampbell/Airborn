@@ -1,0 +1,279 @@
+﻿@using Airborn.web.Models
+@model CalculatePageModel
+
+@{
+    ViewData["Title"] = "Airborn.co | A free takeoff and landing distance calculator for SR22, SR22T, and Cessna 172";
+}
+
+<br />
+<div class="row align-items-md-stretch">
+    <div class="col-md-12">
+        <div class="p-4 bg-light border rounded-3">
+            <h2>Free takeoff and landing distance calculator</h2>
+
+            <p class="fs-5">Tell us your about your flight, and we'll provide takeoff and landing distances for
+                each runway at your airport.</p>
+        </div>
+    </div>
+</div>
+
+<form asp-action="Calculate" method="post" class="form-horizontal">
+
+    <br />
+    @if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Any()))
+    {
+
+        <div class="alert alert-danger" role="alert">
+            <strong>Oh oh!</strong> It looks like you missed a few fields that we need to calculate your
+            performance information.
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <br />
+    }
+
+    <div>
+        <h6>The flight</h6>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <div class="form-floating">
+                <input asp-for="AirportIdentifier" class="form-control" autocomplete="off" id="AirportIdentifier"
+                    placeholder="Airport Identifier" maxlength="4" />
+                <label for="AirportIdentifier">Airport identifier</label>
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="AirportIdentifier" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        @section Scripts{
+            <script src="~/js/planflight.js"></script> 
+        }
+        <div class="col-sm-3">
+            <div class="form-floating">
+
+                @{
+                    var aircraftTypes = Enum.GetValues(typeof(AircraftType))
+                                            .Cast<AircraftType>()
+                                            .Select(at => new SelectListItem 
+                                            {
+                                                Value = at.ToString(),
+                                                Text = ((Enum)at).GetDisplayName()
+                                            });
+                }
+
+                <select asp-for="AircraftType" asp-items="aircraftTypes" class="form-select">
+                    <option selected="selected" value="">-- Select aircraft --</option>
+                </select>
+
+                <label for="AircraftType">Aircraft type</label>
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="AircraftType" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-floating">
+                <input asp-for="AircraftWeight" class="form-control" maxlength="4" placeholder="Aircraft weight" />
+                <label for="AircraftWeight">Aircraft weight (lbs)</label>
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="AircraftWeight" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-floating">
+
+                <select asp-for="AirconOption" asp-items="Html.GetEnumSelectList<AirconOptions>()" class="form-select">
+                </select>
+                <label for="AirconOption">Aircon</label>
+                <span asp-validation-for="AirconOption" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <h6>The weather
+            </h6>
+        </div>
+    </div>
+
+    <div class="toast position-absolute top-0 end-0 align-items-center text-white bg-info border-0 g-3" role="alert"
+        aria-live="assertive" aria-atomic="true" id="METARToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                Latest METAR for <span id="StationId"></span>: temperature <span id="TemperatureToast"></span>°C, wind
+                speed <span id="WindSpeedToast"></span> knots, wind direction magnetic <span
+                    id="WindDirectionMagneticToast"></span> degrees, wind direction true <span
+                    id="WindDirectionTrueToast"></span>, altimeter <span id="AltimeterSettingToast"></span> inHg
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="toast position-absolute top-0 end-0 align-items-center text-white bg-warning border-0 g-3" role="alert"
+        aria-live="assertive" aria-atomic="true" id="METARFailedToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                Couldn't retrieve METAR for <span id="StationIdFailed"></span>,so you'll need to enter the weather
+                manually.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <div class="form-floating">
+                <input asp-for="WindDirectionMagnetic" class="form-control" maxlength="3"
+                    placeholder="Wind direction °M" />
+                <label asp-for="WindDirectionMagnetic">Wind direction °M</label>
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="WindDirectionMagnetic" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-floating">
+                <input asp-for="WindStrength" class="form-control" placeholder="Wind strength (kts)" maxlength="3" />
+                <label asp-for="WindStrength">Wind strength (kts)</label>
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="WindStrength" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+
+
+            <div class="input-group">
+                <div style="width: 80%" class="form-floating">
+                    <input asp-for="Temperature" class="form-control" placeholder="Temperature" maxlength="3" />
+                    <label asp-for="Temperature">Temperature</label>
+                </div>
+
+                <select style="width: 20%" asp-for="TemperatureType"
+                    asp-items="Html.GetEnumSelectList<TemperatureType>()" class="form-control">
+                </select>
+
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="Temperature" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="input-group">
+                <div style="width: 80%" class="form-floating">
+                    <input asp-for="AltimeterSetting" class="form-control" maxlength="5"
+                        placeholder="Altimeter setting" />
+                    <label asp-for="AltimeterSetting">Altimeter setting</label>
+                </div>
+                <select style="width: 20%" asp-for="AltimeterSettingType"
+                    asp-items="Html.GetEnumSelectList<AltimeterSettingType>()" class="form-control">
+                </select>
+
+                <div class="invalid-feedback" style="display:block;">
+                    <span asp-validation-for="AltimeterSetting" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group row">
+        <div class="col-12 col-md-5"></div>
+        <div class="col-12 col-md-2">
+            <button type="submit" style="width: 100%; padding: 10px 20px;" class="btn-lg btn-primary">Plan Flight</button>
+        </div>        
+        <div class="col-12 col-md-5"></div>        
+    </div>
+
+    @if (Model is not null && Model.Results.Count > 0)
+    {
+        <hr class="my-4">
+
+        <div class="form-group row">
+            <div class="col-sm-10 p-3">
+                <div class="form-floating">
+                    <h5>@Model.Airport?.Name</h5>
+                </div>
+            </div>
+            <div class="col-sm-1 p-3">
+                &nbsp;
+            </div>
+            <div class="col-sm-1 p-3">
+
+                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                    data-bs-target="#primaryCalculationModal">CFI mode</button>
+
+                @await Html.PartialAsync("_CFIModePrimary", Model.Logger)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input class="form-control" maxlength="10" readonly asp-for="@Model.FieldElevation" />
+                    <label>Field elevation (ft)</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input class="form-control" maxlength="10" readonly asp-for="@Model.PressureAltitude" />
+                    <label>Pressure altitude (ft)</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input class="form-control" maxlength="10" readonly asp-for="@Model.DensityAltitude" />
+                    <label>
+                        Density altitude (ft)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <br />
+    }
+
+
+    @if (Model.Notes != null && Model.Notes.Count != 0)
+    {
+        <div class="form-group row">
+            <div class="col-sm-12">
+
+                @foreach (string note in Model.Notes)
+                {
+                    <div class="alert alert-warning" role="alert">
+                        @note
+                    </div>
+                }
+
+                <br />
+            </div>
+        </div>
+
+    }
+
+    @foreach (CalculationResultForRunwayPageModel result in Model?.ResultsSortedByHeadwind)
+    {
+     @await Html.PartialAsync("_RunwayDetails", result)
+
+
+        <br />
+    }
+
+    @if (Model is not null && Model.Results.Count > 0)
+    {
+        <hr class="my-4">
+    }
+
+
+</form>
+
+<br />

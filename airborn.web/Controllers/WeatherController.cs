@@ -15,12 +15,12 @@ namespace Airborn.web.Controllers
 {
     public class WeatherController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<WeatherController> _logger;
         private readonly AirbornDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public WeatherController(ILogger<HomeController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
+        public WeatherController(ILogger<WeatherController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
         {
             _logger = logger;
             _env = env;

@@ -1,0 +1,16 @@
+@using Airborn.web.Models
+@model PerformanceCalculationLog.LogItem
+
+<li>
+    <h5 class="mb-1">@Model</h5>
+    @if (Model.SubItems.Any())
+    {
+        <ul>
+            @foreach (PerformanceCalculationLog.LogItem subLogline in Model.SubItems)
+            {
+                @await Html.PartialAsync("_CFIModePrimaryItem", subLogline)
+            }
+        </ul>
+    }
+    <hr />
+</li>

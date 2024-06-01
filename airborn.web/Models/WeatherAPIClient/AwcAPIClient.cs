@@ -26,7 +26,7 @@ namespace Airborn.web.Models
             { "dataSource", "metars" },
             { "requestType", "retrieve" },
             { "format", "xml" },
-            { "stationString", airportCode },
+            { "ids", airportCode },
             { "hoursBeforeNow", hoursBeforeNow.ToString() },
             { "mostRecent", "true" },
         };

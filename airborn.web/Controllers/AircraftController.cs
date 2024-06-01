@@ -16,12 +16,12 @@ namespace Airborn.web.Controllers
 {
     public class AircraftController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<AircraftController> _logger;
         private readonly AirbornDbContext _dbContext;
 
         private IWebHostEnvironment _env;
 
-        public AircraftController(ILogger<HomeController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
+        public AircraftController(ILogger<AircraftController> logger, IWebHostEnvironment env, AirbornDbContext dbContext)
         {
             _logger = logger;
             _env = env;
