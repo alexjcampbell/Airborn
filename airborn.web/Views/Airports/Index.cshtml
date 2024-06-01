@@ -12,12 +12,14 @@
         <div class="p-4 bg-light border rounded-3">
             <h2>Airports and runways database</h2>
 
-            <p class="fs-5">This database contains every airport on earth (@ViewData["TotalAirportCount"] airports!), as well as information about their runways.
+            <p class="fs-5">This database contains every airport on earth (@ViewData["TotalAirportCount"] airports!), as
+                well as information about their runways.
                 You can use this
                 information to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
-                    and landing distances</a> or <a asp-controller="Airports" asp-action="Continents">view all airports.</a></p>
+                    and landing distances</a> or <a asp-controller="Airports" asp-action="Continents">view all
+                    airports.</a></p>
 
-            <p class="fs-5"></p>                    
+            <p class="fs-5"></p>
         </div>
     </div>
 </div>
@@ -47,23 +49,29 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Airport Code</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(m => m[0].Name)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(m =>
+                    m[0].Name)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(m => m[0].Location)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(m =>
+                    m[0].Location)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["FieldElevationSortParm"]">@Html.DisplayNameFor(m => m[0].FieldElevationAsDistance)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["FieldElevationSortParm"]">@Html.DisplayNameFor(m
+                    => m[0].FieldElevationAsDistance)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">@Html.DisplayNameFor(m => m[0].Type_Friendly)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">@Html.DisplayNameFor(m =>
+                    m[0].Type_Friendly)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["MagneticVariationSortParm"]">@Html.DisplayNameFor(m => m[0].MagneticVariation)</a>
+                <a asp-action="Index"
+                    asp-route-sortOrder="@ViewData["MagneticVariationSortParm"]">@Html.DisplayNameFor(m =>
+                    m[0].MagneticVariation)</a>
             </th>
             <th>
                 Usable Runways
-            </th>            
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -78,8 +86,14 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Location),
+
+                    @Html.DisplayFor(modelItem => item.Location)
+                    @if (!string.IsNullOrEmpty(item.Location))
+                    {
+                        @:,
+                    }
                     @Html.DisplayFor(modelItem => item.Country_Formatted)
+
                 </td>
                 <td>
                     @if (item.FieldElevation.HasValue)
