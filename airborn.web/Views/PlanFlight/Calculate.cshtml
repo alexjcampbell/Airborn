@@ -48,6 +48,15 @@
 
         @section Scripts{
             <script src="~/js/planflight.js"></script> 
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('form').on('submit', function (event) {
+                        var airportIdentifier = $('#AirportIdentifier').val();
+
+                        mixpanel.track("Calculate form submitted", { "AirportIdentifier": airportIdentifier });
+                    });
+                });
+            </script>            
         }
         <div class="col-sm-3">
             <div class="form-floating">
