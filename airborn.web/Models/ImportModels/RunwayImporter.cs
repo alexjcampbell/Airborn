@@ -38,7 +38,7 @@ namespace Airborn.web.Models.ImportModels
         public int? RunwayWidth { get; set; }
         public string Surface { get; set; }
         public bool? Lighted { get; set; }
-        public bool? Closed { get; set; }        
+        public bool? Closed { get; set; }
     }
 
     public class RunwayImportPair
@@ -75,7 +75,7 @@ namespace Airborn.web.Models.ImportModels
             Map(m => m.Runway2.RunwayWidth).Name("width_ft");
             Map(m => m.Runway2.Surface).Name("surface");
             Map(m => m.Runway2.Lighted).Name("lighted");
-            Map(m => m.Runway2.Closed).Name("closed");            
+            Map(m => m.Runway2.Closed).Name("closed");
             Map(m => m.Runway2.Ident).Name("he_ident");
             Map(m => m.Runway2.LatitudeDeg).Name("he_latitude_deg");
             Map(m => m.Runway2.LongitudeDeg).Name("he_longitude_deg");
@@ -129,7 +129,7 @@ namespace Airborn.web.Models.ImportModels
                     Runway newRunway = new Runway();
 
                     Airport airport = allAirports[runway.ImportedAirport_ID];
-                    
+
                     newRunway.Airport_Id = airport.Airport_Id;
                     newRunway.ImportedAirport_ID = runway.ImportedAirport_ID;
                     newRunway.RunwayLength = runway.RunwayLength;
@@ -139,7 +139,7 @@ namespace Airborn.web.Models.ImportModels
                     newRunway.Closed = runway.Closed.ToString();
                     newRunway.ImportedRunway_Id = runway.ImportedRunway_Id;
                     newRunway.Airport_Ident = runway.Airport_Ident;
-                    
+
                     newRunway.Runway_Name = runway.Ident;
                     newRunway.Latitude_Deg = runway.LatitudeDeg;
                     newRunway.Longitude_Deg = runway.LongitudeDeg;
@@ -163,10 +163,6 @@ namespace Airborn.web.Models.ImportModels
                     existingRunway.Latitude_Deg = runway.LatitudeDeg;
                     existingRunway.Longitude_Deg = runway.LongitudeDeg;
                     existingRunway.ElevationFt = runway.ElevationFt;
-                    existingRunway.HeadingDegreesTrue = runway.HeadingDegT;
-                    existingRunway.ElevationFt = runway.DisplacedThresholdFt;
-                    existingRunway.Latitude_Deg = runway.LatitudeDeg;
-                    existingRunway.Longitude_Deg = runway.LongitudeDeg;
                     existingRunway.HeadingDegreesTrue = runway.HeadingDegT;
                     existingRunway.DisplacedThresholdFt = runway.DisplacedThresholdFt;
                     existingRunway.LastUpdated = DateTime.UtcNow;
