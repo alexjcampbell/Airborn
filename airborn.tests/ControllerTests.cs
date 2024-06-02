@@ -24,14 +24,14 @@ namespace Airborn.Tests
     public class ControllerTests
     {
 
-        private ILogger<HomeController> _doesntDoMuch =
-            new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
+        private ILogger<PlanFlightController> _doesntDoMuch =
+            new Microsoft.Extensions.Logging.Abstractions.NullLogger<PlanFlightController>();
 
 
-        HomeController _controller;
+        PlanFlightController _controller;
         CalculatePageModel _model;
 
-        internal static HomeController InitializeController(ILogger<HomeController> _doesntDoMuch)
+        internal static PlanFlightController InitializeController(ILogger<PlanFlightController> _doesntDoMuch)
         {
             var mockEnvironment = new Mock<IWebHostEnvironment>();
 
@@ -42,7 +42,7 @@ namespace Airborn.Tests
 
             AirbornDbContext dbContext = UtilitiesForTesting.GetMockAirportDbContextForTesting();
 
-            return new HomeController(_doesntDoMuch, mockEnvironment.Object, dbContext);
+            return new PlanFlightController(_doesntDoMuch, mockEnvironment.Object, dbContext);
         }
 
 

@@ -24,11 +24,11 @@ namespace Airborn.Tests
     public class ControllerTests_Wind
     {
 
-        private ILogger<HomeController> _doesntDoMuch =
-            new Microsoft.Extensions.Logging.Abstractions.NullLogger<HomeController>();
+        private ILogger<PlanFlightController> _doesntDoMuch =
+            new Microsoft.Extensions.Logging.Abstractions.NullLogger<PlanFlightController>();
 
 
-        HomeController _controller;
+        PlanFlightController _controller;
         CalculatePageModel _model;
 
 

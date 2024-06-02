@@ -33,7 +33,7 @@ namespace Airborn.web.Models
             get; set;
         }
 
-        [Column("fk_airport_id") ]
+        [Column("fk_airport_id")]
         public int Airport_Id
         {
             get; set;
@@ -211,7 +211,7 @@ namespace Airborn.web.Models
             {
                 // If we have a true heading, and a magnetic variation, we can calculate the magnetic heading
                 if (
-                    _runway_Heading_Magnetic == null
+                    Airport.MagneticVariation != null
                     &&
                     HeadingDegreesTrue.HasValue
                 )

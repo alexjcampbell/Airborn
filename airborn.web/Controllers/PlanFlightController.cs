@@ -44,9 +44,9 @@ namespace Airborn.web.Controllers
 
         public IActionResult Calculate()
         {
-            ReadCookies();
-
             PageModel.AircraftType = "(-1)";
+
+            ReadCookies();
 
             return View(PageModel);
         }
@@ -103,7 +103,7 @@ namespace Airborn.web.Controllers
 
             if (Request.Cookies["AircraftType"]?.Length > 0)
             {
-                PageModel.AircraftType = Aircraft.GetAircraftTypeFromAircraftTypeString(Request.Cookies["AircraftType"]).ToString();
+                PageModel.AircraftType = Request.Cookies["AircraftType"];
             }
         }
 
@@ -174,6 +174,7 @@ namespace Airborn.web.Controllers
                 HttpContext.Response.Cookies.Append("AltimeterSettingType", model.AltimeterSettingType.ToString());
                 HttpContext.Response.Cookies.Append("MagneticVariation", model.MagneticVariation.ToString());
                 HttpContext.Response.Cookies.Append("Airport", model.AirportIdentifier);
+                HttpContext.Response.Cookies.Append("AircraftType", model.AircraftType);
             }
         }
 
