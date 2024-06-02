@@ -16,8 +16,9 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Auth0.AspNetCore.Authentication;
 using Airborn.web.Models;
-using Airborn.web.Models.ImportModels;
 using airborn.web.Support;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,6 +108,9 @@ static class StartupExtensions
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });        
+
+        builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        builder.Services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();        
     }
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
