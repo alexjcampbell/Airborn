@@ -107,10 +107,10 @@ static class StartupExtensions
             options.IdleTimeout = TimeSpan.FromMinutes(30);
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
-        });        
+        });
 
         builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-        builder.Services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();        
+        builder.Services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
     }
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
@@ -197,20 +197,25 @@ static class StartupExtensions
     {
 
         app.MapControllerRoute(
-            name: "Airports",
+            name: "Airport",
             pattern: "Airports/Airport/{ident}",
             defaults: new { controller = "Airports", action = "Airport" });
 
         app.MapControllerRoute(
-            name: "Airports",
+            name: "Continent",
             pattern: "Airports/Continent/{slug}",
             defaults: new { controller = "Airports", action = "Continent" });
 
         app.MapControllerRoute(
-            name: "Airports",
+            name: "Country",
             pattern: "Airports/Country/{slug}",
             defaults: new { controller = "Airports", action = "Country" });
 
+        app.MapControllerRoute(
+            name: "Regions",
+            pattern: "Airports/Region/{country}/{region}",
+            defaults: new { controller = "Airports", action = "Region" }
+        );
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=PlanFlight}/{action=Calculate}/{id?}");

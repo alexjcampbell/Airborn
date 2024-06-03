@@ -1,0 +1,30 @@
+@model Airborn.web.Models.Region
+
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<h1>Airports in @Model.Name</h1>
+
+<div>
+    <a href="@Url.Action("Country", "Airports", new { slug = Model.Country.Slug} )">Back to
+        @Model.Country.CountryName</a>
+</div>
+
+<br />
+
+<ul>
+    @foreach (var airport in Model.Airports)
+    {
+        if (airport != null && !string.IsNullOrEmpty(airport.Ident))
+        {
+            <li>
+                <a href="@Url.RouteUrl("Airport", new { ident = airport.Ident })">@airport.Name</a>
+            </li>
+        }
+        else
+        {
+            <li>@airport.Name </li>
+        }
+    }
+</ul>

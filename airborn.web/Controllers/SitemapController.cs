@@ -36,10 +36,10 @@ namespace Airborn.web.Controllers
             var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
 
             var sitemapGenerator = new SitemapGenerator(Url);
-            var sitemapUrls = _dbContext.Countries.AsNoTracking()
-                .Select(c => new SitemapUrl
+            var sitemapUrls = _dbContext.Regions.AsNoTracking()
+                .Select(r => new SitemapUrl
                 {
-                    Url = Url.Action("CountryAirportsSitemap", "Sitemap", new { slug = c.Slug }, Url.ActionContext.HttpContext.Request.Scheme),
+                    Url = Url.Action("RegionAirportsSitemap", "Sitemap", new { countrySlug = r.Country.Slug, regionSlug = r.Slug }, Url.ActionContext.HttpContext.Request.Scheme),
                     LastModified = DateTime.UtcNow,
                     ChangeFrequency = ChangeFrequency.Daily,
                     Priority = 1.0
@@ -58,20 +58,6 @@ namespace Airborn.web.Controllers
             return Content(sitemapIndex, "application/xml", Encoding.UTF8);
         }
 
-        private IEnumerable<SitemapUrl> GetAirportSitemapUrls(IUrlHelper urlHelper)
-        {
-            foreach (var country in _dbContext.Countries.AsNoTracking())
-            {
-                yield return new SitemapUrl
-                {
-                    Url = urlHelper.Action("CountryAirportsSitemap", "Sitemap", new { slug = country.Slug }, urlHelper.ActionContext.HttpContext.Request.Scheme),
-                    LastModified = DateTime.UtcNow,
-                    ChangeFrequency = ChangeFrequency.Daily,
-                    Priority = 1.0
-                };
-            }
-
-        }
 
         public IActionResult GetSitemapUrlsForEverythingOtherThanAirports()
         {
@@ -146,18 +132,18 @@ namespace Airborn.web.Controllers
         }
 
 
-        public IActionResult CountryAirportsSitemap(string slug)
+        public IActionResult RegionAirportsSitemap(string countrySlug, string regionSlug)
         {
             var sitemapGenerator = new SitemapGenerator(Url);
-            var country = _dbContext.Countries.AsNoTracking().FirstOrDefault(c => c.Slug == slug);
+            var region = _dbContext.Regions.AsNoTracking().FirstOrDefault(r => r.Slug == regionSlug && r.Country.Slug == countrySlug);
 
-            if (country == null)
+            if (region == null)
             {
                 return NotFound();
             }
 
             var urls = _dbContext.Airports.AsNoTracking()
-                .Where(a => a.Country.Slug == slug)
+                .Where(a => a.Region.Slug == regionSlug && a.Region.Country.Slug == countrySlug)
                 .Select(a => new SitemapUrl
                 {
                     Url = Url.Action("Airport", "Airports", new { ident = a.Ident }, Url.ActionContext.HttpContext.Request.Scheme),

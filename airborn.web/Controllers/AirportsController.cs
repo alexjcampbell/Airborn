@@ -279,13 +279,27 @@ namespace Airborn.web.Controllers
                 return NotFound();
             }
 
-            foreach (var region in country.Regions)
-            {
-                region.Airports = region.Airports.OrderBy(a => a.Name).ToList();
-            }
-
             return View(country);
         }
+
+        [Route("Airports/Region/{country}/{region}")]
+        public IActionResult Region(string country, string region)
+        {
+            var regionFromdatabase = _dbContext.Regions
+                .Include(r => r.Airports)
+                .Include(r => r.Country)
+                .FirstOrDefault(r => r.Slug == region && r.Country.Slug == country);
+
+            if (region == null)
+            {
+                return NotFound();
+            }
+
+            return View(regionFromdatabase);
+
+        }
+
+
 
     }
 }

@@ -7,18 +7,25 @@
 <h1>Airports in @Model.CountryName</h1>
 
 <div>
-    <a href="@Url.Action("Continent", "Airports", new { slug = Model.Continent.Slug} )">Back to @Model.Continent.ContinentName</a>
+    <a href="@Url.Action("Continent", "Airports", new { slug = Model.Continent.Slug} )">Back to
+        @Model.Continent.ContinentName</a>
 </div>
 
 <br />
 
 @foreach (var region in Model.Regions)
 {
-    <h5>@region.Name</h5>
     <ul>
-        @foreach (var airport in region.Airports)
+    @if (region != null && region.Country != null && !string.IsNullOrEmpty(region.Country.Slug) &&
+       !string.IsNullOrEmpty(region.Slug))
         {
-            <li><a href="@Url.Action("Airport", "Airports", new { id = airport.Ident })">@airport.Name</a></li>
+            <li><a href="@Url.RouteUrl("Regions", new { country = region.Country.Slug, region = region.Slug })">@region.Name</a>
+            </li>
+
+        }
+        else
+        {
+            <li>@region.Name</li>
         }
     </ul>
 }
