@@ -237,6 +237,9 @@ namespace Airborn.web.Controllers
         public IActionResult Continents()
         {
             var continents = _dbContext.Continents.Include(c => c.Countries).ToList();
+
+            ViewData["TotalAirportCount"] = _dbContext.Airports.Count().ToString("N0");
+
             return View(continents);
         }
 
@@ -252,6 +255,8 @@ namespace Airborn.web.Controllers
                 return NotFound();
             }
 
+            ViewData["TotalAirportCount"] = _dbContext.Airports.Where(a => a.Country.Continent.Slug == slug).Count().ToString("N0");
+
             continent.Countries = continent.Countries.OrderBy(c => c.CountryName).ToList();
 
             return View(continent);
@@ -263,6 +268,8 @@ namespace Airborn.web.Controllers
                 .Include(c => c.Continent)
                 .OrderBy(a => a.CountryName).ToList()
                 .ToList();
+
+
             return View(countries);
         }
 
@@ -278,6 +285,8 @@ namespace Airborn.web.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["TotalAirportCount"] = _dbContext.Airports.Where(a => a.Country.Slug == slug).Count().ToString("N0");
 
             return View(country);
         }

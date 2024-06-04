@@ -4,14 +4,22 @@
     ViewData["Title"] = @Model.ContinentName;
 }
 
-<h1>Continent: @Model.ContinentName</h1>
+<br />
+<div class="hero-banner">
+    <h2>Every airport in @ViewData["TotalAirportCount"] of 'em!)</h2>
+</div>
 
-<a href="@Url.Action("Continents", "Airports")">Back to all continents</a>
+<div class="content">
+    <br />
+    <a href="@Url.Action("Continents", "Airports")">Back to all continents</a>
 
-<h2>Countries:</h2>
-<ul>
-    @foreach (var country in Model.Countries)
-    {
-        <li><td><a href="@Url.Action("Country", "Airports", new { slug = country.Slug })">@country.CountryName</a></td></li>
-    }
-</ul>
+    <h2>Countries:</h2>
+    <ul>
+        @foreach (var country in Model.Countries)
+        {
+            <li>
+                <td><a href="@Url.Action("Country", "Airports", new { slug = country.Slug })">@country.CountryName</a></td>
+            </li>
+        }
+    </ul>
+</div>

@@ -7,22 +7,11 @@
 
 <br />
 
-<div class="row align-items-md-stretch">
-    <div class="col-md-12">
-        <div class="p-4 bg-light border rounded-3">
-            <h2>@Model.Aircraft.AircraftTypeString</h2>
-
-            <p class="fs-5">This is the performance information for <b>@Model.Aircraft.AircraftTypeString</b> that we
-                use to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
-                    and landing distances.</a></p>
-            <p class="fs-5">This is not an official source: please refer to your country's AIP for actual
-                flight
-                planning.</a></p>
-        </div>
-    </div>
+<div class="hero-banner">
+    <h2>@Model.Aircraft.AircraftTypeString takeoff and landing data.<br />
+        <a <div class="content">asp-controller="Home" asp-action="Calculate">Plan your flight.</a>
+    </h2>
 </div>
-
-<br />
 
 @{
     var lowerWeightTakeoffData = Model.PerformanceDataList.Where(x => x.AircraftWeight ==

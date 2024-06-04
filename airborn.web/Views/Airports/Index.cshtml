@@ -6,22 +6,8 @@
 }
 
 <br />
-
-<div class="row align-items-md-stretch">
-    <div class="col-md-12">
-        <div class="p-4 bg-light border rounded-3">
-            <h2>Airports and runways database</h2>
-
-            <p class="fs-5">This database contains every airport on earth (@ViewData["TotalAirportCount"] airports!), as
-                well as information about their runways.
-                You can use this
-                information to <a asp-controller="Home" asp-action="Calculate">calculate takeoff
-                    and landing distances</a> or <a asp-controller="Airports" asp-action="Continents">view all
-                    airports.</a></p>
-
-            <p class="fs-5"></p>
-        </div>
-    </div>
+<div class="hero-banner">
+    <h2>Every airport on earth (@ViewData["TotalAirportCount"] of 'em!)</h2>
 </div>
 
 @*
@@ -30,112 +16,115 @@
 </p>
 *@
 
-<br />
+<div class="content">
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by airport code: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index">Back to Full List</a>
-        </p>
-    </div>
-</form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Airport Code</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(m =>
-                    m[0].Name)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(m =>
-                    m[0].Location)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["FieldElevationSortParm"]">@Html.DisplayNameFor(m
-                    => m[0].FieldElevationAsDistance)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">@Html.DisplayNameFor(m =>
-                    m[0].Type_Friendly)</a>
-            </th>
-            <th>
-                <a asp-action="Index"
-                    asp-route-sortOrder="@ViewData["MagneticVariationSortParm"]">@Html.DisplayNameFor(m =>
-                    m[0].MagneticVariation)</a>
-            </th>
-            <th>
-                Usable Runways
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by airport code: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Index">Back to Full List</a> | <a asp-action="Continents">All Aiports</a>
+            </p>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.ActionLink(item.Ident, "Airport", "Airports", new { ident = item.Ident }, null)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-
-                    @Html.DisplayFor(modelItem => item.Location)
-                    @if (!string.IsNullOrEmpty(item.Location))
-                    {
-                        @:,
-                    }
-                    @Html.DisplayFor(modelItem => item.Country_Formatted)
-
-                </td>
-                <td>
-                    @if (item.FieldElevation.HasValue)
-                    {
-                        @:@Html.DisplayFor(modelItem => item.FieldElevation_Formatted)
-                    }
-                    else
-                    {
-                        @:N/A
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type_Friendly)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MagneticVariation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsableRunways.Count)
-                </td>
-                <td>
-                    @*
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                *@
-                    @Html.ActionLink("Details", "Airport", "Airports", new { ident = item.Ident }, null)
-                    @*
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-                *@
-                </td>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["IdentSortParm"]">Airport Code</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(m =>
+                        m[0].Name)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(m =>
+                        m[0].Location)</a>
+                </th>
+                <th>
+                    <a asp-action="Index"
+                        asp-route-sortOrder="@ViewData["FieldElevationSortParm"]">@Html.DisplayNameFor(m
+                        => m[0].FieldElevationAsDistance)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">@Html.DisplayNameFor(m =>
+                        m[0].Type_Friendly)</a>
+                </th>
+                <th>
+                    <a asp-action="Index"
+                        asp-route-sortOrder="@ViewData["MagneticVariationSortParm"]">@Html.DisplayNameFor(m =>
+                        m[0].MagneticVariation)</a>
+                </th>
+                <th>
+                    Usable Runways
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Ident, "Airport", "Airports", new { ident = item.Ident }, null)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
 
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
+                        @Html.DisplayFor(modelItem => item.Location)
+                        @if (!string.IsNullOrEmpty(item.Location))
+                        {
+                            @:,
+                        }
+                        @Html.DisplayFor(modelItem => item.Country_Formatted)
 
-<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">
-    Next
-</a>
+                    </td>
+                    <td>
+                        @if (item.FieldElevation.HasValue)
+                        {
+                            @:@Html.DisplayFor(modelItem => item.FieldElevation_Formatted)
+                        }
+                        else
+                        {
+                            @:N/A
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type_Friendly)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MagneticVariation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UsableRunways.Count)
+                    </td>
+                    <td>
+                        @*
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    *@
+                        @Html.ActionLink("Details", "Airport", "Airports", new { ident = item.Ident }, null)
+                        @*
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">
+        Next
+    </a>
+</div>

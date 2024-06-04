@@ -1,101 +1,119 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1a4578;
-  border-color: #112d4e;
-}
-
-.nav-pills .nav-link.active,
-.nav-pills .show>.nav-link {
-  color: #fff;
-  background-color: #1a4578;
-  border-color: #112d4e;
-}
-
-.nav-link.active {
-  font-weight: bold;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 12px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
+﻿/* General Styling */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: #f8f9fa;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
-  /* Vertically center the text there */
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #357ABD;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
 }
 
-.list-group-collapse li>ul li:first-child {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.navbar-brand img {
+  max-height: 80px;
+  margin-right: 20px;
 }
 
-.list-group-collapse li>ul {
-  margin-left: -16px;
-  margin-right: -16px;
-  margin-bottom: -11px;
+.navbar-nav .nav-link {
+  font-size: 18px;
+  color: #ffffff;
+  margin-left: 20px;
+  padding: 10px;
 }
 
-.important-info {
-  background-color: #e9ecef !important;
-  border-color: #007bff !important;
-  color: #495057 !important;
+.navbar-nav .nav-link:hover {
+  color: #d0e1ff;
 }
 
-.text-center {
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+  background-color: #1a4578;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.hero-banner {
+  background-color: #f8f9fa;
+  padding-top: 20px;
+  padding-bottom: 20px;
   text-align: center;
+  border-bottom: 0px solid #dcdcdc;
+  /* Optional: to define the separation */
+  border-radius: 0;
+  /* To match the content border radius */
+  box-shadow: 0px;
+  /* To match the content box shadow */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  /* Add margin to separate from the content */
+}
+
+.hero-banner h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.hero-banner p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+/* General Content Styling */
+.content {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background-color: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 0;
+}
+
+.content p {
+  margin-bottom: 1rem;
+}
+
+.content ul {
+  padding-left: 1.5rem;
+}
+
+.content ul li {
+  margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.footer {
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  border-top: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+summary {
+  background-color: #357ABD;
+  /* Change this to your preferred color */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.btn-no-wrap {
+  white-space: nowrap;
+}
+
+.white-text {
+  color: #ffffff;
 }

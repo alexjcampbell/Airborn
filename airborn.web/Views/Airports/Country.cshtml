@@ -4,28 +4,36 @@
     ViewData["Title"] = @Model.CountryName;
 }
 
-<h1>Airports in @Model.CountryName</h1>
-
-<div>
-    <a href="@Url.Action("Continent", "Airports", new { slug = Model.Continent.Slug} )">Back to
-        @Model.Continent.ContinentName</a>
+<br />
+<div class="hero-banner">
+    <h2>Every airport in @Model.CountryName (@Model.Airports.Count.ToString("N0") of 'em!)</h2>
 </div>
 
-<br />
+<div class="content">
 
-@foreach (var region in Model.Regions)
-{
-    <ul>
-    @if (region != null && region.Country != null && !string.IsNullOrEmpty(region.Country.Slug) &&
-       !string.IsNullOrEmpty(region.Slug))
-        {
-            <li><a href="@Url.RouteUrl("Regions", new { country = region.Country.Slug, region = region.Slug })">@region.Name</a>
-            </li>
+    <br />
+    <div>
+        <a href="@Url.Action("Continent", "Airports", new { slug = Model.Continent.Slug} )">Back to
+            @Model.Continent.ContinentName</a>
+    </div>
 
-        }
-        else
-        {
-            <li>@region.Name</li>
-        }
-    </ul>
-}
+    <br />
+
+    @foreach (var region in Model.Regions)
+    {
+        <ul>
+            @if (region != null && region.Country != null && !string.IsNullOrEmpty(region.Country.Slug) &&
+           !string.IsNullOrEmpty(region.Slug))
+            {
+                <li><a
+                        href="@Url.RouteUrl("Regions", new { country = region.Country.Slug, region = region.Slug })">@region.Name</a>
+                </li>
+
+            }
+            else
+            {
+                <li>@region.Name</li>
+            }
+        </ul>
+    }
+</div>
