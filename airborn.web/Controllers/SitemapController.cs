@@ -132,6 +132,7 @@ namespace Airborn.web.Controllers
         }
 
 
+        [Route("Sitemap/{countrySlug}/{regionSlug}.xml")]
         public IActionResult RegionAirportsSitemap(string countrySlug, string regionSlug)
         {
             var sitemapGenerator = new SitemapGenerator(Url);

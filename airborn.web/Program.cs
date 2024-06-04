@@ -216,6 +216,13 @@ static class StartupExtensions
             pattern: "Airports/Region/{country}/{region}",
             defaults: new { controller = "Airports", action = "Region" }
         );
+
+        app.MapControllerRoute(
+            name: "Sitemap",
+            pattern: "Sitemap/{country}/{region}",
+            defaults: new { controller = "Sitemap", action = "RegionAirportsSitemap" }
+        );
+
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=PlanFlight}/{action=Calculate}/{id?}");
