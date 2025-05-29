@@ -122,31 +122,54 @@ namespace Airborn.web.Models
             PerformanceCalculationLog.LogItem logItem
             )
         {
+            // Per POH: Sloped Runways - Increase distances by 22% of the ground roll value at Sea
+            // Level, 30% of the ground roll value at 5000 ft, 43% of the ground roll value at
+            // 10000 ft for each 1% of upslope; decrease distances by 7% of the ground roll
+            // value at Sea Level, 10% of the ground roll value at 5000 ft, and 14% of the
+            // ground roll value at 10000 ft for each 1% of downslope.
 
             logItem.AddSubItem("Runway slope: " + slope.ToString("0.00") + " %");
-            logItem.AddSubItem("Runway slope adjustment factor: " + (slope * 0.1f).ToString("0.00"));
 
-            // the POH says we should decrease landing distance for downslopes, but the slope information
+            // the POH says we should decrease takeoff distance for downslopes, but the slope information
             // we have is only an average, and some runways are weird and convex so instead we just don't
-            // decrease landing distance for downslopes
+            // decrease takeoff distance for downslopes
 
             double slopeAdjustmentFactor = 0;
 
-            if (pressureAltitude <= 0 && slope > 0)
+            // Interpolate adjustment factors based on altitude
+            if (pressureAltitude <= 0)
             {
-                slopeAdjustmentFactor = 0.22; // only provide the worst case adjustment, for uphill takeoffs
+                // At or below sea level, use sea level values
+                slopeAdjustmentFactor = slope > 0 ? 0.22 : 0; // only provide the worst case adjustment, for uphill takeoffs
+                logItem.AddSubItem($"Slope adjustment factor (sea level): {slopeAdjustmentFactor:0.00}");
             }
-            else if (pressureAltitude <= 5000 && slope > 0)
+            else if (pressureAltitude <= 5000)
             {
-                slopeAdjustmentFactor = 0.3;
+                // Interpolate between sea level (0 ft) and 5000 ft
+                double seaLevelFactor = slope > 0 ? 0.22 : 0;
+                double fiveThousandFactor = slope > 0 ? 0.30 : 0;
+                slopeAdjustmentFactor = seaLevelFactor + (fiveThousandFactor - seaLevelFactor) * (pressureAltitude / 5000.0);
+                logItem.AddSubItem($"Slope adjustment factor (interpolated 0-5000 ft): {slopeAdjustmentFactor:0.00}");
             }
-            else if (slope > 0)
+            else if (pressureAltitude <= 10000)
             {
-                slopeAdjustmentFactor = 0.43;
+                // Interpolate between 5000 ft and 10000 ft
+                double fiveThousandFactor = slope > 0 ? 0.30 : 0;
+                double tenThousandFactor = slope > 0 ? 0.43 : 0;
+                slopeAdjustmentFactor = fiveThousandFactor + (tenThousandFactor - fiveThousandFactor) * ((pressureAltitude - 5000.0) / 5000.0);
+                logItem.AddSubItem($"Slope adjustment factor (interpolated 5000-10000 ft): {slopeAdjustmentFactor:0.00}");
+            }
+            else
+            {
+                // Above 10000 ft, use 10000 ft values
+                slopeAdjustmentFactor = slope > 0 ? 0.43 : 0;
+                logItem.AddSubItem($"Slope adjustment factor (above 10000 ft): {slopeAdjustmentFactor:0.00}");
             }
 
             double adjustment = Math.Abs(slope) * slopeAdjustmentFactor * groundRollDistance;
             double adjustedGroundRollDistance = groundRollDistance + adjustment;
+
+            logItem.AddSubItem($"Slope adjustment: {adjustment:0.00} ft");
 
             return Distance.FromFeet(adjustedGroundRollDistance);
         }
@@ -267,31 +290,46 @@ namespace Airborn.web.Models
             double altitude,
             PerformanceCalculationLog.LogItem logItem)
         {
-            // tetermine the adjustment factor based on the given altitude and whether the slope is positive (upslope) or negative (downslope)
+            // Per POH: Sloped Runways - Increase distances by 22% of the ground roll value at Sea
+            // Level, 30% of the ground roll value at 5000 ft, 43% of the ground roll value at
+            // 10000 ft for each 1% of upslope; decrease distances by 7% of the ground roll
+            // value at Sea Level, 10% of the ground roll value at 5000 ft, and 14% of the
+            // ground roll value at 10000 ft for each 1% of downslope.
+            
             double adjustmentFactor;
 
             // the POH says we should decrease landing distance for downslopes, but the slope information
             // we have is only an average, and some runways are weird and convex so instead we just don't
             // decrease landing distance for downslopes
 
-            if (altitude > 0)
+            // Interpolate adjustment factors based on altitude
+            if (altitude <= 0)
             {
+                // At or below sea level, use sea level values
                 adjustmentFactor = slope > 0 ? 0.22 : 0;  // don't decrease landing distance for downslope runways
-
-                logItem.AddSubItem("Slope adjustment factor (altitude >=0, <5,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
+                logItem.AddSubItem($"Slope adjustment factor (sea level): {adjustmentFactor:0.00} for slope {slope:0.00}%");
             }
             else if (altitude <= 5000)
             {
-                adjustmentFactor = slope > 0 ? 0.3 : 0;  // don't decrease landing distance for downslope runways
-
-                logItem.AddSubItem("Slope adjustment factor (altitude >= 5,000, < 10,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
-
+                // Interpolate between sea level (0 ft) and 5000 ft
+                double seaLevelFactor = slope > 0 ? 0.22 : 0;
+                double fiveThousandFactor = slope > 0 ? 0.30 : 0;
+                adjustmentFactor = seaLevelFactor + (fiveThousandFactor - seaLevelFactor) * (altitude / 5000.0);
+                logItem.AddSubItem($"Slope adjustment factor (interpolated 0-5000 ft): {adjustmentFactor:0.00} for slope {slope:0.00}%");
+            }
+            else if (altitude <= 10000)
+            {
+                // Interpolate between 5000 ft and 10000 ft
+                double fiveThousandFactor = slope > 0 ? 0.30 : 0;
+                double tenThousandFactor = slope > 0 ? 0.43 : 0;
+                adjustmentFactor = fiveThousandFactor + (tenThousandFactor - fiveThousandFactor) * ((altitude - 5000.0) / 5000.0);
+                logItem.AddSubItem($"Slope adjustment factor (interpolated 5000-10000 ft): {adjustmentFactor:0.00} for slope {slope:0.00}%");
             }
             else
             {
+                // Above 10000 ft, use 10000 ft values
                 adjustmentFactor = slope > 0 ? 0.43 : 0; // don't decrease landing distance for downslope runways
-
-                logItem.AddSubItem("Slope adjustment factor (altitude >= 10,000): " + adjustmentFactor.ToString("0.00") + " for slope " + slope.ToString("0.00"));
+                logItem.AddSubItem($"Slope adjustment factor (above 10000 ft): {adjustmentFactor:0.00} for slope {slope:0.00}%");
             }
 
             // Calculate the adjustment based on the slope, adjustment factor, and ground roll distance
