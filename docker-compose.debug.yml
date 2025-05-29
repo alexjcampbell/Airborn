@@ -7,7 +7,7 @@ services:
     image: airbornweb
     build:
       context: .
-      dockerfile: airborn.web/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - 3000
     environment:
